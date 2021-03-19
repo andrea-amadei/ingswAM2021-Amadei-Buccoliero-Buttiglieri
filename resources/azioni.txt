@@ -1,0 +1,33 @@
+Azioni:
+
+DECISIONS
+-StartGame -> {player}
+-PickLeaders -> {player}
+-SelectNextChoice -> {player, gamePhase}
+-EndTurn -> {player}
+-BackToMenu -> {player}
+
+-NextPlayer -> {}
+-EndGame -> {}
+
+STORAGE
+-MoveFromHandToShelf -> {player, resource, shelf}
+-MoveFromShelfToHand -> {player, shelf}
+-MoveFromShelfToShelf -> {player, shelf, shelf}
+-DiscardResourceFromHand -> {player, resource}
+-DiscardResourceFromShelf -> {player, shelf} ????????????
+
+MARKET
+-BuyFromMarket -> {player, isRow, index}
+-SelectConversion -> {player, Map<Resources, Integer>}
+-ConfirmTidy -> {player}
+
+SHOP
+-BuyFromShop -> {player, row, col}
+
+CRAFTING
+-ActivateCraftings -> {player, List<Crafting>}
+
+LEADER
+-ActivateLeader -> {player, Leader}
+-DiscardLeader -> {player, Leader}
