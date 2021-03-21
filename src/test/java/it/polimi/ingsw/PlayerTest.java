@@ -7,14 +7,14 @@ import org.junit.jupiter.api.Test;
 
 public class PlayerTest {
     @Test
-    public void testConstructor() {
+    public void constructorTest() {
         assertThrows(IllegalArgumentException.class, () -> new Player("a", 1));
         assertThrows(IllegalArgumentException.class, () -> new Player("abc", -1));
         assertThrows(NullPointerException.class, () -> new Player(null, 1));
     }
 
     @Test
-    public void testMethods() {
+    public void methodsTest() {
         Player player = new Player("abcd", 0);
 
         assertEquals(player.getUsername(), "abcd");
