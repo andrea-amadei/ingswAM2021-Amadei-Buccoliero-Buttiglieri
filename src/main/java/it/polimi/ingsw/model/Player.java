@@ -56,7 +56,7 @@ public class Player {
     public void addPoints(int amount) {
 
         if(amount < 0)
-            throw new IllegalArgumentException("Added negative amount of points");
+            throw new IllegalArgumentException("Cannot add a negative amount of points");
 
         this.points += amount;
     }

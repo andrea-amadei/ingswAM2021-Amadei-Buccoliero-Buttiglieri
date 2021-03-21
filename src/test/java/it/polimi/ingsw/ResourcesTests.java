@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Unit test for simple App.
  */
-public class ResourcesTest {
+public class ResourcesTests {
     @Test
     public void typeMatchTest() {
 

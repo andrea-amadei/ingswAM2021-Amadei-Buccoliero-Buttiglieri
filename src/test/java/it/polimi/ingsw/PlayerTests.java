@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import it.polimi.ingsw.model.Player;
 import org.junit.jupiter.api.Test;
 
-public class PlayerTest {
+public class PlayerTests {
     @Test
     public void constructorTest() {
         assertThrows(IllegalArgumentException.class, () -> new Player("a", 1));
