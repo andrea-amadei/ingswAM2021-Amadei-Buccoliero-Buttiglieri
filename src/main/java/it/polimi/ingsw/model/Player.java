@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.exceptions.AddedNegativePointsException;
+import java.util.Objects;
 
 public class Player {
     private final String username;
@@ -8,10 +8,22 @@ public class Player {
     private final int arrivalId;
     private int points;
 
+    public static final int MAX_USERNAME_LENGTH = 30;
+    public static final int MIN_USERNAME_LENGTH = 2;
+
     //TODO: Add Board
     //private Board board;
 
     public Player(String username, int arrivalId) {
+        if(username == null)
+            throw new NullPointerException();
+
+        if(username.length() < MIN_USERNAME_LENGTH || username.length() > MAX_USERNAME_LENGTH)
+            throw new IllegalArgumentException("Username length not valid");
+
+        if(arrivalId < 0)
+            throw new IllegalArgumentException("Arrival id cannot be negative");
+
         this.username = username;
         this.arrivalId = arrivalId;
 
@@ -41,12 +53,12 @@ public class Player {
         this.connected = connected;
     }
 
-    public void addPoints(int points) {
+    public void addPoints(int amount) {
 
-        if(points < 0)
-            throw new AddedNegativePointsException();
+        if(amount < 0)
+            throw new IllegalArgumentException("Added negative amount of points");
 
-        this.points += points;
+        this.points += amount;
     }
 
     public void resetPoints() {
