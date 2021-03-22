@@ -17,12 +17,13 @@ import java.util.Optional;
 public class Shelf {
     private final String id;
     private final ResourceType acceptedTypes;
-    private ResourceType currentType;
+    private ResourceSingle currentType;
     private final int maxAmount;
     private int currentAmount;
 
     /**
-     * Creates a new Shelf with the specified limitations
+     * Creates a new Shelf with the specified limitations.
+     * currentType is null if currentAmount == 0, or it contains the currentType held if currentAmount > 0
      * @param id the identifier of the shelf
      * @param acceptedTypes the allowed types
      * @param maxAmount the max amount of resources that this shelf can hold
@@ -46,10 +47,10 @@ public class Shelf {
 
     /**
      *
-     * @return the current type held by this shelf if not empty. If the shelf is empty it returns the accepted types
+     * @return the current type held by this shelf if not empty. If the shelf is empty return is null
      */
-    public ResourceType getCurrentType(){
-        return Optional.ofNullable(currentType).orElse(acceptedTypes);
+    public ResourceSingle getCurrentType(){
+        return currentType;
     }
 
     /**
@@ -75,7 +76,7 @@ public class Shelf {
         if(!type.isA(acceptedTypes))
             throw new UnsupportedShelfInsertionException(type + " is not supported for this shelf");
 
-        if(!type.isA(getCurrentType()))
+        if(getCurrentType() != null && !type.isA(getCurrentType()))
             throw new UnsupportedShelfInsertionException(type + " is not consistent with the type already contained in" +
                     " the shelf");
 
@@ -120,7 +121,8 @@ public class Shelf {
      * @return the representation of this shelf
      */
     public String toString(){
-        return id + " " + "{" + getCurrentType() + ": " + currentAmount + "}";
+
+        return id + " " + "{" + ((currentType != null) ? currentType + ": " + currentAmount : "") + "}";
     }
 
 

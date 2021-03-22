@@ -18,18 +18,18 @@ public class ShelfTest {
     public void baseShelfConstruction(){
         Shelf s1 = new Shelf("Shelf 1", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
         assertEquals(s1.getId(), "Shelf 1");
-        assertEquals(s1.toString(), "Shelf 1 {"+ ResourceTypeSingleton.getInstance().getAnyResource() + ": " + 0 + "}");
+        assertEquals(s1.toString(), "Shelf 1 {}");
         assertEquals(s1.getAmount(), 0);
-        assertEquals(s1.getCurrentType(), ResourceTypeSingleton.getInstance().getAnyResource());
+        assertNull(s1.getCurrentType());
     }
 
     @Test
     public void leaderShelfConstruction(){
         Shelf leaderShelf = new Shelf("LeaderShelf 1", ResourceTypeSingleton.getInstance().getGoldResource(), 2);
         assertEquals(leaderShelf.getId(), "LeaderShelf 1");
-        assertEquals(leaderShelf.toString(), "LeaderShelf 1 {Gold: 0}");
+        assertEquals(leaderShelf.toString(), "LeaderShelf 1 {}");
         assertEquals(leaderShelf.getAmount(), 0);
-        assertEquals(leaderShelf.getCurrentType(), ResourceTypeSingleton.getInstance().getGoldResource());
+        assertNull(leaderShelf.getCurrentType());
     }
 
     @Test
@@ -102,7 +102,7 @@ public class ShelfTest {
         shelf.addResources(servant, 3);
         assertEquals(shelf.getCurrentType(), servant);
         shelf.removeResources(3);
-        assertEquals(shelf.getCurrentType(), newGroup);
+        assertNull(shelf.getCurrentType());
     }
 
 }

@@ -7,6 +7,8 @@ public final class GameParameters {
     public static final int MAX_CARD_LEVEL = 3;
     public static final int MIN_CARD_LEVEL = 1;
 
+    public static final int BASE_CUPBOARDS_SHELVES = 3;
+
     public static final int UPGRADABLE_CRAFTING_NUMBER = 3;
 
     public static final int FAITH_CHECKPOINT_NUMBER = 3;
