@@ -8,9 +8,6 @@ public class Player {
     private final int arrivalId;
     private int points;
 
-    public static final int MAX_USERNAME_LENGTH = 30;
-    public static final int MIN_USERNAME_LENGTH = 2;
-
     //TODO: Add Board
     //private Board board;
 
@@ -18,7 +15,7 @@ public class Player {
         if(username == null)
             throw new NullPointerException();
 
-        if(username.length() < MIN_USERNAME_LENGTH || username.length() > MAX_USERNAME_LENGTH)
+        if(username.length() < GameParameters.MIN_USERNAME_LENGTH || username.length() > GameParameters.MAX_USERNAME_LENGTH)
             throw new IllegalArgumentException("Username length not valid");
 
         if(arrivalId < 0)

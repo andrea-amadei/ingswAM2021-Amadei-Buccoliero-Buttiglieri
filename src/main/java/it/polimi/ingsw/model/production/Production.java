@@ -86,14 +86,14 @@ public class Production {
      * @param index the slot to be modified. Must be between 0 and GameParameters.UPGRADABLE_CRAFTING_NUMBER
      * @param crafting the new crafting to be set
      * @throws NullPointerException if crafting is null
-     * @throws IllegalArgumentException if index is out of bounds (negative or bigger than specified)
+     * @throws IndexOutOfBoundsException if index is out of bounds (negative or bigger than specified)
      */
     public void setUpgradableCrafting(int index, UpgradableCrafting crafting) {
         if(crafting == null)
             throw new NullPointerException();
 
         if(index < 0 || index > GameParameters.UPGRADABLE_CRAFTING_NUMBER - 1)
-            throw new IllegalArgumentException("Index out of bounds");
+            throw new IndexOutOfBoundsException("Index must be between 0 and " + (GameParameters.UPGRADABLE_CRAFTING_NUMBER - 1));
 
         upgradableCrafting.set(index, crafting);
     }

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 
-public class CraftingTests {
+public class CraftingTest {
     @Test
     public void constructorTest() {
         HashMap<ResourceType, Integer> empty_input = new HashMap<>();

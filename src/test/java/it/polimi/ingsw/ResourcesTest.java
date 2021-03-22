@@ -9,7 +9,7 @@ import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import org.junit.jupiter.api.Test;
 
 
-public class ResourcesTests {
+public class ResourcesTest {
     @Test
     public void typeMatchTest() {
 

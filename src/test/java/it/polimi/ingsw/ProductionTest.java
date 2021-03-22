@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class ProductionTests {
+public class ProductionTest {
     @Test
     public void test() {
         assertThrows(NullPointerException.class, () -> new Production(null));
@@ -42,7 +42,7 @@ public class ProductionTests {
 
         assertThrows(NullPointerException.class, () -> production2.addLeaderCrafting(null));
         assertThrows(NullPointerException.class, () -> production2.setUpgradableCrafting(1, null));
-        assertThrows(IllegalArgumentException.class, () -> production2.setUpgradableCrafting(-1, upgradableCrafting));
+        assertThrows(IndexOutOfBoundsException.class, () -> production2.setUpgradableCrafting(-1, upgradableCrafting));
 
         production2.addLeaderCrafting(crafting);
         production2.setUpgradableCrafting(1, upgradableCrafting);
