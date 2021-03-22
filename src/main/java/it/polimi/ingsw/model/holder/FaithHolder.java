@@ -84,7 +84,7 @@ public class FaithHolder {
      * Sets a given Pope Card to active
      * @param index the index of the pope card
      * @throws IndexOutOfBoundsException if the index is out of bounds
-     * @throws AlreadyReachedPopeCardException if the pope card was unreached
+     * @throws UsedUnreachedPopeCardException if the pope card was unreached
      */
     public void setPopeCardActive(int index) {
         if(index < 0 || index > GameParameters.FAITH_CHECKPOINT_NUMBER - 1)
@@ -100,7 +100,7 @@ public class FaithHolder {
      * Sets a given Pope Card to inactive
      * @param index the index of the pope card
      * @throws IndexOutOfBoundsException if the index is out of bounds
-     * @throws AlreadyReachedPopeCardException if the pope card was unreached
+     * @throws UsedUnreachedPopeCardException if the pope card was unreached
      */
     public void setPopeCardInactive(int index) {
         if(index < 0 || index > GameParameters.FAITH_CHECKPOINT_NUMBER - 1)
