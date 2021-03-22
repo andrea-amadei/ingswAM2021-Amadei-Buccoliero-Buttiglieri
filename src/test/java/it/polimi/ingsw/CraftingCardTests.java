@@ -18,7 +18,7 @@ public class CraftingCardTests {
         cost.put(ResourceTypeSingleton.getInstance().getShieldResource(), 3);
         HashMap<ResourceType, Integer> input = new HashMap<>();
         input.put(ResourceTypeSingleton.getInstance().getShieldResource(), 2);
-        HashMap<ResourceSingle, Integer> output = new HashMap<>();
+        HashMap<ResourceType, Integer> output = new HashMap<>();
         output.put(ResourceTypeSingleton.getInstance().getStoneResource(), 1);
         output.put(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
         UpgradableCrafting crafting = new UpgradableCrafting(input, output, 2, 2);
@@ -45,7 +45,7 @@ public class CraftingCardTests {
         cost.put(ResourceTypeSingleton.getInstance().getShieldResource(), 3);
         HashMap<ResourceType, Integer> input = new HashMap<>();
         input.put(ResourceTypeSingleton.getInstance().getShieldResource(), 2);
-        HashMap<ResourceSingle, Integer> output = new HashMap<>();
+        HashMap<ResourceType, Integer> output = new HashMap<>();
         output.put(ResourceTypeSingleton.getInstance().getStoneResource(), 1);
         output.put(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
         UpgradableCrafting crafting = new UpgradableCrafting(input, output, 2, 2);

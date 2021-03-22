@@ -3,7 +3,6 @@ package it.polimi.ingsw;
 import static org.junit.jupiter.api.Assertions.*;
 
 import it.polimi.ingsw.exceptions.NegativeCraftingIngredientException;
-import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceType;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.production.Crafting;
@@ -16,18 +15,18 @@ public class CraftingTests {
     @Test
     public void constructorTest() {
         HashMap<ResourceType, Integer> empty_input = new HashMap<>();
-        HashMap<ResourceSingle, Integer> empty_output = new HashMap<>();
+        HashMap<ResourceType, Integer> empty_output = new HashMap<>();
 
         HashMap<ResourceType, Integer> input = new HashMap<>();
         input.put(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
 
-        HashMap<ResourceSingle, Integer> output = new HashMap<>();
+        HashMap<ResourceType, Integer> output = new HashMap<>();
         output.put(ResourceTypeSingleton.getInstance().getStoneResource(), 1);
 
         HashMap<ResourceType, Integer> input_negative = new HashMap<>();
         input_negative.put(ResourceTypeSingleton.getInstance().getGoldResource(), -1);
 
-        HashMap<ResourceSingle, Integer> output_negative = new HashMap<>();
+        HashMap<ResourceType, Integer> output_negative = new HashMap<>();
         output_negative.put(ResourceTypeSingleton.getInstance().getStoneResource(), -1);
 
         assertThrows(NullPointerException.class, () -> new Crafting(null, output, 0));
@@ -45,7 +44,7 @@ public class CraftingTests {
         input.put(ResourceTypeSingleton.getInstance().getServantResource(), 1);
         input.put(ResourceTypeSingleton.getInstance().getShieldResource(), 2);
 
-        HashMap<ResourceSingle, Integer> output = new HashMap<>();
+        HashMap<ResourceType, Integer> output = new HashMap<>();
         output.put(ResourceTypeSingleton.getInstance().getStoneResource(), 1);
         output.put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
 
@@ -62,7 +61,7 @@ public class CraftingTests {
         input.put(ResourceTypeSingleton.getInstance().getServantResource(), 1);
         input.put(ResourceTypeSingleton.getInstance().getShieldResource(), 2);
 
-        HashMap<ResourceSingle, Integer> output = new HashMap<>();
+        HashMap<ResourceType, Integer> output = new HashMap<>();
         output.put(ResourceTypeSingleton.getInstance().getStoneResource(), 1);
         output.put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
 
