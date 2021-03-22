@@ -63,9 +63,13 @@ public class ShelfTest {
     @Test
     public void addInvalidAmount(){
         ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
+        ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
         Shelf shelf = new Shelf("Shelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
         assertDoesNotThrow(() -> shelf.addResources(stone, 3));
         assertThrows(UnsupportedShelfInsertionException.class, ()->shelf.addResources(stone, 1));
+        assertThrows(IllegalArgumentException.class, ()->shelf.addResources(stone, -1));
+        assertThrows(NullPointerException.class, ()->shelf.addResources(null, 1));
+        assertThrows(UnsupportedShelfInsertionException.class, ()->shelf.addResources(gold, 1));
     }
 
     @Test

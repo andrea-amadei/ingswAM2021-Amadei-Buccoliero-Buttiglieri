@@ -78,6 +78,7 @@ public class Crafting {
         return faithOutput;
     }
 
+    /*
     public boolean hasAllIngredients() {
         //TODO: Add this
         return true;
@@ -86,4 +87,5 @@ public class Crafting {
     public void activateCrafting(Player player) {
         //TODO: Add this
     }
+     */
 }
