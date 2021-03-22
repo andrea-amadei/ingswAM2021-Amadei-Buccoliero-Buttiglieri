@@ -29,7 +29,7 @@ public class Crafting {
      *               Can either be a single resource or a group. Can be empty if faithOutput is not zero.
      *               Ingredients amounts must be positives.
      * @param faithOutput the faith points outputted by the recipe, Cannot be negative
-     * @throws NullPointerException if ate least one of the parameters is null
+     * @throws NullPointerException if at least one of the parameters is null
      * @throws IllegalArgumentException if inputs or outputs are empty or faith points is negative
      */
     public Crafting(Map<ResourceType, Integer> input, Map<ResourceType, Integer> output, int faithOutput) {
