@@ -4,12 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import it.polimi.ingsw.gamematerials.ResourceGroup;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
+import it.polimi.ingsw.gamematerials.ResourceType;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import org.junit.jupiter.api.Test;
 
-/**
- * Unit test for simple App.
- */
+
 public class ResourcesTests {
     @Test
     public void typeMatchTest() {
@@ -42,5 +41,17 @@ public class ResourcesTests {
         assertEquals(stone2, stone1);
         assertEquals(any2, any1);
         assertNotEquals(servant, shield);
+    }
+
+    @Test
+    public void resourceSingleRepresentation(){
+        ResourceType gold = ResourceTypeSingleton.getInstance().getGoldResource();
+        assertEquals(gold.toString(), "Gold");
+    }
+
+    @Test
+    public void resourceGroupRepresentation(){
+        ResourceType any = ResourceTypeSingleton.getInstance().getAnyResource();
+        assertEquals(any.toString(), "Any {Gold, Servant, Shield, Stone}");
     }
 }

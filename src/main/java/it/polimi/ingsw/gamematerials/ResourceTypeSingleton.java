@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gamematerials;
 
 import java.util.Arrays;
+import java.util.HashSet;
 
 public class ResourceTypeSingleton {
     private static final ResourceTypeSingleton instance = new ResourceTypeSingleton();
@@ -9,7 +10,7 @@ public class ResourceTypeSingleton {
     ResourceSingle SERVANT = new ResourceSingle("Servant");
     ResourceSingle SHIELD = new ResourceSingle("Shield");
     ResourceSingle STONE = new ResourceSingle("Stone");
-    ResourceGroup ANY = new ResourceGroup("Any", Arrays.asList(GOLD, SERVANT, SHIELD, STONE));
+    ResourceGroup ANY = new ResourceGroup("Any", new HashSet<>(Arrays.asList(GOLD, SERVANT, SHIELD, STONE)));
 
 
     private ResourceTypeSingleton() {
