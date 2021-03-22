@@ -42,7 +42,7 @@ public class ProductionTest {
 
         assertThrows(NullPointerException.class, () -> production2.addLeaderCrafting(null));
         assertThrows(NullPointerException.class, () -> production2.setUpgradableCrafting(1, null));
-        assertThrows(IllegalArgumentException.class, () -> production2.setUpgradableCrafting(-1, upgradableCrafting));
+        assertThrows(IndexOutOfBoundsException.class, () -> production2.setUpgradableCrafting(-1, upgradableCrafting));
 
         production2.addLeaderCrafting(crafting);
         production2.setUpgradableCrafting(1, upgradableCrafting);
