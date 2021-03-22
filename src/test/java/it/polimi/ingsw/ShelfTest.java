@@ -74,10 +74,14 @@ public class ShelfTest {
         ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
         ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
         ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
-        Shelf shelf = new Shelf("Shelf", servant, 3);
-        assertThrows(UnsupportedShelfInsertionException.class, ()->shelf.addResources(shield, 1));
-        assertThrows(NullPointerException.class, ()->shelf.addResources(null, 1));
-        assertThrows(UnsupportedShelfInsertionException.class, ()->shelf.addResources(gold, 1));
+
+        Shelf shelf1 = new Shelf("Shelf", servant, 3);
+        assertThrows(UnsupportedShelfInsertionException.class, ()->shelf1.addResources(shield, 1));
+
+        Shelf shelf2 = new Shelf("Shelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
+        shelf2.addResources(servant, 3);
+        assertThrows(NullPointerException.class, ()->shelf2.addResources(null, 1));
+        assertThrows(UnsupportedShelfInsertionException.class, ()->shelf2.addResources(gold, 1));
     }
 
     @Test
