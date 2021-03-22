@@ -29,12 +29,12 @@ public class CraftingTests {
         HashMap<ResourceType, Integer> output_negative = new HashMap<>();
         output_negative.put(ResourceTypeSingleton.getInstance().getStoneResource(), -1);
 
-        assertThrows(NullPointerException.class, () -> new Crafting(null, output, 0));
-        assertThrows(NullPointerException.class, () -> new Crafting(input, null, 0));
-        assertThrows(IllegalArgumentException.class, () -> new Crafting(empty_input, output, 0));
+        assertThrows(NullPointerException.class, () -> new Crafting(null, output, 1));
+        assertThrows(NullPointerException.class, () -> new Crafting(input, null, 1));
+        assertThrows(IllegalArgumentException.class, () -> new Crafting(empty_input, output, 1));
         assertThrows(IllegalArgumentException.class, () -> new Crafting(input, empty_output, 0));
-        assertThrows(NegativeCraftingIngredientException.class, () -> new Crafting(input, output_negative, 0));
-        assertThrows(NegativeCraftingIngredientException.class, () -> new Crafting(input_negative, output, 0));
+        assertThrows(NegativeCraftingIngredientException.class, () -> new Crafting(input, output_negative, 1));
+        assertThrows(NegativeCraftingIngredientException.class, () -> new Crafting(input_negative, output, 1));
         assertThrows(IllegalArgumentException.class, () ->  new Crafting(input, output, -1));
     }
 
