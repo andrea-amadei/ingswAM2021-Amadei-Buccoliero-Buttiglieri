@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import it.polimi.ingsw.gamematerials.*;
 import org.junit.jupiter.api.Test;
 
-public class FlagTests {
+public class FlagTest {
     @Test
     public void test() {
         BaseFlag green = new BaseFlag(FlagColor.GREEN);

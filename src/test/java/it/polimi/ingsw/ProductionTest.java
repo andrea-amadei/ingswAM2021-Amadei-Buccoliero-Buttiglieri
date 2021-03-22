@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class ProductionTests {
+public class ProductionTest {
     @Test
     public void test() {
         assertThrows(NullPointerException.class, () -> new Production(null));

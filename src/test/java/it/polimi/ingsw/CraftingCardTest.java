@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 
-public class CraftingCardTests {
+public class CraftingCardTest {
     @Test
     public void constructorTest() {
         LevelFlag flag = new LevelFlag(FlagColor.PURPLE, 2);
