@@ -16,6 +16,8 @@ public class ResourceGroup extends ResourceType{
 
     @Override
     public boolean isA(ResourceType other) {
+        if(other == null)
+            throw new NullPointerException("Can't compare with null");
         return other.id.equals(this.id);
     }
 }

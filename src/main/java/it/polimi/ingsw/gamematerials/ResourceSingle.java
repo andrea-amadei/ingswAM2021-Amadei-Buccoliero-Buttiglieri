@@ -12,6 +12,8 @@ public class ResourceSingle extends ResourceType {
 
     @Override
     public boolean isA(ResourceType other){
+         if(other == null)
+             throw new NullPointerException("Can't compare with null");
          return other.toString().equals(id) || other.associatedResources.contains(this);
     }
 
