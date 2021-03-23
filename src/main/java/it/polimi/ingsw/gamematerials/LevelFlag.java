@@ -2,6 +2,8 @@ package it.polimi.ingsw.gamematerials;
 
 import it.polimi.ingsw.model.GameParameters;
 
+import java.util.Objects;
+
 /**
  * The LevelFlag class extends the BaseFlag class and represent a flag, defined by its color and level
  */
@@ -27,5 +29,19 @@ public class LevelFlag extends BaseFlag {
      */
     public int getLevel() {
         return level;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        LevelFlag levelFlag = (LevelFlag) o;
+        return level == levelFlag.level;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), level);
     }
 }
