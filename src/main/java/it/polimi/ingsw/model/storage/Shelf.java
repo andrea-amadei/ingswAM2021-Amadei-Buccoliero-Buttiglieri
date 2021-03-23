@@ -64,7 +64,7 @@ public class Shelf {
      * Adds resources to this shelf
      * @param type the type of resources to insert
      * @param amount the amount of resources to insert
-     * @throws it.polimi.ingsw.exceptions.UnsupportedShelfInsertionException if after the insertion, size or type
+     * @throws UnsupportedShelfInsertionException if after the insertion, size or type
      *         limitations are violated
      */
     public void addResources(ResourceSingle type, int amount){

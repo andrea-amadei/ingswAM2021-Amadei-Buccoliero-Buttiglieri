@@ -74,7 +74,7 @@ public class CraftingCard {
     }
 
     /**
-     * @return the victory poionts granted by the card
+     * @return the victory points granted by the card
      */
     public int getPoints() {
         return points;

@@ -121,7 +121,7 @@ public class FaithHolder {
 
     /**
      * Adds a given amount of faith points
-     * @param amount the amount of poitns to be added. Cannot be negative
+     * @param amount the amount of points to be added. Cannot be negative
      * @throws IllegalArgumentException if the amount is negative
      */
     public void addFaithPoints(int amount) {
