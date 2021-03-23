@@ -54,4 +54,13 @@ public class ResourcesTest {
         ResourceType any = ResourceTypeSingleton.getInstance().getAnyResource();
         assertEquals(any.toString(), "Any {Gold, Servant, Shield, Stone}");
     }
+
+    @Test
+    public void exceptionTest() {
+        ResourceType any = ResourceTypeSingleton.getInstance().getAnyResource();
+        ResourceType gold = ResourceTypeSingleton.getInstance().getGoldResource();
+
+        assertThrows(NullPointerException.class, () -> any.isA(null));
+        assertThrows(NullPointerException.class, () -> gold.isA(null));
+    }
 }
