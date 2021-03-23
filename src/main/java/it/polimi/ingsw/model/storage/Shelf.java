@@ -6,7 +6,6 @@ import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceType;
 
 
-import java.util.Optional;
 
 /**
  * The Shelf class is responsible for storing resources in the limited storage of the player (base storage and leader
@@ -94,11 +93,11 @@ public class Shelf {
     /**
      * Removes a resource from this shelf
      * @param amount the amount of resources to remove
-     * @throws IllegalArgumentException if amount is less then 0
+     * @throws IllegalArgumentException if amount is less then or equal to 0
      * @throws UnsupportedShelfInsertionException if there is not enough room for the removal
      */
     public void removeResources(int amount){
-        if(amount < 0 ) throw new IllegalArgumentException("Can't remove a negative amount of resources");
+        if(amount <= 0 ) throw new IllegalArgumentException("Can't remove a non-positive amount of resources");
 
         if(currentAmount - amount < 0) throw new UnsupportedShelfRemovalException("There are not enough resources");
 

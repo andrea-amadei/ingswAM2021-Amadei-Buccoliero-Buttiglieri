@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.storage;
 
+import it.polimi.ingsw.exceptions.IllegalCupboardException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 
 import java.util.Set;
@@ -13,7 +14,7 @@ public interface Cupboard {
     Set<Shelf> getShelves();
 
     /**
-     *
+     * Get the shelf with the desired id
      * @param id the id of the desired shelf
      * @return the selected shelf
      */
@@ -25,7 +26,7 @@ public interface Cupboard {
      * @param to the shelf to which resources are moved
      * @param amount the amount of resources to transfer
      */
-    void moveResource(Shelf from, Shelf to, int amount);
+    void moveResource(Shelf from, Shelf to, int amount) throws IllegalCupboardException;
 
     /**
      * Add an amount of resources to the specified shelf
@@ -33,7 +34,18 @@ public interface Cupboard {
      * @param resource the type of the resource to add
      * @param amount the amount of resources to add
      */
-    void addResource(Shelf to, ResourceSingle resource, int amount);
+    void addResource(Shelf to, ResourceSingle resource, int amount) throws IllegalCupboardException;
 
-    //TODO: Add the methods used to move resources from hand to shelf
+    /**
+     * Remove the specified amount from the shelf
+     * @param from the shelf from which resources are taken
+     * @param amount the amount of resources to remove
+     */
+    void removeResource(Shelf from, int amount);
+
+    /**
+     * @return true if the cupboard contains the indicated shelf
+     */
+    boolean contains(Shelf shelf);
+
 }
