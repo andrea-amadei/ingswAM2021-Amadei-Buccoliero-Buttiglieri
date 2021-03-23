@@ -32,6 +32,10 @@ public class FlagHolderTest {
         assertEquals(fh.numberOfFlagsByLevel(2), 2);
         assertEquals(fh.numberOfFlagsByLevel(3), 1);
         assertEquals(fh.numberOfFlagsByLevel(4), 0);
+
+        fh.reset();
+
+        assertEquals(fh.getFlags().size(), 0);
     }
 
     @Test
