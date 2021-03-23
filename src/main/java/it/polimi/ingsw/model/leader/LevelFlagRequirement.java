@@ -22,8 +22,7 @@ public class LevelFlagRequirement implements  Requirement{
     public LevelFlagRequirement(LevelFlag flag, int amount){
 
         if(amount <= 0)
-            throw new IllegalArgumentException("Amount of flags required" +
-                                            " cannot be negative or zero");
+            throw new IllegalArgumentException("Amount of flags required cannot be negative or zero");
 
         if(flag == null)
             throw new NullPointerException();

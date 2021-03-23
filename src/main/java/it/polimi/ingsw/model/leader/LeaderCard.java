@@ -15,7 +15,7 @@ public class LeaderCard {
     private final List<Requirement> requirements;
 
     /**
-     * LeaderCard constuctor
+     * LeaderCard constructor
      * @param id the card ID number
      * @param name the name of the card
      * @param points the total amount of victory points of the card
