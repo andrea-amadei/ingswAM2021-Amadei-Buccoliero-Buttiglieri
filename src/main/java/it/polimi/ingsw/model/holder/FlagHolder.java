@@ -100,4 +100,11 @@ public class FlagHolder {
 
         return n;
     }
+
+    /**
+     * Clears all flags
+     */
+    public void reset() {
+        flags.clear();
+    }
 }
