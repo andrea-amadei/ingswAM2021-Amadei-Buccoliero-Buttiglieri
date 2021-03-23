@@ -193,10 +193,10 @@ public class BaseCupboardTest {
 
         Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
 
-        assertThrows(NullPointerException.class, () -> c.moveResource(null, bottom, 3));
-        assertThrows(IllegalArgumentException.class, () -> c.moveResource(bottom, bottom, 0));
-        assertThrows(IllegalArgumentException.class, () -> c.moveResource(top, bottom, -1));
-        assertThrows(NoSuchElementException.class, () -> c.moveResource(bottom, new Shelf("a", gold, 3), 3));
+        assertThrows(NullPointerException.class, () -> c.moveBetweenShelves(null, bottom, 3));
+        assertThrows(IllegalArgumentException.class, () -> c.moveBetweenShelves(bottom, bottom, 0));
+        assertThrows(IllegalArgumentException.class, () -> c.moveBetweenShelves(top, bottom, -1));
+        assertThrows(NoSuchElementException.class, () -> c.moveBetweenShelves(bottom, new Shelf("a", gold, 3), 3));
 
         assertEquals(c.toString(), "BaseCupboard {BottomShelf {}, MiddleShelf {}, TopShelf {}}");
     }
@@ -210,7 +210,7 @@ public class BaseCupboardTest {
 
         Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
 
-        assertThrows(UnsupportedShelfRemovalException.class, () -> c.moveResource(top, bottom,1));
+        assertThrows(UnsupportedShelfRemovalException.class, () -> c.moveBetweenShelves(top, bottom,1));
         assertEquals(c.toString(), "BaseCupboard {BottomShelf {}, MiddleShelf {}, TopShelf {}}");
     }
 
@@ -231,7 +231,7 @@ public class BaseCupboardTest {
         assertDoesNotThrow(()->c.addResource(top, servant, 1));
         assertEquals(c.toString(), "BaseCupboard {BottomShelf {Stone: 3}, MiddleShelf {Gold: 1}, TopShelf {Servant: 1}}");
 
-        assertThrows(UnsupportedShelfInsertionException.class, ()->c.moveResource(top, bottom, 1));
+        assertThrows(UnsupportedShelfInsertionException.class, ()->c.moveBetweenShelves(top, bottom, 1));
         assertEquals(c.toString(), "BaseCupboard {BottomShelf {Stone: 3}, MiddleShelf {Gold: 1}, TopShelf {Servant: 1}}");
     }
 
@@ -249,7 +249,7 @@ public class BaseCupboardTest {
         assertDoesNotThrow(()->c.addResource(bottom, stone, 3));
         assertDoesNotThrow(()->c.addResource(middle, gold, 2));
 
-        assertThrows(IllegalCupboardException.class, ()->c.moveResource(middle, top, 1));
+        assertThrows(IllegalCupboardException.class, ()->c.moveBetweenShelves(middle, top, 1));
         assertEquals(c.toString(), "BaseCupboard {BottomShelf {Stone: 3}, MiddleShelf {Gold: 2}, TopShelf {}}");
 
     }
@@ -267,7 +267,7 @@ public class BaseCupboardTest {
 
         assertDoesNotThrow(()->c.addResource(bottom, stone, 2));
         assertDoesNotThrow(()->c.addResource(top, gold, 1));
-        assertDoesNotThrow(()->c.moveResource(bottom, middle, 2));
+        assertDoesNotThrow(()->c.moveBetweenShelves(bottom, middle, 2));
 
         assertEquals(c.toString(), "BaseCupboard {BottomShelf {}, MiddleShelf {Stone: 2}, TopShelf {Gold: 1}}");
     }

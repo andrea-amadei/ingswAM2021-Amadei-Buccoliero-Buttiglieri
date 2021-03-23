@@ -26,7 +26,8 @@ public interface Cupboard {
      * @param to the shelf to which resources are moved
      * @param amount the amount of resources to transfer
      */
-    void moveResource(Shelf from, Shelf to, int amount) throws IllegalCupboardException;
+    void moveBetweenShelves(Shelf from, Shelf to, int amount) throws IllegalCupboardException;
+
 
     /**
      * Add an amount of resources to the specified shelf

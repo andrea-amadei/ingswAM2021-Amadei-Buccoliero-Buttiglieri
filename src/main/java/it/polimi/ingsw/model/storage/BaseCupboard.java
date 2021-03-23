@@ -80,7 +80,7 @@ public class BaseCupboard implements Cupboard{
      * @throws IllegalCupboardException if upon moving resources, configuration is not valid
      */
     @Override
-    public void moveResource(Shelf from, Shelf to, int amount) throws IllegalCupboardException{
+    public void moveBetweenShelves(Shelf from, Shelf to, int amount) throws IllegalCupboardException{
         if(from == null || to == null)
             throw new NullPointerException();
         if(amount <= 0)
