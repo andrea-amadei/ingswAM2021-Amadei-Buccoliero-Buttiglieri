@@ -24,7 +24,10 @@ public abstract class ResourceType {
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append(id).append(" {");
-        List<ResourceSingle> orderedResourceGroup = associatedResources.stream().sorted(Comparator.comparing(ResourceSingle::getId)).collect(Collectors.toList());
+        List<ResourceSingle> orderedResourceGroup = associatedResources.stream()
+                .sorted(Comparator.comparing(ResourceSingle::getId))
+                .collect(Collectors.toList());
+
         for(int i = 0; i < orderedResourceGroup.size(); i++){
             sb.append(orderedResourceGroup.get(i));
             if(i < orderedResourceGroup.size() - 1)
