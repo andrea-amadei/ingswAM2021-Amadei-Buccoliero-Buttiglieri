@@ -32,6 +32,10 @@ public class BaseCupboard implements Cupboard{
         if(shelves.stream().anyMatch(Objects::isNull))
             throw new IllegalArgumentException("Shelves can't be null");
 
+        //check for empty list of shelves
+        if(shelves.size() == 0)
+            throw new IllegalArgumentException("There must be at least one shelf in the base cupboard");
+
         //check for duplicates
         Set<String> distinct = new HashSet<>();
         if(shelves.stream().anyMatch(s -> !distinct.add(s.getId()))){

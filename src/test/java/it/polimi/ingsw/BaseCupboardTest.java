@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.storage.Cupboard;
 import it.polimi.ingsw.model.storage.Shelf;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -58,8 +59,9 @@ public class BaseCupboardTest {
     }
 
     @Test
-    public void nullShelfListConstruction(){
+    public void nullOrEmptyShelfListConstruction(){
         assertThrows(NullPointerException.class, () -> new BaseCupboard(null));
+        assertThrows(IllegalArgumentException.class, () -> new BaseCupboard(new ArrayList<>()));
     }
 
     @Test
