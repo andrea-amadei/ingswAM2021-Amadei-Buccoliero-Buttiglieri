@@ -6,11 +6,11 @@ import java.util.HashSet;
 public class ResourceTypeSingleton {
     private static final ResourceTypeSingleton instance = new ResourceTypeSingleton();
 
-    ResourceSingle GOLD = new ResourceSingle("Gold");
-    ResourceSingle SERVANT = new ResourceSingle("Servant");
-    ResourceSingle SHIELD = new ResourceSingle("Shield");
-    ResourceSingle STONE = new ResourceSingle("Stone");
-    ResourceGroup ANY = new ResourceGroup("Any", new HashSet<>(Arrays.asList(GOLD, SERVANT, SHIELD, STONE)));
+    final ResourceSingle GOLD = new ResourceSingle("Gold");
+    final ResourceSingle SERVANT = new ResourceSingle("Servant");
+    final ResourceSingle SHIELD = new ResourceSingle("Shield");
+    final ResourceSingle STONE = new ResourceSingle("Stone");
+    final ResourceGroup ANY = new ResourceGroup("Any", new HashSet<>(Arrays.asList(GOLD, SERVANT, SHIELD, STONE)));
 
 
     private ResourceTypeSingleton() {
