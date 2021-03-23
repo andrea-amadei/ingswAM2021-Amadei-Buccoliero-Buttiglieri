@@ -14,9 +14,9 @@ class DiscountHolderTest {
 
         assertEquals(dh.getDiscounts().size(), 0);
 
-        dh.addDiscount(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
-        dh.addDiscount(ResourceTypeSingleton.getInstance().getShieldResource(), 1);
-        dh.addDiscount(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
+        assertFalse(dh.addDiscount(ResourceTypeSingleton.getInstance().getGoldResource(), 1));
+        assertFalse(dh.addDiscount(ResourceTypeSingleton.getInstance().getShieldResource(), 1));
+        assertTrue(dh.addDiscount(ResourceTypeSingleton.getInstance().getGoldResource(), 2));
 
         assertEquals(dh.getDiscounts().size(), 2);
         assertEquals(dh.totalDiscountByResource(ResourceTypeSingleton.getInstance().getGoldResource()), 3);
