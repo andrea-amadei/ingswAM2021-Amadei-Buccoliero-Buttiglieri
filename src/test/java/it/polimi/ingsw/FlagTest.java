@@ -16,5 +16,6 @@ public class FlagTest {
         assertSame(blue2.getLevel(), 2);
 
         assertThrows(IllegalArgumentException.class, () -> new LevelFlag(FlagColor.YELLOW, 4));
+        assertThrows(NullPointerException.class, () -> new BaseFlag(null));
     }
 }
