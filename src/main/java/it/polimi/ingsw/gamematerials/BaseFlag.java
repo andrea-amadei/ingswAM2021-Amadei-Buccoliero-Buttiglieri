@@ -11,8 +11,12 @@ public class BaseFlag {
     /**
      * Creates a new generic flag
      * @param color the color of the flag
+     * @throws NullPointerException if color is null
      */
     public BaseFlag(FlagColor color) {
+        if (color == null)
+            throw new NullPointerException();
+
         this.color = color;
     }
 
