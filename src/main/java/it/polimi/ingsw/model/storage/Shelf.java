@@ -79,11 +79,8 @@ public class Shelf {
             throw new UnsupportedShelfInsertionException(type + " is not consistent with the type already contained in" +
                     " the shelf");
 
-
         if(currentAmount + amount > maxAmount)
             throw new UnsupportedShelfInsertionException("The shelf has no space left for this insertion");
-
-
 
         this.currentAmount += amount;
         this.currentType = type;
