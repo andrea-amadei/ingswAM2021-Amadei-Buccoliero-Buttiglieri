@@ -28,6 +28,7 @@ public class CraftingCard {
      * @throws NullPointerException if any of the arguments are null
      * @throws IllegalArgumentException if the cost is empty or negative, the victory points are negative or
      *                                  the level of the flag is different from the one of the crafting.
+     * @throws NegativeCostException if the  cost contains below zero amounts of resources
      */
     public CraftingCard(LevelFlag flag, Map<ResourceSingle, Integer> cost, UpgradableCrafting crafting, int points) {
         if(flag == null || cost == null || crafting == null)

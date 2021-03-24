@@ -30,7 +30,8 @@ public class Crafting {
      *               Ingredients amounts must be positives.
      * @param faithOutput the faith points outputted by the recipe, Cannot be negative
      * @throws NullPointerException if at least one of the parameters is null
-     * @throws IllegalArgumentException if inputs or outputs are empty or faith points is negative
+     * @throws IllegalArgumentException if inputs are empty or output is empty and faith points is not positive
+     * @throws NegativeCraftingIngredientException if inputs or outputs contain below zero amounts
      */
     public Crafting(Map<ResourceType, Integer> input, Map<ResourceType, Integer> output, int faithOutput) {
         if(input == null || output == null)
@@ -87,5 +88,5 @@ public class Crafting {
     public void activateCrafting(Player player) {
         //TODO: Add this
     }
-     */
+    */
 }
