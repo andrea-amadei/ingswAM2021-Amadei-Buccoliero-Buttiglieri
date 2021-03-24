@@ -145,10 +145,31 @@ public class BaseStorage {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        // if they are the same return true
+        if (this == o)
+            return true;
+
+        // if one is null or they are different objects return false
+        if (o == null || getClass() != o.getClass())
+            return false;
+
         BaseStorage that = (BaseStorage) o;
-        return resources.equals(that.resources);
+
+        for(ResourceSingle i : this.resources.keySet()) {
+            // if the key exists but the amount is different returns false
+            if (that.resources.containsKey(i)) {
+                if (this.resources.get(i).intValue() != that.resources.get(i).intValue())
+                    return false;
+
+            // if the key doesn't exists return false
+            } else {
+                if (this.resources.get(i) != 0)
+                    return false;
+            }
+        }
+
+        // finally returns true
+        return true;
     }
 
     @Override
