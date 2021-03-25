@@ -19,7 +19,7 @@ public class ResourceTypeSingleton {
     private ResourceTypeSingleton() {}
 
     /**
-     * Can be sued to obtain access to resources
+     * Can be used to obtain access to resources
      * @return a initiated version of himself
      */
     public static ResourceTypeSingleton getInstance(){
