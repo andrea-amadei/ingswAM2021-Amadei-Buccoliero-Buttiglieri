@@ -2,8 +2,7 @@ package it.polimi.ingsw;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import it.polimi.ingsw.exceptions.RemovedInvalidAmountException;
-import it.polimi.ingsw.exceptions.RemovedInvalidResourceException;
+import it.polimi.ingsw.exceptions.IllegalResourceTransfer;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.storage.BaseStorage;
@@ -26,35 +25,34 @@ class BaseStorageTest {
 
         bs = new BaseStorage(map);
         assertEquals(bs.getAllResources().size(), 2);
-
-        bs = new BaseStorage(bs);
-        assertEquals(bs.getAllResources().size(), 2);
     }
 
     @Test
-    public void methodsTest() {
+    public void addRemoveSetTest() {
         BaseStorage bs = new BaseStorage();
 
-        bs.addResource(ResourceTypeSingleton.getInstance().getServantResource(), 1);
-        bs.addResource(ResourceTypeSingleton.getInstance().getShieldResource(), 2);
-        bs.addResource(ResourceTypeSingleton.getInstance().getServantResource(), 3);
+        bs.addResources(ResourceTypeSingleton.getInstance().getServantResource(), 1);
+        bs.addResources(ResourceTypeSingleton.getInstance().getShieldResource(), 2);
+        bs.addResources(ResourceTypeSingleton.getInstance().getServantResource(), 3);
+        bs.addResources(ResourceTypeSingleton.getInstance().getStoneResource(), 4);
 
-        bs.removeResource(ResourceTypeSingleton.getInstance().getServantResource(), 1);
+        assertDoesNotThrow(() -> bs.removeResources(ResourceTypeSingleton.getInstance().getServantResource(), 1));
+        assertDoesNotThrow(() -> bs.removeResources(ResourceTypeSingleton.getInstance().getStoneResource(), 4));
 
-        bs.setResource(ResourceTypeSingleton.getInstance().getGoldResource(), 5);
-        bs.setResource(ResourceTypeSingleton.getInstance().getShieldResource(), 1);
+        bs.setResources(ResourceTypeSingleton.getInstance().getGoldResource(), 5);
+        bs.setResources(ResourceTypeSingleton.getInstance().getShieldResource(), 1);
 
-        assertEquals(bs.getResource(ResourceTypeSingleton.getInstance().getServantResource()), 3);
-        assertEquals(bs.getResource(ResourceTypeSingleton.getInstance().getShieldResource()), 1);
-        assertEquals(bs.getResource(ResourceTypeSingleton.getInstance().getGoldResource()), 5);
-        assertEquals(bs.getResource(ResourceTypeSingleton.getInstance().getStoneResource()), 0);
+        assertEquals(bs.getResources(ResourceTypeSingleton.getInstance().getServantResource()), 3);
+        assertEquals(bs.getResources(ResourceTypeSingleton.getInstance().getShieldResource()), 1);
+        assertEquals(bs.getResources(ResourceTypeSingleton.getInstance().getGoldResource()), 5);
+        assertEquals(bs.getResources(ResourceTypeSingleton.getInstance().getStoneResource()), 0);
 
         bs.reset();
 
-        assertEquals(bs.getResource(ResourceTypeSingleton.getInstance().getServantResource()), 0);
-        assertEquals(bs.getResource(ResourceTypeSingleton.getInstance().getShieldResource()), 0);
-        assertEquals(bs.getResource(ResourceTypeSingleton.getInstance().getGoldResource()), 0);
-        assertEquals(bs.getResource(ResourceTypeSingleton.getInstance().getStoneResource()), 0);
+        assertEquals(bs.getResources(ResourceTypeSingleton.getInstance().getServantResource()), 0);
+        assertEquals(bs.getResources(ResourceTypeSingleton.getInstance().getShieldResource()), 0);
+        assertEquals(bs.getResources(ResourceTypeSingleton.getInstance().getGoldResource()), 0);
+        assertEquals(bs.getResources(ResourceTypeSingleton.getInstance().getStoneResource()), 0);
 
         assertEquals(bs.getAllResources().size(), 0);
     }
@@ -66,39 +64,67 @@ class BaseStorageTest {
         Map<ResourceSingle, Integer> map = new HashMap<>();
         map.put(ResourceTypeSingleton.getInstance().getGoldResource(), -1);
 
-        assertThrows(NullPointerException.class, () -> new BaseStorage((BaseStorage) null));
-        assertThrows(NullPointerException.class, () -> new BaseStorage((Map<ResourceSingle, Integer>) null));
+        assertThrows(NullPointerException.class, () -> new BaseStorage(null));
         assertThrows(IllegalArgumentException.class, () -> new BaseStorage(map));
 
         bs = new BaseStorage();
 
-        assertThrows(NullPointerException.class, () -> bs.addResource(null, 1));
-        assertThrows(NullPointerException.class, () -> bs.removeResource(null, 1));
-        assertThrows(NullPointerException.class, () -> bs.setResource(null, 1));
-        assertThrows(NullPointerException.class, () -> bs.getResource(null));
+        assertThrows(NullPointerException.class, () -> bs.addResources(null, 1));
+        assertThrows(NullPointerException.class, () -> bs.removeResources(null, 1));
+        assertThrows(NullPointerException.class, () -> bs.setResources(null, 1));
+        assertThrows(NullPointerException.class, () -> bs.getResources(null));
 
         assertThrows(IllegalArgumentException.class, () ->
-                bs.addResource(ResourceTypeSingleton.getInstance().getGoldResource(), -1));
+                bs.addResources(ResourceTypeSingleton.getInstance().getGoldResource(), -1));
         assertThrows(IllegalArgumentException.class, () ->
-                bs.removeResource(ResourceTypeSingleton.getInstance().getGoldResource(), -1));
+                bs.removeResources(ResourceTypeSingleton.getInstance().getGoldResource(), -1));
         assertThrows(IllegalArgumentException.class, () ->
-                bs.setResource(ResourceTypeSingleton.getInstance().getGoldResource(), -1));
+                bs.setResources(ResourceTypeSingleton.getInstance().getGoldResource(), -1));
 
-        assertThrows(RemovedInvalidResourceException.class, () ->
-                bs.removeResource(ResourceTypeSingleton.getInstance().getGoldResource(), 2));
+        assertThrows(IllegalResourceTransfer.class, () ->
+                bs.removeResources(ResourceTypeSingleton.getInstance().getGoldResource(), 2));
 
-        bs.addResource(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
+        bs.addResources(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
 
-        assertThrows(RemovedInvalidAmountException.class, () ->
-                bs.removeResource(ResourceTypeSingleton.getInstance().getGoldResource(), 2));
+        assertThrows(IllegalResourceTransfer.class, () ->
+                bs.removeResources(ResourceTypeSingleton.getInstance().getGoldResource(), 2));
+    }
+
+    @Test
+    public void movementTest() {
+        BaseStorage bs1 = new BaseStorage();
+        bs1.addResources(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
+        bs1.addResources(ResourceTypeSingleton.getInstance().getStoneResource(), 2);
+
+        BaseStorage bs2 = new BaseStorage();
+
+        assertThrows(NullPointerException.class, () ->
+                bs1.moveTo(null, ResourceTypeSingleton.getInstance().getGoldResource(), 1));
+        assertThrows(NullPointerException.class, () ->
+                bs1.moveTo(bs2, null, 1));
+        assertThrows(IllegalArgumentException.class, () ->
+                bs1.moveTo(bs2, ResourceTypeSingleton.getInstance().getGoldResource(), -1));
+
+        assertThrows(IllegalResourceTransfer.class, () ->
+                bs1.moveTo(bs2, ResourceTypeSingleton.getInstance().getShieldResource(), 1));
+        assertThrows(IllegalResourceTransfer.class, () ->
+                bs1.moveTo(bs2, ResourceTypeSingleton.getInstance().getGoldResource(), 2));
+
+        assertDoesNotThrow(() ->
+                bs1.moveTo(bs2, ResourceTypeSingleton.getInstance().getGoldResource(), 1));
+
+        assertEquals(bs1.getResources(ResourceTypeSingleton.getInstance().getGoldResource()), 0);
+        assertEquals(bs1.getResources(ResourceTypeSingleton.getInstance().getStoneResource()), 2);
+
+        assertEquals(bs2.getResources(ResourceTypeSingleton.getInstance().getGoldResource()), 1);
     }
 
     @Test
     public void equalsTest() {
         BaseStorage bs1 = new BaseStorage();
 
-        bs1.addResource(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
-        bs1.setResource(ResourceTypeSingleton.getInstance().getStoneResource(), 2);
+        bs1.addResources(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
+        bs1.setResources(ResourceTypeSingleton.getInstance().getStoneResource(), 2);
 
         Map<ResourceSingle, Integer> map = new HashMap<>();
         map.put(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
@@ -113,10 +139,19 @@ class BaseStorageTest {
         assertNotEquals(bs1, null);
 
         bs2.reset();
-        bs2.addResource(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
+        bs2.addResources(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
         assertNotEquals(bs1, bs2);
 
-        bs2.addResource(ResourceTypeSingleton.getInstance().getStoneResource(), 3);
+        bs2.addResources(ResourceTypeSingleton.getInstance().getStoneResource(), 3);
+        assertNotEquals(bs1, bs2);
+
+        assertDoesNotThrow(() -> bs2.removeResources(ResourceTypeSingleton.getInstance().getStoneResource(), 1));
+        bs2.addResources(ResourceTypeSingleton.getInstance().getShieldResource(), 3);
+        assertNotEquals(bs1, bs2);
+
+        bs2.reset();
+        bs2.addResources(ResourceTypeSingleton.getInstance().getStoneResource(), 2);
+        bs2.addResources(ResourceTypeSingleton.getInstance().getShieldResource(), 3);
         assertNotEquals(bs1, bs2);
     }
 
@@ -124,8 +159,8 @@ class BaseStorageTest {
     public void hashCodeTest() {
         BaseStorage bs1 = new BaseStorage();
 
-        bs1.addResource(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
-        bs1.setResource(ResourceTypeSingleton.getInstance().getStoneResource(), 2);
+        bs1.addResources(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
+        bs1.setResources(ResourceTypeSingleton.getInstance().getStoneResource(), 2);
 
         Map<ResourceSingle, Integer> map = new HashMap<>();
         map.put(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
@@ -133,6 +168,6 @@ class BaseStorageTest {
 
         BaseStorage bs2 = new BaseStorage(map);
 
-        assertEquals(bs1.hashCode(), bs1.hashCode());
+        assertEquals(bs1.hashCode(), bs2.hashCode());
     }
 }
