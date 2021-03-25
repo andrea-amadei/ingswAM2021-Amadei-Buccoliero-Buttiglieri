@@ -40,18 +40,6 @@ public class BaseStorage {
     }
 
     /**
-     * Creates a copy of a given Base Storage
-     * @param storage the Base Storage to copy
-     * @throws NullPointerException if storage is null
-     */
-    public BaseStorage(BaseStorage storage) {
-        if(storage == null)
-            throw new NullPointerException();
-
-        resources = storage.getAllResources();
-    }
-
-    /**
      * @return a map of the stored resources with their given amount
      */
     public Map<ResourceSingle, Integer> getAllResources() {
