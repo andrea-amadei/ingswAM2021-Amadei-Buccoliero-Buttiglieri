@@ -10,7 +10,29 @@ import it.polimi.ingsw.model.production.Crafting;
  */
 public class CraftingAbility implements SpecialAbility {
 
-    //TODO: to finish after Crafting Class is complete
+    private final Crafting crafting;
+
+    /**
+     * CraftingAbility Constructor
+     * @param crafting the crafting to assign as a special ability
+     * @throws NullPointerException if crafting pointer is null
+     */
+    public CraftingAbility (Crafting crafting){
+
+        if(crafting == null)
+            throw new NullPointerException();
+
+        this.crafting = crafting;
+
+    }
+
+    /**
+     * get crafting
+     * @return the crafting
+     */
+    public Crafting getCrafting(){
+        return crafting;
+    }
 
     //activate function
     @Override

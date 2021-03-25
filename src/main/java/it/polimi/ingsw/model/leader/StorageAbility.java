@@ -14,6 +14,7 @@ public class StorageAbility implements SpecialAbility {
     /**
      * StorageAbility Constructor
      * @param shelf the pointer to the extra shelf
+     * @throws NullPointerException if shelf pointer is null
      */
     public StorageAbility(Shelf shelf){
 
