@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.exceptions.DuplicatedShelfException;
-import it.polimi.ingsw.exceptions.UnsupportedLeaderShelfOperation;
+import it.polimi.ingsw.exceptions.IllegalCupboardException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.storage.BaseCupboard;
@@ -40,7 +40,7 @@ public class LeaderDecoratorTest {
         Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
 
         Shelf leaderShelf2 = new Shelf("LeaderShelf2", ResourceTypeSingleton.getInstance().getGoldResource(), 2);
-        leaderShelf2.addResources(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
+        assertDoesNotThrow(()->leaderShelf2.addResources(ResourceTypeSingleton.getInstance().getGoldResource(), 1));
 
         Shelf leaderShelf3 = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getGoldResource(), 2);
 
@@ -216,7 +216,7 @@ public class LeaderDecoratorTest {
 
         assertDoesNotThrow(()->c2.addResource(leaderShelf1, stone, 1));
         assertThrows(NullPointerException.class, () -> c2.moveBetweenShelves(null, bottom, 2));
-        assertThrows(UnsupportedLeaderShelfOperation.class, () -> c2.moveBetweenShelves(leaderShelf1, bottom, 1));
+        assertThrows(IllegalCupboardException.class, () -> c2.moveBetweenShelves(leaderShelf1, bottom, 1));
         assertThrows(NoSuchElementException.class, () -> c2.moveBetweenShelves(new Shelf("lol", gold, 3), bottom, 1));
     }
 
@@ -304,6 +304,65 @@ public class LeaderDecoratorTest {
     }
 
     @Test
+    public void invalidRemoveTest(){
+
+        Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
+        Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
+        Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
+
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+        ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
+
+        Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
+
+        assertDoesNotThrow(()->c.addResource(bottom, stone, 2));
+        assertDoesNotThrow(()->c.addResource(top, servant, 1));
+
+        Shelf leaderShelf1 = new Shelf("LeaderShelf1", stone, 2);
+        Shelf leaderShelf2 = new Shelf("LeaderShelf2", servant, 2);
+
+        Cupboard c1;
+        c1 = new LeaderDecorator(leaderShelf1, c);
+        c1 = new LeaderDecorator(leaderShelf2, c1);
+
+        Cupboard c2 = c1;
+
+        assertDoesNotThrow(() -> c2.addResource(leaderShelf2, servant, 2));
+        assertThrows(IllegalCupboardException.class, () -> c2.removeResource(leaderShelf2, 3));
+
+        assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf {Stone: 2}, MiddleShelf {}, TopShelf {Servant: 1}}, LeaderShelf1 {}}, LeaderShelf2 {Servant: 2}}");
+    }
+
+    @Test
+    public void invalidAdd(){
+        Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
+        Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
+        Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
+
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+        ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
+
+        Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
+
+        assertDoesNotThrow(()->c.addResource(bottom, stone, 2));
+        assertDoesNotThrow(()->c.addResource(top, servant, 1));
+
+        Shelf leaderShelf1 = new Shelf("LeaderShelf1", stone, 2);
+        Shelf leaderShelf2 = new Shelf("LeaderShelf2", servant, 2);
+
+        Cupboard c1;
+        c1 = new LeaderDecorator(leaderShelf1, c);
+        c1 = new LeaderDecorator(leaderShelf2, c1);
+
+        Cupboard c2 = c1;
+
+        assertDoesNotThrow(() -> c2.addResource(leaderShelf2, servant, 1));
+        assertThrows(IllegalCupboardException.class, () -> c2.addResource(leaderShelf2,servant, 3));
+
+        assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf {Stone: 2}, MiddleShelf {}, TopShelf {Servant: 1}}, LeaderShelf1 {}}, LeaderShelf2 {Servant: 1}}");
+    }
+
+    @Test
     public void containsTest(){
         Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
         Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
@@ -332,5 +391,7 @@ public class LeaderDecoratorTest {
         assertTrue(c2.contains(leaderShelf1));
         assertTrue(c2.contains(leaderShelf2));
     }
+
+
 
 }

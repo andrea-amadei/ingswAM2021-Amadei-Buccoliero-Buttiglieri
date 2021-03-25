@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model.storage;
 
-import it.polimi.ingsw.exceptions.DuplicatedShelfException;
-import it.polimi.ingsw.exceptions.IllegalCupboardException;
-import it.polimi.ingsw.exceptions.UnsupportedShelfInsertionException;
-import it.polimi.ingsw.exceptions.UnsupportedShelfRemovalException;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 
 import java.util.*;
@@ -79,9 +76,7 @@ public class BaseCupboard implements Cupboard{
      * @throws NullPointerException if one of the target shelves is null
      * @throws IllegalArgumentException if amount is non-positive
      * @throws NoSuchElementException if one of the target shelves isn't contained in the cupboard
-     * @throws UnsupportedShelfRemovalException if it is not allowed to remove the resources from the first shelf
-     * @throws UnsupportedShelfInsertionException if it is not allowed to insert the resources to the second shelf
-     * @throws IllegalCupboardException if upon moving resources, configuration is not valid
+     * @throws IllegalCupboardException if upon moving resources, configuration is not valid, or if the transaction is not possible
      */
     @Override
     public void moveBetweenShelves(Shelf from, Shelf to, int amount) throws IllegalCupboardException{
@@ -93,23 +88,23 @@ public class BaseCupboard implements Cupboard{
         if(!shelves.contains(from) || !shelves.contains(to))
             throw new NoSuchElementException();
 
-        //if the removal is not legal, UnsupportedShelfRemoval is propagated but nothing will happen
-        ResourceSingle transferType = from.getCurrentType();
-        from.removeResources(amount);
+        if(from.getCurrentType() == null)
+            throw new IllegalCupboardException("Trying to remove resources from an empty shelf");
 
-        //if the insertion is not valid, initial state is restored and the UnsupportedShelfException is propagated
         try{
-            to.addResources(transferType, amount);
-        }catch(UnsupportedShelfInsertionException e){
-            from.addResources(transferType, amount);
-            throw e;
+            from.moveTo(to, from.getCurrentType(), amount);
+        }catch(IllegalResourceTransfer e){
+            throw new IllegalCupboardException("Can't transfer the resources");
         }
 
         //if the new configuration is not valid, initial state is restored and the IllegalCupboardException is thrown
         if(!isValid()){
-            to.removeResources(amount);
-            from.addResources(transferType, amount);
-            throw new IllegalCupboardException();
+            try{
+                to.moveTo(from, to.getCurrentType(), amount);
+            }catch(IllegalResourceTransfer e){
+                throw new IllegalArgumentException();
+            }
+            throw new IllegalCupboardException("Cupboard configuration would not be valid");
         }
     }
 
@@ -133,13 +128,20 @@ public class BaseCupboard implements Cupboard{
         if(!contains(to))
             throw new NoSuchElementException();
 
-        //if the resource can't be added to a shelf, UnsupportedShelfInsertion is propagated
-        to.addResources(resource, amount);
+        try{
+            to.addResources(resource, amount);
+        }catch(IllegalResourceTransfer e){
+            throw new IllegalCupboardException("Transaction is not valid");
+        }
 
         //if the new cupboard configuration is not valid, IllegalCupboardException is thrown
         if(!isValid()){
-            to.removeResources(amount);
-            throw new IllegalCupboardException();
+            try {
+                to.removeResources(amount);
+            }catch(IllegalResourceTransfer e){
+                throw new IllegalCupboardException("Error while restoring original state");
+            }
+            throw new IllegalCupboardException("Cupboard configuration would not be valid");
         }
     }
 
@@ -152,16 +154,20 @@ public class BaseCupboard implements Cupboard{
      * @throws NoSuchElementException if the target shelf isn't contained in the cupboard
      */
     @Override
-    public void removeResource(Shelf from, int amount) {
+    public void removeResource(Shelf from, int amount) throws IllegalCupboardException {
         if(from == null)
             throw new NullPointerException();
         if(amount <= 0)
-            throw new IllegalArgumentException("amount must be positive");
+            throw new IllegalArgumentException("Amount must be positive");
 
         if(!contains(from))
             throw new NoSuchElementException();
 
-        from.removeResources(amount);
+        try {
+            from.removeResources(amount);
+        } catch (IllegalResourceTransfer e) {
+            throw new IllegalCupboardException("Resource transaction is invalid");
+        }
     }
 
     /**

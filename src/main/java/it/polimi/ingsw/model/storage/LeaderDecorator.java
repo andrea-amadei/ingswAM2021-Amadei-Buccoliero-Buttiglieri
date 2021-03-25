@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.storage;
 
 import it.polimi.ingsw.exceptions.DuplicatedShelfException;
 import it.polimi.ingsw.exceptions.IllegalCupboardException;
+import it.polimi.ingsw.exceptions.IllegalResourceTransfer;
 import it.polimi.ingsw.exceptions.UnsupportedLeaderShelfOperation;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 
@@ -52,7 +53,7 @@ public class LeaderDecorator implements Cupboard{
             decoratedCupboard.moveBetweenShelves(from, to, amount);
         }catch(NoSuchElementException e){
             if(from.equals(leaderShelf) && decoratedCupboard.contains(to))
-                throw new UnsupportedLeaderShelfOperation("Resources cannot be moved from leader shelf to another shelf");
+                throw new IllegalCupboardException("Resources cannot be moved from leader shelf to another shelf");
             throw new NoSuchElementException();
         }
     }
@@ -65,13 +66,17 @@ public class LeaderDecorator implements Cupboard{
             if(!leaderShelf.equals(to))
                 throw new NoSuchElementException();
 
-            //if the resource can't be added to the shelf, UnsupportedShelfInsertion is propagated
-            leaderShelf.addResources(resource, amount);
+            //if the resources can't be added to the shelf, IllegalCupboardException is propagated
+            try {
+                leaderShelf.addResources(resource, amount);
+            } catch (IllegalResourceTransfer e2) {
+                throw new IllegalCupboardException("Resources can't be added to the shelf");
+            }
         }
     }
 
     @Override
-    public void removeResource(Shelf from, int amount) {
+    public void removeResource(Shelf from, int amount) throws IllegalCupboardException{
         try{
             decoratedCupboard.removeResource(from, amount);
         }catch(NoSuchElementException e){
@@ -79,8 +84,12 @@ public class LeaderDecorator implements Cupboard{
                 throw new NoSuchElementException();
             }
 
-            //if the resource can't be removed to the shelf, UnsupportedShelfInsertion is propagated
-            leaderShelf.removeResources(amount);
+            //if the resource can't be removed to the shelf, IllegalCupboardException is propagated
+            try {
+                leaderShelf.removeResources(amount);
+            } catch (IllegalResourceTransfer e2) {
+                throw new IllegalCupboardException("Can't remove resources from the shelf");
+            }
         }
     }
 

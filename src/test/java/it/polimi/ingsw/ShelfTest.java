@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import it.polimi.ingsw.exceptions.IllegalResourceTransfer;
 import it.polimi.ingsw.exceptions.UnsupportedShelfInsertionException;
 import it.polimi.ingsw.gamematerials.ResourceGroup;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
@@ -11,7 +12,9 @@ import it.polimi.ingsw.model.storage.Shelf;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 public class ShelfTest {
     @Test
@@ -45,8 +48,8 @@ public class ShelfTest {
         ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
         ResourceType any = ResourceTypeSingleton.getInstance().getAnyResource();
         Shelf leaderShelf = new Shelf("LeaderShelf 1", any, 2);
-        leaderShelf.addResources(gold, 1);
-        leaderShelf.addResources(gold, 1);
+        assertDoesNotThrow(()->leaderShelf.addResources(gold, 1));
+        assertDoesNotThrow(()->leaderShelf.addResources(gold, 1));
         assertEquals(leaderShelf.getAmount(), 2);
         assertEquals(leaderShelf.getCurrentType(), gold);
     }
@@ -56,7 +59,7 @@ public class ShelfTest {
         ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
         ResourceType any = ResourceTypeSingleton.getInstance().getAnyResource();
         Shelf leaderShelf = new Shelf("LeaderShelf 1", any, 2);
-        leaderShelf.addResources(gold, 1);
+        assertDoesNotThrow(()->leaderShelf.addResources(gold, 1));
         assertEquals(leaderShelf.getCurrentType(), gold);
     }
 
@@ -65,7 +68,7 @@ public class ShelfTest {
         ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
         Shelf shelf = new Shelf("Shelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
         assertDoesNotThrow(() -> shelf.addResources(stone, 3));
-        assertThrows(UnsupportedShelfInsertionException.class, ()->shelf.addResources(stone, 1));
+        assertThrows(IllegalResourceTransfer.class, ()->shelf.addResources(stone, 1));
         assertThrows(IllegalArgumentException.class, ()->shelf.addResources(stone, -1));
     }
 
@@ -76,20 +79,20 @@ public class ShelfTest {
         ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
 
         Shelf shelf1 = new Shelf("Shelf", servant, 3);
-        assertThrows(UnsupportedShelfInsertionException.class, ()->shelf1.addResources(shield, 1));
+        assertThrows(IllegalResourceTransfer.class, ()->shelf1.addResources(shield, 1));
 
         Shelf shelf2 = new Shelf("Shelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
-        shelf2.addResources(servant, 3);
+        assertDoesNotThrow(()->shelf2.addResources(servant, 3));
         assertThrows(NullPointerException.class, ()->shelf2.addResources(null, 1));
-        assertThrows(UnsupportedShelfInsertionException.class, ()->shelf2.addResources(gold, 1));
+        assertThrows(IllegalResourceTransfer.class, ()->shelf2.addResources(gold, 1));
     }
 
     @Test
     public void validRemove(){
         ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
         Shelf shelf = new Shelf("Shelf", servant, 3);
-        shelf.addResources(servant, 3);
-        shelf.removeResources(2);
+        assertDoesNotThrow(()->shelf.addResources(servant, 3));
+        assertDoesNotThrow(()->shelf.removeResources(2));
         assertEquals(shelf.getAmount(), 1);
     }
 
@@ -99,10 +102,63 @@ public class ShelfTest {
         ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
         ResourceType newGroup = new ResourceGroup("misc", new HashSet<>(Arrays.asList(servant, shield)));
         Shelf shelf = new Shelf("Shelf", newGroup, 3);
-        shelf.addResources(servant, 3);
+        assertDoesNotThrow(()->shelf.addResources(servant, 3));
         assertEquals(shelf.getCurrentType(), servant);
-        shelf.removeResources(3);
+        assertDoesNotThrow(()->shelf.removeResources(3));
         assertNull(shelf.getCurrentType());
+    }
+
+    @Test
+    public void removeContainerOverloadBadParameters(){
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+        ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
+
+        Shelf shelf = new Shelf("Shelf", servant, 2);
+        assertThrows(IllegalArgumentException.class, ()->shelf.removeResources(shield, 0));
+        assertThrows(IllegalResourceTransfer.class, ()->shelf.removeResources(shield, 1));
+
+
+        assertThrows(IllegalArgumentException.class, ()->shelf.removeResources(shield, 0));
+        assertThrows(IllegalResourceTransfer.class, ()->shelf.removeResources(servant, 1));
+        assertDoesNotThrow(()->shelf.addResources(servant, 1));
+        assertThrows(IllegalResourceTransfer.class, ()->shelf.removeResources(servant, 2));
+        assertThrows(IllegalResourceTransfer.class,()->shelf.removeResources(servant, 3));
+        assertThrows(NullPointerException.class, ()->shelf.removeResources(null, 2));
+    }
+
+    @Test
+    public void invalidRemoveContainerOverload(){
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+        ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
+
+        Shelf shelf = new Shelf("Shelf", servant, 2);
+        assertDoesNotThrow(()->shelf.addResources(servant, 1));
+        assertThrows(IllegalResourceTransfer.class, ()->shelf.removeResources(shield, 1));
+    }
+
+    @Test
+    public void validGetAllResourcesWithEmptyShelf(){
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+        ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
+
+        Shelf shelf = new Shelf("Shelf", servant, 2);
+
+        assertEquals(shelf.getAllResources(), new HashMap<ResourceSingle, Integer>());
+    }
+
+
+    @Test
+    public void validGetAllResourcesWithNonEmptyShelf(){
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+        ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
+
+        Shelf shelf = new Shelf("Shelf", servant, 2);
+
+        assertDoesNotThrow(()->shelf.addResources(servant, 1));
+
+        Map<ResourceSingle, Integer> result = new HashMap<>();
+        result.put(servant, 1);
+        assertEquals(shelf.getAllResources(), result);
     }
 
 }

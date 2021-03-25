@@ -42,7 +42,7 @@ public interface Cupboard {
      * @param from the shelf from which resources are taken
      * @param amount the amount of resources to remove
      */
-    void removeResource(Shelf from, int amount);
+    void removeResource(Shelf from, int amount) throws IllegalCupboardException;
 
     /**
      * @return true if the cupboard contains the indicated shelf

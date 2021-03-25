@@ -1,10 +1,11 @@
 package it.polimi.ingsw.model.storage;
 
-import it.polimi.ingsw.exceptions.UnsupportedShelfInsertionException;
-import it.polimi.ingsw.exceptions.UnsupportedShelfRemovalException;
+import it.polimi.ingsw.exceptions.IllegalResourceTransfer;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceType;
 
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -13,7 +14,7 @@ import it.polimi.ingsw.gamematerials.ResourceType;
  * (currentType) and it only allows resources of acceptedTypes type
  */
 
-public class Shelf {
+public class Shelf extends ResourceContainer{
     private final String id;
     private final ResourceType acceptedTypes;
     private ResourceSingle currentType;
@@ -62,46 +63,75 @@ public class Shelf {
 
     /**
      * Adds resources to this shelf
-     * @param type the type of resources to insert
+     * @param resource the type of resources to insert
      * @param amount the amount of resources to insert
-     * @throws UnsupportedShelfInsertionException if after the insertion, size or type
+     * @throws IllegalResourceTransfer if after the insertion, size or type
      *         limitations are violated
      */
-    public void addResources(ResourceSingle type, int amount){
+    public void addResources(ResourceSingle resource, int amount) throws IllegalResourceTransfer {
         if(amount <= 0)
             throw new IllegalArgumentException("Can't add a non-positive amount of resources");
-        if(type == null)
+        if(resource == null)
             throw new NullPointerException();
-        if(!type.isA(acceptedTypes))
-            throw new UnsupportedShelfInsertionException(type + " is not supported for this shelf");
+        if(!resource.isA(acceptedTypes))
+            throw new IllegalResourceTransfer(resource + " is not supported for this shelf");
 
-        if(getCurrentType() != null && !type.isA(getCurrentType()))
-            throw new UnsupportedShelfInsertionException(type + " is not consistent with the type already contained in" +
+        if(getCurrentType() != null && !resource.isA(getCurrentType()))
+            throw new IllegalResourceTransfer(resource + " is not consistent with the type already contained in" +
                     " the shelf");
 
         if(currentAmount + amount > maxAmount)
-            throw new UnsupportedShelfInsertionException("The shelf has no space left for this insertion");
+            throw new IllegalResourceTransfer("The shelf has no space left for this insertion");
 
         this.currentAmount += amount;
-        this.currentType = type;
+        this.currentType = resource;
 
+    }
+
+    /**
+     * Removes from the container a given amount of a given resource
+     *
+     * @param resource the resource to remove
+     * @param amount   the amount of resource to remove
+     * @throws IllegalResourceTransfer if the resource or the amount cannot be removed from the container
+     */
+    @Override
+    public void removeResources(ResourceSingle resource, int amount) throws IllegalResourceTransfer {
+        if(amount <= 0)
+            throw new IllegalArgumentException("Amount must be grater then 0");
+        if(currentAmount == 0)
+            throw new IllegalResourceTransfer("Shelf is empty");
+        if(resource == null)
+            throw new NullPointerException();
+        if(!resource.equals(currentType))
+            throw new IllegalResourceTransfer("Mismatch between current type and required type to remove");
+        removeResources(amount);
     }
 
     /**
      * Removes a resource from this shelf
      * @param amount the amount of resources to remove
      * @throws IllegalArgumentException if amount is less then or equal to 0
-     * @throws UnsupportedShelfInsertionException if there is not enough room for the removal
+     * @throws IllegalResourceTransfer if there is not enough room for the removal
      */
-    public void removeResources(int amount){
+    public void removeResources(int amount) throws IllegalResourceTransfer{
         if(amount <= 0 ) throw new IllegalArgumentException("Can't remove a non-positive amount of resources");
 
-        if(currentAmount - amount < 0) throw new UnsupportedShelfRemovalException("There are not enough resources");
-
+        if(currentAmount - amount < 0) throw new IllegalResourceTransfer("There are not enough resources");
         currentAmount -= amount;
         if(currentAmount == 0)
             currentType = null;
+    }
 
+    /**
+     * @return a map of the stored resources with their given amount
+     */
+    @Override
+    public Map<ResourceSingle, Integer> getAllResources() {
+        Map<ResourceSingle, Integer> result = new HashMap<>();
+        if(currentType != null)
+            result.put(currentType, currentAmount);
+        return result;
     }
 
     /**
