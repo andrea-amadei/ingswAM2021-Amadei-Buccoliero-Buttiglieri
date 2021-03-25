@@ -5,6 +5,18 @@ import it.polimi.ingsw.gamematerials.ResourceSingle;
 
 import java.util.*;
 
+/**
+ * The abstract class ResourceContainer defines the standard methods to implement any container of resources.
+ * Any Resource Container should:
+ * <ul>
+ *     <li>be able to add resources to itself</li>
+ *     <li>be able to remove resources from himself</li>
+ *     <li>be able to transfer resources from itself to any other Resource Container</li>
+ *     <li>return a representation of itself via a Map collection, including any resource they contain and
+ *      their amount. An empty map is admitted if the container is empty.
+ *     </li>
+ * </ul>
+ */
 public abstract class ResourceContainer {
     /**
      * Moves a given amount of a given resource from a Resource Container to another
