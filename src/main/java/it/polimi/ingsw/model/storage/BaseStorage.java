@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.storage;
 
-import it.polimi.ingsw.exceptions.RemovedInvalidAmountException;
-import it.polimi.ingsw.exceptions.RemovedInvalidResourceException;
+import it.polimi.ingsw.exceptions.IllegalResourceTransfer;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 
 import java.util.HashMap;
@@ -12,7 +11,7 @@ import java.util.Objects;
  * The BaseStorage class is a generic container of resources. It can contain a nearly unlimited amount of resources of
  * any kind.
  */
-public class BaseStorage {
+public class BaseStorage extends ResourceContainer {
     private final Map<ResourceSingle, Integer> resources;
 
     /**
@@ -53,7 +52,7 @@ public class BaseStorage {
      * @throws NullPointerException if resource is null
      * @throws IllegalArgumentException if the amount is zero or below
      */
-    public void addResource(ResourceSingle resource, int amount) {
+    public void addResources(ResourceSingle resource, int amount) {
         if(resource == null)
             throw new NullPointerException();
 
@@ -72,23 +71,22 @@ public class BaseStorage {
      * @param amount the amount of resource to remove. Must be positive
      * @throws NullPointerException if resource is null
      * @throws IllegalArgumentException if the amount is zero or below
-     * @throws RemovedInvalidResourceException if the resource to remove was never added in the storage before
-     * @throws RemovedInvalidAmountException if the amount to remove is bigger than the amount stored
+     * @throws IllegalResourceTransfer when trying to remove resources not available in the storage
      */
-    public void removeResource(ResourceSingle resource, int amount) {
+    public void removeResources(ResourceSingle resource, int amount) throws IllegalResourceTransfer {
         if(resource == null)
             throw new NullPointerException();
 
         if(amount <= 0)
             throw new IllegalArgumentException("Resource amount must be above zero");
 
-        if(!resources.containsKey(resource))
-            throw new RemovedInvalidResourceException("Tried to remove resource never added before");
+        if(!resources.containsKey(resource) || resources.get(resource) < amount)
+            throw new IllegalResourceTransfer("Tried to remove a bigger amount of resources than stored");
 
-        if(resources.get(resource) < amount)
-            throw new RemovedInvalidAmountException("Tried to remove a bigger amount of resources than stored");
-
-        resources.put(resource, resources.get(resource) - amount);
+        if(resources.get(resource) == amount)
+            resources.remove(resource);
+        else
+            resources.put(resource, resources.get(resource) - amount);
     }
 
     /**
@@ -143,6 +141,10 @@ public class BaseStorage {
 
         BaseStorage that = (BaseStorage) o;
 
+        // if the size is different returns false
+        if(this.getAllResources().size() != that.getAllResources().size())
+            return false;
+
         for(ResourceSingle i : this.resources.keySet()) {
             // if the key exists but the amount is different returns false
             if (that.resources.containsKey(i)) {
@@ -151,8 +153,7 @@ public class BaseStorage {
 
             // if the key doesn't exists return false
             } else {
-                if (this.resources.get(i) != 0)
-                    return false;
+                return false;
             }
         }
 
