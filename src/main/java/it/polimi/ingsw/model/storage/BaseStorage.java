@@ -96,7 +96,7 @@ public class BaseStorage extends ResourceContainer {
      * @throws NullPointerException if resource is null
      * @throws IllegalArgumentException if the amount is below zero
      */
-    public void setResource(ResourceSingle resource, int amount) {
+    public void setResources(ResourceSingle resource, int amount) {
         if(resource == null)
             throw new NullPointerException();
 
@@ -112,7 +112,7 @@ public class BaseStorage extends ResourceContainer {
      * @return the amount of the given resource stored. Returns 0 if none is currently stored or never was.
      * @throws NullPointerException is resource is null
      */
-    public int getResource(ResourceSingle resource) {
+    public int getResources(ResourceSingle resource) {
         if(resource == null)
             throw new NullPointerException();
 
