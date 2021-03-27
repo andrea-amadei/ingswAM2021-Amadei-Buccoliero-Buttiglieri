@@ -48,7 +48,7 @@ public class BaseCupboard implements Cupboard{
 
     /**
      *
-     * @return the set of all shelves contained in the cupboard
+     * @return the set of all the shelves contained in the cupboard
      */
     @Override
     public Set<Shelf> getShelves() {
@@ -116,8 +116,7 @@ public class BaseCupboard implements Cupboard{
      * @throws NullPointerException if the target shelf is null
      * @throws IllegalArgumentException if amount is non-positive
      * @throws NoSuchElementException if the target shelf isn't contained in the cupboard
-     * @throws UnsupportedShelfInsertionException if it is not allowed to insert the resources to the shelf
-     * @throws IllegalCupboardException if upon adding resources, configuration is not valid
+     * @throws IllegalCupboardException if upon adding resources, configuration is not valid or the transaction can't be performed
      */
     @Override
     public void addResource(Shelf to, ResourceSingle resource, int amount) throws IllegalCupboardException{
@@ -152,6 +151,7 @@ public class BaseCupboard implements Cupboard{
      * @throws NullPointerException if the target shelf is null
      * @throws IllegalArgumentException if amount is non-positive
      * @throws NoSuchElementException if the target shelf isn't contained in the cupboard
+     * @throws IllegalCupboardException if the transaction can't be performed
      */
     @Override
     public void removeResource(Shelf from, int amount) throws IllegalCupboardException {
@@ -172,7 +172,7 @@ public class BaseCupboard implements Cupboard{
 
     /**
      *
-     * @return true if the shelf is contained in the cupboard
+     * @return true iff the shelf is contained in the cupboard
      */
     @Override
     public boolean contains(Shelf shelf) {
