@@ -39,7 +39,7 @@ public class BaseStorage extends ResourceContainer {
     }
 
     /**
-     * @return a map of the stored resources with their given amount
+     * @return a map of the stored resources with their amount
      */
     public Map<ResourceSingle, Integer> getAllResources() {
         return new HashMap<>(resources);
@@ -52,7 +52,7 @@ public class BaseStorage extends ResourceContainer {
      * @throws NullPointerException if resource is null
      * @throws IllegalArgumentException if the amount is zero or below
      */
-    public void addResources(ResourceSingle resource, int amount) {
+    public void addResources(ResourceSingle resource, int amount) throws IllegalResourceTransfer {
         if(resource == null)
             throw new NullPointerException();
 
@@ -90,27 +90,10 @@ public class BaseStorage extends ResourceContainer {
     }
 
     /**
-     * Sets a given amount of resources in the storage
-     * @param resource the resource to set to the specific amount
-     * @param amount the amount to set. Must be positive or zero
-     * @throws NullPointerException if resource is null
-     * @throws IllegalArgumentException if the amount is below zero
-     */
-    public void setResources(ResourceSingle resource, int amount) {
-        if(resource == null)
-            throw new NullPointerException();
-
-        if(amount < 0)
-            throw new IllegalArgumentException("Resource amount cannot be below zero");
-
-        resources.put(resource, amount);
-    }
-
-    /**
      * Returns the amount of the given resource stored
      * @param resource the requested resource
      * @return the amount of the given resource stored. Returns 0 if none is currently stored or never was.
-     * @throws NullPointerException is resource is null
+     * @throws NullPointerException if resource is null
      */
     public int getResources(ResourceSingle resource) {
         if(resource == null)
@@ -120,6 +103,19 @@ public class BaseStorage extends ResourceContainer {
             return 0;
 
         return resources.get(resource);
+    }
+
+    /**
+     * Returns the total amount of resources (of any kind) stored
+     * @return the total amount of resources stored
+     */
+    public int  totalAmountOfResources() {
+        int tot = 0;
+
+        for(ResourceSingle i : resources.keySet())
+            tot += resources.get(i);
+
+        return tot;
     }
 
     /**
