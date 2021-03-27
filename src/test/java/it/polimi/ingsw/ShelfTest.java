@@ -2,8 +2,7 @@ package it.polimi.ingsw;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import it.polimi.ingsw.exceptions.IllegalResourceTransfer;
-import it.polimi.ingsw.exceptions.UnsupportedShelfInsertionException;
+import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.gamematerials.ResourceGroup;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceType;
@@ -68,7 +67,7 @@ public class ShelfTest {
         ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
         Shelf shelf = new Shelf("Shelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
         assertDoesNotThrow(() -> shelf.addResources(stone, 3));
-        assertThrows(IllegalResourceTransfer.class, ()->shelf.addResources(stone, 1));
+        assertThrows(IllegalResourceTransferException.class, ()->shelf.addResources(stone, 1));
         assertThrows(IllegalArgumentException.class, ()->shelf.addResources(stone, -1));
     }
 
@@ -79,12 +78,12 @@ public class ShelfTest {
         ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
 
         Shelf shelf1 = new Shelf("Shelf", servant, 3);
-        assertThrows(IllegalResourceTransfer.class, ()->shelf1.addResources(shield, 1));
+        assertThrows(IllegalResourceTransferException.class, ()->shelf1.addResources(shield, 1));
 
         Shelf shelf2 = new Shelf("Shelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
         assertDoesNotThrow(()->shelf2.addResources(servant, 3));
         assertThrows(NullPointerException.class, ()->shelf2.addResources(null, 1));
-        assertThrows(IllegalResourceTransfer.class, ()->shelf2.addResources(gold, 1));
+        assertThrows(IllegalResourceTransferException.class, ()->shelf2.addResources(gold, 1));
     }
 
     @Test
@@ -115,14 +114,14 @@ public class ShelfTest {
 
         Shelf shelf = new Shelf("Shelf", servant, 2);
         assertThrows(IllegalArgumentException.class, ()->shelf.removeResources(shield, 0));
-        assertThrows(IllegalResourceTransfer.class, ()->shelf.removeResources(shield, 1));
+        assertThrows(IllegalResourceTransferException.class, ()->shelf.removeResources(shield, 1));
 
 
         assertThrows(IllegalArgumentException.class, ()->shelf.removeResources(shield, 0));
-        assertThrows(IllegalResourceTransfer.class, ()->shelf.removeResources(servant, 1));
+        assertThrows(IllegalResourceTransferException.class, ()->shelf.removeResources(servant, 1));
         assertDoesNotThrow(()->shelf.addResources(servant, 1));
-        assertThrows(IllegalResourceTransfer.class, ()->shelf.removeResources(servant, 2));
-        assertThrows(IllegalResourceTransfer.class,()->shelf.removeResources(servant, 3));
+        assertThrows(IllegalResourceTransferException.class, ()->shelf.removeResources(servant, 2));
+        assertThrows(IllegalResourceTransferException.class,()->shelf.removeResources(servant, 3));
         assertThrows(NullPointerException.class, ()->shelf.removeResources(null, 2));
     }
 
@@ -133,7 +132,7 @@ public class ShelfTest {
 
         Shelf shelf = new Shelf("Shelf", servant, 2);
         assertDoesNotThrow(()->shelf.addResources(servant, 1));
-        assertThrows(IllegalResourceTransfer.class, ()->shelf.removeResources(shield, 1));
+        assertThrows(IllegalResourceTransferException.class, ()->shelf.removeResources(shield, 1));
     }
 
     @Test

@@ -93,7 +93,7 @@ public class BaseCupboard implements Cupboard{
 
         try{
             from.moveTo(to, from.getCurrentType(), amount);
-        }catch(IllegalResourceTransfer e){
+        }catch(IllegalResourceTransferException e){
             throw new IllegalCupboardException("Can't transfer the resources");
         }
 
@@ -101,7 +101,7 @@ public class BaseCupboard implements Cupboard{
         if(!isValid()){
             try{
                 to.moveTo(from, to.getCurrentType(), amount);
-            }catch(IllegalResourceTransfer e){
+            }catch(IllegalResourceTransferException e){
                 throw new IllegalArgumentException();
             }
             throw new IllegalCupboardException("Cupboard configuration would not be valid");
@@ -130,7 +130,7 @@ public class BaseCupboard implements Cupboard{
 
         try{
             to.addResources(resource, amount);
-        }catch(IllegalResourceTransfer e){
+        }catch(IllegalResourceTransferException e){
             throw new IllegalCupboardException("Transaction is not valid");
         }
 
@@ -138,7 +138,7 @@ public class BaseCupboard implements Cupboard{
         if(!isValid()){
             try {
                 to.removeResources(amount);
-            }catch(IllegalResourceTransfer e){
+            }catch(IllegalResourceTransferException e){
                 throw new IllegalCupboardException("Error while restoring original state");
             }
             throw new IllegalCupboardException("Cupboard configuration would not be valid");
@@ -165,7 +165,7 @@ public class BaseCupboard implements Cupboard{
 
         try {
             from.removeResources(amount);
-        } catch (IllegalResourceTransfer e) {
+        } catch (IllegalResourceTransferException e) {
             throw new IllegalCupboardException("Resource transaction is invalid");
         }
     }

@@ -2,8 +2,7 @@ package it.polimi.ingsw.model.storage;
 
 import it.polimi.ingsw.exceptions.DuplicatedShelfException;
 import it.polimi.ingsw.exceptions.IllegalCupboardException;
-import it.polimi.ingsw.exceptions.IllegalResourceTransfer;
-import it.polimi.ingsw.exceptions.UnsupportedLeaderShelfOperation;
+import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 
 import java.util.NoSuchElementException;
@@ -69,7 +68,7 @@ public class LeaderDecorator implements Cupboard{
             //if the resources can't be added to the shelf, IllegalCupboardException is propagated
             try {
                 leaderShelf.addResources(resource, amount);
-            } catch (IllegalResourceTransfer e2) {
+            } catch (IllegalResourceTransferException e2) {
                 throw new IllegalCupboardException("Resources can't be added to the shelf");
             }
         }
@@ -87,7 +86,7 @@ public class LeaderDecorator implements Cupboard{
             //if the resource can't be removed to the shelf, IllegalCupboardException is propagated
             try {
                 leaderShelf.removeResources(amount);
-            } catch (IllegalResourceTransfer e2) {
+            } catch (IllegalResourceTransferException e2) {
                 throw new IllegalCupboardException("Can't remove resources from the shelf");
             }
         }

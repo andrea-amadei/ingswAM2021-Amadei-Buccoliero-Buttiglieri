@@ -2,7 +2,7 @@ package it.polimi.ingsw;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import it.polimi.ingsw.exceptions.IllegalResourceTransfer;
+import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.storage.BaseStorage;
@@ -78,12 +78,12 @@ class BaseStorageTest {
         assertThrows(IllegalArgumentException.class, () ->
                 bs.removeResources(ResourceTypeSingleton.getInstance().getGoldResource(), -1));
 
-        assertThrows(IllegalResourceTransfer.class, () ->
+        assertThrows(IllegalResourceTransferException.class, () ->
                 bs.removeResources(ResourceTypeSingleton.getInstance().getGoldResource(), 2));
 
         assertDoesNotThrow(() -> bs.addResources(ResourceTypeSingleton.getInstance().getGoldResource(), 1));
 
-        assertThrows(IllegalResourceTransfer.class, () ->
+        assertThrows(IllegalResourceTransferException.class, () ->
                 bs.removeResources(ResourceTypeSingleton.getInstance().getGoldResource(), 2));
     }
 
@@ -102,9 +102,9 @@ class BaseStorageTest {
         assertThrows(IllegalArgumentException.class, () ->
                 bs1.moveTo(bs2, ResourceTypeSingleton.getInstance().getGoldResource(), -1));
 
-        assertThrows(IllegalResourceTransfer.class, () ->
+        assertThrows(IllegalResourceTransferException.class, () ->
                 bs1.moveTo(bs2, ResourceTypeSingleton.getInstance().getShieldResource(), 1));
-        assertThrows(IllegalResourceTransfer.class, () ->
+        assertThrows(IllegalResourceTransferException.class, () ->
                 bs1.moveTo(bs2, ResourceTypeSingleton.getInstance().getGoldResource(), 2));
 
         assertDoesNotThrow(() ->

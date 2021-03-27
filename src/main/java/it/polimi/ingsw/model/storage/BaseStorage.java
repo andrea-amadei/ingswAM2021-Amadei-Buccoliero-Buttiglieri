@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.storage;
 
-import it.polimi.ingsw.exceptions.IllegalResourceTransfer;
+import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 
 import java.util.HashMap;
@@ -52,7 +52,7 @@ public class BaseStorage extends ResourceContainer {
      * @throws NullPointerException if resource is null
      * @throws IllegalArgumentException if the amount is zero or below
      */
-    public void addResources(ResourceSingle resource, int amount) throws IllegalResourceTransfer {
+    public void addResources(ResourceSingle resource, int amount) throws IllegalResourceTransferException {
         if(resource == null)
             throw new NullPointerException();
 
@@ -71,9 +71,9 @@ public class BaseStorage extends ResourceContainer {
      * @param amount the amount of resource to remove. Must be positive
      * @throws NullPointerException if resource is null
      * @throws IllegalArgumentException if the amount is zero or below
-     * @throws IllegalResourceTransfer when trying to remove resources not available in the storage
+     * @throws IllegalResourceTransferException when trying to remove resources not available in the storage
      */
-    public void removeResources(ResourceSingle resource, int amount) throws IllegalResourceTransfer {
+    public void removeResources(ResourceSingle resource, int amount) throws IllegalResourceTransferException {
         if(resource == null)
             throw new NullPointerException();
 
@@ -81,7 +81,7 @@ public class BaseStorage extends ResourceContainer {
             throw new IllegalArgumentException("Resource amount must be above zero");
 
         if(!resources.containsKey(resource) || resources.get(resource) < amount)
-            throw new IllegalResourceTransfer("Tried to remove a bigger amount of resources than stored");
+            throw new IllegalResourceTransferException("Tried to remove a bigger amount of resources than stored");
 
         if(resources.get(resource) == amount)
             resources.remove(resource);

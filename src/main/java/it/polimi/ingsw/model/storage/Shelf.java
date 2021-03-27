@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.storage;
 
-import it.polimi.ingsw.exceptions.IllegalResourceTransfer;
+import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceType;
 
@@ -65,23 +65,23 @@ public class Shelf extends ResourceContainer{
      * Adds resources to this shelf
      * @param resource the type of resources to insert
      * @param amount the amount of resources to insert
-     * @throws IllegalResourceTransfer if after the insertion, size or type
+     * @throws IllegalResourceTransferException if after the insertion, size or type
      *         limitations are violated
      */
-    public void addResources(ResourceSingle resource, int amount) throws IllegalResourceTransfer {
+    public void addResources(ResourceSingle resource, int amount) throws IllegalResourceTransferException {
         if(amount <= 0)
             throw new IllegalArgumentException("Can't add a non-positive amount of resources");
         if(resource == null)
             throw new NullPointerException();
         if(!resource.isA(acceptedTypes))
-            throw new IllegalResourceTransfer(resource + " is not supported for this shelf");
+            throw new IllegalResourceTransferException(resource + " is not supported for this shelf");
 
         if(getCurrentType() != null && !resource.isA(getCurrentType()))
-            throw new IllegalResourceTransfer(resource + " is not consistent with the type already contained in" +
+            throw new IllegalResourceTransferException(resource + " is not consistent with the type already contained in" +
                     " the shelf");
 
         if(currentAmount + amount > maxAmount)
-            throw new IllegalResourceTransfer("The shelf has no space left for this insertion");
+            throw new IllegalResourceTransferException("The shelf has no space left for this insertion");
 
         this.currentAmount += amount;
         this.currentType = resource;
@@ -93,18 +93,18 @@ public class Shelf extends ResourceContainer{
      *
      * @param resource the resource to remove
      * @param amount   the amount of resource to remove
-     * @throws IllegalResourceTransfer if the resource or the amount cannot be removed from the container
+     * @throws IllegalResourceTransferException if the resource or the amount cannot be removed from the container
      */
     @Override
-    public void removeResources(ResourceSingle resource, int amount) throws IllegalResourceTransfer {
+    public void removeResources(ResourceSingle resource, int amount) throws IllegalResourceTransferException {
         if(amount <= 0)
             throw new IllegalArgumentException("Amount must be grater then 0");
         if(currentAmount == 0)
-            throw new IllegalResourceTransfer("Shelf is empty");
+            throw new IllegalResourceTransferException("Shelf is empty");
         if(resource == null)
             throw new NullPointerException();
         if(!resource.equals(currentType))
-            throw new IllegalResourceTransfer("Mismatch between current type and required type to remove");
+            throw new IllegalResourceTransferException("Mismatch between current type and required type to remove");
         removeResources(amount);
     }
 
@@ -112,12 +112,12 @@ public class Shelf extends ResourceContainer{
      * Removes a resource from this shelf
      * @param amount the amount of resources to remove
      * @throws IllegalArgumentException if amount is less then or equal to 0
-     * @throws IllegalResourceTransfer if there is not enough room for the removal
+     * @throws IllegalResourceTransferException if there is not enough room for the removal
      */
-    public void removeResources(int amount) throws IllegalResourceTransfer{
+    public void removeResources(int amount) throws IllegalResourceTransferException {
         if(amount <= 0 ) throw new IllegalArgumentException("Can't remove a non-positive amount of resources");
 
-        if(currentAmount - amount < 0) throw new IllegalResourceTransfer("There are not enough resources");
+        if(currentAmount - amount < 0) throw new IllegalResourceTransferException("There are not enough resources");
         currentAmount -= amount;
         if(currentAmount == 0)
             currentType = null;
