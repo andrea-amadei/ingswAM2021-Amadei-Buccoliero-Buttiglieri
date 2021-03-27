@@ -33,4 +33,10 @@ public class PlayerTest {
         player.resetPoints();
         assertEquals(player.getPoints(), 0);
     }
+
+    @Test
+    public void getBoardTest(){
+        Player p = new Player("John", 1);
+        assertNotNull(p.getBoard());
+    }
 }
