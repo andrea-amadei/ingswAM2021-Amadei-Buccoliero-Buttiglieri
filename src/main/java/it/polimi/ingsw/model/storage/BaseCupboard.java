@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.storage;
 
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
-import it.polimi.ingsw.model.GameParameters;
 
 import java.util.*;
 

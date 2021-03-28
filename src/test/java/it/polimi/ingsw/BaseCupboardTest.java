@@ -2,13 +2,9 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.exceptions.DuplicatedShelfException;
 import it.polimi.ingsw.exceptions.IllegalCupboardException;
-import it.polimi.ingsw.exceptions.UnsupportedShelfInsertionException;
-import it.polimi.ingsw.exceptions.UnsupportedShelfRemovalException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
-import it.polimi.ingsw.model.storage.BaseCupboard;
-import it.polimi.ingsw.model.storage.Cupboard;
-import it.polimi.ingsw.model.storage.Shelf;
+import it.polimi.ingsw.model.storage.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -330,4 +326,61 @@ public class BaseCupboardTest {
         assertEquals(c.toString(), "BaseCupboard {BottomShelf {Gold: 2}, MiddleShelf {}, TopShelf {Servant: 1}}");
     }
 
+    @Test
+    public void validAddFromResourceContainer(){
+        Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
+        Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
+        Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
+
+        ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+
+        Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
+        ResourceContainer container = new BaseStorage();
+
+        assertDoesNotThrow(()->container.addResources(gold, 3));
+
+        assertDoesNotThrow(()->c.addResourceFromContainer(container, bottom, gold, 2));
+
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf {Gold: 2}, MiddleShelf {}, TopShelf {}}");
+    }
+
+    @Test
+    public void invalidArgumentsAddFromResourceContainer(){
+        Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
+        Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
+        Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
+
+        ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+
+        Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
+
+        ResourceContainer container = new BaseStorage();
+
+        assertDoesNotThrow(()->container.addResources(gold, 3));
+
+        assertThrows(NullPointerException.class, ()->c.addResourceFromContainer(null, null, gold, 2));
+        assertThrows(NullPointerException.class, ()->c.addResourceFromContainer(null, bottom, gold, 2));
+        assertThrows(IllegalArgumentException.class, ()->c.addResourceFromContainer(container, bottom, gold, -1));
+        assertThrows(NoSuchElementException.class, ()->c.addResourceFromContainer(container, new Shelf("test", gold, 3), gold, 2));
+    }
+
+    @Test
+    public void invalidConfigurationAddResourcesFromContainer(){
+        Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
+        Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
+        Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
+
+        ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+
+        Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
+
+        ResourceContainer container = new BaseStorage();
+
+        assertDoesNotThrow(()->container.addResources(gold, 3));
+        assertDoesNotThrow(()->c.addResourceFromContainer(container, top, gold, 1));
+        assertThrows(IllegalCupboardException.class, ()->c.addResourceFromContainer(container, bottom, gold, 1));
+    }
 }

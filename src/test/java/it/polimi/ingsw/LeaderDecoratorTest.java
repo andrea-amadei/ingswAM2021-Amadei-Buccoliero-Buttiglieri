@@ -4,10 +4,7 @@ import it.polimi.ingsw.exceptions.DuplicatedShelfException;
 import it.polimi.ingsw.exceptions.IllegalCupboardException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
-import it.polimi.ingsw.model.storage.BaseCupboard;
-import it.polimi.ingsw.model.storage.Cupboard;
-import it.polimi.ingsw.model.storage.LeaderDecorator;
-import it.polimi.ingsw.model.storage.Shelf;
+import it.polimi.ingsw.model.storage.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -133,7 +130,7 @@ public class LeaderDecoratorTest {
     }
 
     @Test
-    public void invalidGetShelfById(){
+    public void invalidParametersGetShelfById(){
 
         Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
         Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
@@ -191,7 +188,7 @@ public class LeaderDecoratorTest {
     }
 
     @Test
-    public void invalidMoveBetweenShelves(){
+    public void invalidParametersMoveBetweenShelves(){
         Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
         Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
         Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
@@ -221,7 +218,7 @@ public class LeaderDecoratorTest {
     }
 
     @Test
-    public void invalidAddResource(){
+    public void invalidParametersAddResource(){
         Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
         Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
         Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
@@ -247,7 +244,7 @@ public class LeaderDecoratorTest {
         assertThrows(NoSuchElementException.class, () -> c2.addResource(new Shelf("lol", gold, 3), gold, 2));
     }
     @Test
-    public void invalidRemoveResource(){
+    public void invalidParametersRemoveResource(){
         Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
         Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
         Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
@@ -304,7 +301,7 @@ public class LeaderDecoratorTest {
     }
 
     @Test
-    public void invalidRemoveTest(){
+    public void RemoveTooManyResources(){
 
         Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
         Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
@@ -334,7 +331,7 @@ public class LeaderDecoratorTest {
     }
 
     @Test
-    public void invalidAdd(){
+    public void AddTooManyResources(){
         Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
         Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
         Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
@@ -392,6 +389,58 @@ public class LeaderDecoratorTest {
         assertTrue(c2.contains(leaderShelf2));
     }
 
+    @Test
+    public void validAddResourceFromContainer(){
+        Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
+        Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
+        Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
 
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+        ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
 
+        Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
+
+        Shelf leaderShelf1 = new Shelf("LeaderShelf1", stone, 2);
+        Shelf leaderShelf2 = new Shelf("LeaderShelf2", servant, 2);
+
+        Cupboard c1;
+        c1 = new LeaderDecorator(leaderShelf1, c);
+        c1 = new LeaderDecorator(leaderShelf2, c1);
+
+        Cupboard c2 = c1;
+
+        ResourceContainer container = new BaseStorage();
+        assertDoesNotThrow(() -> container.addResources(servant, 1));
+
+        assertDoesNotThrow(() -> c2.addResourceFromContainer(container, leaderShelf2, servant, 1));
+        assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf {}, MiddleShelf {}, TopShelf {}}, LeaderShelf1 {}}, LeaderShelf2 {Servant: 1}}");
+    }
+
+    @Test
+    public void emptyContainerInvalidAddResourceFromContainer(){
+        Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
+        Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
+        Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
+
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+        ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
+
+        Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
+
+        Shelf leaderShelf1 = new Shelf("LeaderShelf1", stone, 2);
+        Shelf leaderShelf2 = new Shelf("LeaderShelf2", servant, 2);
+
+        Cupboard c1;
+        c1 = new LeaderDecorator(leaderShelf1, c);
+        c1 = new LeaderDecorator(leaderShelf2, c1);
+
+        Cupboard c2 = c1;
+
+        ResourceContainer container = new BaseStorage();
+        assertDoesNotThrow(() -> container.addResources(servant, 1));
+
+        assertDoesNotThrow(() -> c2.addResourceFromContainer(container, leaderShelf2, servant, 1));
+        assertThrows(IllegalCupboardException.class, ()->c2.addResourceFromContainer(container, leaderShelf2, servant, 1));
+        assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf {}, MiddleShelf {}, TopShelf {}}, LeaderShelf1 {}}, LeaderShelf2 {Servant: 1}}");
+    }
 }

@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.storage;
 
 import it.polimi.ingsw.exceptions.IllegalCupboardException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
-import jdk.internal.loader.Resource;
 
 import java.util.Set;
 
