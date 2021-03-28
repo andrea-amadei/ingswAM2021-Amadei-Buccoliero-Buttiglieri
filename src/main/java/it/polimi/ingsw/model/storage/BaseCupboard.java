@@ -207,12 +207,40 @@ public class BaseCupboard implements Cupboard{
         try {
             from.removeResources(amount);
         } catch (IllegalResourceTransferException e) {
-            throw new IllegalCupboardException("Resource transaction is invalid");
+            throw new IllegalCupboardException("Resource transaction cannot be performed");
         }
     }
 
     /**
+     * Move resources from a shelf to a container
      *
+     * @param container the ResourceContainer to which resources are added
+     * @param from      the Shelf from which resources are removed
+     * @param resource  the resource type of the transferred resources
+     * @param amount    the amount of the transferred resources
+     * @throws NullPointerException if the parameters are null
+     * @throws IllegalArgumentException if the amount is <= 0
+     * @throws NoSuchElementException if the cupboard doesn't contain the shelf
+     * @throws IllegalCupboardException if the transaction can't be performed
+     */
+    @Override
+    public void moveResourceToContainer(ResourceContainer container, Shelf from, ResourceSingle resource, int amount) throws IllegalCupboardException {
+        if(container == null || from == null || resource == null)
+            throw new NullPointerException();
+        if(amount <= 0)
+            throw new IllegalArgumentException("The amount must be positive");
+        if(!contains(from))
+            throw new NoSuchElementException();
+
+        try{
+            from.moveTo(container, resource, amount);
+        }catch(IllegalResourceTransferException e ){
+            throw new IllegalCupboardException("Resource transaction cannot be performed");
+        }
+    }
+
+    /**
+     * Return true iff the shelf is contained in the cupboard
      * @return true iff the shelf is contained in the cupboard
      */
     @Override
@@ -232,7 +260,7 @@ public class BaseCupboard implements Cupboard{
     }
 
     /**
-     *
+     * Returns the representation of this cupboard: es "BaseCupboard{Id1 {}, Id2 {Gold: 3}}"
      * @return the representation of this cupboard: es "BaseCupboard {Id1 {}, Id2 {Gold: 3}}"
      */
     @Override

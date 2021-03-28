@@ -54,6 +54,16 @@ public interface Cupboard {
     void removeResource(Shelf from, int amount) throws IllegalCupboardException;
 
     /**
+     * Move resources from a shelf to a container
+     * @param container the ResourceContainer to which resources are added
+     * @param from the Shelf from which resources are removed
+     * @param resource the resource type of the transferred resources
+     * @param amount the amount of the transferred resources
+     * @throws IllegalCupboardException if the transaction can't be performed
+     */
+    void moveResourceToContainer(ResourceContainer container, Shelf from, ResourceSingle resource, int amount) throws IllegalCupboardException;
+
+    /**
      * @return true if the cupboard contains the indicated shelf
      */
     boolean contains(Shelf shelf);

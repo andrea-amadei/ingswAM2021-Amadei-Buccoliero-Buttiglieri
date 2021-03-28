@@ -383,4 +383,59 @@ public class BaseCupboardTest {
         assertDoesNotThrow(()->c.addResourceFromContainer(container, top, gold, 1));
         assertThrows(IllegalCupboardException.class, ()->c.addResourceFromContainer(container, bottom, gold, 1));
     }
+
+    @Test
+    public void invalidParametersMoveResourceToContainer(){
+        Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
+        Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
+        Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
+
+        ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+
+        Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
+        ResourceContainer container = new BaseStorage();
+
+        assertThrows(NullPointerException.class, ()->c.moveResourceToContainer(null, bottom, gold, 2));
+        assertThrows(NullPointerException.class, ()->c.moveResourceToContainer(container, null, gold, 2));
+        assertThrows(NullPointerException.class, ()->c.moveResourceToContainer(container, bottom, null, 2));
+        assertThrows(NoSuchElementException.class, ()->c.moveResourceToContainer(container, new Shelf("test", gold, 3), gold, 2));
+        assertThrows(IllegalArgumentException.class, ()->c.moveResourceToContainer(container, bottom, gold, 0));
+    }
+
+    @Test
+    public void invalidInsertionInContainerMoveResourceToContainer(){
+        Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
+        Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
+        Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
+
+        ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+
+        Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
+        ResourceContainer container = new BaseStorage();
+
+        assertDoesNotThrow(()->container.addResources(gold, 3));
+        assertThrows(IllegalCupboardException.class, ()->c.moveResourceToContainer(container, top, servant, 3));
+    }
+
+    @Test
+    public void validMoveResourceToContainer(){
+        Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
+        Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
+        Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
+
+        ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+
+        Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
+        ResourceContainer container = new BaseStorage();
+
+        assertDoesNotThrow(()->c.addResource(top, gold, 1));
+
+        assertDoesNotThrow(()->c.moveResourceToContainer(container, top, gold, 1));
+
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf {}, MiddleShelf {}, TopShelf {}}");
+    }
 }
+
