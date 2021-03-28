@@ -7,7 +7,7 @@ public class Player {
     private final int arrivalId;
     private int points;
 
-    private Board board;
+    private final Board board;
 
     public Player(String username, int arrivalId) {
         if(username == null)
