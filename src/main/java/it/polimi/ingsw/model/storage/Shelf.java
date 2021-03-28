@@ -27,7 +27,8 @@ public class Shelf extends ResourceContainer{
      * @param id the identifier of the shelf
      * @param acceptedTypes the allowed types
      * @param maxAmount the max amount of resources that this shelf can hold
-     * @throws IllegalArgumentException if null parameters or the maxAmount specified is less then or equals to 0
+     * @throws IllegalArgumentException if the maxAmount specified is less then or equals to 0
+     * @throws NullPointerException if parameters are null
      */
     public Shelf(String id, ResourceType acceptedTypes, int maxAmount){
         if(id == null)
@@ -62,11 +63,12 @@ public class Shelf extends ResourceContainer{
     }
 
     /**
-     * Adds resources to this shelf
+     * Adds resources to this shelf. The current type of the shelf is updated
      * @param resource the type of resources to insert
      * @param amount the amount of resources to insert
-     * @throws IllegalResourceTransferException if after the insertion, size or type
-     *         limitations are violated
+     * @throws NullPointerException if parameters are null
+     * @throws IllegalArgumentException if amount is <= 0
+     * @throws IllegalResourceTransferException if after the insertion, size or type limitations are violated
      */
     public void addResources(ResourceSingle resource, int amount) throws IllegalResourceTransferException {
         if(amount <= 0)
@@ -89,10 +91,12 @@ public class Shelf extends ResourceContainer{
     }
 
     /**
-     * Removes from the container a given amount of a given resource
-     *
-     * @param resource the resource to remove
-     * @param amount   the amount of resource to remove
+     * Removes from the container a given amount of a given resource. If the shelf becomes empty, currentType is set
+     * to null
+     * @param resource the resource type to remove
+     * @param amount   the amount of resources to remove
+     * @throws IllegalArgumentException if amount <= 0
+     * @throws NullPointerException if resource is null
      * @throws IllegalResourceTransferException if the resource or the amount cannot be removed from the container
      */
     @Override

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import java.util.Objects;
 
 public class Player {
     private final String username;
@@ -8,8 +7,7 @@ public class Player {
     private final int arrivalId;
     private int points;
 
-    //TODO: Add Board
-    //private Board board;
+    private Board board;
 
     public Player(String username, int arrivalId) {
         if(username == null)
@@ -27,7 +25,7 @@ public class Player {
         connected = true;
         points = 0;
 
-        //TODO: Add board init
+        this.board = new Board();
     }
 
     public String getUsername() {
@@ -62,5 +60,5 @@ public class Player {
         points = 0;
     }
 
-    //TODO: Add getters for board
+    public Board getBoard(){return board;}
 }
