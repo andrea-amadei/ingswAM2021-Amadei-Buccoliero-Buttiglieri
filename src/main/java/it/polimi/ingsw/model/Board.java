@@ -56,7 +56,7 @@ public class Board {
     }
 
     /**
-     * @return return the flag holder
+     * @return the flag holder
      */
     public FlagHolder getFlagHolder() {
         return flagHolder;
