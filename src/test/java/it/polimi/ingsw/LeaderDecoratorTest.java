@@ -443,4 +443,83 @@ public class LeaderDecoratorTest {
         assertThrows(IllegalCupboardException.class, ()->c2.addResourceFromContainer(container, leaderShelf2, servant, 1));
         assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf {}, MiddleShelf {}, TopShelf {}}, LeaderShelf1 {}}, LeaderShelf2 {Servant: 1}}");
     }
+
+    @Test
+    public void validMoveResourceToContainer(){
+        Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
+        Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
+        Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
+
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+        ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
+
+        Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
+
+        Shelf leaderShelf1 = new Shelf("LeaderShelf1", stone, 2);
+        Shelf leaderShelf2 = new Shelf("LeaderShelf2", servant, 2);
+
+        Cupboard c1;
+        c1 = new LeaderDecorator(leaderShelf1, c);
+        c1 = new LeaderDecorator(leaderShelf2, c1);
+
+        Cupboard c2 = c1;
+
+        ResourceContainer container = new BaseStorage();
+        assertDoesNotThrow(() -> c2.addResource(leaderShelf1, stone, 2));
+
+        assertDoesNotThrow(() -> c2.moveResourceToContainer(container, leaderShelf1, stone, 1));
+        assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf {}, MiddleShelf {}, TopShelf {}}, LeaderShelf1 {Stone: 1}}, LeaderShelf2 {}}");
+    }
+
+    @Test
+    public void noSuchElementMoveResourceToContainer(){
+        Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
+        Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
+        Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
+
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+        ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
+
+        Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
+
+        Shelf leaderShelf1 = new Shelf("LeaderShelf1", stone, 2);
+        Shelf leaderShelf2 = new Shelf("LeaderShelf2", servant, 2);
+
+        Cupboard c1;
+        c1 = new LeaderDecorator(leaderShelf1, c);
+        c1 = new LeaderDecorator(leaderShelf2, c1);
+
+        Cupboard c2 = c1;
+
+        ResourceContainer container = new BaseStorage();
+        assertDoesNotThrow(() -> c2.addResource(leaderShelf1, stone, 2));
+
+        assertThrows(NoSuchElementException.class, () -> c2.moveResourceToContainer(container, new Shelf("test", stone, 2), stone, 1));
+    }
+
+    @Test
+    public void invalidRemovalMoveResourceToContainer(){
+        Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
+        Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
+        Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
+
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+        ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
+
+        Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
+
+        Shelf leaderShelf1 = new Shelf("LeaderShelf1", stone, 2);
+        Shelf leaderShelf2 = new Shelf("LeaderShelf2", servant, 2);
+
+        Cupboard c1;
+        c1 = new LeaderDecorator(leaderShelf1, c);
+        c1 = new LeaderDecorator(leaderShelf2, c1);
+
+        Cupboard c2 = c1;
+
+        ResourceContainer container = new BaseStorage();
+        assertDoesNotThrow(() -> c2.addResource(leaderShelf1, stone, 2));
+
+        assertThrows(IllegalCupboardException.class, () -> c2.moveResourceToContainer(container, leaderShelf1, servant, 1));
+    }
 }

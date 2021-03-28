@@ -172,7 +172,36 @@ public class LeaderDecorator implements Cupboard{
     }
 
     /**
+     * Move resources from a shelf to a container
      *
+     * @param container the ResourceContainer to which resources are added
+     * @param from      the Shelf from which resources are removed
+     * @param resource  the resource type of the transferred resources
+     * @param amount    the amount of the transferred resources
+     * @throws NullPointerException if the parameters are null
+     * @throws IllegalArgumentException if the amount is <= 0
+     * @throws NoSuchElementException if the cupboard doesn't contain the shelf
+     * @throws IllegalCupboardException if the transaction can't be performed
+     */
+    @Override
+    public void moveResourceToContainer(ResourceContainer container, Shelf from, ResourceSingle resource, int amount) throws IllegalCupboardException {
+        try{
+            decoratedCupboard.moveResourceToContainer(container, from, resource, amount);
+        } catch(NoSuchElementException e){
+            if(!(leaderShelf.equals(from)))
+                throw new NoSuchElementException();
+
+            //if the resource can't be removed to the shelf, IllegalCupboardException is propagated
+            try{
+                from.moveTo(container, resource, amount);
+            }catch(IllegalResourceTransferException e1){
+                throw new IllegalCupboardException("Can't remove resources from the shelf");
+            }
+        }
+    }
+
+    /**
+     * Returns true iff the shelf is contained in the cupboard
      * @return true iff the shelf is contained in the cupboard
      */
     @Override
@@ -181,7 +210,7 @@ public class LeaderDecorator implements Cupboard{
     }
 
     /**
-     *
+     * Returns the representation of this cupboard"
      * @return the representation of this cupboard"
      */
     @Override
