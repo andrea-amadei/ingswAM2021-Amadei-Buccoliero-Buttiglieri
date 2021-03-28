@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.storage;
 
 import it.polimi.ingsw.exceptions.IllegalCupboardException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
+import jdk.internal.loader.Resource;
 
 import java.util.Set;
 
@@ -36,6 +37,15 @@ public interface Cupboard {
      * @param amount the amount of resources to add
      */
     void addResource(Shelf to, ResourceSingle resource, int amount) throws IllegalCupboardException;
+
+    /**
+     * Add an amount of resources to the specified shelf from the specified ResourceContainer
+     * @param container the ResourceContainer from which resources are taken
+     * @param to the shelf to which the resources are added
+     * @param resource the type of the resource to add
+     * @param amount the amount of resources to add
+     */
+    void addResourceFromContainer(ResourceContainer container, Shelf to, ResourceSingle resource, int amount) throws IllegalCupboardException;
 
     /**
      * Remove the specified amount from the shelf

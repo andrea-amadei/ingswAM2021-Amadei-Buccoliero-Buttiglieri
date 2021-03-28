@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.storage;
 
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
+import it.polimi.ingsw.model.GameParameters;
 
 import java.util.*;
 
@@ -45,6 +46,7 @@ public class BaseCupboard implements Cupboard{
 
         this.shelves = shelves;
     }
+
 
     /**
      *
@@ -142,6 +144,46 @@ public class BaseCupboard implements Cupboard{
             }
             throw new IllegalCupboardException("Cupboard configuration would not be valid");
         }
+    }
+
+    /**
+     * Add an amount of resources to the specified shelf from the specified ResourceContainer
+     *
+     * @param container the ResourceContainer from which resources are taken
+     * @param to        the shelf to which the resources are added
+     * @param resource  the type of the resource to add
+     * @param amount    the amount of resources to add
+     * @throws NullPointerException if parameters are null
+     * @throws IllegalArgumentException if amount <= 0
+     * @throws NoSuchElementException if the cupboard doesn't contain the shelf
+     * @throws IllegalCupboardException if upon adding resources, configuration is not valid or the transaction can't be performed
+     */
+    @Override
+    public void addResourceFromContainer(ResourceContainer container, Shelf to, ResourceSingle resource, int amount) throws IllegalCupboardException {
+        if(to == null || resource == null || container == null)
+            throw new NullPointerException();
+        if(amount <= 0 )
+            throw new IllegalArgumentException();
+        if(!contains(to))
+            throw new NoSuchElementException();
+
+        try{
+            container.moveTo(to, resource, amount);
+        } catch (IllegalResourceTransferException e) {
+            throw new IllegalCupboardException("Can't add resources from the container");
+        }
+
+
+        //if the new cupboard configuration is not valid, IllegalCupboardException is thrown
+        if(!isValid()){
+            try {
+                to.moveTo(container, resource, amount);
+            }catch(IllegalResourceTransferException e){
+                throw new IllegalCupboardException("Error while restoring original state");
+            }
+            throw new IllegalCupboardException("Cupboard configuration would not be valid");
+        }
+
     }
 
     /**

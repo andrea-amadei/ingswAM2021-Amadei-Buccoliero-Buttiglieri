@@ -114,6 +114,36 @@ public class LeaderDecorator implements Cupboard{
         }
     }
 
+
+    /**
+     * Add an amount of resources to the specified shelf from the specified ResourceContainer
+     *
+     * @param container the ResourceContainer from which resources are taken
+     * @param to        the shelf to which the resources are added
+     * @param resource  the type of the resource to add
+     * @param amount    the amount of resources to add
+     * @throws NullPointerException if parameters are null
+     * @throws IllegalArgumentException if amount <= 0
+     * @throws NoSuchElementException if the cupboard doesn't contain the shelf
+     * @throws IllegalCupboardException if upon adding resources, configuration is not valid or the transaction can't be performed
+     */
+    @Override
+    public void addResourceFromContainer(ResourceContainer container, Shelf to, ResourceSingle resource, int amount) throws IllegalCupboardException {
+        try{
+            decoratedCupboard.addResourceFromContainer(container, to, resource, amount);
+        }catch(NoSuchElementException e){
+            if(!leaderShelf.equals(to))
+                throw new NoSuchElementException();
+
+            //if the resources can't be added to the shelf, IllegalCupboardException is propagated
+            try{
+                container.moveTo(leaderShelf, resource, amount);
+            }catch(IllegalResourceTransferException e1){
+                throw new IllegalCupboardException("Resources can't be added to the shelf");
+            }
+        }
+    }
+
     /**
      * Remove the specified amount from the shelf
      * @param from the shelf from which resources are taken
