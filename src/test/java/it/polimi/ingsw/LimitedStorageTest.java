@@ -130,6 +130,28 @@ public class LimitedStorageTest {
     }
 
     @Test
+    @DisplayName("Storage Full test")
+    public void isFullTest() {
+        ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
+        ResourceGroup any = ResourceTypeSingleton.getInstance().getAnyResource();
+
+        Map<ResourceSingle, Integer> single = new HashMap<>();
+        single.put(gold, 2);
+
+        Map<ResourceGroup, Integer> group = new HashMap<>();
+        group.put(any, 1);
+
+        LimitedStorage ls = new LimitedStorage(single, group);
+
+        assertDoesNotThrow(() -> ls.addResources(gold, 1));
+        assertFalse(ls.isFull());
+        assertDoesNotThrow(() -> ls.addResources(gold, 1));
+        assertFalse(ls.isFull());
+        assertDoesNotThrow(() -> ls.addResources(gold, 1));
+        assertTrue(ls.isFull());
+    }
+
+    @Test
     @DisplayName("Exception test")
     public void exceptionTest() {
         ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();

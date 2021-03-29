@@ -255,6 +255,19 @@ public class LimitedStorage extends BaseStorage {
     }
 
     /**
+     * Returns true if the Limited Storage is completely full, meaning no other resources can be added.
+     * Returns false otherwise
+     * @return true if the storage is full, false otherwise
+     */
+    public boolean isFull() {
+        for(ResourceSingle i : singleResourceLimit.keySet())
+            if(super.getResources(i) != singleResourceLimit.get(i))
+                return false;
+
+        return other.totalAmountOfResources() == groupResourceLimit.get(group);
+    }
+
+    /**
      * Clears all resources and resets their tracking. All the limits stand in place. Good as new!
      */
     public void reset() {
