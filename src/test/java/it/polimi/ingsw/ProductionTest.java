@@ -7,11 +7,13 @@ import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.model.production.UpgradableCrafting;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@DisplayName("Production tests")
 public class ProductionTest {
     @Test
     public void test() {
@@ -48,5 +50,10 @@ public class ProductionTest {
 
         assertEquals(production2.getAllLeaderCrafting().get(0), crafting);
         assertEquals(production2.getAllUpgradableCrafting().get(1), upgradableCrafting);
+        assertEquals(production2.getAllBaseCrafting().get(0), crafting);
+
+        assertEquals(production2.getLeaderCrafting(0), crafting);
+        assertEquals(production2.getUpgradableCrafting(1), upgradableCrafting);
+        assertEquals(production2.getBaseCrafting(0), crafting);
     }
 }

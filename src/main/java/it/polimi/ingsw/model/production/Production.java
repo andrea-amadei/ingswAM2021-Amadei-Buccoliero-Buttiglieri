@@ -56,6 +56,15 @@ public class Production {
     }
 
     /**
+     * Returns the specified base crafting
+     * @param index the index of the selected base crafting
+     * @return the specified base crafting
+     */
+    public Crafting getBaseCrafting(int index) {
+        return baseCrafting.get(index);
+    }
+
+    /**
      * @return the list of leader crafting
      */
     public List<Crafting> getAllLeaderCrafting() {
@@ -63,10 +72,28 @@ public class Production {
     }
 
     /**
+     * Returns the specified leader crafting
+     * @param index the index of the selected leader crafting
+     * @return the specified leader crafting
+     */
+    public Crafting getLeaderCrafting(int index) {
+        return leaderCrafting.get(index);
+    }
+
+    /**
      * @return the list of upgradable crafting
      */
     public List<UpgradableCrafting> getAllUpgradableCrafting() {
         return new ArrayList<>(upgradableCrafting);
+    }
+
+    /**
+     * Returns the specified upgradable crafting
+     * @param index the index of the selected upgradable crafting
+     * @return the specified upgradable crafting
+     */
+    public Crafting getUpgradableCrafting(int index) {
+        return upgradableCrafting.get(index);
     }
 
     /**
