@@ -10,7 +10,6 @@ import it.polimi.ingsw.model.production.UpgradableCrafting;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class ProductionTest {
@@ -32,13 +31,13 @@ public class ProductionTest {
         Production production1 = new Production();
         Production production2 = new Production(new ArrayList<Crafting>() {{add(crafting);}});
 
-        assertEquals(production1.getBaseCrafting().size(), 0);
-        assertEquals(production1.getLeaderCrafting().size(), 0);
-        assertEquals(production1.getUpgradableCrafting().size(), 3);
+        assertEquals(production1.getAllBaseCrafting().size(), 0);
+        assertEquals(production1.getAllLeaderCrafting().size(), 0);
+        assertEquals(production1.getAllUpgradableCrafting().size(), 3);
 
-        assertEquals(production2.getBaseCrafting().size(), 1);
-        assertEquals(production2.getLeaderCrafting().size(), 0);
-        assertEquals(production2.getUpgradableCrafting().size(), 3);
+        assertEquals(production2.getAllBaseCrafting().size(), 1);
+        assertEquals(production2.getAllLeaderCrafting().size(), 0);
+        assertEquals(production2.getAllUpgradableCrafting().size(), 3);
 
         assertThrows(NullPointerException.class, () -> production2.addLeaderCrafting(null));
         assertThrows(NullPointerException.class, () -> production2.setUpgradableCrafting(1, null));
@@ -47,7 +46,7 @@ public class ProductionTest {
         production2.addLeaderCrafting(crafting);
         production2.setUpgradableCrafting(1, upgradableCrafting);
 
-        assertEquals(production2.getLeaderCrafting().get(0), crafting);
-        assertEquals(production2.getUpgradableCrafting().get(1), upgradableCrafting);
+        assertEquals(production2.getAllLeaderCrafting().get(0), crafting);
+        assertEquals(production2.getAllUpgradableCrafting().get(1), upgradableCrafting);
     }
 }

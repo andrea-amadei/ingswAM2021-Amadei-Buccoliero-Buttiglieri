@@ -51,21 +51,21 @@ public class Production {
     /**
      * @return the list of base crafting
      */
-    public List<Crafting> getBaseCrafting() {
+    public List<Crafting> getAllBaseCrafting() {
         return new ArrayList<>(baseCrafting);
     }
 
     /**
      * @return the list of leader crafting
      */
-    public List<Crafting> getLeaderCrafting() {
+    public List<Crafting> getAllLeaderCrafting() {
         return new ArrayList<>(leaderCrafting);
     }
 
     /**
      * @return the list of upgradable crafting
      */
-    public List<UpgradableCrafting> getUpgradableCrafting() {
+    public List<UpgradableCrafting> getAllUpgradableCrafting() {
         return new ArrayList<>(upgradableCrafting);
     }
 
