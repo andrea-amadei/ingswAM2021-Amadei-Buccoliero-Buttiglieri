@@ -3,9 +3,12 @@ package it.polimi.ingsw.model.production;
 import it.polimi.ingsw.exceptions.NegativeCraftingIngredientException;
 import it.polimi.ingsw.gamematerials.*;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.storage.LimitedStorage;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * The Crafting class represents the recipe for a crafting.
@@ -17,8 +20,10 @@ public class Crafting {
     private final Map<ResourceType, Integer> output;
     private final int faithOutput;
 
-    //TODO: Add crafting pot
-    //private BaseStorage craftingPot;
+    private final LimitedStorage craftingPot;
+
+    private final Set<ResourceGroup> undecided;
+    private final Map<ResourceGroup, Map<ResourceSingle, Integer>> conversion;
 
     /**
      * Creates a new crafting recipe
@@ -56,6 +61,26 @@ public class Crafting {
         this.input = input;
         this.output = output;
         this.faithOutput = faithOutput;
+
+        Map<ResourceSingle, Integer> inputSingle = new HashMap<>();
+        Map<ResourceGroup, Integer> inputGroup = new HashMap<>();
+
+        for(ResourceType i : input.keySet())
+            if(!i.isGroup())
+                inputSingle.put((ResourceSingle) i, input.get(i));
+            else
+                inputGroup.put((ResourceGroup) i, input.get(i));
+
+        conversion = new HashMap<>();
+        undecided = new HashSet<>();
+
+        for(ResourceType i : output.keySet())
+            if(i.isGroup()) {
+                conversion.put((ResourceGroup) i, null);
+                undecided.add((ResourceGroup) i);
+            }
+
+        craftingPot = new LimitedStorage(inputSingle, inputGroup);
     }
 
     /**
@@ -79,14 +104,85 @@ public class Crafting {
         return faithOutput;
     }
 
-    /*
-    public boolean hasAllIngredients() {
-        //TODO: Add this
-        return true;
+    /**
+     * @return the crafting pot
+     */
+    public LimitedStorage getCraftingPot() {
+        return craftingPot;
+    }
+
+    /**
+     * Returns a set containing all the undecided outputs of the crafting recipe, in particular all ambiguous resources
+     * that needs to be specified in order to start the crafting. If the set is empty there are no more unspecified
+     * resources
+     * @return a map containing the undecided outputs. Empty if no outputs still needs to be decided
+     */
+    public Set<ResourceGroup> getUndecidedOutputs() {
+        return new HashSet<>(undecided);
+    }
+
+    /**
+     * Returns the selected conversion of a given ResourceGroup. The result is a Map containing all the resources in
+     * which the group will be converted and their respective amounts. If the conversion still needs to be selected, it
+     * will return null.
+     * @param group the ResourceGroup to get the conversion from
+     * @return a map containing the selected resources to convert group to, with their respective amount. If no
+     *         conversion was selected yet, returns null.
+     * @throws NullPointerException if group is null
+     * @throws IllegalArgumentException if group is not part of the output
+     */
+    public Map<ResourceSingle, Integer> getGroupConversion(ResourceGroup group) {
+        if(group == null)
+            throw new NullPointerException();
+
+        if(!conversion.containsKey(group))
+            throw new IllegalArgumentException("The specified group is not part of the recipe output");
+
+        return conversion.get(group);
+    }
+
+    /**
+     * Sets the given ResourceGroup to a group of ResourceSingle with their specified amounts
+     * @param from the ResourceGroup to be converted
+     * @param to a map containing all the ResourceSingle to convert the given ResourceGroup to. All the amounts must
+     *           add up, meaning no resource can be left unconverted. No over conversion is allowed either.
+     * @throws NullPointerException if from or to are null
+     * @throws IllegalArgumentException if the specified from parameter is not part of the output, if it is not possible
+     *                                  to convert one resource to the other or if the given amounts don't add up
+     */
+    public void setGroupConversion(ResourceGroup from, Map<ResourceSingle, Integer> to) {
+        if(from == null || to == null)
+            throw new NullPointerException();
+
+        if(!conversion.containsKey(from))
+            throw new IllegalArgumentException("The specified group is not part of the recipe output");
+
+        int n = 0;
+        for(ResourceSingle i : to.keySet()) {
+            if (!i.isA(from))
+                throw new IllegalArgumentException("Cannot convert from " + from.getId() + " to " + i.getId());
+
+            n += to.get(i);
+        }
+
+        if(output.get(from) != n)
+            throw new IllegalArgumentException("Cannot convert " + output.get(from) + " " + from.getId() +
+                    " to " + n + " total resources");
+
+        undecided.remove(from);
+        conversion.put(from, to);
+    }
+
+    /**
+     * Returns true if the crafting pot contains all the necessary ingredients and all the undecided resources are
+     * resolved, false otherwise.
+     * @return true the crafting recipe is ready to craft, false otherwise
+     */
+    public boolean readyToCraft() {
+        return undecided.size() == 0 && craftingPot.isFull();
     }
 
     public void activateCrafting(Player player) {
         //TODO: Add this
     }
-    */
 }
