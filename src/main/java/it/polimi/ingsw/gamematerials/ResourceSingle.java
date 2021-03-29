@@ -18,6 +18,11 @@ public class ResourceSingle extends ResourceType {
     }
 
     @Override
+    public boolean isGroup() {
+        return false;
+    }
+
+    @Override
     public String toString() {
         return this.id;
     }

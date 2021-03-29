@@ -25,6 +25,13 @@ public class ResourcesTest {
         assertTrue(servant.isA(any));
         assertFalse(any.isA(stone));
     }
+
+    @Test
+    public void groupTest() {
+        assertFalse(ResourceTypeSingleton.getInstance().getGoldResource().isGroup());
+        assertTrue(ResourceTypeSingleton.getInstance().getAnyResource().isGroup());
+    }
+
     @Test
     public void equalsMatch(){
         ResourceSingle gold1 = ResourceTypeSingleton.getInstance().getGoldResource();

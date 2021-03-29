@@ -25,6 +25,8 @@ public abstract class ResourceType {
     //TODO:Refactor "isA"
     public abstract boolean isA(ResourceType other);
 
+    public abstract boolean isGroup();
+
     /**
      * @return ID
      */
