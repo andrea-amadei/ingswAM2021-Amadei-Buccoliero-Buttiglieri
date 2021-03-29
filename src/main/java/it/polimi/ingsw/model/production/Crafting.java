@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.production;
 
+import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.exceptions.NegativeCraftingIngredientException;
+import it.polimi.ingsw.exceptions.NotReadyToCraftException;
 import it.polimi.ingsw.gamematerials.*;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.storage.LimitedStorage;
@@ -182,7 +184,35 @@ public class Crafting {
         return undecided.size() == 0 && craftingPot.isFull();
     }
 
+    /**
+     * Activates the current crafting and converts all necessary resources
+     * @param player the player who performed the action
+     */
     public void activateCrafting(Player player) {
-        //TODO: Add this
+        if(player == null)
+            throw new NullPointerException();
+
+        if(!readyToCraft())
+            if(undecided.size() != 0)
+                throw new NotReadyToCraftException("Not all undecided outputs are resolved");
+            else
+                throw new NotReadyToCraftException("Crafting pot doesn't contain all the necessary ingredients");
+
+        craftingPot.reset();
+
+        for(ResourceType i : output.keySet())
+            if(!i.isGroup())
+                try {
+                    player.getBoard().getStorage().getChest().addResources((ResourceSingle) i, output.get(i));
+                } catch(IllegalResourceTransferException ignored) { }
+
+        for(ResourceGroup i : conversion.keySet())
+            for(ResourceSingle j : conversion.get(i).keySet())
+                try {
+                    player.getBoard().getStorage().getChest().addResources(j, conversion.get(i).get(j));
+                } catch(IllegalResourceTransferException ignored) { }
+
+        if(faithOutput > 0)
+            player.getBoard().getFaithHolder().addFaithPoints(faithOutput);
     }
 }
