@@ -21,6 +21,8 @@ public final class GameParameters {
             ResourceTypeSingleton.getInstance().getAnyResource());
     public static final List<Integer> BASE_CUPBOARD_SHELF_SIZES = Arrays.asList(3, 2, 1);
 
+    public static int MAX_FLAG_LEVEL = 3;
+
     public static final int UPGRADABLE_CRAFTING_NUMBER = 3;
 
     public static final int FAITH_CHECKPOINT_NUMBER = 3;
