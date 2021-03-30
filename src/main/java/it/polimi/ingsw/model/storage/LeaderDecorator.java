@@ -7,7 +7,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
- * This class decorates a cupboard adding new shelves
+ * This class decorates a cupboard adding new shelves.
+ * The added shelves are not considered for the BaseCupboard invariant (see game rules)
  */
 public class LeaderDecorator implements Cupboard{
     private final Cupboard decoratedCupboard;
@@ -35,7 +36,7 @@ public class LeaderDecorator implements Cupboard{
 
 
     /**
-     *
+     * Returns the set of all the shelves contained in the cupboard
      * @return the set of all the shelves contained in the cupboard
      */
     @Override
@@ -46,7 +47,7 @@ public class LeaderDecorator implements Cupboard{
     }
 
     /**
-     * Get the shelf with the desired id
+     * Gets the shelf with the desired id
      * @param id the id of the desired shelf
      * @return the selected shelf
      * @throws NullPointerException if id is null
@@ -88,7 +89,7 @@ public class LeaderDecorator implements Cupboard{
     }
 
     /**
-     * Add an amount of resources to the specified shelf
+     * Adds an amount of resources to the specified shelf
      * @param to the shelf to which the resources are added
      * @param resource the type of the resource to add
      * @param amount the amount of resources to add
@@ -116,7 +117,7 @@ public class LeaderDecorator implements Cupboard{
 
 
     /**
-     * Add an amount of resources to the specified shelf from the specified ResourceContainer
+     * Adds an amount of resources to the specified shelf from the specified ResourceContainer
      *
      * @param container the ResourceContainer from which resources are taken
      * @param to        the shelf to which the resources are added
@@ -145,7 +146,7 @@ public class LeaderDecorator implements Cupboard{
     }
 
     /**
-     * Remove the specified amount from the shelf
+     * Removes the specified amount from the shelf
      * @param from the shelf from which resources are taken
      * @param amount the amount of resources to remove
      * @throws NullPointerException if the target shelf is null
@@ -172,7 +173,7 @@ public class LeaderDecorator implements Cupboard{
     }
 
     /**
-     * Move resources from a shelf to a container
+     * Moves resources from a shelf to a container
      *
      * @param container the ResourceContainer to which resources are added
      * @param from      the Shelf from which resources are removed

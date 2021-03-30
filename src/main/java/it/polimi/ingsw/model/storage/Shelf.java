@@ -9,8 +9,8 @@ import java.util.Map;
 
 
 /**
- * The Shelf class is responsible for storing resources in the limited storage of the player (base storage and leader
- * storage). Every shelf has limitations in space (maxAmount), it can store a single type of resource at a time
+ * The Shelf class is responsible for storing resources in the base storage and in the leader storage of the player.
+ * Every shelf has limitations in space (maxAmount), it can store a single type of resource at a time
  * (currentType) and it only allows resources of acceptedTypes type
  */
 
@@ -23,7 +23,7 @@ public class Shelf extends ResourceContainer{
 
     /**
      * Creates a new Shelf with the specified limitations.
-     * currentType is null if currentAmount == 0, or it contains the currentType held if currentAmount > 0
+     * currentType is null if currentAmount == 0 and it contains the currentType held if currentAmount > 0
      * @param id the identifier of the shelf
      * @param acceptedTypes the allowed types
      * @param maxAmount the max amount of resources that this shelf can hold
@@ -47,7 +47,7 @@ public class Shelf extends ResourceContainer{
     }
 
     /**
-     *
+     * Returns the current type held by this shelf if not empty. If the shelf is empty return is null
      * @return the current type held by this shelf if not empty. If the shelf is empty return is null
      */
     public ResourceSingle getCurrentType(){
@@ -55,7 +55,7 @@ public class Shelf extends ResourceContainer{
     }
 
     /**
-     *
+     * Returns the current amount of resources held
      * @return the current amount of resources held
      */
     public int getAmount(){
@@ -128,6 +128,7 @@ public class Shelf extends ResourceContainer{
     }
 
     /**
+     * Returns a map of the stored resources with their given amount
      * @return a map of the stored resources with their given amount
      */
     @Override
@@ -139,7 +140,7 @@ public class Shelf extends ResourceContainer{
     }
 
     /**
-     *
+     * Returns the id of this shelf
      * @return the id of this shelf
      */
     public String getId(){
@@ -147,7 +148,7 @@ public class Shelf extends ResourceContainer{
     }
 
     /**
-     *
+     * Returns the representation of this shelf
      * @return the representation of this shelf
      */
     public String toString(){

@@ -5,16 +5,19 @@ import it.polimi.ingsw.gamematerials.ResourceSingle;
 
 import java.util.Set;
 
+/**
+ * Defines methods for managing the resources stored in the shelves of the player
+ */
 public interface Cupboard {
 
     /**
-     *
+     * Returns all the shelves contained in the cupboard
      * @return the set of all shelves contained in the cupboard
      */
     Set<Shelf> getShelves();
 
     /**
-     * Get the shelf with the desired id
+     * Gets the shelf with the desired id
      * @param id the id of the desired shelf
      * @return the selected shelf
      */
@@ -30,7 +33,7 @@ public interface Cupboard {
 
 
     /**
-     * Add an amount of resources to the specified shelf
+     * Adds an amount of resources to the specified shelf
      * @param to the shelf to which the resources are added
      * @param resource the type of the resource to add
      * @param amount the amount of resources to add
@@ -38,7 +41,7 @@ public interface Cupboard {
     void addResource(Shelf to, ResourceSingle resource, int amount) throws IllegalCupboardException;
 
     /**
-     * Add an amount of resources to the specified shelf from the specified ResourceContainer
+     * Adds an amount of resources to the specified shelf from the specified ResourceContainer
      * @param container the ResourceContainer from which resources are taken
      * @param to the shelf to which the resources are added
      * @param resource the type of the resource to add
@@ -47,14 +50,14 @@ public interface Cupboard {
     void addResourceFromContainer(ResourceContainer container, Shelf to, ResourceSingle resource, int amount) throws IllegalCupboardException;
 
     /**
-     * Remove the specified amount from the shelf
+     * Removes the specified amount from the shelf
      * @param from the shelf from which resources are taken
      * @param amount the amount of resources to remove
      */
     void removeResource(Shelf from, int amount) throws IllegalCupboardException;
 
     /**
-     * Move resources from a shelf to a container
+     * Moves resources from a shelf to a container
      * @param container the ResourceContainer to which resources are added
      * @param from the Shelf from which resources are removed
      * @param resource the resource type of the transferred resources
@@ -64,6 +67,7 @@ public interface Cupboard {
     void moveResourceToContainer(ResourceContainer container, Shelf from, ResourceSingle resource, int amount) throws IllegalCupboardException;
 
     /**
+     * Returns true if the cupboard contains the indicated shelf
      * @return true if the cupboard contains the indicated shelf
      */
     boolean contains(Shelf shelf);

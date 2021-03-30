@@ -67,8 +67,4 @@ public class Storage {
         return cupboard;
     }
 
-
-
-
-
 }
