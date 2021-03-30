@@ -204,13 +204,17 @@ public class Crafting {
             if(!i.isGroup())
                 try {
                     player.getBoard().getStorage().getChest().addResources((ResourceSingle) i, output.get(i));
-                } catch(IllegalResourceTransferException ignored) { }
+                } catch(IllegalResourceTransferException e) {
+                    throw new UnsupportedOperationException("This shouldn't happen adn yet it happened...");
+                }
 
         for(ResourceGroup i : conversion.keySet())
             for(ResourceSingle j : conversion.get(i).keySet())
                 try {
                     player.getBoard().getStorage().getChest().addResources(j, conversion.get(i).get(j));
-                } catch(IllegalResourceTransferException ignored) { }
+                } catch(IllegalResourceTransferException e) {
+                    throw new UnsupportedOperationException("This shouldn't happen adn yet it happened...");
+                }
 
         if(faithOutput > 0)
             player.getBoard().getFaithHolder().addFaithPoints(faithOutput);
