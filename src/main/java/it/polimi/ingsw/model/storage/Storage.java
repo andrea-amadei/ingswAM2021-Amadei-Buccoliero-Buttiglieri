@@ -73,6 +73,8 @@ public class Storage {
      * @throws NullPointerException if decorator is null
      */
     public void decorate(LeaderDecorator decorator){
+        if(decorator == null)
+            throw new NullPointerException();
         this.cupboard = decorator;
     }
 
