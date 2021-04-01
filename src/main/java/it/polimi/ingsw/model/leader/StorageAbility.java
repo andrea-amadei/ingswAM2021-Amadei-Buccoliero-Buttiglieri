@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.leader;
 
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.storage.LeaderDecorator;
 import it.polimi.ingsw.model.storage.Shelf;
 
 /**
@@ -33,11 +34,20 @@ public class StorageAbility implements SpecialAbility {
     }
 
 
-    //activate function
+    /**
+     * function activates the leader ability to give the player extra storage space
+     * by adding a new shelf to the player's cupboard
+     * @param player the player who activates the leader card
+     * @throws NullPointerException if the pointer to player is null
+     */
     @Override
     public void activate(Player player) {
 
-        //TODO: activate function
+        if(player == null)
+            throw new NullPointerException();
+
+        LeaderDecorator leaderDecorator = new LeaderDecorator(shelf, player.getBoard().getStorage().getCupboard());
+        player.getBoard().getStorage().decorate(leaderDecorator);
 
     }
 }
