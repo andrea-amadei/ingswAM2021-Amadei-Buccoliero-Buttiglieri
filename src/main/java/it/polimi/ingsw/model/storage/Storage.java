@@ -16,7 +16,7 @@ public class Storage {
     private final BaseStorage chest;
     private final BaseStorage hand;
     private final BaseStorage marketBasket;
-    private final Cupboard cupboard;
+    private Cupboard cupboard;
 
     /**
      * A new empty storage is created. The cupboard is initialized with the parameters stated in GameParameters class
@@ -65,6 +65,15 @@ public class Storage {
      */
     public Cupboard getCupboard() {
         return cupboard;
+    }
+
+    /**
+     * Decorates the cupboard of the player
+     * @param decorator the new decorated cupboard
+     * @throws NullPointerException if decorator is null
+     */
+    public void decorate(LeaderDecorator decorator){
+        this.cupboard = decorator;
     }
 
 }
