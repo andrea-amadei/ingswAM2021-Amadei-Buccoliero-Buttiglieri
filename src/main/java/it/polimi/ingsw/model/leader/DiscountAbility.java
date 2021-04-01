@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.leader;
 
-import it.polimi.ingsw.gamematerials.ResourceType;
+import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.model.Player;
 
 /**
@@ -10,7 +10,7 @@ import it.polimi.ingsw.model.Player;
 public class DiscountAbility implements SpecialAbility {
 
     private final int amount;
-    private final ResourceType resource;
+    private final ResourceSingle resource;
 
     /**
      * DiscountAbility Constructor
@@ -20,7 +20,7 @@ public class DiscountAbility implements SpecialAbility {
      * @throws IllegalArgumentException if null discount amount
      * Discount amount can be negative, to add customization to the game, but it cannot be zero
      */
-    public DiscountAbility(int amount, ResourceType resource){
+    public DiscountAbility(int amount, ResourceSingle resource){
 
         if(amount == 0)
             throw new IllegalArgumentException("Discount amount cannot be zero");
@@ -45,14 +45,23 @@ public class DiscountAbility implements SpecialAbility {
      * get resource type
      * @return the type of resource that can be bought for discounted price
      */
-    public ResourceType getResource() {
+    public ResourceSingle getResource() {
         return resource;
     }
 
 
+    /**
+     * function activates the leader ability by adding a discount to the player's available
+     * discounts
+     * @param player the player who activates the leader card
+     * @throws NullPointerException if the pointer to player is null
+     */
     @Override
     public void activate(Player player) {
 
-        //TODO: activate function
+        if(player == null)
+            throw new NullPointerException();
+        player.getBoard().getDiscountHolder().addDiscount(resource, amount);
+
     }
 }
