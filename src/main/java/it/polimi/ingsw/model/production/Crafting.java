@@ -216,6 +216,7 @@ public class Crafting {
                     throw new UnsupportedOperationException("This shouldn't happen adn yet it happened...");
                 }
 
+        // TODO: Remake this with the faith path
         if(faithOutput > 0)
             player.getBoard().getFaithHolder().addFaithPoints(faithOutput);
     }
