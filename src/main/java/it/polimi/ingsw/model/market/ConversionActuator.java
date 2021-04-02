@@ -2,8 +2,8 @@ package it.polimi.ingsw.model.market;
 
 import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
+import it.polimi.ingsw.model.FaithPath;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.holder.FaithHolder;
 import it.polimi.ingsw.model.storage.ResourceContainer;
 
 import java.util.ArrayList;
@@ -37,17 +37,17 @@ public class ConversionActuator {
     /**
      * Transfers the resources to the player's basket and adds the faith point relative to this conversion
      * @param player the target player of this conversion
-     * @throws NullPointerException if player is null
+     * @param faithPath the faithPath that will be updated with the added faith points
+     * @throws NullPointerException if player or faithPath is null
      * @throws IllegalResourceTransferException if resources cannot be added
      */
-    public void actuateConversion(Player player) throws IllegalResourceTransferException{
-        if(player == null)
+    public void actuateConversion(Player player, FaithPath faithPath) throws IllegalResourceTransferException{
+        if(player == null || faithPath == null)
             throw new NullPointerException();
 
         int alreadyTransferred = 0;
 
         ResourceContainer marketBasket = player.getBoard().getStorage().getMarketBasket();
-        FaithHolder faithHolder = player.getBoard().getFaithHolder();
 
         //try to add all resources to the market basket of the player
         try {
@@ -69,7 +69,8 @@ public class ConversionActuator {
         }
 
         //now add the faith points
-        faithHolder.addFaithPoints(faithOutput);
+        if(faithOutput > 0)
+            faithPath.executeMovement(faithOutput, player);
     }
 
     /**
@@ -89,5 +90,4 @@ public class ConversionActuator {
     }
 }
 
-//TODO: Remember to ask for faithHolder and eventually update faithPath instead of faithHolder when adding faith points
 //TODO: Maybe we can remove the IllegalResourceTransferException from addResources of BaseStorage

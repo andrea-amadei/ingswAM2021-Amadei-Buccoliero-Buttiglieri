@@ -2,20 +2,36 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
+import it.polimi.ingsw.model.FaithPath;
+import it.polimi.ingsw.model.FaithPathTile;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.market.ConversionActuator;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ConversionActuatorTest {
 
     private final ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
     private final ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
     private final ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
     private final ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
+
+    private FaithPath standardFaithPath;
+
+    @BeforeAll
+    public void init(){
+        List<FaithPathTile> tiles = new ArrayList<>();
+        for(int i = 0; i < 10; i++)
+            tiles.add(new FaithPathTile(i+1,1, i, 2, 0, false));
+
+        standardFaithPath = new FaithPath(tiles);
+    }
 
     @Test
     public void validCreation(){
@@ -38,7 +54,7 @@ public class ConversionActuatorTest {
     public void addValidResourcesAndNoFaith(){
         Player player = new Player("John", 2);
         ConversionActuator actuator = new ConversionActuator(Collections.singletonList(stone), 0);
-        assertDoesNotThrow(()->actuator.actuateConversion(player));
+        assertDoesNotThrow(()->actuator.actuateConversion(player, standardFaithPath));
 
         Map<ResourceSingle, Integer> expectedResources = new HashMap<>();
         expectedResources.put(stone, 1);
@@ -51,7 +67,7 @@ public class ConversionActuatorTest {
     public void addValidResourcesAndFaith(){
         Player player = new Player("John", 2);
         ConversionActuator actuator = new ConversionActuator(Collections.singletonList(servant), 3);
-        assertDoesNotThrow(()->actuator.actuateConversion(player));
+        assertDoesNotThrow(()->actuator.actuateConversion(player, standardFaithPath));
 
         Map<ResourceSingle, Integer> expectedResources = new HashMap<>();
         expectedResources.put(servant, 1);
@@ -64,7 +80,7 @@ public class ConversionActuatorTest {
     public void addNoResourcesAndFaith(){
         Player player = new Player("John", 2);
         ConversionActuator actuator = new ConversionActuator(new ArrayList<>(), 3);
-        assertDoesNotThrow(()->actuator.actuateConversion(player));
+        assertDoesNotThrow(()->actuator.actuateConversion(player, standardFaithPath));
 
         Map<ResourceSingle, Integer> expectedResources = new HashMap<>();
 
@@ -76,7 +92,7 @@ public class ConversionActuatorTest {
     public void addMultipleResources(){
         Player player = new Player("John", 2);
         ConversionActuator actuator = new ConversionActuator(Arrays.asList(gold, stone, shield), 3);
-        assertDoesNotThrow(()->actuator.actuateConversion(player));
+        assertDoesNotThrow(()->actuator.actuateConversion(player, standardFaithPath));
 
         Map<ResourceSingle, Integer> expectedResources = new HashMap<>();
         expectedResources.put(gold, 1);
@@ -90,7 +106,7 @@ public class ConversionActuatorTest {
     @Test
     public void nullPlayer(){
         ConversionActuator actuator = new ConversionActuator(Arrays.asList(gold, stone, shield), 3);
-        assertThrows(NullPointerException.class, ()->actuator.actuateConversion(null));
+        assertThrows(NullPointerException.class, ()->actuator.actuateConversion(null, null));
     }
 
 }
