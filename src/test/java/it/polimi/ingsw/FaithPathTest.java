@@ -1,0 +1,130 @@
+package it.polimi.ingsw;
+
+import it.polimi.ingsw.exceptions.InvalidFaithPathException;
+import it.polimi.ingsw.model.FaithPath;
+import it.polimi.ingsw.model.FaithPathTile;
+import it.polimi.ingsw.model.Player;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@DisplayName("Faith Path tests")
+class FaithPathTest {
+    @Test
+    @DisplayName("Faith path tile test")
+    public void faithPathTileTest() {
+        assertThrows(IllegalArgumentException.class, () -> new FaithPathTile(-1, 1, 3, 5, 1, false));
+        assertThrows(IllegalArgumentException.class, () -> new FaithPathTile(1, -1, 3, 5, 1, false));
+        assertThrows(IllegalArgumentException.class, () -> new FaithPathTile(1, 1, -3, 5, 1, false));
+        assertThrows(IllegalArgumentException.class, () -> new FaithPathTile(1, 1, 3, -5, 1, false));
+        assertThrows(IllegalArgumentException.class, () -> new FaithPathTile(1, 1, 3, 5, -1, false));
+
+        FaithPathTile tile = new FaithPathTile(1, 1, 3, 5, 1, false);
+        assertEquals(tile.getX(), 1);
+        assertEquals(tile.getY(), 1);
+        assertEquals(tile.getOrder(), 3);
+        assertEquals(tile.getVictoryPoints(), 5);
+        assertEquals(tile.getPopeGroup(), 1);
+        assertFalse(tile.isPopeCheck());
+    }
+
+    @Test
+    @DisplayName("Construction test")
+    public void constructionTest() {
+        assertThrows(NullPointerException.class, () -> new FaithPath(null));
+        assertThrows(IllegalArgumentException.class, () -> new FaithPath(new ArrayList<>()));
+
+        assertThrows(InvalidFaithPathException.class, () ->
+                new FaithPath(new ArrayList<FaithPathTile>() {{
+                    add(new FaithPathTile(1, 1, 0, 0, 0, false));
+                    add(new FaithPathTile(1, 1, 1, 0, 0, false));
+                }}));
+
+        assertThrows(InvalidFaithPathException.class, () ->
+                new FaithPath(new ArrayList<FaithPathTile>() {{
+                    add(new FaithPathTile(1, 1, 0, 0, 0, false));
+                    add(new FaithPathTile(2, 1, 1, 0, 0, false));
+                    add(new FaithPathTile(3, 1, 1, 0, 0, false));
+                }}));
+
+        assertThrows(InvalidFaithPathException.class, () ->
+                new FaithPath(new ArrayList<FaithPathTile>() {{
+                    add(new FaithPathTile(1, 1, 0, 0, 0, false));
+                    add(new FaithPathTile(2, 1, 1, 0, 1, true));
+                    add(new FaithPathTile(3, 1, 2, 0, 1, true));
+                }}));
+
+        assertThrows(InvalidFaithPathException.class, () ->
+                new FaithPath(new ArrayList<FaithPathTile>() {{
+                    add(new FaithPathTile(1, 1, 0, 0, 0, false));
+                    add(new FaithPathTile(2, 1, 1, 0, 0, false));
+                    add(new FaithPathTile(3, 1, 3, 0, 0, false));
+                }}));
+
+        assertThrows(InvalidFaithPathException.class, () ->
+                new FaithPath(new ArrayList<FaithPathTile>() {{
+                    add(new FaithPathTile(1, 1, 0, 0, 0, false));
+                    add(new FaithPathTile(2, 1, 1, 0, 1, false));
+                    add(new FaithPathTile(3, 1, 2, 0, 1, false));
+                }}));
+
+        assertDoesNotThrow(() ->
+                new FaithPath(new ArrayList<FaithPathTile>() {{
+                    add(new FaithPathTile(1, 1, 0, 0, 0, false));
+                    add(new FaithPathTile(2, 1, 1, 0, 1, false));
+                    add(new FaithPathTile(3, 1, 2, 0, 1, true));
+                }}));
+    }
+
+    @Test
+    @DisplayName("Getters test")
+    public void getterTest() {
+        FaithPath fp = new FaithPath(new ArrayList<FaithPathTile>() {{
+            add(new FaithPathTile(1, 1, 0, 0, 0, false));
+            add(new FaithPathTile(2, 1, 1, 0, 1, false));
+            add(new FaithPathTile(3, 1, 2, 0, 1, true));
+        }});
+
+        assertEquals(1, fp.getTotalGroups());
+        assertEquals(3, fp.getTotalLength());
+    }
+
+    @Test
+    @DisplayName("Movement test")
+    public void movementTest() {
+        FaithPath fp = new FaithPath(new ArrayList<FaithPathTile>() {{
+            add(new FaithPathTile(1, 1, 0, 0, 0, false));
+            add(new FaithPathTile(2, 1, 1, 1, 1, false));
+            add(new FaithPathTile(3, 1, 2, 2, 1, true));
+        }});
+
+        Player player = new Player("name", 0);
+
+        assertEquals(0, player.getBoard().getFaithHolder().getFaithPoints());
+        assertEquals(0, player.getPoints());
+
+        assertThrows(NullPointerException.class, () -> fp.executeMovement(1, null));
+        assertThrows(IllegalArgumentException.class, () -> fp.executeMovement(0, player));
+
+        assertDoesNotThrow(() -> fp.executeMovement(1, player));
+        assertEquals(1, player.getBoard().getFaithHolder().getFaithPoints());
+        assertEquals(1, player.getPoints());
+
+        assertDoesNotThrow(() -> fp.executeMovement(3, player));
+        assertEquals(2, player.getBoard().getFaithHolder().getFaithPoints());
+        assertEquals(3, player.getPoints());
+    }
+
+    @Test
+    @DisplayName("To String test")
+    public void toStringTest() {
+        FaithPath fp = new FaithPath(new ArrayList<FaithPathTile>() {{
+            add(new FaithPathTile(1, 1, 0, 0, 1, true));
+        }});
+
+        assertEquals("0> (1, 1) 0 pts group 1 CHECK\n", fp.toString());
+    }
+}
