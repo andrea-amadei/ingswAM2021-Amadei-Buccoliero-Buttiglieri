@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.production;
 
+import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.exceptions.NegativeCraftingIngredientException;
 import it.polimi.ingsw.exceptions.NotReadyToCraftException;
@@ -18,14 +19,19 @@ import java.util.Set;
  * The class is immutable.
  */
 public class Crafting {
+    @SerializedName("input")
     private final Map<ResourceType, Integer> input;
+
+    @SerializedName("output")
     private final Map<ResourceType, Integer> output;
+
+    @SerializedName(value = "faithOutput", alternate = "faith_output")
     private final int faithOutput;
 
-    private final LimitedStorage craftingPot;
+    private final transient LimitedStorage craftingPot;
 
-    private final Set<ResourceGroup> undecided;
-    private final Map<ResourceGroup, Map<ResourceSingle, Integer>> conversion;
+    private final transient Set<ResourceGroup> undecided;
+    private final transient Map<ResourceGroup, Map<ResourceSingle, Integer>> conversion;
 
     /**
      * Creates a new crafting recipe
