@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.gamematerials.MarbleColor;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.leader.ConversionAbility;
@@ -15,25 +16,19 @@ public class ConversionAbilityTests {
 
     @Test
     public void conversionAbilityConstructorTest(){
-
-        ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
         ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
-        List<ResourceSingle> resources = new ArrayList<>();
-        resources.add(shield);
-        resources.add(stone);
 
-        ConversionAbility conversion = new ConversionAbility(shield, stone);
+        ConversionAbility conversion = new ConversionAbility(MarbleColor.BLUE, stone);
 
-        assertEquals(conversion.getResources(), resources);
-        assertNotNull(conversion.getResources());
-
+        assertEquals(conversion.getFrom(), MarbleColor.BLUE);
+        assertEquals(conversion.getTo(), stone);
     }
 
     @Test
     public void exceptionOnConversionAbilityConstructor(){
 
         assertThrows(NullPointerException.class, ()-> new ConversionAbility(null, ResourceTypeSingleton.getInstance().getGoldResource()));
-        assertThrows(NullPointerException.class, ()-> new ConversionAbility(ResourceTypeSingleton.getInstance().getGoldResource(), null));
+        assertThrows(NullPointerException.class, ()-> new ConversionAbility(MarbleColor.BLUE, null));
 
     }
 

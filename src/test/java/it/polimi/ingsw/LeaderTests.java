@@ -27,7 +27,7 @@ public class LeaderTests {
 
         SpecialAbility discount1 = new DiscountAbility(1, stone);
         SpecialAbility discount2 = new DiscountAbility(4, servant);
-        SpecialAbility conversion1 = new ConversionAbility(gold, shield);
+        SpecialAbility conversion1 = new ConversionAbility(MarbleColor.YELLOW, shield);
         SpecialAbility storage1 = new StorageAbility(shelf1);
         //TODO: test crafting ability after crafting class is complete
         Requirement requirement1 = new FlagRequirement(flag1, 2);
@@ -65,7 +65,7 @@ public class LeaderTests {
         ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
 
         Requirement flagRequirement = new FlagRequirement(new BaseFlag(FlagColor.BLUE), 1);
-        SpecialAbility conversion = new ConversionAbility(gold, servant);
+        SpecialAbility conversion = new ConversionAbility(MarbleColor.YELLOW, servant);
 
         List<SpecialAbility> abilities = new ArrayList<>();
         List<Requirement> requirements = new ArrayList<>();
