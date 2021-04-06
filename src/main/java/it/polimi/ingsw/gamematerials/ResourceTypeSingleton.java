@@ -94,4 +94,21 @@ public class ResourceTypeSingleton {
 
         throw new NoSuchElementException("No such resource as \"" + name + "\"");
     }
+
+    /**
+     * Returns the matching resource
+     * @param name the name of the resource
+     * @return the resource matching the given name
+     */
+    public ResourceType getResourceTypeByName(String name) {
+        ResourceType r;
+
+        try {
+            r = getResourceSingleByName(name);
+        } catch (NoSuchElementException e1) {
+            r = getResourceGroupByName(name);
+        }
+
+        return r;
+    }
 }
