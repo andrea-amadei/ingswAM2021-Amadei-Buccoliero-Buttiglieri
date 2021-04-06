@@ -2,18 +2,237 @@
   "cards": [
     {
       "id": 1,
-      "name": "Pippo",
-      "points": 3,
+      "name": "aaa",
+      "points": 2,
       "requirements": [
         {
           "type": "flag",
-          "flag": "GREEN",
+          "color": "YELLOW",
           "amount": 1
         },
         {
-          "type": "level_flag",
-          "flag": "GREEN",
-          "level": 1,
+          "type": "flag",
+          "color": "GREEN",
+          "amount": 1
+        }
+      ],
+      "special_abilities": [
+        {
+          "type": "discount",
+          "resource": "SERVANT",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "aaa",
+      "points": 2,
+      "requirements": [
+        {
+          "type": "flag",
+          "color": "BLUE",
+          "amount": 1
+        },
+        {
+          "type": "flag",
+          "color": "PURPLE",
+          "amount": 1
+        }
+      ],
+      "special_abilities": [
+        {
+          "type": "discount",
+          "resource": "SHIELD",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "aaa",
+      "points": 2,
+      "requirements": [
+        {
+          "type": "flag",
+          "color": "GREEN",
+          "amount": 1
+        },
+        {
+          "type": "flag",
+          "color": "BLUE",
+          "amount": 1
+        }
+      ],
+      "special_abilities": [
+        {
+          "type": "discount",
+          "resource": "STONE",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "aaa",
+      "points": 2,
+      "requirements": [
+        {
+          "type": "flag",
+          "color": "YELLOW",
+          "amount": 1
+        },
+        {
+          "type": "flag",
+          "color": "PURPLE",
+          "amount": 1
+        }
+      ],
+      "special_abilities": [
+        {
+          "type": "discount",
+          "resource": "GOLD",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "bbb",
+      "points": 3,
+      "requirements": [
+        {
+          "type": "resource",
+          "resource": "GOLD",
+          "amount": 5
+        }
+      ],
+      "special_abilities": [
+        {
+          "type": "storage",
+          "accepted_types": "STONE",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "bbb",
+      "points": 3,
+      "requirements": [
+        {
+          "type": "resource",
+          "resource": "STONE",
+          "amount": 5
+        }
+      ],
+      "special_abilities": [
+        {
+          "type": "storage",
+          "accepted_types": "SERVANT",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "bbb",
+      "points": 3,
+      "requirements": [
+        {
+          "type": "resource",
+          "resource": "SERVANT",
+          "amount": 5
+        }
+      ],
+      "special_abilities": [
+        {
+          "type": "storage",
+          "accepted_types": "SHIELD",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "bbb",
+      "points": 3,
+      "requirements": [
+        {
+          "type": "resource",
+          "resource": "SHIELD",
+          "amount": 5
+        }
+      ],
+      "special_abilities": [
+        {
+          "type": "storage",
+          "accepted_types": "GOLD",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "ccc",
+      "points": 5,
+      "requirements": [
+        {
+          "type": "flag",
+          "color": "YELLOW",
+          "amount": 2
+        },
+        {
+          "type": "flag",
+          "color": "BLUE",
+          "amount": 1
+        }
+      ],
+      "special_abilities": [
+        {
+          "type": "conversion",
+          "from": "WHITE",
+          "to": "SERVANT"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "ccc",
+      "points": 5,
+      "requirements": [
+        {
+          "type": "flag",
+          "color": "GREEN",
+          "amount": 2
+        },
+        {
+          "type": "flag",
+          "color": "PURPLE",
+          "amount": 1
+        }
+      ],
+      "special_abilities": [
+        {
+          "type": "conversion",
+          "from": "WHITE",
+          "to": "SHIELD"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "ccc",
+      "points": 5,
+      "requirements": [
+        {
+          "type": "flag",
+          "color": "BLUE",
+          "amount": 2
+        },
+        {
+          "type": "flag",
+          "color": "YELLOW",
           "amount": 1
         }
       ],
@@ -22,12 +241,73 @@
           "type": "conversion",
           "from": "WHITE",
           "to": "STONE"
-        },
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "ccc",
+      "points": 5,
+      "requirements": [
         {
-          "type": "discount",
-          "resource": "STONE",
+          "type": "flag",
+          "color": "PURPLE",
           "amount": 2
         },
+        {
+          "type": "flag",
+          "color": "GREEN",
+          "amount": 1
+        }
+      ],
+      "special_abilities": [
+        {
+          "type": "conversion",
+          "from": "WHITE",
+          "to": "GOLD"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "ddd",
+      "points": 4,
+      "requirements": [
+        {
+          "type": "level_flag",
+          "color": "YELLOW",
+          "level": 2,
+          "amount": 1
+        }
+      ],
+      "special_abilities": [
+        {
+          "type": "crafting",
+          "crafting": {
+            "input": {
+              "SHIELD": 1
+            },
+            "output": {
+              "ANY": 1
+            },
+            "faith_output": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "name": "ddd",
+      "points": 4,
+      "requirements": [
+        {
+          "type": "level_flag",
+          "color": "BLUE",
+          "level": 2,
+          "amount": 1
+        }
+      ],
+      "special_abilities": [
         {
           "type": "crafting",
           "crafting": {
@@ -39,30 +319,60 @@
             },
             "faith_output": 1
           }
-        },
-        {
-          "type": "storage",
-          "accepted_types": "STONE",
-          "amount": 2
         }
       ]
     },
     {
-      "id": 2,
-      "name": "Pluto",
-      "points": 5,
+      "id": 15,
+      "name": "ddd",
+      "points": 4,
       "requirements": [
         {
-          "type": "resource",
-          "resource": "GOLD",
-          "amount": 2
+          "type": "level_flag",
+          "color": "PURPLE",
+          "level": 2,
+          "amount": 1
         }
       ],
       "special_abilities": [
         {
-          "type": "conversion",
-          "from": "WHITE",
-          "to": "GOLD"
+          "type": "crafting",
+          "crafting": {
+            "input": {
+              "STONE": 1
+            },
+            "output": {
+              "ANY": 1
+            },
+            "faith_output": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "ddd",
+      "points": 4,
+      "requirements": [
+        {
+          "type": "level_flag",
+          "color": "GREEN",
+          "level": 2,
+          "amount": 1
+        }
+      ],
+      "special_abilities": [
+        {
+          "type": "crafting",
+          "crafting": {
+            "input": {
+              "GOLD": 1
+            },
+            "output": {
+              "ANY": 1
+            },
+            "faith_output": 1
+          }
         }
       ]
     }
