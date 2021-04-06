@@ -26,16 +26,21 @@ public class LeaderCard {
      * @throws IllegalArgumentException if negative ID number
      * @throws IllegalArgumentException if name length is too short or too long
      * @throws IllegalArgumentException if negative victory points
-     * @throws NullPointerException if abilities pointer is null
-     * @throws NullPointerException if requirements pointer is null
+     * @throws IllegalArgumentException if abilities or requirements are empty
+     * @throws NullPointerException if abilities is null
+     * @throws NullPointerException if requirements is null
+     * @throws NullPointerException if name is null
      */
     public LeaderCard (int id, String name, int points, List<SpecialAbility> abilities, List<Requirement> requirements){
 
         if(id < 0)
             throw new IllegalArgumentException("Id number cannot be negative");
 
-        if(name.length()<2 || name.length()>30)
-            throw new IllegalArgumentException("Leader name length is out of bound");
+        if(name == null)
+            throw new NullPointerException();
+
+        if(name.length() < 2 || name.length() > 30)
+            throw new IllegalArgumentException("Leader name length is out of bounds");
 
         if(points < 0)
             throw new IllegalArgumentException("Victory points cannot be negative");
@@ -45,6 +50,9 @@ public class LeaderCard {
 
         if(requirements == null)
             throw new NullPointerException();
+
+        if(abilities.size() == 0 || requirements.size() == 0)
+            throw new IllegalArgumentException("Abilities and requirements cannot be empty");
 
         this.id = id;
         this.name = name;
