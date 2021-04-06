@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class RawCardList {
+public class RawLeaderCardList {
     @SerializedName(value = "list", alternate = "cards")
     private List<RawLeaderCard> list;
 

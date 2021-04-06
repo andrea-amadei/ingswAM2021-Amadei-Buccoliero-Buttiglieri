@@ -57,6 +57,13 @@
           "resource": "GOLD",
           "amount": 2
         }
+      ],
+      "special_abilities": [
+        {
+          "type": "conversion",
+          "from": "WHITE",
+          "to": "GOLD"
+        }
       ]
     }
   ]

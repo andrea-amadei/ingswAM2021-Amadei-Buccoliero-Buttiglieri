@@ -34,8 +34,8 @@ public class LeaderCard {
      */
     public LeaderCard (int id, String name, int points, List<SpecialAbility> abilities, List<Requirement> requirements){
 
-        if(id < 0)
-            throw new IllegalArgumentException("Id number cannot be negative");
+        if(id <= 0)
+            throw new IllegalArgumentException("Id number must be positive");
 
         if(name == null)
             throw new NullPointerException();

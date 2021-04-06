@@ -1,14 +1,15 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.parser.JSONParser;
 
 public class App {
     public static void main(String[] args) {
-        Console.log("Hello World! by gio e cate", Console.Severity.WARNING, Console.Format.RED);
-        Console.log("Hello World! by gio e cate", Console.Severity.WARNING, Console.Format.YELLOW);
-        Console.log("Hello World! by gio e cate", Console.Severity.WARNING, Console.Format.GREEN);
-        Console.log("Hello World! by gio e cate", Console.Severity.WARNING, Console.Format.CYAN);
-        Console.log("Hello World! by gio e cate", Console.Severity.WARNING, Console.Format.BLUE);
-        Console.log("Hello World! by gio e cate", Console.Severity.WARNING, Console.Format.PURPLE);
+        try {
+            JSONParser.parseLeaders("src/main/cards.json");
+        } catch (Exception e) {
+            Console.log(e.getClass().getSimpleName() + " - " + e.getMessage(),
+                    Console.Severity.ERROR, Console.Format.RED);
+        }
     }
 }
