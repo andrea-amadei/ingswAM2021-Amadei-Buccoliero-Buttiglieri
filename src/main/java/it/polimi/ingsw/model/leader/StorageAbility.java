@@ -50,4 +50,11 @@ public class StorageAbility implements SpecialAbility {
         player.getBoard().getStorage().decorate(leaderDecorator);
 
     }
+
+    @Override
+    public String toString() {
+        return "StorageAbility{" +
+                "shelf=" + shelf +
+                '}';
+    }
 }

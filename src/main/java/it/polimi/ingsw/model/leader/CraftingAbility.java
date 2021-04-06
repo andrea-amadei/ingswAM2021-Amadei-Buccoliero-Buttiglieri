@@ -41,4 +41,11 @@ public class CraftingAbility implements SpecialAbility {
         //TODO: activate function
 
     }
+
+    @Override
+    public String toString() {
+        return "CraftingAbility{" +
+                "crafting=" + crafting +
+                '}';
+    }
 }

@@ -52,4 +52,12 @@ public class ResourceRequirement implements Requirement{
         //TODO: isSatisfied function
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "ResourceRequirement{" +
+                "resource=" + resource +
+                ", amount=" + amount +
+                '}';
+    }
 }

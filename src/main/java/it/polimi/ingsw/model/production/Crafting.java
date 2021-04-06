@@ -220,4 +220,21 @@ public class Crafting {
         if(faithOutput > 0)
             player.getBoard().getFaithHolder().addFaithPoints(faithOutput);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder("Crafting{");
+
+        for(ResourceType i : input.keySet())
+            str.append(i).append(": ").append(input.get(i)).append(" ");
+
+        str.append("-> ");
+
+        for(ResourceType i : output.keySet())
+            str.append(i).append(": ").append(output.get(i)).append(" ");
+
+        str.append("+ Faith: ").append(faithOutput).append("}");
+
+        return str.toString();
+    }
 }

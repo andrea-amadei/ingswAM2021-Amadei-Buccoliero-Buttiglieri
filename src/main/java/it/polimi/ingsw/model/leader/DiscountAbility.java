@@ -64,4 +64,12 @@ public class DiscountAbility implements SpecialAbility {
         player.getBoard().getDiscountHolder().addDiscount(resource, amount);
 
     }
+
+    @Override
+    public String toString() {
+        return "DiscountAbility{" +
+                "resource=" + resource +
+                ", amount=" + amount +
+                '}';
+    }
 }

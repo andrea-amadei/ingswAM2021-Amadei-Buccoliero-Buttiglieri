@@ -54,4 +54,12 @@ public class FlagRequirement implements Requirement{
         //TODO: isSatisfied function
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "FlagRequirement{" +
+                "flag=" + flag +
+                ", amount=" + amount +
+                '}';
+    }
 }

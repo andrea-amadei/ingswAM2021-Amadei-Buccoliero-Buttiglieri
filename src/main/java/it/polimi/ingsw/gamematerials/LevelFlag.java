@@ -44,4 +44,12 @@ public class LevelFlag extends BaseFlag {
     public int hashCode() {
         return Objects.hash(super.hashCode(), level);
     }
+
+    @Override
+    public String toString() {
+        return "LevelFlag{" +
+                "color=" + getColor() +
+                ", level=" + level +
+                '}';
+    }
 }

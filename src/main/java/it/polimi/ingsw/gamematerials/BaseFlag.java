@@ -39,4 +39,11 @@ public class BaseFlag {
     public int hashCode() {
         return Objects.hash(color);
     }
+
+    @Override
+    public String toString() {
+        return "BaseFlag{" +
+                "color=" + color +
+                '}';
+    }
 }

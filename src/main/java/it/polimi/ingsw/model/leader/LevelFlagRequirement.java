@@ -54,4 +54,12 @@ public class LevelFlagRequirement implements Requirement{
         //TODO: isSatisfied function
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "LevelFlagRequirement{" +
+                "flag=" + flag +
+                ", amount=" + amount +
+                '}';
+    }
 }

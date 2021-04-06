@@ -57,4 +57,12 @@ public class ConversionAbility implements SpecialAbility {
     //TODO: activate function
 
     }
+
+    @Override
+    public String toString() {
+        return "ConversionAbility{" +
+                "from=" + from +
+                ", to=" + to +
+                '}';
+    }
 }
