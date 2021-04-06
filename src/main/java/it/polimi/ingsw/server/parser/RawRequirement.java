@@ -14,7 +14,7 @@ public class RawRequirement {
     @SerializedName("type")
     private String type;
 
-    @SerializedName("flag")
+    @SerializedName(value = "flag", alternate = "color")
     private FlagColor flag;
 
     @SerializedName("resource")
