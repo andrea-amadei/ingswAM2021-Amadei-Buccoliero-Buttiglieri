@@ -7,17 +7,55 @@
       "requirements": [
         {
           "type": "flag",
-          "obj": {
-            "flag": "GREEN",
-            "level": 1
-          }
+          "flag": "GREEN",
+          "amount": 1
         },
         {
           "type": "level_flag",
-          "obj": {
-            "flag": "GREEN",
-            "level": 1
+          "flag": "GREEN",
+          "level": 1,
+          "amount": 1
+        }
+      ],
+      "special_abilities": [
+        {
+          "type": "conversion",
+          "from": "WHITE",
+          "to": "STONE"
+        },
+        {
+          "type": "discount",
+          "resource": "STONE",
+          "amount": 2
+        },
+        {
+          "type": "crafting",
+          "crafting": {
+            "input": {
+              "SERVANT": 1
+            },
+            "output": {
+              "ANY": 1
+            },
+            "faith_output": 1
           }
+        },
+        {
+          "type": "storage",
+          "accepted_types": "STONE",
+          "amount": 2
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Pluto",
+      "points": 5,
+      "requirements": [
+        {
+          "type": "resource",
+          "resource": "GOLD",
+          "amount": 2
         }
       ]
     }
