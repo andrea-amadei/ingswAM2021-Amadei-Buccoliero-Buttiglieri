@@ -152,8 +152,10 @@ public class Shelf extends ResourceContainer{
      * @return the representation of this shelf
      */
     public String toString(){
-
-        return id + " " + "{" + ((currentType != null) ? currentType + ": " + currentAmount : "") + "}";
+        if(currentAmount == 0)
+            return id + "{acceptedTypes=" + acceptedTypes + ", amount=" + maxAmount  + "}";
+        else
+            return id + "{" + ((currentType != null) ? currentType + ": " + currentAmount : "") + "}";
     }
 
 
