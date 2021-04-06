@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.Player;
  * Class LevelFlagRequirement implements Requirement Interface
  * represents the requirement of a flag with a set level
  */
-public class LevelFlagRequirement implements  Requirement{
+public class LevelFlagRequirement implements Requirement{
 
     private final LevelFlag flag;
     private final int amount;
