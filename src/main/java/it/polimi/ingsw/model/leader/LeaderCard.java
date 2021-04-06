@@ -9,10 +9,11 @@ public class LeaderCard {
 
     private final int id;
     private final String name;
-    private transient boolean status;
     private final int points;
     private final List<SpecialAbility> abilities;
     private final List<Requirement> requirements;
+
+    private boolean status;
 
     /**
      * LeaderCard constructor
