@@ -58,16 +58,16 @@ public class RawSpecialAbility {
 
 
         if(type == null)
-            throw new IllegalRawConversionException("Mandatory \"type\" field is missing (id: " + id + ")");
+            throw new IllegalRawConversionException("Mandatory field \"type\" is missing (id: " + id + ")");
 
         switch (type) {
             case "conversion":
             case "conversion_ability":
                 if(from == null)
-                    throw new IllegalRawConversionException("Illegal or absent \"from\" field for a \"" + type + "\" special ability (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"from\" for a \"" + type + "\" special ability (id: " + id + ")");
 
                 if(resource == null)
-                    throw new IllegalRawConversionException("Illegal or absent \"resource/to\" field(s) for a \"" + type + "\" special ability (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field(s) \"resource/to\" for a \"" + type + "\" special ability (id: " + id + ")");
 
                 try {
                     s = ResourceTypeSingleton.getInstance().getResourceSingleByName(resource);
@@ -84,10 +84,10 @@ public class RawSpecialAbility {
             case "discount":
             case "discount_ability":
                 if(resource == null)
-                    throw new IllegalRawConversionException("Illegal or absent \"resource\" field for a \"" + type + "\" special ability (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"resource\" for a \"" + type + "\" special ability (id: " + id + ")");
 
                 if(amount == 0)
-                    throw new IllegalRawConversionException("Illegal or absent \"amount\" field for a \"" + type + "\" special ability (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"amount\" for a \"" + type + "\" special ability (id: " + id + ")");
 
                 try {
                     s = ResourceTypeSingleton.getInstance().getResourceSingleByName(resource);
@@ -104,7 +104,7 @@ public class RawSpecialAbility {
             case "crafting":
             case "crafting_ability":
                 if(crafting == null)
-                    throw new IllegalRawConversionException("Illegal or absent \"crafting\" field for a \"" + type + "\" special ability (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"crafting\" for a \"" + type + "\" special ability (id: " + id + ")");
 
                 // no need to catch this since it will already throw  the right exception
                 return new CraftingAbility(crafting.toCrafting(id));
@@ -112,10 +112,10 @@ public class RawSpecialAbility {
             case "storage":
             case "storage_ability":
                 if(acceptedTypes == null)
-                    throw new IllegalRawConversionException("Illegal or absent \"accepted_types\" field for a \"" + type + "\" special ability (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"accepted_types\" for a \"" + type + "\" special ability (id: " + id + ")");
 
                 if(amount == 0)
-                    throw new IllegalRawConversionException("Illegal or absent \"amount\" field for a \"" + type + "\" special ability (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"amount\" for a \"" + type + "\" special ability (id: " + id + ")");
 
                 try {
                     t = ResourceTypeSingleton.getInstance().getResourceTypeByName(acceptedTypes);

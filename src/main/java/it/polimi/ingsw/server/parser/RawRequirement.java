@@ -48,15 +48,15 @@ public class RawRequirement {
 
     public Requirement toRequirement(int id) throws IllegalRawConversionException {
         if(type == null)
-            throw new IllegalRawConversionException("Mandatory \"type\" field is missing (id: " + id + ")");
+            throw new IllegalRawConversionException("Mandatory field \"type\" is missing (id: " + id + ")");
 
         switch (type) {
             case "flag":
                 if(flag == null)
-                    throw new IllegalRawConversionException("Illegal or absent \"flag\" field for a \"" + type + "\" requirement (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"flag\" for a \"" + type + "\" requirement (id: " + id + ")");
 
                 if(amount == 0)
-                    throw new IllegalRawConversionException("Illegal or absent \"amount\" field for a \"" + type + "\" requirement (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"amount\" for a \"" + type + "\" requirement (id: " + id + ")");
 
                 try {
                     return new FlagRequirement(new BaseFlag(flag), amount);
@@ -67,13 +67,13 @@ public class RawRequirement {
             case "level_flag":
             case "levelFlag":
                 if(flag == null)
-                    throw new IllegalRawConversionException("Illegal or absent \"flag\" field for a \"" + type + "\" requirement (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"flag\" for a \"" + type + "\" requirement (id: " + id + ")");
 
                 if(amount == 0)
-                    throw new IllegalRawConversionException("Illegal or absent \"amount\" field for a \"" + type + "\" requirement (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"amount\" for a \"" + type + "\" requirement (id: " + id + ")");
 
                 if(level == 0)
-                    throw new IllegalRawConversionException("Illegal or absent \"level\" field for a \"" + type + "\" requirement (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"level\" for a \"" + type + "\" requirement (id: " + id + ")");
 
                 try {
                     return new LevelFlagRequirement(new LevelFlag(flag, level), amount);
@@ -83,10 +83,10 @@ public class RawRequirement {
 
             case "resource":
                 if(resource == null)
-                    throw new IllegalRawConversionException("Illegal or absent \"resource\" field for a \"" + type + "\" requirement (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"resource\" for a \"" + type + "\" requirement (id: " + id + ")");
 
                 if(amount == 0)
-                    throw new IllegalRawConversionException("Illegal or absent \"amount\" field for a \"" + type + "\" requirement (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"amount\" for a \"" + type + "\" requirement (id: " + id + ")");
 
                 ResourceSingle r;
 

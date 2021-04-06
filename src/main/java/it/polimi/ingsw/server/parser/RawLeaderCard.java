@@ -48,13 +48,13 @@ public class RawLeaderCard {
 
     public LeaderCard toLeaderCard() throws IllegalRawConversionException {
         if(name == null)
-            throw new IllegalRawConversionException("Missing mandatory \"name\" field (id: " + id + ")");
+            throw new IllegalRawConversionException("Missing mandatory field \"name\" (id: " + id + ")");
 
         if(abilities == null)
-            throw new IllegalRawConversionException("Missing mandatory \"abilities\" field (id: " + id + ")");
+            throw new IllegalRawConversionException("Missing mandatory field \"abilities\" (id: " + id + ")");
 
         if(requirements == null)
-            throw new IllegalRawConversionException("Missing mandatory \"requirements\" field (id: " + id + ")");
+            throw new IllegalRawConversionException("Missing mandatory field \"requirements\" (id: " + id + ")");
 
         if(points == 0)
             Console.log("Points for card " + id + " are set to 0 or absent. Is it intentional?",
