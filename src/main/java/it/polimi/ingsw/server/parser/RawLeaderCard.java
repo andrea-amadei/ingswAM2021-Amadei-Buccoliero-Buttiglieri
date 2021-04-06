@@ -18,4 +18,24 @@ public class RawLeaderCard {
 
     @SerializedName("requirements")
     private List<RawRequirement> requirements;
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public List<RawSpecialAbility> getAbilities() {
+        return abilities;
+    }
+
+    public List<RawRequirement> getRequirements() {
+        return requirements;
+    }
 }

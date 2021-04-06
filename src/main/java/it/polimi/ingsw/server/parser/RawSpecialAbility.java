@@ -14,14 +14,38 @@ public class RawSpecialAbility {
     private MarbleColor from;
 
     @SerializedName(value = "resource", alternate = "to")
-    private ResourceSingle resource;
+    private String resource;
 
     @SerializedName(value = "acceptedTypes", alternate = "accepted_types")
-    private ResourceType acceptedTypes;
+    private String acceptedTypes;
 
     @SerializedName("crafting")
-    private Crafting crafting;
+    private RawCrafting crafting;
 
     @SerializedName("amount")
     private int amount;
+
+    public String getType() {
+        return type;
+    }
+
+    public MarbleColor getFrom() {
+        return from;
+    }
+
+    public String getResource() {
+        return resource;
+    }
+
+    public String getAcceptedTypes() {
+        return acceptedTypes;
+    }
+
+    public RawCrafting getCrafting() {
+        return crafting;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
 }

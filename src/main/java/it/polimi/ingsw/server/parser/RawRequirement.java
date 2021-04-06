@@ -18,4 +18,24 @@ public class RawRequirement {
 
     @SerializedName("amount")
     private int amount;
+
+    public String getType() {
+        return type;
+    }
+
+    public FlagColor getFlag() {
+        return flag;
+    }
+
+    public String getResource() {
+        return resource;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
 }
