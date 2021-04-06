@@ -1,0 +1,25 @@
+{
+  "cards": [
+    {
+      "id": 1,
+      "name": "Pippo",
+      "points": 3,
+      "requirements": [
+        {
+          "type": "flag",
+          "obj": {
+            "flag": "GREEN",
+            "level": 1
+          }
+        },
+        {
+          "type": "level_flag",
+          "obj": {
+            "flag": "GREEN",
+            "level": 1
+          }
+        }
+      ]
+    }
+  ]
+}
