@@ -26,7 +26,7 @@ public class LeaderDecoratorTest {
         Shelf leaderShelf = new Shelf("LeaderShelf1", ResourceTypeSingleton.getInstance().getGoldResource(), 2);
         c = new LeaderDecorator(leaderShelf, c);
 
-        assertEquals(c.toString(), "{BaseCupboard {BottomShelf {}, MiddleShelf {}, TopShelf {}}, LeaderShelf1 {}}");
+        assertEquals(c.toString(), "{BaseCupboard {BottomShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=3}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=1}}, LeaderShelf1{acceptedTypes=Gold, amount=2}}");
     }
 
     @Test
@@ -69,7 +69,7 @@ public class LeaderDecoratorTest {
         c1 = new LeaderDecorator(leaderShelf1, c);
         c1 = new LeaderDecorator(leaderShelf2, c1);
 
-        assertEquals(c1.toString(), "{{BaseCupboard {BottomShelf {Stone: 3}, MiddleShelf {Gold: 1}, TopShelf {Servant: 1}}, LeaderShelf1 {}}, LeaderShelf2 {}}");
+        assertEquals(c1.toString(), "{{BaseCupboard {BottomShelf{Stone: 3}, MiddleShelf{Gold: 1}, TopShelf{Servant: 1}}, LeaderShelf1{acceptedTypes=Stone, amount=2}}, LeaderShelf2{acceptedTypes=Servant, amount=2}}");
     }
 
     @Test
@@ -126,7 +126,7 @@ public class LeaderDecoratorTest {
         assertEquals(c1.getShelfById("TopShelf"), top);
         assertEquals(c1.getShelfById("LeaderShelf1"), leaderShelf1);
         assertEquals(c1.getShelfById("LeaderShelf2"), leaderShelf2);
-        assertEquals(c1.toString(), "{{BaseCupboard {BottomShelf {Stone: 3}, MiddleShelf {Gold: 1}, TopShelf {Servant: 1}}, LeaderShelf1 {}}, LeaderShelf2 {}}");
+        assertEquals(c1.toString(), "{{BaseCupboard {BottomShelf{Stone: 3}, MiddleShelf{Gold: 1}, TopShelf{Servant: 1}}, LeaderShelf1{acceptedTypes=Stone, amount=2}}, LeaderShelf2{acceptedTypes=Servant, amount=2}}");
     }
 
     @Test
@@ -157,7 +157,7 @@ public class LeaderDecoratorTest {
 
         assertThrows(NullPointerException.class, ()->c2.getShelfById(null));
         assertThrows(NoSuchElementException.class, ()->c2.getShelfById("lol"));
-        assertEquals(c1.toString(), "{{BaseCupboard {BottomShelf {Stone: 3}, MiddleShelf {Gold: 1}, TopShelf {Servant: 1}}, LeaderShelf1 {}}, LeaderShelf2 {}}");
+        assertEquals(c1.toString(), "{{BaseCupboard {BottomShelf{Stone: 3}, MiddleShelf{Gold: 1}, TopShelf{Servant: 1}}, LeaderShelf1{acceptedTypes=Stone, amount=2}}, LeaderShelf2{acceptedTypes=Servant, amount=2}}");
     }
 
     @Test
@@ -184,7 +184,7 @@ public class LeaderDecoratorTest {
         Cupboard c2 = c1;
 
         assertDoesNotThrow(() -> c2.moveBetweenShelves(bottom, middle, 2));
-        assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf {}, MiddleShelf {Stone: 2}, TopShelf {Servant: 1}}, LeaderShelf1 {}}, LeaderShelf2 {}}");
+        assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=3}, MiddleShelf{Stone: 2}, TopShelf{Servant: 1}}, LeaderShelf1{acceptedTypes=Stone, amount=2}}, LeaderShelf2{acceptedTypes=Servant, amount=2}}");
     }
 
     @Test
@@ -297,7 +297,7 @@ public class LeaderDecoratorTest {
         assertDoesNotThrow(() -> c2.removeResource(leaderShelf2, 1));
         assertDoesNotThrow(() -> c2.removeResource(bottom, 1));
 
-        assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf {Stone: 1}, MiddleShelf {}, TopShelf {Servant: 1}}, LeaderShelf1 {}}, LeaderShelf2 {Servant: 1}}");
+        assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf{Stone: 1}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{Servant: 1}}, LeaderShelf1{acceptedTypes=Stone, amount=2}}, LeaderShelf2{Servant: 1}}");
     }
 
     @Test
@@ -327,7 +327,7 @@ public class LeaderDecoratorTest {
         assertDoesNotThrow(() -> c2.addResource(leaderShelf2, servant, 2));
         assertThrows(IllegalCupboardException.class, () -> c2.removeResource(leaderShelf2, 3));
 
-        assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf {Stone: 2}, MiddleShelf {}, TopShelf {Servant: 1}}, LeaderShelf1 {}}, LeaderShelf2 {Servant: 2}}");
+        assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf{Stone: 2}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{Servant: 1}}, LeaderShelf1{acceptedTypes=Stone, amount=2}}, LeaderShelf2{Servant: 2}}");
     }
 
     @Test
@@ -356,7 +356,7 @@ public class LeaderDecoratorTest {
         assertDoesNotThrow(() -> c2.addResource(leaderShelf2, servant, 1));
         assertThrows(IllegalCupboardException.class, () -> c2.addResource(leaderShelf2,servant, 3));
 
-        assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf {Stone: 2}, MiddleShelf {}, TopShelf {Servant: 1}}, LeaderShelf1 {}}, LeaderShelf2 {Servant: 1}}");
+        assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf{Stone: 2}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{Servant: 1}}, LeaderShelf1{acceptedTypes=Stone, amount=2}}, LeaderShelf2{Servant: 1}}");
     }
 
     @Test
@@ -413,7 +413,7 @@ public class LeaderDecoratorTest {
         assertDoesNotThrow(() -> container.addResources(servant, 1));
 
         assertDoesNotThrow(() -> c2.addResourceFromContainer(container, leaderShelf2, servant, 1));
-        assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf {}, MiddleShelf {}, TopShelf {}}, LeaderShelf1 {}}, LeaderShelf2 {Servant: 1}}");
+        assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=3}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=1}}, LeaderShelf1{acceptedTypes=Stone, amount=2}}, LeaderShelf2{Servant: 1}}");
     }
 
     @Test
@@ -441,7 +441,7 @@ public class LeaderDecoratorTest {
 
         assertDoesNotThrow(() -> c2.addResourceFromContainer(container, leaderShelf2, servant, 1));
         assertThrows(IllegalCupboardException.class, ()->c2.addResourceFromContainer(container, leaderShelf2, servant, 1));
-        assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf {}, MiddleShelf {}, TopShelf {}}, LeaderShelf1 {}}, LeaderShelf2 {Servant: 1}}");
+        assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=3}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=1}}, LeaderShelf1{acceptedTypes=Stone, amount=2}}, LeaderShelf2{Servant: 1}}");
     }
 
     @Test
@@ -468,7 +468,7 @@ public class LeaderDecoratorTest {
         assertDoesNotThrow(() -> c2.addResource(leaderShelf1, stone, 2));
 
         assertDoesNotThrow(() -> c2.moveResourceToContainer(container, leaderShelf1, stone, 1));
-        assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf {}, MiddleShelf {}, TopShelf {}}, LeaderShelf1 {Stone: 1}}, LeaderShelf2 {}}");
+        assertEquals(c2.toString(), "{{BaseCupboard {BottomShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=3}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=1}}, LeaderShelf1{Stone: 1}}, LeaderShelf2{acceptedTypes=Servant, amount=2}}");
     }
 
     @Test

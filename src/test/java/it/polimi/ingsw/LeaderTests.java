@@ -45,9 +45,9 @@ public class LeaderTests {
         requirements.add(requirement2);
         requirements.add(requirement3);
 
-        LeaderCard leaderCard1 = new LeaderCard(0, "Lorenzo", 6, abilities, requirements);
+        LeaderCard leaderCard1 = new LeaderCard(1, "Lorenzo", 6, abilities, requirements);
 
-        assertEquals(leaderCard1.getId(), 0);
+        assertEquals(leaderCard1.getId(), 1);
         assertSame("Lorenzo", leaderCard1.getName());
         assertEquals(leaderCard1.getPoints(), 6);
         assertNotNull(abilities);

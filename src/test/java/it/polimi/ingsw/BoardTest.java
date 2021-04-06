@@ -1,7 +1,10 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.gamematerials.BaseFlag;
+import it.polimi.ingsw.gamematerials.FlagColor;
+import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.leader.LeaderCard;
+import it.polimi.ingsw.model.leader.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -59,7 +62,14 @@ public class BoardTest {
     @Test
     public void addNewCard(){
         Board b = new Board();
-        LeaderCard card = new LeaderCard(0, "Lorenzo il Magnifico", 100, new ArrayList<>(), new ArrayList<>());
+        ArrayList<SpecialAbility> abilities = new ArrayList<SpecialAbility>() {{
+            add(new DiscountAbility(1, ResourceTypeSingleton.getInstance().getGoldResource()));
+        }};
+        ArrayList<Requirement> requirements = new ArrayList<Requirement>() {{
+            add(new FlagRequirement(new BaseFlag(FlagColor.GREEN), 1));
+        }};
+
+        LeaderCard card = new LeaderCard(1, "Lorenzo il Magnifico", 100, abilities, requirements);
         b.addLeaderCard(card);
         assertEquals(card, b.getLeaderCards().get(0));
     }
