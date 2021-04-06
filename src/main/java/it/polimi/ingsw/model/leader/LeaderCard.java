@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.leader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -104,7 +105,7 @@ public class LeaderCard {
      * @return the List that contains all special abilities of the card
      */
     public List<SpecialAbility> getAbilities() {
-        return abilities;
+        return new ArrayList<>(abilities);
     }
 
     /**
@@ -112,6 +113,6 @@ public class LeaderCard {
      * @return the List that contains all requirements needed to activate the card
      */
     public List<Requirement> getRequirements() {
-        return requirements;
+        return new ArrayList<>(requirements);
     }
 }
