@@ -1,9 +1,12 @@
 package it.polimi.ingsw.model.storage;
 
+import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.model.GameParameters;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * The comprehensive storage of a player. It contains a chest, the hand, a market basket and a cupboard.
@@ -57,6 +60,22 @@ public class Storage {
      */
     public BaseStorage getMarketBasket() {
         return marketBasket;
+    }
+
+    /**
+     * Returns a map of all the resources owned by the player (chest + cupboard).
+     * Note: resources in the hand are not counted
+     * @return a map of all the resources owned by the player (chest + cupboard).
+     */
+    public Map<ResourceSingle, Integer> getStoredResources(){
+        List<ResourceContainer> containers = new ArrayList<>();
+        containers.add(chest);
+        containers.addAll(cupboard.getShelves());
+        
+        return containers.stream()
+                         .flatMap(x -> x.getAllResources().entrySet().stream())
+                         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                                 Integer::sum));
     }
 
     /**
