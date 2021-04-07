@@ -46,13 +46,29 @@ public class ResourceRequirement implements Requirement{
         return resource;
     }
 
+    /**
+     * method verifies that the player has enough resources to satisfy the requirement
+     * @param player the player who is being verified
+     * @return true iff the player satisfies the requirements
+     * @throws NullPointerException if the pointer to player is null
+     */
     @Override
     public boolean isSatisfied(Player player) {
 
-        //TODO: isSatisfied function
-        return false;
+        if(player == null)
+            throw new NullPointerException();
+
+        Integer availableAmount = player.getBoard().getStorage().getStoredResources().get(resource);
+        if(availableAmount == null)
+            return false;
+
+        return availableAmount >= amount;
     }
 
+    /**
+     * function represents the requirement as a string
+     * @return the resource requirement as a string
+     */
     @Override
     public String toString() {
         return "ResourceRequirement{" +
