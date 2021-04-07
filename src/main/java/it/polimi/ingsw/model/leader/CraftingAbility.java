@@ -34,14 +34,23 @@ public class CraftingAbility implements SpecialAbility {
         return crafting;
     }
 
-    //activate function
+    /**
+     * function activates the leader ability by adding a new crafting to the player's available
+     * crafting
+     * @param player the player who activates the leader card
+     * @throws NullPointerException if the pointer to player is null
+     */
     @Override
     public void activate(Player player) {
-
-        //TODO: activate function
-
+        if(player == null)
+            throw new NullPointerException();
+        player.getBoard().getProduction().addLeaderCrafting(crafting);
     }
 
+    /**
+     * function represents the ability as a string
+     * @return the crafting ability as a string
+     */
     @Override
     public String toString() {
         return "CraftingAbility{" +
