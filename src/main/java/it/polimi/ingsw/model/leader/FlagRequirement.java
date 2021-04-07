@@ -1,7 +1,11 @@
 package it.polimi.ingsw.model.leader;
 
 import it.polimi.ingsw.gamematerials.BaseFlag;
+import it.polimi.ingsw.gamematerials.LevelFlag;
 import it.polimi.ingsw.model.Player;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Class FlagRequirement implements Requirement Interface
@@ -47,14 +51,32 @@ public class FlagRequirement implements Requirement{
         return amount;
     }
 
-    //is satisfied function
+    /**
+     * method verifies that the player has enough base flags to satisfy the requirement
+     * @param player the player who is being verified
+     * @return true iff the player satisfies the requirements
+     * @throws NullPointerException if the pointer to player is null
+     */
     @Override
     public boolean isSatisfied(Player player) {
 
-        //TODO: isSatisfied function
-        return false;
+        if(player == null)
+            throw new NullPointerException();
+
+        int total = 0;
+        Set<Map.Entry<LevelFlag, Integer>> entrySet = player.getBoard().getFlagHolder().getFlags().entrySet();
+        for(Map.Entry<LevelFlag, Integer> m : entrySet) {
+            if(m.getKey().getColor().equals(flag.getColor()))
+                total += m.getValue();
+        }
+        return total >= amount;
+
     }
 
+    /**
+     * function represents the requirement as a string
+     * @return the flag requirement as a string
+     */
     @Override
     public String toString() {
         return "FlagRequirement{" +

@@ -46,5 +46,42 @@ public class FlagRequirementTests {
 
     }
 
+    @Test
+    public void isSatisfiedMethodTest(){
+
+        Player player = new Player("Player", 2);
+        Player player1 = new Player("Player1", 3);
+        LevelFlag levelFlag = new LevelFlag(FlagColor.GREEN, 3);
+        LevelFlag levelFlag1 = new LevelFlag(FlagColor.PURPLE, 2);
+        LevelFlag levelFlag2 = new LevelFlag(FlagColor.BLUE, 1);
+        LevelFlag levelFlag3 = new LevelFlag(FlagColor.GREEN, 2);
+        BaseFlag flag = new BaseFlag(FlagColor.GREEN);
+        BaseFlag flag1 = new BaseFlag(FlagColor.PURPLE);
+
+        player.getBoard().getFlagHolder().addFlag(levelFlag);
+        player.getBoard().getFlagHolder().addFlag(levelFlag1);
+        player.getBoard().getFlagHolder().addFlag(levelFlag3);
+        player1.getBoard().getFlagHolder().addFlag(levelFlag2);
+
+        FlagRequirement requirement = new FlagRequirement(flag, 2);
+        FlagRequirement requirement1 = new FlagRequirement(flag, 4);
+        FlagRequirement requirement2 = new FlagRequirement(flag1, 1);
+
+        assertTrue(requirement.isSatisfied(player));
+        assertFalse(requirement1.isSatisfied(player));
+        assertFalse(requirement2.isSatisfied(player1));
+
+    }
+
+    @Test
+    public void exceptionOnIsSatisfiedMethod(){
+
+        BaseFlag flag = new BaseFlag(FlagColor.GREEN);
+        FlagRequirement requirement = new FlagRequirement(flag, 2);
+
+        assertThrows(NullPointerException.class, ()-> requirement.isSatisfied(null));
+
+    }
+
 
 }
