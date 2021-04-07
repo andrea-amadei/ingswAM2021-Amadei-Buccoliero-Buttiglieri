@@ -3,6 +3,9 @@ package it.polimi.ingsw.model.leader;
 import it.polimi.ingsw.gamematerials.LevelFlag;
 import it.polimi.ingsw.model.Player;
 
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Class LevelFlagRequirement implements Requirement Interface
  * represents the requirement of a flag with a set level
@@ -47,14 +50,29 @@ public class LevelFlagRequirement implements Requirement{
         return amount;
     }
 
-    //is satisfied function
+    /**
+     * method verifies that the player has enough level flags to satisfy the requirement
+     * @param player the player who is being verified
+     * @return true iff the player satisfies the requirements
+     * @throws NullPointerException if the pointer to player is null
+     */
     @Override
     public boolean isSatisfied(Player player) {
 
-        //TODO: isSatisfied function
-        return false;
+        if(player == null)
+            throw new NullPointerException();
+
+        Integer availableAmount = player.getBoard().getFlagHolder().getFlags().get(flag);
+        if (availableAmount == null)
+            return false;
+        return availableAmount >= amount;
+
     }
 
+    /**
+     * function represents the requirement as a string
+     * @return the level flag requirement as a string
+     */
     @Override
     public String toString() {
         return "LevelFlagRequirement{" +

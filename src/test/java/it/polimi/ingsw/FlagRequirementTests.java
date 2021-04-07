@@ -29,15 +29,6 @@ public class FlagRequirementTests {
     }
 
     @Test
-    public void isSatisfiedTest(){
-
-        FlagRequirement flagRequirement = new FlagRequirement(new BaseFlag(FlagColor.PURPLE), 4);
-
-        assertFalse(flagRequirement.isSatisfied(new Player("Player", 1)));
-
-    }
-
-    @Test
     public void exceptionOnFlagRequirementConstructor(){
 
         assertThrows(IllegalArgumentException.class, ()-> new FlagRequirement(new BaseFlag(FlagColor.PURPLE), 0));
