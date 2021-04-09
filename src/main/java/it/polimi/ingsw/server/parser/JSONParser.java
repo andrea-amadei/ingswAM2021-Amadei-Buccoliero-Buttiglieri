@@ -9,16 +9,17 @@ import it.polimi.ingsw.model.leader.Requirement;
 import it.polimi.ingsw.model.leader.SpecialAbility;
 import it.polimi.ingsw.server.Console;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public final class JSONParser {
-    private static final boolean DEBUG_MODE = false;
+    private static final boolean DEBUG_MODE = true;
     private static final boolean BEST_EFFORT_MODE = true;
 
     private static final Gson gson = new Gson();
@@ -32,23 +33,18 @@ public final class JSONParser {
             throw new ParserException(message);
     }
 
-    public static List<LeaderCard> parseLeaders(String fileName) throws FileNotFoundException, ParserException {
-        File file;
-
+    public static List<LeaderCard> parseLeaders(Path path) throws IOException, ParserException {
         // test for null or non existing file
-        if(fileName == null)
+        if(path == null)
             throw new NullPointerException();
 
-        // tries to open file
-        file = new File(fileName);
-        if(!file.exists())
-            throw new FileNotFoundException("File " + fileName + " not found");
+        if(!Files.exists(path))
+            throw new FileNotFoundException("File does not exists");
 
-        return parseLeaders(file);
+        return parseLeaders(Files.readString(path));
     }
 
-    public static List<LeaderCard> parseLeaders(File file) throws FileNotFoundException, ParserException {
-        FileReader fileReader;
+    public static List<LeaderCard> parseLeaders(String json) throws FileNotFoundException, ParserException {
         RawLeaderCardList cards;
         LeaderCard newCard;
         Set<Integer> ids = new HashSet<>();
@@ -56,18 +52,11 @@ public final class JSONParser {
 
         int successful = 0, skipped = 0;
 
-        // tries to open file
-        try {
-            fileReader = new FileReader(file);
-        } catch (FileNotFoundException e) {
-            throw new FileNotFoundException(e.getMessage());
-        }
+        Console.log("PARSING LEADERS - PHASE 1: Reading string...");
 
-        Console.log("PARSING LEADERS - PHASE 1: Reading " + file.getName() + "...");
-
-        // STEP 1: GET RAW CARD
+        // STEP 1: GET RAW CARDS
         try {
-            cards = gson.fromJson(fileReader, RawLeaderCardList.class);
+            cards = gson.fromJson(json, RawLeaderCardList.class);
         } catch (JsonSyntaxException e) {
             throw new ParserException(e.getMessage());
         }
