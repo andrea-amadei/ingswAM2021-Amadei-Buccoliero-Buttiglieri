@@ -101,14 +101,10 @@ public class ResourceTypeSingleton {
      * @return the resource matching the given name
      */
     public ResourceType getResourceTypeByName(String name) {
-        ResourceType r;
-
         try {
-            r = getResourceSingleByName(name);
+            return getResourceSingleByName(name);
         } catch (NoSuchElementException e1) {
-            r = getResourceGroupByName(name);
+            return getResourceGroupByName(name);
         }
-
-        return r;
     }
 }
