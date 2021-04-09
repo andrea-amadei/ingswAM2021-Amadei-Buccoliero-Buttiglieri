@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 public final class JSONParser {
-    private static final boolean DEBUG_MODE = true;
+    private static final boolean DEBUG_MODE = false;
     private static final boolean BEST_EFFORT_MODE = true;
 
     private static final Gson gson = new Gson();
@@ -72,6 +72,10 @@ public final class JSONParser {
             throw new ParserException(e.getMessage());
         }
 
+        // test if the list is working
+        if(cards.getList() == null)
+            throw new ParserException("Unable to parse any card");
+
         Console.log("PARSING LEADERS - PHASE 2: Consolidating data...");
 
         //STEP 2: CONSOLIDATE DATA
@@ -82,7 +86,6 @@ public final class JSONParser {
                 skipped++;
                 continue;
             }
-
 
             // check if id is unique
             if (ids.contains(card.getId())) {

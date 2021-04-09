@@ -34,6 +34,12 @@ public class RawCrafting {
     }
 
     public Crafting toCrafting(int id) throws IllegalRawConversionException {
+        if(input == null)
+            throw new IllegalRawConversionException("Missing mandatory field \"input\" in crafting (id: " + id + ")");
+
+        if(output == null)
+            throw new IllegalRawConversionException("Missing mandatory field \"output\" in crafting (id: " + id + ")");
+
         Map<ResourceType, Integer> in = new HashMap<>(input.size());
         Map<ResourceType, Integer> out = new HashMap<>(output.size());
         Crafting c;
