@@ -18,7 +18,7 @@ import java.util.HashMap;
 @DisplayName("Crafting and UpgradableCrafting tests")
 public class CraftingTest {
     @Test
-    @DisplayName("Construction test")
+    @DisplayName("Construction")
     public void constructionTest() {
         HashMap<ResourceType, Integer> empty_input = new HashMap<>();
         HashMap<ResourceType, Integer> empty_output = new HashMap<>();
@@ -49,7 +49,7 @@ public class CraftingTest {
     }
 
     @Test
-    @DisplayName("Getters test")
+    @DisplayName("Getters")
     public void getTest() {
         HashMap<ResourceType, Integer> input = new HashMap<>();
         input.put(ResourceTypeSingleton.getInstance().getServantResource(), 1);
@@ -69,7 +69,7 @@ public class CraftingTest {
     }
 
     @Test
-    @DisplayName("Conversion test")
+    @DisplayName("Conversion")
     void conversionTest() {
         HashMap<ResourceType, Integer> input = new HashMap<>();
         input.put(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
@@ -116,7 +116,7 @@ public class CraftingTest {
     }
 
     @Test
-    @DisplayName("Crafting test")
+    @DisplayName("Crafting")
     public void craftingTest() {
         Player player = new Player("Name", 0);
 
@@ -158,7 +158,7 @@ public class CraftingTest {
     }
 
     @Test
-    @DisplayName("Upgradable Crafting test")
+    @DisplayName("Upgradable Crafting")
     public void upgradableCraftingTest() {
         HashMap<ResourceType, Integer> input = new HashMap<>();
         input.put(ResourceTypeSingleton.getInstance().getServantResource(), 1);
@@ -173,5 +173,21 @@ public class CraftingTest {
         UpgradableCrafting crafting = new UpgradableCrafting(input, output, 1, 2);
 
         assertEquals(crafting.getLevel(), 2);
+    }
+
+    @Test
+    @DisplayName("To string")
+    public void toStringTest() {
+        HashMap<ResourceType, Integer> input = new HashMap<>();
+        input.put(ResourceTypeSingleton.getInstance().getServantResource(), 1);
+        input.put(ResourceTypeSingleton.getInstance().getShieldResource(), 2);
+
+        HashMap<ResourceType, Integer> output = new HashMap<>();
+        output.put(ResourceTypeSingleton.getInstance().getStoneResource(), 1);
+        output.put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
+
+        Crafting crafting = new Crafting(input, output, 1);
+
+        assertEquals("Crafting{Shield: 2 Servant: 1 -> Stone: 1 Gold: 2 + Faith: 1}", crafting.toString());
     }
 }

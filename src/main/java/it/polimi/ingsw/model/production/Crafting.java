@@ -223,7 +223,7 @@ public class Crafting {
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder("Crafting{");
+        StringBuilder str = new StringBuilder(this.getClass().getSimpleName()).append("{");
 
         for(ResourceType i : input.keySet())
             str.append(i).append(": ").append(input.get(i)).append(" ");
