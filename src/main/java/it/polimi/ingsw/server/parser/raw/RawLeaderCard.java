@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.parser;
+package it.polimi.ingsw.server.parser.raw;
 
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
@@ -6,11 +6,12 @@ import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.model.leader.Requirement;
 import it.polimi.ingsw.model.leader.SpecialAbility;
 import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.parser.RawObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RawLeaderCard {
+public class RawLeaderCard implements RawObject<LeaderCard> {
     @SerializedName("id")
     private int id;
 
@@ -26,6 +27,7 @@ public class RawLeaderCard {
     @SerializedName("requirements")
     private List<RawRequirement> requirements;
 
+    @Override
     public int getId() {
         return id;
     }
@@ -46,7 +48,8 @@ public class RawLeaderCard {
         return requirements;
     }
 
-    public LeaderCard toLeaderCard() throws IllegalRawConversionException {
+    @Override
+    public LeaderCard toObject() throws IllegalRawConversionException {
         if(name == null)
             throw new IllegalRawConversionException("Missing mandatory field \"name\" (id: " + id + ")");
 

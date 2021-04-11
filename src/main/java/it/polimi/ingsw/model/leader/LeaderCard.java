@@ -1,12 +1,15 @@
 package it.polimi.ingsw.model.leader;
 
+import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.parser.SerializedObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Class LeaderCard allows to instantiate leader cards and use them in game
  */
-public class LeaderCard {
+public class LeaderCard implements SerializedObject {
 
     private final int id;
     private final String name;
@@ -114,5 +117,20 @@ public class LeaderCard {
      */
     public List<Requirement> getRequirements() {
         return new ArrayList<>(requirements);
+    }
+
+    @Override
+    public void printDebugInfo() {
+        Console.log("Id: " + getId());
+        Console.log("Name: " + getName());
+        Console.log("Points: " + getPoints());
+
+        Console.log("Requirements: " + getRequirements().size());
+        for(Requirement i : getRequirements())
+            Console.log("  - " + i.toString());
+
+        Console.log("Special abilities: " + getAbilities().size());
+        for(SpecialAbility i : getAbilities())
+            Console.log("  - " + i.toString());
     }
 }
