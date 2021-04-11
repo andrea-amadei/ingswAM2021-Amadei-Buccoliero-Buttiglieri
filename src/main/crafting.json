@@ -1,0 +1,39 @@
+{
+  "shop": [
+    {
+      "id": 1,
+      "color": "GREEN",
+      "level": 1,
+      "points": 1,
+      "cost": {
+        "SHIELD": 2
+      },
+      "crafting": {
+        "input": {
+          "STONE": 1
+        },
+        "output": {},
+        "faith_output": 1
+      }
+    },
+    {
+      "id": 2,
+      "color": "PURPLE",
+      "level": 1,
+      "points": 1,
+      "cost": {
+        "SERVANT": 2
+      },
+      "crafting": {
+        "input": {
+          "STONE": 1
+        },
+        "output": {},
+        "faith_output": 1
+      }
+    }
+  ],
+  "base": [
+
+  ]
+}
