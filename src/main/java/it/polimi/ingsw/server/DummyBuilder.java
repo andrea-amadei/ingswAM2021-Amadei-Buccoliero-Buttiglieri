@@ -48,9 +48,9 @@ public final class DummyBuilder {
         UpgradableCrafting upgradableCrafting = new UpgradableCrafting(map1, map1, 0, 1);
         for(int i = 0; i < GameParameters.MARKET_ROWS; i++)
             for(int j = 0; j < GameParameters.MARKET_COLUMNS; j++){
-                craftingCards.add(new CraftingCard(new LevelFlag(FlagColor.values()[j], i+1), map2, new UpgradableCrafting(map1, map1, 0, i+1), 10));
-                craftingCards.add(new CraftingCard(new LevelFlag(FlagColor.values()[j], i+1), map2, new UpgradableCrafting(map1, map1, 0, i+1), 10));
-                craftingCards.add(new CraftingCard(new LevelFlag(FlagColor.values()[j], i+1), map2, new UpgradableCrafting(map1, map1, 0, i+1), 10));
+                craftingCards.add(new CraftingCard(1, new LevelFlag(FlagColor.values()[j], i+1), map2, new UpgradableCrafting(map1, map1, 0, i+1), 10));
+                craftingCards.add(new CraftingCard(2, new LevelFlag(FlagColor.values()[j], i+1), map2, new UpgradableCrafting(map1, map1, 0, i+1), 10));
+                craftingCards.add(new CraftingCard(3, new LevelFlag(FlagColor.values()[j], i+1), map2, new UpgradableCrafting(map1, map1, 0, i+1), 10));
             }
 
         return craftingCards;
