@@ -27,7 +27,7 @@ public final class DummyBuilder {
 
     public static List<LeaderCard> buildLeaderCards(){
         try {
-            return JSONParser.parseLeaders(Paths.get("src/main/cards.json"));
+            return JSONParser.parseLeaders(Paths.get("src/main/leaders.json"));
         }catch(IOException | ParserException e1){
             Console.log(e1.getMessage(), Console.Severity.ERROR);
             return null;
