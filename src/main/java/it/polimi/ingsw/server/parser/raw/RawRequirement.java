@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.parser;
+package it.polimi.ingsw.server.parser.raw;
 
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;

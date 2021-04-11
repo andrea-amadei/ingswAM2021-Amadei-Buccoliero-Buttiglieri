@@ -1,11 +1,10 @@
-package it.polimi.ingsw.server.parser;
+package it.polimi.ingsw.server.parser.raw;
 
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.gamematerials.*;
 import it.polimi.ingsw.model.leader.*;
 import it.polimi.ingsw.model.market.ConversionActuator;
-import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.storage.Shelf;
 
 import java.util.ArrayList;
