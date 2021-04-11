@@ -3,6 +3,10 @@ package it.polimi.ingsw.model.production;
 import it.polimi.ingsw.exceptions.NegativeCostException;
 import it.polimi.ingsw.gamematerials.LevelFlag;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
+import it.polimi.ingsw.model.leader.Requirement;
+import it.polimi.ingsw.model.leader.SpecialAbility;
+import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.parser.SerializedObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +16,8 @@ import java.util.Map;
  * Can grant victory points.
  * The class is immutable.
  */
-public class CraftingCard {
+public class CraftingCard implements SerializedObject {
+    private final int id;
     private final LevelFlag flag;
     private final Map<ResourceSingle, Integer> cost;
     private final UpgradableCrafting crafting;
@@ -30,7 +35,10 @@ public class CraftingCard {
      *                                  the level of the flag is different from the one of the crafting.
      * @throws NegativeCostException if the  cost contains below zero amounts of resources
      */
-    public CraftingCard(LevelFlag flag, Map<ResourceSingle, Integer> cost, UpgradableCrafting crafting, int points) {
+    public CraftingCard(int id, LevelFlag flag, Map<ResourceSingle, Integer> cost, UpgradableCrafting crafting, int points) {
+        if(id <= 0)
+            throw new IllegalArgumentException("Id number must be positive");
+
         if(flag == null || cost == null || crafting == null)
             throw new NullPointerException();
 
@@ -47,10 +55,18 @@ public class CraftingCard {
         if(flag.getLevel() != crafting.getLevel())
             throw new IllegalArgumentException("Flag level doesn't match crafting level");
 
+        this.id = id;
         this.flag = flag;
         this.cost = cost;
         this.crafting = crafting;
         this.points = points;
+    }
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
     }
 
     /**
@@ -79,5 +95,14 @@ public class CraftingCard {
      */
     public int getPoints() {
         return points;
+    }
+
+    @Override
+    public void printDebugInfo() {
+        Console.log("Id: " + getId());
+        Console.log("Points: " + getPoints());
+        Console.log("Flag: " + getFlag());
+        Console.log("Cost: " + getCost());
+        Console.log("Crafting: " + getCrafting());
     }
 }

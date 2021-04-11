@@ -22,10 +22,14 @@ public class ShopTest {
     @Test
     public void addCardLastRowLastCol(){
         Shop s = new Shop();
-        Map<ResourceSingle, Integer> cardCost = new HashMap<ResourceSingle, Integer>(){{put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);}};
-        Map<ResourceType, Integer> craftingParams = new HashMap<ResourceType, Integer>(){{put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);}};
+        Map<ResourceSingle, Integer> cardCost = new HashMap<>() {{
+            put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
+        }};
+        Map<ResourceType, Integer> craftingParams = new HashMap<>() {{
+            put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
+        }};
         UpgradableCrafting upgradableCrafting = new UpgradableCrafting(craftingParams, craftingParams, 0, 3);
-        CraftingCard card = new CraftingCard(new LevelFlag(FlagColor.YELLOW, 3), cardCost, upgradableCrafting, 12);
+        CraftingCard card = new CraftingCard(1, new LevelFlag(FlagColor.YELLOW, 3), cardCost, upgradableCrafting, 12);
 
         s.addCard(card);
         assertEquals(card, s.getTopCard(3, FlagColor.YELLOW));
@@ -34,10 +38,14 @@ public class ShopTest {
     @Test
     public void addCardFirstRowFirstCol(){
         Shop s = new Shop();
-        Map<ResourceSingle, Integer> cardCost = new HashMap<ResourceSingle, Integer>(){{put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);}};
-        Map<ResourceType, Integer> craftingParams = new HashMap<ResourceType, Integer>(){{put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);}};
+        Map<ResourceSingle, Integer> cardCost = new HashMap<>() {{
+            put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
+        }};
+        Map<ResourceType, Integer> craftingParams = new HashMap<>() {{
+            put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
+        }};
         UpgradableCrafting upgradableCrafting = new UpgradableCrafting(craftingParams, craftingParams, 0, 1);
-        CraftingCard card = new CraftingCard(new LevelFlag(FlagColor.BLUE, 1), cardCost, upgradableCrafting, 12);
+        CraftingCard card = new CraftingCard(1, new LevelFlag(FlagColor.BLUE, 1), cardCost, upgradableCrafting, 12);
 
         s.addCard(card);
         assertEquals(card, s.getTopCard(1, FlagColor.BLUE));
@@ -46,10 +54,14 @@ public class ShopTest {
     @Test
     public void addCardSecondRowFirstCol(){
         Shop s = new Shop();
-        Map<ResourceSingle, Integer> cardCost = new HashMap<ResourceSingle, Integer>(){{put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);}};
-        Map<ResourceType, Integer> craftingParams = new HashMap<ResourceType, Integer>(){{put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);}};
+        Map<ResourceSingle, Integer> cardCost = new HashMap<>() {{
+            put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
+        }};
+        Map<ResourceType, Integer> craftingParams = new HashMap<>() {{
+            put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
+        }};
         UpgradableCrafting upgradableCrafting = new UpgradableCrafting(craftingParams, craftingParams, 0, 2);
-        CraftingCard card = new CraftingCard(new LevelFlag(FlagColor.BLUE, 2), cardCost, upgradableCrafting, 12);
+        CraftingCard card = new CraftingCard(1, new LevelFlag(FlagColor.BLUE, 2), cardCost, upgradableCrafting, 12);
 
         s.addCard(card);
         assertEquals(card, s.getTopCard(2, FlagColor.BLUE));
@@ -73,10 +85,14 @@ public class ShopTest {
     @Test
     public void removeCardSecondRowFirstCol(){
         Shop s = new Shop();
-        Map<ResourceSingle, Integer> cardCost = new HashMap<ResourceSingle, Integer>(){{put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);}};
-        Map<ResourceType, Integer> craftingParams = new HashMap<ResourceType, Integer>(){{put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);}};
+        Map<ResourceSingle, Integer> cardCost = new HashMap<>() {{
+            put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
+        }};
+        Map<ResourceType, Integer> craftingParams = new HashMap<>() {{
+            put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
+        }};
         UpgradableCrafting upgradableCrafting = new UpgradableCrafting(craftingParams, craftingParams, 0, 2);
-        CraftingCard card = new CraftingCard(new LevelFlag(FlagColor.BLUE, 2), cardCost, upgradableCrafting, 12);
+        CraftingCard card = new CraftingCard(1, new LevelFlag(FlagColor.BLUE, 2), cardCost, upgradableCrafting, 12);
 
         s.addCard(card);
         assertEquals(card, s.removeCard(2, FlagColor.BLUE));
