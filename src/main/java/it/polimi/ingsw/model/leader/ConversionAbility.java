@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.leader;
 import it.polimi.ingsw.gamematerials.MarbleColor;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.market.ConversionActuator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  */
 public class ConversionAbility implements SpecialAbility {
     private final MarbleColor from;
-    private final ResourceSingle to;
+    private final ConversionActuator to;
 
     /**
      * ConversionAbility Constructor
@@ -23,7 +24,7 @@ public class ConversionAbility implements SpecialAbility {
      * @throws NullPointerException if pointer of input resource is null
      * @throws NullPointerException if pointer of output resource is null
      */
-    public ConversionAbility(MarbleColor from, ResourceSingle to){
+    public ConversionAbility(MarbleColor from, ConversionActuator to){
 
         if (from == null)
             throw new NullPointerException();
@@ -46,7 +47,7 @@ public class ConversionAbility implements SpecialAbility {
     /**
      * @return the resource to convert to
      */
-    public ResourceSingle getTo() {
+    public ConversionActuator getTo() {
         return to;
     }
 

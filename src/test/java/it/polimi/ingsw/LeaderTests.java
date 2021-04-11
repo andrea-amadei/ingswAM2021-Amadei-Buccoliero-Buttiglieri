@@ -6,10 +6,12 @@ import it.polimi.ingsw.gamematerials.*;
 import it.polimi.ingsw.model.leader.*;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
+import it.polimi.ingsw.model.market.ConversionActuator;
 import it.polimi.ingsw.model.storage.Shelf;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class LeaderTests {
@@ -27,7 +29,8 @@ public class LeaderTests {
 
         SpecialAbility discount1 = new DiscountAbility(1, stone);
         SpecialAbility discount2 = new DiscountAbility(4, servant);
-        SpecialAbility conversion1 = new ConversionAbility(MarbleColor.YELLOW, shield);
+        SpecialAbility conversion1 = new ConversionAbility(MarbleColor.YELLOW,
+                new ConversionActuator(Collections.singletonList(shield), 0));
         SpecialAbility storage1 = new StorageAbility(shelf1);
         //TODO: test crafting ability after crafting class is complete
         Requirement requirement1 = new FlagRequirement(flag1, 2);
@@ -65,7 +68,8 @@ public class LeaderTests {
         ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
 
         Requirement flagRequirement = new FlagRequirement(new BaseFlag(FlagColor.BLUE), 1);
-        SpecialAbility conversion = new ConversionAbility(MarbleColor.YELLOW, servant);
+        SpecialAbility conversion = new ConversionAbility(MarbleColor.YELLOW,
+                new ConversionActuator(Collections.singletonList(servant), 0));
 
         List<SpecialAbility> abilities = new ArrayList<>();
         List<Requirement> requirements = new ArrayList<>();

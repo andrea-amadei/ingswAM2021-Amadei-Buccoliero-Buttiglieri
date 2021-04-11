@@ -192,7 +192,8 @@
         {
           "type": "conversion",
           "from": "WHITE",
-          "to": "SERVANT"
+          "to": ["SERVANT"],
+          "faith_output": 0
         }
       ]
     },
@@ -216,7 +217,7 @@
         {
           "type": "conversion",
           "from": "WHITE",
-          "to": "SHIELD"
+          "to": ["SHIELD"]
         }
       ]
     },
@@ -240,7 +241,7 @@
         {
           "type": "conversion",
           "from": "WHITE",
-          "to": "STONE"
+          "to": ["STONE"]
         }
       ]
     },
@@ -264,7 +265,7 @@
         {
           "type": "conversion",
           "from": "WHITE",
-          "to": "GOLD"
+          "to": ["GOLD"]
         }
       ]
     },

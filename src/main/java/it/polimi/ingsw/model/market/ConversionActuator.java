@@ -23,6 +23,8 @@ public class ConversionActuator {
      * @param resourceOutput the list of resources to be transferred to the player's basket. If empty, this actuator
      *                       doesn't add any resource to the player's basket
      * @param faithOutput the faith points to be added to the player
+     * @throws NullPointerException if resourceOutput is null
+     * @throws IllegalArgumentException if faithOutput is negative
      */
     public ConversionActuator(List<ResourceSingle> resourceOutput, int faithOutput) {
         if(resourceOutput == null)
@@ -87,6 +89,14 @@ public class ConversionActuator {
      */
     public int getFaith(){
         return faithOutput;
+    }
+
+    @Override
+    public String toString() {
+        return "ConversionActuator{" +
+                "resourceOutput=" + resourceOutput +
+                ", faithOutput=" + faithOutput +
+                '}';
     }
 }
 
