@@ -5,20 +5,19 @@ import com.google.gson.JsonSyntaxException;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.model.leader.LeaderCard;
-import it.polimi.ingsw.model.leader.Requirement;
-import it.polimi.ingsw.model.leader.SpecialAbility;
+import it.polimi.ingsw.model.production.CraftingCard;
 import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.parser.raw.RawCraftingCardList;
+import it.polimi.ingsw.server.parser.raw.RawLeaderCardList;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public final class JSONParser {
+    private static final boolean SHOW_LOGS = true;
     private static final boolean DEBUG_MODE = true;
     private static final boolean BEST_EFFORT_MODE = true;
 
@@ -33,7 +32,78 @@ public final class JSONParser {
             throw new ParserException(message);
     }
 
-    public static List<LeaderCard> parseLeaders(Path path) throws ParserException, IOException {
+    public static <O extends SerializedObject, R extends RawObject<O>, L extends RawList<R>> List<O> parse(String json, String description, Class<L> rawListClass) throws ParserException {
+        L rawList;
+        O object;
+        List<O> list = new ArrayList<>();
+        Set<Integer> ids = new HashSet<>();
+
+        int successful = 0, skipped = 0;
+
+        // PHASE 1: GET RAW OBJECTS
+        if(SHOW_LOGS)
+            Console.log("JSON PARSER - Parsing " + description.toLowerCase() + " (phase 1/2) ...");
+
+        try {
+            rawList = gson.fromJson(json, rawListClass);
+        } catch (JsonSyntaxException e) {
+            throw new ParserException(e.getMessage());
+        }
+
+        // test if the list is working
+        if(rawList.getList() == null || rawList.getList().size() == 0)
+            throw new ParserException("Unable to parse any card");
+
+        // PHASE 2: CONVERT OBJECTS
+        if(SHOW_LOGS)
+            Console.log("JSON PARSER - Converting raw data from " + description.toLowerCase() + " (phase 2/2) ...");
+
+        // for each raw object
+        for(R rawObject : rawList.getList()) {
+            // check if id is present
+            if(rawObject.getId() == 0) {
+                errorHandler("Missing mandatory object id!");
+                skipped++;
+                continue;
+            }
+
+            // check if id is unique
+            if (ids.contains(rawObject.getId())) {
+                errorHandler("Duplicate object property \"id\" " + rawObject.getId());
+                skipped++;
+                continue;
+            } else
+                ids.add(rawObject.getId());
+
+            // convert object
+            try {
+                object = rawObject.toObject();
+            } catch (IllegalRawConversionException e) {
+                errorHandler(e.getMessage());
+                skipped++;
+                continue;
+            }
+
+            // add to list
+            list.add(object);
+
+            // print debug messages
+            if(SHOW_LOGS && DEBUG_MODE) {
+                Console.log("----- " + description + " " + (rawList.getList().indexOf(rawObject) + 1) + " -----");
+                object.printDebugInfo();
+            }
+
+            successful++;
+        }
+
+        // DONE!
+        if(SHOW_LOGS)
+            Console.log("JSON PARSER - Parsing of " + description + " done! Successful = " + successful + ", Skipped = " + skipped);
+
+        return list;
+    }
+
+    public static <O extends SerializedObject, R extends RawObject<O>, L extends RawList<R>> List<O> parse(Path path, String description, Class<L> rawListClass) throws ParserException, IOException {
         // test for null or non existing file
         if(path == null)
             throw new NullPointerException();
@@ -42,83 +112,22 @@ public final class JSONParser {
         if(!Files.exists(path))
             throw new FileNotFoundException("File does not exists");
 
-        // get the JSON as string and parse it the normal way
-        return parseLeaders(Files.readString(path));
+        return parse(Files.readString(path), description, rawListClass);
     }
 
-    public static List<LeaderCard> parseLeaders(String json) throws ParserException {
-        RawLeaderCardList cards;
-        LeaderCard newCard;
-        Set<Integer> ids = new HashSet<>();
-        List<LeaderCard> list = new ArrayList<>();
+    public static List<LeaderCard> parseLeaders(Path path) throws ParserException, IOException {
+        return parse(path, "Leaders", RawLeaderCardList.class);
+    }
 
-        int successful = 0, skipped = 0;
+    public static List<LeaderCard> parseLeaders(String json) throws ParserException, IOException {
+        return parse(json, "Leaders", RawLeaderCardList.class);
+    }
 
-        Console.log("PARSING LEADERS - PHASE 1: Reading string...");
+    public static List<CraftingCard> parseCraftingCards(Path path) throws ParserException, IOException {
+        return parse(path, "Crafting Cards", RawCraftingCardList.class);
+    }
 
-        // STEP 1: GET RAW CARDS
-        try {
-            cards = gson.fromJson(json, RawLeaderCardList.class);
-        } catch (JsonSyntaxException e) {
-            throw new ParserException(e.getMessage());
-        }
-
-        // test if the list is working
-        if(cards.getList() == null)
-            throw new ParserException("Unable to parse any card");
-
-        Console.log("PARSING LEADERS - PHASE 2: Consolidating data...");
-
-        //STEP 2: CONSOLIDATE DATA
-        for(RawLeaderCard card : cards.getList()) {
-            // check if id is present
-            if(card.getId() == 0) {
-                errorHandler("Missing mandatory card id!");
-                skipped++;
-                continue;
-            }
-
-            // check if id is unique
-            if (ids.contains(card.getId())) {
-                errorHandler("Duplicate card property \"id\" " + card.getId());
-                skipped++;
-                continue;
-            } else
-                ids.add(card.getId());
-
-            // convert card
-            try {
-                newCard = card.toLeaderCard();
-            } catch (IllegalRawConversionException e) {
-                errorHandler(e.getMessage());
-                skipped++;
-                continue;
-            }
-
-            // add to list
-            list.add(newCard);
-
-            if(DEBUG_MODE) {
-                Console.log("----- CARD " + (cards.getList().indexOf(card) + 1) + " -----");
-
-                Console.log("Id: " + newCard.getId());
-                Console.log("Name: " + newCard.getName());
-                Console.log("Points: " + newCard.getPoints());
-
-                Console.log("Requirements: " + newCard.getRequirements().size());
-                for(Requirement i : newCard.getRequirements())
-                    Console.log("  - " + i.toString());
-
-                Console.log("Special abilities: " + newCard.getAbilities().size());
-                for(SpecialAbility i : newCard.getAbilities())
-                    Console.log("  - " + i.toString());
-            }
-
-            successful++;
-        }
-
-        Console.log("PARSING DONE! Successful = " + successful + ", Skipped = " + skipped);
-
-        return list;
+    public static List<CraftingCard> parseCraftingCards(String json) throws ParserException, IOException {
+        return parse(json, "Crafting Cards", RawCraftingCardList.class);
     }
 }
