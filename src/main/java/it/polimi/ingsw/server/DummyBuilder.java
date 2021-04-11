@@ -10,6 +10,9 @@ import it.polimi.ingsw.model.production.UpgradableCrafting;
 import it.polimi.ingsw.server.parser.JSONParser;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,19 +27,19 @@ public final class DummyBuilder {
 
     public static List<LeaderCard> buildLeaderCards(){
         try {
-            return JSONParser.parseLeaders("src/main/cards.json");
-        }catch(FileNotFoundException | ParserException e1){
+            return JSONParser.parseLeaders(Paths.get("src/main/cards.json"));
+        }catch(IOException | ParserException e1){
             Console.log(e1.getMessage(), Console.Severity.ERROR);
             return null;
         }
     }
 
     public static List<CraftingCard> buildCraftingCards(){
-        Map<ResourceType, Integer> map1 = new HashMap<ResourceType, Integer>(){{
+        Map<ResourceType, Integer> map1 = new HashMap<>(){{
             put(gold, 2);
             put(servant, 1);
         }};
-        Map<ResourceSingle, Integer> map2 = new HashMap<ResourceSingle, Integer>(){{
+        Map<ResourceSingle, Integer> map2 = new HashMap<>(){{
             put(shield, 2);
             put(stone, 1);
         }};

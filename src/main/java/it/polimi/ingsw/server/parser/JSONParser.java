@@ -33,18 +33,20 @@ public final class JSONParser {
             throw new ParserException(message);
     }
 
-    public static List<LeaderCard> parseLeaders(Path path) throws IOException, ParserException {
+    public static List<LeaderCard> parseLeaders(Path path) throws ParserException, IOException {
         // test for null or non existing file
         if(path == null)
             throw new NullPointerException();
 
+        // test if file exists
         if(!Files.exists(path))
             throw new FileNotFoundException("File does not exists");
 
+        // get the JSON as string and parse it the normal way
         return parseLeaders(Files.readString(path));
     }
 
-    public static List<LeaderCard> parseLeaders(String json) throws FileNotFoundException, ParserException {
+    public static List<LeaderCard> parseLeaders(String json) throws ParserException {
         RawLeaderCardList cards;
         LeaderCard newCard;
         Set<Integer> ids = new HashSet<>();
