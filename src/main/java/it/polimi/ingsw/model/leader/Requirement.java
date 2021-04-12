@@ -1,13 +1,15 @@
 package it.polimi.ingsw.model.leader;
 
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.parser.SerializedObject;
 
 /**
  * Interface Requirement is implemented by the specific types of requirements (flag,
  * flag with level, resource)
  * provides isSatisfied method, to verify that requirements are satisfied
  */
-public interface Requirement {
+public interface Requirement extends SerializedObject {
 
     /**
      * isSatisfied verifies if the selected players satisfies all requirements to activate
@@ -16,4 +18,8 @@ public interface Requirement {
      */
     boolean isSatisfied(Player player);
 
+    @Override
+    default void printDebugInfo() {
+        Console.log(toString());
+    }
 }

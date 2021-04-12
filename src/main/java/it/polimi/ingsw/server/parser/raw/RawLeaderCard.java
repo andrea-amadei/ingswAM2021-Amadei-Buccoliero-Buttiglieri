@@ -71,7 +71,7 @@ public class RawLeaderCard implements UniqueRawObject<LeaderCard> {
                 a.add(i.convert());
 
             for(RawRequirement i : requirements)
-                r.add(i.toRequirement(id));
+                r.add(i.convert());
 
             return new LeaderCard(id, name, points, a, r);
         } catch (IllegalArgumentException e) {
