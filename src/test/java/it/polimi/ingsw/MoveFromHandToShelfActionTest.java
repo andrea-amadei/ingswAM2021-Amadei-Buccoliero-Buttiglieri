@@ -86,7 +86,7 @@ public class MoveFromHandToShelfActionTest {
     }
 
     @Test
-    public void noSuchShield(){
+    public void noSuchShelf(){
         Action action = new MoveFromHandToShelfAction("Genoveffa", shield, 2, "BohShelf");
         assertThrows(IllegalActionException.class, ()->action.execute(gameContext));
     }
