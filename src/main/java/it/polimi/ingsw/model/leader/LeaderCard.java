@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.leader;
 
+import it.polimi.ingsw.exceptions.RequirementsNotSatisfiedException;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.server.Console;
 import it.polimi.ingsw.server.parser.SerializedObject;
 
@@ -66,9 +68,43 @@ public class LeaderCard implements SerializedObject {
         this.requirements = requirements;
     }
 
-    //TODO: activate function
+    /**
+     * method activates all leader card abilities and sets the card status to true
+     * @param player the player who activates the leader card
+     * @throws NullPointerException if pointer to player is null
+     * @throws RequirementsNotSatisfiedException if a player tries to activate a leader card whose
+     * requirements are not satisfied
+     */
+    public void activate(Player player) throws RequirementsNotSatisfiedException {
+        if(player == null)
+            throw new NullPointerException();
+        if(!LeaderCard.this.isSatisfied(player))
+            throw new RequirementsNotSatisfiedException();
 
-    //TODO: isSatisfied function
+        for(SpecialAbility specialAbility : abilities){
+            specialAbility.activate(player);
+        }
+        status = true;
+
+    }
+
+    /**
+     * method verifies if the player satisfies all leader card requirements
+     * @param player the player who is being verified
+     * @return true iff all leader card requirements are satisfied, false otherwise
+     * @throws NullPointerException if pointer to player is null
+     */
+    public boolean isSatisfied(Player player){
+        if(player == null)
+            throw new NullPointerException();
+
+        for( Requirement requirement : requirements) {
+            if (!requirement.isSatisfied(player)){
+                return false;
+            }
+        }
+        return true;
+    }
 
 
     /**
@@ -88,8 +124,8 @@ public class LeaderCard implements SerializedObject {
     }
 
     /**
-     * get status
-     * @return the current status of the leader card (active or non active)
+     * checks the current status of the leader card (active or non active)
+     * @return true iff the leader card is currently active, false otherwise
      */
     public boolean isActive(){
         return status;
