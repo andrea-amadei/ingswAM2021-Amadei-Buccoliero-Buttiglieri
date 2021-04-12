@@ -49,7 +49,7 @@ public class MoveFromShelfToHandActionTest {
                 ,gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getStorage().getCupboard()
                         .getShelfById("BottomShelf").getAllResources());
 
-        assertEquals("INFO: 1 of Servant have been moved from Ernestino's BottomShelf to his hand", messages.get(0).toString());
+        assertEquals("INFO: 1 of Servant have been moved from Ernestino's BottomShelf to their hand", messages.get(0).toString());
     }
 
     @Test

@@ -9,44 +9,47 @@ import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.fsm.GameContext;
-import it.polimi.ingsw.model.storage.ResourceContainer;
 import it.polimi.ingsw.model.storage.Shelf;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 /**
- * Action moves resource/s from a shelf to the player's hand
+ * action moves resources between a player's shelves
  */
-public class MoveFromShelfToHandAction implements Action{
+public class MoveFromShelfToShelfAction implements Action{
 
     private final String player;
     private final ResourceSingle resourceToMove;
     private final int amount;
-    private final String shelfID;
+    private final String formerShelfID;
+    private final String destinationShelfID;
 
     /**
-     * MoveFromShelfToHand action constructor
+     * MoveFromShelfToShelf action constructor
      * @param player the player performing the action
      * @param resourceToMove the resource that is being moved
      * @param amount the amount of said resource
-     * @param shelfID the ID of the shelf the resource is about to be moved to
-     * @throws NullPointerException if pointer to player, resource to move or shelf is null
-     * @throws IllegalArgumentException iff the amount of resources to move is zero or negative
+     * @param formerShelfID the ID of the shelf the resource is being removed from
+     * @param destinationShelfID the ID of the self the resource is being moved to
+     * @throws NullPointerException iff pointer to player, resource to move, or one of the shelves is null
+     * @throws IllegalArgumentException iff amount of resources to move is negative or zero
      */
-    public MoveFromShelfToHandAction(String player, ResourceSingle resourceToMove, int amount, String shelfID){
+    public MoveFromShelfToShelfAction(String player, ResourceSingle resourceToMove, int amount, String formerShelfID, String destinationShelfID){
 
-        if(player == null || resourceToMove == null || shelfID == null)
+        if(player == null || resourceToMove == null || formerShelfID == null || destinationShelfID == null)
             throw new NullPointerException();
+
         if(amount <= 0)
             throw new IllegalArgumentException("Amount cannot be negative or zero");
 
         this.player = player;
         this.resourceToMove = resourceToMove;
         this.amount = amount;
-        this.shelfID = shelfID;
-
+        this.formerShelfID = formerShelfID;
+        this.destinationShelfID = destinationShelfID;
     }
 
     /**
@@ -62,39 +65,44 @@ public class MoveFromShelfToHandAction implements Action{
         if(gameContext == null)
             throw new NullPointerException();
 
-        GameModel gameModel = gameContext.getGameModel();
+        GameModel model = gameContext.getGameModel();
         Player currentPlayer;
-        Shelf shelf;
-        ResourceContainer hand;
+        Shelf formerShelf, destinationShelf;
 
         try {
-            currentPlayer = gameModel.getPlayerById(player);
+            currentPlayer = model.getPlayerById(player);
         }catch(NoSuchElementException e){
             throw new IllegalActionException(e.getMessage());
         }
 
-        hand = currentPlayer.getBoard().getStorage().getHand();
+        try {
+            formerShelf = currentPlayer.getBoard().getStorage().getCupboard().getShelfById(formerShelfID);
+        }catch(NoSuchElementException e){
+            throw new IllegalActionException(e.getMessage());
+        }
 
         try {
-            shelf = currentPlayer.getBoard().getStorage().getCupboard().getShelfById(shelfID);
+            destinationShelf = currentPlayer.getBoard().getStorage().getCupboard().getShelfById(destinationShelfID);
         }catch(NoSuchElementException e){
             throw new IllegalActionException(e.getMessage());
         }
 
         try{
-            currentPlayer.getBoard().getStorage().getCupboard().moveResourceToContainer(hand, shelf, resourceToMove, amount);
-        }catch (IllegalCupboardException e){
+            currentPlayer.getBoard().getStorage().getCupboard().moveBetweenShelves(formerShelf, destinationShelf, amount);
+        }catch(IllegalCupboardException e){
             throw new IllegalActionException(e.getMessage());
         }
 
-        List<String> destinations = gameModel.getPlayers()
+        List<String> destinations = model.getPlayers()
                 .stream()
                 .map(Player::getUsername)
                 .collect(Collectors.toList());
 
-        PayloadComponent payload = new InfoPayload(amount + " of " + resourceToMove
+        PayloadComponent payload = new InfoPayload(amount + " of "
+                + resourceToMove
                 + " have been moved from "
-                + currentPlayer.getUsername() + "'s " + shelf.getId() + " to their hand");
+                + currentPlayer.getUsername() + "'s "
+                + formerShelf.getId()+ " to their " + destinationShelf.getId()) ;
 
         return Collections.singletonList(new Message(destinations, Collections.singletonList(payload)));
     }
