@@ -17,13 +17,25 @@ import java.nio.file.Path;
 import java.util.*;
 
 public final class JSONParser {
-    private static final boolean SHOW_LOGS = true;
-    private static final boolean DEBUG_MODE = true;
-    private static final boolean BEST_EFFORT_MODE = true;
+    private static boolean SHOW_LOGS = true;
+    private static boolean DEBUG_MODE = true;
+    private static boolean BEST_EFFORT_MODE = true;
 
     private static final Gson gson = new Gson();
 
     private JSONParser() { }
+
+    public static void setShowLogs(boolean showLogs) {
+        SHOW_LOGS = showLogs;
+    }
+
+    public static void setDebugMode(boolean debugMode) {
+        DEBUG_MODE = debugMode;
+    }
+
+    public static void setBestEffortMode(boolean bestEffortMode) {
+        BEST_EFFORT_MODE = bestEffortMode;
+    }
 
     private static void errorHandler(String message) throws ParserException {
         if(BEST_EFFORT_MODE)
