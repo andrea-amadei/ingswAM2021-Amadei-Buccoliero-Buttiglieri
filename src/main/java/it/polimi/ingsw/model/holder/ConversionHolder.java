@@ -36,7 +36,9 @@ public class ConversionHolder {
     /**
      * Returns a copy of the list of actuators associated to the specified color
      * @param color the specified color
-     * @return a copy of the list of actuators associated to the specified color
+     * @return a copy of the list of actuators associated to the specified color. If no actuators
+     *         are associated with the specified color, an empty list is returned
+     * @throws NullPointerException if color is null
      */
     public List<ConversionActuator> getActuatorsFromColor(MarbleColor color){
         if(color == null)

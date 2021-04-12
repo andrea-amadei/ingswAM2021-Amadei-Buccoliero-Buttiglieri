@@ -50,7 +50,7 @@ public class MoveFromHandToShelfAction implements Action{
     /**
      * Executes this action
      * @param gameContext the current context of the game
-     * @return a message with the information about what has changed
+     * @return a list of messages with the information about what has changed
      * @throws IllegalActionException if the action cannot be performed
      * @throws NullPointerException if the gameContext is null
      */

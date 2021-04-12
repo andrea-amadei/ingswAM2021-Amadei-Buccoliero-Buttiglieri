@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.actions.Action;
 import it.polimi.ingsw.model.actions.MoveFromHandToShelfAction;
 import it.polimi.ingsw.model.fsm.GameContext;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -28,7 +28,7 @@ public class MoveFromHandToShelfActionTest {
     private final ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
     private final ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
 
-    @BeforeAll
+    @BeforeEach
     public void init(){
         Player player1 = new Player("Paolo", 0);
         Player player2 = new Player("Genoveffa", 1);

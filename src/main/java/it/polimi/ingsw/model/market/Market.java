@@ -104,7 +104,7 @@ public class Market {
      * The exceeding marble becomes the new extra marble.
      * The old extra marble becomes the right-first marble of the specified row.
      * The selectedMarbles list contains the marble of the specified row.
-     * @param row the target row of the operation
+     * @param row the target row of the operation. 0-based
      * @throws IndexOutOfBoundsException if the specified row is negative or too big
      */
     public void pickRow(int row){
@@ -131,7 +131,7 @@ public class Market {
      * The exceeding marble becomes the new extra marble.
      * The old extra marble becomes the bottom-first marble of the specified column.
      * The selectedMarbles list contains the marble of the specified column.
-     * @param col the target column of the operation
+     * @param col the target column of the operation. 0-based
      * @throws IndexOutOfBoundsException if the specified column is negative or too big
      */
     public void pickCol(int col){
