@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.holder.ConversionHolder;
 import it.polimi.ingsw.model.holder.DiscountHolder;
 import it.polimi.ingsw.model.holder.FaithHolder;
 import it.polimi.ingsw.model.holder.FlagHolder;
@@ -20,10 +21,11 @@ public class Board {
     private final FlagHolder flagHolder;
     private final Production production;
     private final FaithHolder faithHolder;
+    private final ConversionHolder conversionHolder;
 
     /**
      * Creates a new empty board. It contains a storage, the leader cards, a discount holder, a flag holder, a faith
-     * holder and a production.
+     * holder, a conversion holder and a production.
      */
     public Board(){
         this.storage = new Storage();
@@ -32,6 +34,7 @@ public class Board {
         this.flagHolder = new FlagHolder();
         this.production = new Production();
         this.faithHolder = new FaithHolder();
+        this.conversionHolder = new ConversionHolder();
     }
 
     /**
@@ -74,6 +77,13 @@ public class Board {
      */
     public FaithHolder getFaithHolder() {
         return faithHolder;
+    }
+
+    /**
+     * @return the conversion holder
+     */
+    public ConversionHolder getConversionHolder(){
+        return conversionHolder;
     }
 
     /**

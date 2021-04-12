@@ -1,12 +1,9 @@
 package it.polimi.ingsw.model.leader;
 
 import it.polimi.ingsw.gamematerials.MarbleColor;
-import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.market.ConversionActuator;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class ConversionAbility implements SpecialAbilities Interface
@@ -51,14 +48,24 @@ public class ConversionAbility implements SpecialAbility {
         return to;
     }
 
-    // activate function
+    /**
+     * function activates the leader ability by adding a new conversion to the player's available
+     * conversions
+     * @param player the player who activates the leader card
+     * @throws NullPointerException if the pointer to player is null
+     */
     @Override
     public void activate(Player player){
-
-    //TODO: activate function
+        if(player == null)
+            throw new NullPointerException();
+        player.getBoard().getConversionHolder().addConversionActuator(from, to);
 
     }
 
+    /**
+     * represents the ability as a string
+     * @return the conversion ability as a string
+     */
     @Override
     public String toString() {
         return "ConversionAbility{" +
