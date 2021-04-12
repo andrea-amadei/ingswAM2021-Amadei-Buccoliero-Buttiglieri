@@ -15,6 +15,7 @@ import org.junit.jupiter.api.TestInstance;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,9 +45,9 @@ public class MoveFromHandToShelfActionTest {
     @Test
     public void validActionExecution(){
         Action action = new MoveFromHandToShelfAction("Paolo", servant, 2, "BottomShelf");
-        Message message;
+        List<Message> messages;
         try{
-            message = action.execute(gameContext);
+            messages = action.execute(gameContext);
         }catch(IllegalActionException e){
             throw new RuntimeException();
         }
@@ -55,7 +56,7 @@ public class MoveFromHandToShelfActionTest {
           ,gameContext.getGameModel().getPlayerById("Paolo").getBoard().getStorage().getCupboard()
                       .getShelfById("BottomShelf").getAllResources());
 
-        assertEquals("INFO: 2 of Servant have been moved from Paolo's hand to BottomShelf", message.toString());
+        assertEquals("INFO: 2 of Servant have been moved from Paolo's hand to BottomShelf", messages.get(0).toString());
     }
 
     @Test
