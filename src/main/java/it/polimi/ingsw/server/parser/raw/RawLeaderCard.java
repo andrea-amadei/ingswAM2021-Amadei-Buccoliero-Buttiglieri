@@ -66,13 +66,13 @@ public class RawLeaderCard implements UniqueRawObject<LeaderCard> {
         List<SpecialAbility> a = new ArrayList<>(abilities.size());
         List<Requirement> r = new ArrayList<>(requirements.size());
 
-        for(RawSpecialAbility i : abilities)
-            a.add(i.toSpecialAbility(id));
-
-        for(RawRequirement i : requirements)
-            r.add(i.toRequirement(id));
-
         try {
+            for(RawSpecialAbility i : abilities)
+                a.add(i.convert());
+
+            for(RawRequirement i : requirements)
+                r.add(i.toRequirement(id));
+
             return new LeaderCard(id, name, points, a, r);
         } catch (IllegalArgumentException e) {
             throw new IllegalRawConversionException(e.getMessage() + " (id: " + id + ")");
