@@ -1,0 +1,37 @@
+package it.polimi.ingsw.common;
+
+import com.google.gson.annotations.SerializedName;
+import it.polimi.ingsw.exceptions.IllegalRawConversionException;
+
+/**
+ * A component of a message
+ */
+public abstract class PayloadComponent {
+
+    @SerializedName("group")
+    private final String group;
+
+    @SerializedName("type")
+    private final String type;
+
+    /**
+     * Creates a new component of the specified group and type
+     * @param group the group of this component (Change, PossibleAction, ...)
+     * @param type the type of this component (UpdateShelf, UpdateHand, ...)
+     * @throws NullPointerException if either group or type is null
+     */
+    public PayloadComponent(String group, String type){
+        if(group == null || type == null)
+            throw new NullPointerException();
+        this.group = group;
+        this.type = type;
+    }
+
+    //TODO: check this
+    /**
+     * Returns a new PayloadComponent with the same state of this one
+     * @return a new PayloadComponent with the same state of this one
+     * @throws IllegalRawConversionException if the new component cannot be created
+     */
+    public abstract PayloadComponent toPayloadComponent() throws IllegalRawConversionException;
+}
