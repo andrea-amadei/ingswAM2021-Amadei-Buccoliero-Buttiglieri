@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.production.CraftingCard;
 import it.polimi.ingsw.server.DummyBuilder;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * The model of the game. It contains the list of players, the market, the shop and the faith path
@@ -38,6 +39,22 @@ public class GameModel {
      * @return the list of players
      */
     public List<Player> getPlayers (){ return players;}
+
+    /**
+     * Gets the player with the specified username
+     * @param username the username of the player
+     * @return the player with the given username
+     * @throws NullPointerException if username is null
+     * @throws NoSuchElementException if there is no player with such username
+     */
+    public Player getPlayerById(String username){
+        if(username == null)
+            throw new NullPointerException();
+        return getPlayers().stream()
+                           .filter(p -> p.getUsername().equals(username))
+                           .findAny()
+                           .orElseThrow(() -> new NoSuchElementException("No player '" + username + "' found"));
+    }
 
     /**
      * Returns the market
