@@ -32,7 +32,7 @@ public final class JSONParser {
             throw new ParserException(message);
     }
 
-    public static <O extends SerializedObject, R extends RawObject<O>, L extends RawList<R>> List<O> parse(String json, String description, Class<L> rawListClass) throws ParserException {
+    public static <O extends SerializedObject, R extends UniqueRawObject<O>, L extends RawList<R>> List<O> parse(String json, String description, Class<L> rawListClass) throws ParserException {
         L rawList;
         O object;
         List<O> list = new ArrayList<>();
@@ -103,7 +103,7 @@ public final class JSONParser {
         return list;
     }
 
-    public static <O extends SerializedObject, R extends RawObject<O>, L extends RawList<R>> List<O> parse(Path path, String description, Class<L> rawListClass) throws ParserException, IOException {
+    public static <O extends SerializedObject, R extends UniqueRawObject<O>, L extends RawList<R>> List<O> parse(Path path, String description, Class<L> rawListClass) throws ParserException, IOException {
         // test for null or non existing file
         if(path == null)
             throw new NullPointerException();
@@ -119,7 +119,7 @@ public final class JSONParser {
         return parse(path, "Leaders", RawLeaderCardList.class);
     }
 
-    public static List<LeaderCard> parseLeaders(String json) throws ParserException, IOException {
+    public static List<LeaderCard> parseLeaders(String json) throws ParserException {
         return parse(json, "Leaders", RawLeaderCardList.class);
     }
 
@@ -127,7 +127,7 @@ public final class JSONParser {
         return parse(path, "Crafting Cards", RawCraftingCardList.class);
     }
 
-    public static List<CraftingCard> parseCraftingCards(String json) throws ParserException, IOException {
+    public static List<CraftingCard> parseCraftingCards(String json) throws ParserException {
         return parse(json, "Crafting Cards", RawCraftingCardList.class);
     }
 }

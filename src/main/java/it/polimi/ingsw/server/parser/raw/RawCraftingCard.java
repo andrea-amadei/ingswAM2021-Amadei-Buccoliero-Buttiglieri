@@ -7,13 +7,13 @@ import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.CraftingCard;
 import it.polimi.ingsw.model.production.UpgradableCrafting;
 import it.polimi.ingsw.server.Console;
-import it.polimi.ingsw.server.parser.RawObject;
+import it.polimi.ingsw.server.parser.UniqueRawObject;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public class RawCraftingCard implements RawObject<CraftingCard> {
+public class RawCraftingCard implements UniqueRawObject<CraftingCard> {
     @SerializedName("id")
     private int id;
 

@@ -6,12 +6,12 @@ import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.model.leader.Requirement;
 import it.polimi.ingsw.model.leader.SpecialAbility;
 import it.polimi.ingsw.server.Console;
-import it.polimi.ingsw.server.parser.RawObject;
+import it.polimi.ingsw.server.parser.UniqueRawObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RawLeaderCard implements RawObject<LeaderCard> {
+public class RawLeaderCard implements UniqueRawObject<LeaderCard> {
     @SerializedName("id")
     private int id;
 
