@@ -18,7 +18,7 @@ import java.util.*;
 
 public final class JSONParser {
     private static boolean SHOW_LOGS = true;
-    private static boolean DEBUG_MODE = true;
+    private static boolean DEBUG_MODE = false;
     private static boolean BEST_EFFORT_MODE = true;
 
     private static final Gson gson = new Gson();
