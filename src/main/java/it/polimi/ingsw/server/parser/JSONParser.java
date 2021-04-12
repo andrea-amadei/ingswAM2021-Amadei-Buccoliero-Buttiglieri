@@ -77,7 +77,7 @@ public final class JSONParser {
 
             // convert object
             try {
-                object = rawObject.toObject();
+                object = rawObject.convert();
             } catch (IllegalRawConversionException e) {
                 errorHandler(e.getMessage());
                 skipped++;

@@ -1,9 +1,5 @@
 package it.polimi.ingsw.server.parser;
 
-import it.polimi.ingsw.exceptions.IllegalRawConversionException;
-
-public interface UniqueRawObject<O> {
+public interface UniqueRawObject<O extends SerializedObject> extends RawObject<O> {
     int getId();
-
-    O toObject() throws IllegalRawConversionException;
 }

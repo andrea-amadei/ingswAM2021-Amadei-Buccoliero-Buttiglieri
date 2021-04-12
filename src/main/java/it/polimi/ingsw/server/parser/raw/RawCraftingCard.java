@@ -57,7 +57,7 @@ public class RawCraftingCard implements UniqueRawObject<CraftingCard> {
     }
 
     @Override
-    public CraftingCard toObject() throws IllegalRawConversionException {
+    public CraftingCard convert() throws IllegalRawConversionException {
         if(flag == null)
             throw new IllegalRawConversionException("Missing mandatory field \"flag\" in crafting card (id: " + id + ")");
 

@@ -49,7 +49,7 @@ public class RawLeaderCard implements UniqueRawObject<LeaderCard> {
     }
 
     @Override
-    public LeaderCard toObject() throws IllegalRawConversionException {
+    public LeaderCard convert() throws IllegalRawConversionException {
         if(name == null)
             throw new IllegalRawConversionException("Missing mandatory field \"name\" (id: " + id + ")");
 
