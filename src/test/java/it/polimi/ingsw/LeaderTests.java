@@ -2,16 +2,21 @@ package it.polimi.ingsw;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
+import it.polimi.ingsw.exceptions.RequirementsNotSatisfiedException;
 import it.polimi.ingsw.gamematerials.*;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.leader.*;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.market.ConversionActuator;
+import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.storage.Shelf;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class LeaderTests {
@@ -26,13 +31,18 @@ public class LeaderTests {
         BaseFlag flag1 = new BaseFlag(FlagColor.PURPLE);
         LevelFlag flag2 = new LevelFlag(FlagColor.YELLOW, 3);
         Shelf shelf1 = new Shelf("shelf1", gold, 2);
+        HashMap<ResourceType, Integer> input = new HashMap<>();
+        HashMap<ResourceType, Integer> output = new HashMap<>();
+        input.put(shield, 2);
+        output.put(gold, 3);
+        Crafting crafting = new Crafting(input, output, 1);
 
-        SpecialAbility discount1 = new DiscountAbility(1, stone);
-        SpecialAbility discount2 = new DiscountAbility(4, servant);
-        SpecialAbility conversion1 = new ConversionAbility(MarbleColor.YELLOW,
+        SpecialAbility discountAbility1 = new DiscountAbility(1, stone);
+        SpecialAbility discountAbility2 = new DiscountAbility(4, servant);
+        SpecialAbility conversionAbility = new ConversionAbility(MarbleColor.YELLOW,
                 new ConversionActuator(Collections.singletonList(shield), 0));
-        SpecialAbility storage1 = new StorageAbility(shelf1);
-        //TODO: test crafting ability after crafting class is complete
+        SpecialAbility storageAbility = new StorageAbility(shelf1);
+        CraftingAbility craftingAbility = new CraftingAbility(crafting);
         Requirement requirement1 = new FlagRequirement(flag1, 2);
         Requirement requirement2 = new LevelFlagRequirement(flag2, 1);
         Requirement requirement3 = new ResourceRequirement(servant, 5);
@@ -40,10 +50,11 @@ public class LeaderTests {
         List<SpecialAbility> abilities = new ArrayList<>();
         List<Requirement> requirements = new ArrayList<>();
 
-        abilities.add(discount1);
-        abilities.add(discount2);
-        abilities.add(conversion1);
-        abilities.add(storage1);
+        abilities.add(discountAbility1);
+        abilities.add(discountAbility2);
+        abilities.add(conversionAbility);
+        abilities.add(storageAbility);
+        abilities.add(craftingAbility);
         requirements.add(requirement1);
         requirements.add(requirement2);
         requirements.add(requirement3);
@@ -64,7 +75,6 @@ public class LeaderTests {
     @Test
     public void exceptionOnLeaderCardConstructor(){
 
-        ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
         ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
 
         Requirement flagRequirement = new FlagRequirement(new BaseFlag(FlagColor.BLUE), 1);
@@ -73,16 +83,111 @@ public class LeaderTests {
 
         List<SpecialAbility> abilities = new ArrayList<>();
         List<Requirement> requirements = new ArrayList<>();
+        List<SpecialAbility> abilitiesSizeZero = new ArrayList<>();
+        List<Requirement> requirementsSizeZero = new ArrayList<>();
 
         abilities.add(conversion);
         requirements.add(flagRequirement);
 
         assertThrows(IllegalArgumentException.class, () -> new LeaderCard(-2, "Giorgio", 4, abilities, requirements));
         assertThrows(IllegalArgumentException.class, ()-> new LeaderCard(2, "S", 5, abilities, requirements));
+        assertThrows(NullPointerException.class, ()-> new LeaderCard(4, null, 7, abilities, requirements));
         assertThrows(IllegalArgumentException.class, ()-> new LeaderCard(3, "Andrea", -5, abilities, requirements));
         assertThrows(NullPointerException.class, ()-> new LeaderCard(4, "Caterina", 7, null, requirements));
         assertThrows(NullPointerException.class, ()-> new LeaderCard(5, "Matilde", 5, abilities, null));
+        assertThrows(IllegalArgumentException.class, ()-> new LeaderCard(3, "EmptyAbilities", 4, abilitiesSizeZero, requirements));
+        assertThrows(IllegalArgumentException.class, ()-> new LeaderCard(2, "EmptyRequirements", 3, abilities, requirementsSizeZero));
 
     }
+
+    @Test
+    public void activateMethodAddsAbility() throws RequirementsNotSatisfiedException {
+        List<SpecialAbility> abilities = new ArrayList<>();
+        List<Requirement> requirements = new ArrayList<>();
+        ConversionActuator conversionActuator = new ConversionActuator(Collections.singletonList(ResourceTypeSingleton.getInstance().getServantResource()), 0);
+        SpecialAbility conversionAbility = new ConversionAbility(MarbleColor.YELLOW, conversionActuator);
+        Requirement flagRequirement = new FlagRequirement(new BaseFlag(FlagColor.BLUE), 1);
+        abilities.add(conversionAbility);
+        requirements.add(flagRequirement);
+        LeaderCard leaderCard = new LeaderCard(3, "Genoveffa", 7, abilities, requirements);
+        Player player = new Player("Player", 2);
+        player.getBoard().getFlagHolder().addFlag(new LevelFlag(FlagColor.BLUE, 2));
+
+        leaderCard.activate(player);
+
+        assertEquals(player.getBoard().getConversionHolder().getActuatorsFromColor(MarbleColor.YELLOW), Collections.singletonList(conversionActuator));
+    }
+
+    @Test
+    public void activateMethodChangesStatus() throws RequirementsNotSatisfiedException {
+        List<SpecialAbility> abilities = new ArrayList<>();
+        List<Requirement> requirements = new ArrayList<>();
+        SpecialAbility conversionAbility = new ConversionAbility(MarbleColor.YELLOW,
+                new ConversionActuator(Collections.singletonList(ResourceTypeSingleton.getInstance().getServantResource()), 0));
+        Requirement flagRequirement = new FlagRequirement(new BaseFlag(FlagColor.BLUE), 1);
+        abilities.add(conversionAbility);
+        requirements.add(flagRequirement);
+        LeaderCard leaderCard = new LeaderCard(3, "Genoveffa", 7, abilities, requirements);
+        Player player = new Player("Player", 2);
+        player.getBoard().getFlagHolder().addFlag(new LevelFlag(FlagColor.BLUE, 2));
+
+        leaderCard.activate(player);
+
+        assertTrue(leaderCard.isActive());
+    }
+
+    @Test
+    public void exceptionOnActivateMethod(){
+        ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
+        Requirement resourceRequirement = new ResourceRequirement(gold, 5);
+        Shelf shelf = new Shelf("shelf1", gold, 2);
+        SpecialAbility storageAbility = new StorageAbility(shelf);
+        List<SpecialAbility> abilities = new ArrayList<>();
+        List<Requirement> requirements = new ArrayList<>();
+        abilities.add(storageAbility);
+        requirements.add(resourceRequirement);
+        LeaderCard leaderCard = new LeaderCard(5, "Eren", 9, abilities, requirements);
+        Player player = new Player("Player", 2);
+
+        assertThrows(NullPointerException.class, ()-> leaderCard.activate(null));
+        assertThrows(RequirementsNotSatisfiedException.class, ()-> leaderCard.activate(player));
+
+    }
+
+    @Test
+    public void isSatisfiedMethodTest() throws IllegalResourceTransferException {
+        Player player1 = new Player("Player", 2);
+        Player player2 = new Player("Mikasa", 3);
+        ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
+        Requirement resourceRequirement = new ResourceRequirement(gold, 5);
+        Shelf shelf = new Shelf("shelf1", gold, 2);
+        SpecialAbility storageAbility = new StorageAbility(shelf);
+        List<SpecialAbility> abilities = new ArrayList<>();
+        List<Requirement> requirements = new ArrayList<>();
+        abilities.add(storageAbility);
+        requirements.add(resourceRequirement);
+        player2.getBoard().getStorage().getChest().addResources(gold, 7);
+        LeaderCard leaderCard = new LeaderCard(5, "Eren", 9, abilities, requirements);
+
+        assertFalse(leaderCard.isSatisfied(player1));
+        assertTrue(leaderCard.isSatisfied(player2));
+    }
+
+    @Test
+    public void exceptionOnIsSatisfiedMethod(){
+        ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
+        Requirement resourceRequirement = new ResourceRequirement(gold, 5);
+        Shelf shelf = new Shelf("shelf1", gold, 2);
+        SpecialAbility storageAbility = new StorageAbility(shelf);
+        List<SpecialAbility> abilities = new ArrayList<>();
+        List<Requirement> requirements = new ArrayList<>();
+        abilities.add(storageAbility);
+        requirements.add(resourceRequirement);
+        LeaderCard leaderCard = new LeaderCard(5, "Eren", 9, abilities, requirements);
+
+        assertThrows(NullPointerException.class, ()-> leaderCard.isSatisfied(null));
+    }
+
+
 
 }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -46,5 +47,23 @@ public class GameModelTest {
     public void checkLeaderCards(){
         GameModel game = new GameModel(players);
         assertDoesNotThrow(game::getLeaderCards);
+    }
+
+    @Test
+    public void validGetById(){
+        GameModel game = new GameModel(players);
+        assertEquals(players.get(0), game.getPlayerById("John"));
+    }
+
+    @Test
+    public void noSuchPlayerGetById(){
+        GameModel game = new GameModel(players);
+        assertThrows(NoSuchElementException.class, ()->game.getPlayerById("asfd"));
+    }
+
+    @Test
+    public void nullPlayerGetById(){
+        GameModel game = new GameModel(players);
+        assertThrows(NullPointerException.class, ()->game.getPlayerById(null));
     }
 }
