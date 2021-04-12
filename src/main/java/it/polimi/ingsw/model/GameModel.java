@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.DummyBuilder;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 /**
  * The model of the game. It contains the list of players, the market, the shop and the faith path
@@ -21,17 +22,22 @@ public class GameModel {
     /**
      * Creates a new GameModel. Game components are created using the builder
      * @param players the list of the players of the game
+     * @param seededRandom the seed to use
      */
-    public GameModel(List<Player> players){
+    public GameModel(List<Player> players, Random seededRandom){
 
         //TODO: Use the real Builder and not the Dummy one and check the correctness of players param
         this.players = players;
-        market = new Market();
+        market = new Market(seededRandom);
         shop = new Shop();
         for(CraftingCard card : DummyBuilder.buildCraftingCards())
             shop.addCard(card);
         faithPath = new FaithPath(DummyBuilder.buildFaithPathTiles());
         leaderCards = DummyBuilder.buildLeaderCards();
+    }
+
+    public GameModel(List<Player> players){
+        this(players, new Random());
     }
 
     /**
