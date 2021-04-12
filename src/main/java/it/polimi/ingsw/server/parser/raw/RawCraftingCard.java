@@ -81,6 +81,8 @@ public class RawCraftingCard implements UniqueRawObject<CraftingCard> {
 
         try {
             levelFlag = new LevelFlag(flag, level);
+            newCrafting = crafting.convert();
+            upgradableCrafting = new UpgradableCrafting(newCrafting.getInput(), newCrafting.getOutput(), newCrafting.getFaithOutput(), level);
         } catch (IllegalArgumentException e) {
             throw new IllegalRawConversionException(e.getMessage() + " (id: " + id + ")");
         }
@@ -91,14 +93,6 @@ public class RawCraftingCard implements UniqueRawObject<CraftingCard> {
             } catch (NoSuchElementException e) {
                 throw new IllegalRawConversionException("\"" + i + "\" is not an available resource (id: " + id + ")");
             }
-
-        newCrafting = crafting.toCrafting(id);
-
-        try {
-            upgradableCrafting = new UpgradableCrafting(newCrafting.getInput(), newCrafting.getOutput(), newCrafting.getFaithOutput(), level);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalRawConversionException(e.getMessage() + " (id: " + id + ")");
-        }
 
         try {
             return new CraftingCard(id, levelFlag, newCost, upgradableCrafting, points);
