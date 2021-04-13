@@ -7,13 +7,13 @@ import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.CraftingCard;
 import it.polimi.ingsw.model.production.UpgradableCrafting;
 import it.polimi.ingsw.server.Console;
-import it.polimi.ingsw.server.parser.RawObject;
+import it.polimi.ingsw.server.parser.UniqueRawObject;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public class RawCraftingCard implements RawObject<CraftingCard> {
+public class RawCraftingCard implements UniqueRawObject<CraftingCard> {
     @SerializedName("id")
     private int id;
 
@@ -57,7 +57,7 @@ public class RawCraftingCard implements RawObject<CraftingCard> {
     }
 
     @Override
-    public CraftingCard toObject() throws IllegalRawConversionException {
+    public CraftingCard convert() throws IllegalRawConversionException {
         if(flag == null)
             throw new IllegalRawConversionException("Missing mandatory field \"flag\" in crafting card (id: " + id + ")");
 
@@ -81,6 +81,8 @@ public class RawCraftingCard implements RawObject<CraftingCard> {
 
         try {
             levelFlag = new LevelFlag(flag, level);
+            newCrafting = crafting.convert();
+            upgradableCrafting = new UpgradableCrafting(newCrafting.getInput(), newCrafting.getOutput(), newCrafting.getFaithOutput(), level);
         } catch (IllegalArgumentException e) {
             throw new IllegalRawConversionException(e.getMessage() + " (id: " + id + ")");
         }
@@ -91,14 +93,6 @@ public class RawCraftingCard implements RawObject<CraftingCard> {
             } catch (NoSuchElementException e) {
                 throw new IllegalRawConversionException("\"" + i + "\" is not an available resource (id: " + id + ")");
             }
-
-        newCrafting = crafting.toCrafting(id);
-
-        try {
-            upgradableCrafting = new UpgradableCrafting(newCrafting.getInput(), newCrafting.getOutput(), newCrafting.getFaithOutput(), level);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalRawConversionException(e.getMessage() + " (id: " + id + ")");
-        }
 
         try {
             return new CraftingCard(id, levelFlag, newCost, upgradableCrafting, points);

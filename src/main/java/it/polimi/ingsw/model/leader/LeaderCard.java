@@ -18,7 +18,6 @@ public class LeaderCard implements SerializedObject {
     private final int points;
     private final List<SpecialAbility> abilities;
     private final List<Requirement> requirements;
-
     private boolean status;
 
     /**

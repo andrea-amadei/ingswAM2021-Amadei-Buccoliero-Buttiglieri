@@ -17,13 +17,25 @@ import java.nio.file.Path;
 import java.util.*;
 
 public final class JSONParser {
-    private static final boolean SHOW_LOGS = true;
-    private static final boolean DEBUG_MODE = true;
-    private static final boolean BEST_EFFORT_MODE = true;
+    private static boolean SHOW_LOGS = true;
+    private static boolean DEBUG_MODE = false;
+    private static boolean BEST_EFFORT_MODE = true;
 
     private static final Gson gson = new Gson();
 
     private JSONParser() { }
+
+    public static void setShowLogs(boolean showLogs) {
+        SHOW_LOGS = showLogs;
+    }
+
+    public static void setDebugMode(boolean debugMode) {
+        DEBUG_MODE = debugMode;
+    }
+
+    public static void setBestEffortMode(boolean bestEffortMode) {
+        BEST_EFFORT_MODE = bestEffortMode;
+    }
 
     private static void errorHandler(String message) throws ParserException {
         if(BEST_EFFORT_MODE)
@@ -32,7 +44,7 @@ public final class JSONParser {
             throw new ParserException(message);
     }
 
-    public static <O extends SerializedObject, R extends RawObject<O>, L extends RawList<R>> List<O> parse(String json, String description, Class<L> rawListClass) throws ParserException {
+    public static <O extends SerializedObject, R extends UniqueRawObject<O>, L extends RawList<R>> List<O> parse(String json, String description, Class<L> rawListClass) throws ParserException {
         L rawList;
         O object;
         List<O> list = new ArrayList<>();
@@ -77,7 +89,7 @@ public final class JSONParser {
 
             // convert object
             try {
-                object = rawObject.toObject();
+                object = rawObject.convert();
             } catch (IllegalRawConversionException e) {
                 errorHandler(e.getMessage());
                 skipped++;
@@ -103,7 +115,7 @@ public final class JSONParser {
         return list;
     }
 
-    public static <O extends SerializedObject, R extends RawObject<O>, L extends RawList<R>> List<O> parse(Path path, String description, Class<L> rawListClass) throws ParserException, IOException {
+    public static <O extends SerializedObject, R extends UniqueRawObject<O>, L extends RawList<R>> List<O> parse(Path path, String description, Class<L> rawListClass) throws ParserException, IOException {
         // test for null or non existing file
         if(path == null)
             throw new NullPointerException();
@@ -119,7 +131,7 @@ public final class JSONParser {
         return parse(path, "Leaders", RawLeaderCardList.class);
     }
 
-    public static List<LeaderCard> parseLeaders(String json) throws ParserException, IOException {
+    public static List<LeaderCard> parseLeaders(String json) throws ParserException {
         return parse(json, "Leaders", RawLeaderCardList.class);
     }
 
@@ -127,7 +139,7 @@ public final class JSONParser {
         return parse(path, "Crafting Cards", RawCraftingCardList.class);
     }
 
-    public static List<CraftingCard> parseCraftingCards(String json) throws ParserException, IOException {
+    public static List<CraftingCard> parseCraftingCards(String json) throws ParserException {
         return parse(json, "Crafting Cards", RawCraftingCardList.class);
     }
 }

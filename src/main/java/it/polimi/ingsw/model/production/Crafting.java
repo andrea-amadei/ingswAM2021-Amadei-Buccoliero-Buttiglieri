@@ -7,6 +7,8 @@ import it.polimi.ingsw.exceptions.NotReadyToCraftException;
 import it.polimi.ingsw.gamematerials.*;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.storage.LimitedStorage;
+import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.parser.SerializedObject;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,7 +20,7 @@ import java.util.Set;
  * It's defined by it's input and output ingredients. Can also output faith points.
  * The class is immutable.
  */
-public class Crafting {
+public class Crafting implements SerializedObject {
     private final Map<ResourceType, Integer> input;
     private final Map<ResourceType, Integer> output;
     private final int faithOutput;
@@ -236,5 +238,10 @@ public class Crafting {
         str.append("+ Faith: ").append(faithOutput).append("}");
 
         return str.toString();
+    }
+
+    @Override
+    public void printDebugInfo() {
+        Console.log(toString());
     }
 }

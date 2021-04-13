@@ -6,12 +6,12 @@ import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.model.leader.Requirement;
 import it.polimi.ingsw.model.leader.SpecialAbility;
 import it.polimi.ingsw.server.Console;
-import it.polimi.ingsw.server.parser.RawObject;
+import it.polimi.ingsw.server.parser.UniqueRawObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RawLeaderCard implements RawObject<LeaderCard> {
+public class RawLeaderCard implements UniqueRawObject<LeaderCard> {
     @SerializedName("id")
     private int id;
 
@@ -49,7 +49,7 @@ public class RawLeaderCard implements RawObject<LeaderCard> {
     }
 
     @Override
-    public LeaderCard toObject() throws IllegalRawConversionException {
+    public LeaderCard convert() throws IllegalRawConversionException {
         if(name == null)
             throw new IllegalRawConversionException("Missing mandatory field \"name\" (id: " + id + ")");
 
@@ -66,13 +66,13 @@ public class RawLeaderCard implements RawObject<LeaderCard> {
         List<SpecialAbility> a = new ArrayList<>(abilities.size());
         List<Requirement> r = new ArrayList<>(requirements.size());
 
-        for(RawSpecialAbility i : abilities)
-            a.add(i.toSpecialAbility(id));
-
-        for(RawRequirement i : requirements)
-            r.add(i.toRequirement(id));
-
         try {
+            for(RawSpecialAbility i : abilities)
+                a.add(i.convert());
+
+            for(RawRequirement i : requirements)
+                r.add(i.convert());
+
             return new LeaderCard(id, name, points, a, r);
         } catch (IllegalArgumentException e) {
             throw new IllegalRawConversionException(e.getMessage() + " (id: " + id + ")");

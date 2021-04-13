@@ -7,10 +7,11 @@ import it.polimi.ingsw.model.leader.FlagRequirement;
 import it.polimi.ingsw.model.leader.LevelFlagRequirement;
 import it.polimi.ingsw.model.leader.Requirement;
 import it.polimi.ingsw.model.leader.ResourceRequirement;
+import it.polimi.ingsw.server.parser.RawObject;
 
 import java.util.NoSuchElementException;
 
-public class RawRequirement {
+public class RawRequirement implements RawObject<Requirement> {
     @SerializedName("type")
     private String type;
 
@@ -46,64 +47,64 @@ public class RawRequirement {
         return amount;
     }
 
-    public Requirement toRequirement(int id) throws IllegalRawConversionException {
+    public Requirement convert() throws IllegalRawConversionException {
         if(type == null)
-            throw new IllegalRawConversionException("Mandatory field \"type\" is missing (id: " + id + ")");
+            throw new IllegalRawConversionException("Mandatory field \"type\" is missing");
 
         switch (type) {
             case "flag":
                 if(flag == null)
-                    throw new IllegalRawConversionException("Illegal or absent field \"flag\" for a \"" + type + "\" requirement (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"flag\" for a \"" + type + "\" requirement");
 
                 if(amount == 0)
-                    throw new IllegalRawConversionException("Illegal or absent field \"amount\" for a \"" + type + "\" requirement (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"amount\" for a \"" + type + "\" requirement");
 
                 try {
                     return new FlagRequirement(new BaseFlag(flag), amount);
                 } catch (IllegalArgumentException e) {
-                    throw new IllegalRawConversionException(e.getMessage() + " (id: " + id + ")");
+                    throw new IllegalRawConversionException(e.getMessage());
                 }
 
             case "level_flag":
             case "levelFlag":
                 if(flag == null)
-                    throw new IllegalRawConversionException("Illegal or absent field \"flag\" for a \"" + type + "\" requirement (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"flag\" for a \"" + type + "\" requirement");
 
                 if(amount == 0)
-                    throw new IllegalRawConversionException("Illegal or absent field \"amount\" for a \"" + type + "\" requirement (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"amount\" for a \"" + type + "\" requirement");
 
                 if(level == 0)
-                    throw new IllegalRawConversionException("Illegal or absent field \"level\" for a \"" + type + "\" requirement (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"level\" for a \"" + type + "\" requirement");
 
                 try {
                     return new LevelFlagRequirement(new LevelFlag(flag, level), amount);
                 } catch (IllegalArgumentException e) {
-                    throw new IllegalRawConversionException(e.getMessage() + " (id: " + id + ")");
+                    throw new IllegalRawConversionException(e.getMessage());
                 }
 
             case "resource":
                 if(resource == null)
-                    throw new IllegalRawConversionException("Illegal or absent field \"resource\" for a \"" + type + "\" requirement (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"resource\" for a \"" + type + "\" requirement");
 
                 if(amount == 0)
-                    throw new IllegalRawConversionException("Illegal or absent field \"amount\" for a \"" + type + "\" requirement (id: " + id + ")");
+                    throw new IllegalRawConversionException("Illegal or absent field \"amount\" for a \"" + type + "\" requirement");
 
                 ResourceSingle r;
 
                 try {
                     r = ResourceTypeSingleton.getInstance().getResourceSingleByName(resource);
                 } catch (NoSuchElementException e) {
-                    throw new IllegalRawConversionException("\"" + resource + "\" is not an available resource (id: " + id + ")");
+                    throw new IllegalRawConversionException("\"" + resource + "\" is not an available resource");
                 }
 
                 try {
                     return new ResourceRequirement(r, amount);
                 } catch (IllegalArgumentException e) {
-                    throw new IllegalRawConversionException(e.getMessage() + " (id: " + id + ")");
+                    throw new IllegalRawConversionException(e.getMessage());
                 }
 
             default:
-                throw new IllegalRawConversionException("Unknown type \"" + type + "\" (id: " + id + ")");
+                throw new IllegalRawConversionException("Unknown type \"" + type + "\"");
         }
     }
 }
