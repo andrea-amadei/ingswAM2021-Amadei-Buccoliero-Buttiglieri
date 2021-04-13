@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.storage.Storage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * The board of the player. It contains everything owned by the player
@@ -49,6 +50,16 @@ public class Board {
      */
     public List<LeaderCard> getLeaderCards() {
         return leaderCards;
+    }
+
+    /**
+     * @param id the ID of the leader card being searched for
+     * @return the leader card
+     */
+    public LeaderCard getLeaderCardByID(int id){
+        if(id <= 0)
+            throw new IllegalArgumentException("Non existent ID number");
+        return leaderCards.stream().filter(x->x.getId() == id).findFirst().orElseThrow(NoSuchElementException::new);
     }
 
     /**
