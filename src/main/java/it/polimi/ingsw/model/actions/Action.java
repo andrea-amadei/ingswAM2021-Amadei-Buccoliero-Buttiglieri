@@ -18,6 +18,7 @@ public interface Action {
      * @param gameContext the current context of the game
      * @return a list of messages that contains information about the change applied to the model
      * @throws IllegalActionException if the action cannot be performed on the model
+     * @throws NullPointerException if gameContext is null
      */
     List<Message> execute(GameContext gameContext) throws IllegalActionException;
 }
