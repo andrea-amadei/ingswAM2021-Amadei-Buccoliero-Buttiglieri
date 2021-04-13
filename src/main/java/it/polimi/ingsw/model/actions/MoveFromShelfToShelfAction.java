@@ -57,7 +57,7 @@ public class MoveFromShelfToShelfAction implements Action{
      * @param gameContext the current context of the game
      * @return the list of messages with info about the changes to the game
      * @throws IllegalActionException iff the action cannot be performed
-     * @throws NullPointerException iff pointer to player is null
+     * @throws NullPointerException iff pointer to gameContext is null
      */
     @Override
     public List<Message> execute(GameContext gameContext) throws IllegalActionException {

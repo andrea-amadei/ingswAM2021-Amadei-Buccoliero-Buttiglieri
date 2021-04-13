@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import it.polimi.ingsw.exceptions.AlreadyActiveException;
 import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.exceptions.RequirementsNotSatisfiedException;
 import it.polimi.ingsw.gamematerials.*;
@@ -101,7 +102,7 @@ public class LeaderTests {
     }
 
     @Test
-    public void activateMethodAddsAbility() throws RequirementsNotSatisfiedException {
+    public void activateMethodAddsAbility() throws RequirementsNotSatisfiedException, AlreadyActiveException {
         List<SpecialAbility> abilities = new ArrayList<>();
         List<Requirement> requirements = new ArrayList<>();
         ConversionActuator conversionActuator = new ConversionActuator(Collections.singletonList(ResourceTypeSingleton.getInstance().getServantResource()), 0);
@@ -119,7 +120,7 @@ public class LeaderTests {
     }
 
     @Test
-    public void activateMethodChangesStatus() throws RequirementsNotSatisfiedException {
+    public void activateMethodChangesStatus() throws RequirementsNotSatisfiedException, AlreadyActiveException {
         List<SpecialAbility> abilities = new ArrayList<>();
         List<Requirement> requirements = new ArrayList<>();
         SpecialAbility conversionAbility = new ConversionAbility(MarbleColor.YELLOW,
@@ -148,10 +149,12 @@ public class LeaderTests {
         requirements.add(resourceRequirement);
         LeaderCard leaderCard = new LeaderCard(5, "Eren", 9, abilities, requirements);
         Player player = new Player("Player", 2);
+        Player player1 = new Player("Player1", 1);
+        assertDoesNotThrow(()-> player1.getBoard().getStorage().getChest().addResources(gold, 6));
 
         assertThrows(NullPointerException.class, ()-> leaderCard.activate(null));
         assertThrows(RequirementsNotSatisfiedException.class, ()-> leaderCard.activate(player));
-
+        assertThrows(AlreadyActiveException.class, ()-> {leaderCard.activate(player1); leaderCard.activate(player1);});
     }
 
     @Test
