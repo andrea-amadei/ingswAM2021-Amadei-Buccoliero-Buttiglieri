@@ -3,10 +3,8 @@ package it.polimi.ingsw.model.production;
 import it.polimi.ingsw.exceptions.NegativeCostException;
 import it.polimi.ingsw.gamematerials.LevelFlag;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
-import it.polimi.ingsw.model.leader.Requirement;
-import it.polimi.ingsw.model.leader.SpecialAbility;
 import it.polimi.ingsw.server.Console;
-import it.polimi.ingsw.server.parser.SerializedObject;
+import it.polimi.ingsw.parser.SerializedObject;
 
 import java.util.HashMap;
 import java.util.Map;

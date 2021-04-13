@@ -7,11 +7,9 @@ import it.polimi.ingsw.model.GameParameters;
 import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.model.production.CraftingCard;
 import it.polimi.ingsw.model.production.UpgradableCrafting;
-import it.polimi.ingsw.server.parser.JSONParser;
+import it.polimi.ingsw.parser.JSONParser;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;

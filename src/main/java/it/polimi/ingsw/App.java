@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.server.Console;
-import it.polimi.ingsw.server.parser.JSONParser;
+import it.polimi.ingsw.parser.JSONParser;
 
 import java.nio.file.Paths;
 

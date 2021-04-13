@@ -4,7 +4,7 @@ import it.polimi.ingsw.exceptions.AlreadyActiveException;
 import it.polimi.ingsw.exceptions.RequirementsNotSatisfiedException;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.server.Console;
-import it.polimi.ingsw.server.parser.SerializedObject;
+import it.polimi.ingsw.parser.SerializedObject;
 
 import java.util.ArrayList;
 import java.util.List;
