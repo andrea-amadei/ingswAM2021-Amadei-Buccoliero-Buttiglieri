@@ -34,6 +34,15 @@
     }
   ],
   "base": [
-
+    {
+      "id": 1,
+      "input": {
+        "ANY": 1
+      },
+      "output": {
+        "ANY": 1
+      },
+      "faith_output": 0
+    }
   ]
 }

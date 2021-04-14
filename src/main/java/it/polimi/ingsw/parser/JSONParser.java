@@ -5,7 +5,9 @@ import com.google.gson.JsonSyntaxException;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.model.leader.LeaderCard;
+import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.CraftingCard;
+import it.polimi.ingsw.parser.raw.RawCraftingList;
 import it.polimi.ingsw.server.Console;
 import it.polimi.ingsw.parser.raw.RawCraftingCardList;
 import it.polimi.ingsw.parser.raw.RawLeaderCardList;
@@ -74,7 +76,7 @@ public final class JSONParser {
         for(R rawObject : rawList.getList()) {
             // check if id is present
             if(rawObject.getId() == 0) {
-                errorHandler("Missing mandatory object id!");
+                errorHandler("Missing mandatory object id");
                 skipped++;
                 continue;
             }
@@ -141,5 +143,13 @@ public final class JSONParser {
 
     public static List<CraftingCard> parseCraftingCards(String json) throws ParserException {
         return parse(json, "Crafting Cards", RawCraftingCardList.class);
+    }
+
+    public static List<Crafting> parseBaseCrafting(Path path) throws ParserException, IOException {
+        return parse(path, "Base Crafting", RawCraftingList.class);
+    }
+
+    public static List<Crafting> parseBaseCrafting(String json) throws ParserException {
+        return parse(json, "Base Crafting", RawCraftingList.class);
     }
 }
