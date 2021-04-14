@@ -70,6 +70,6 @@ public class ProductionTest {
         ));
 
         production.selectUpgradableCrafting(2);
-        assertEquals(production.getUpgradableCrafting(2), production.getSelectedUpgradableCrafting());
+        assertEquals(2, production.getSelectedUpgradableCrafting());
     }
 }

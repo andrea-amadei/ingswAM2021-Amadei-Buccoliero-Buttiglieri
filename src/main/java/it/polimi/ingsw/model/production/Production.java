@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.GameParameters;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * The production class defines the methods to interact with every crafting aspect of the game.
@@ -18,7 +17,7 @@ public class Production {
     private final List<Crafting> leaderCrafting;
     private final List<UpgradableCrafting> upgradableCrafting;
 
-    private UpgradableCrafting selectedUpgradableCrafting;
+    private Integer selectedUpgradableCrafting;
 
     /**
      * Creates a new production instance.
@@ -97,7 +96,7 @@ public class Production {
      * @param index the index of the selected upgradable crafting
      * @return the specified upgradable crafting
      */
-    public Crafting getUpgradableCrafting(int index) {
+    public UpgradableCrafting getUpgradableCrafting(int index) {
         return upgradableCrafting.get(index);
     }
 
@@ -133,27 +132,19 @@ public class Production {
     /**
      * Selects an upgradable crafting from the production.
      * @param index the index of the upgradable crafting
-     * @return the selected upgradable crafting
      * @throws IndexOutOfBoundsException if index is out of bound
-     * @throws NoSuchElementException if the selected slot is null
      */
-    public UpgradableCrafting selectUpgradableCrafting(int index){
+    public void selectUpgradableCrafting(int index){
         if(index < 0 || index >= upgradableCrafting.size())
             throw new IndexOutOfBoundsException("The index specified for the upgradable crafting is out of bound");
-        if(upgradableCrafting.get(index) == null)
-            throw new NoSuchElementException("the slot is empty");
-
-        UpgradableCrafting result = upgradableCrafting.get(index);
-        selectedUpgradableCrafting = result;
-
-        return result;
+        selectedUpgradableCrafting = index;
     }
 
     /**
      * Returns the selected upgradable crafting.
      * @return the selected upgradable crafting.
      */
-    public UpgradableCrafting getSelectedUpgradableCrafting(){
+    public Integer getSelectedUpgradableCrafting(){
         return selectedUpgradableCrafting;
     }
 
