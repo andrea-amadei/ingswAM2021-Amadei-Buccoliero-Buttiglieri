@@ -13,6 +13,7 @@ import java.util.*;
 public class Shop {
     private final List<Deque<CraftingCard>> grid;
     private final int levelAxisSize;
+    private CraftingCard selectedCard;
 
 
     /**
@@ -28,6 +29,8 @@ public class Shop {
                 grid.add(new ArrayDeque<>());
             }
         }
+
+        selectedCard = null;
     }
 
     /**
@@ -41,11 +44,12 @@ public class Shop {
 
         int cardLevel = card.getFlag().getLevel();
         int cardColorIndex = card.getFlag().getColor().ordinal();
-        grid.get((cardLevel-1) * levelAxisSize + cardColorIndex).addFirst(card);
+        grid.get((levelAxisSize - cardLevel) * FlagColor.values().length + cardColorIndex).addFirst(card);
     }
 
     /**
-     * Retrieves, but does not remove, the first element of the specified deck. If the deck is empty an exception is thrown
+     * Retrieves, but does not remove, the first element of the specified deck.
+     * If the deck is empty an exception is thrown
      * @param level the level of the desired card
      * @param color the color of the desired card
      * @return the desired card
@@ -56,7 +60,48 @@ public class Shop {
     public CraftingCard getTopCard(int level, FlagColor color){
         if(level < 1 || level > levelAxisSize)
             throw new IllegalArgumentException("Level must be between 1 and " + levelAxisSize);
-        return grid.get((level-1)*levelAxisSize + color.ordinal()).getFirst();
+        return grid.get((levelAxisSize - level)* FlagColor.values().length + color.ordinal()).getFirst();
+    }
+
+    /**
+     * Retrieves, but does not remove, the first element of the specified deck.
+     * If the deck is empty an exception is thrown
+     * @param row row index (0-based down->up)
+     * @param col col index (0-based left->write)
+     * @return the desired card
+     * @throws IllegalArgumentException if indexes are out of bound
+     * @throws NoSuchElementException if the indicated deck is empty
+     */
+    public CraftingCard getTopCard(int row, int col){
+        if(row < 0 || row >= levelAxisSize || col < 0 || col >= FlagColor.values().length)
+            throw new IllegalArgumentException("Row or col are not valid");
+
+        return getTopCard(row+1, FlagColor.values()[col]);
+    }
+
+    /**
+     * Selects the specified card. It is used to allow the player to select a card and then (later) to select
+     * the resources to buy it
+     * @param row row index (0-based down->up)
+     * @param col col index(0-based left->right)
+     * @return the desired card
+     * @throws IllegalArgumentException indexes are not allowed
+     * @throws NoSuchElementException if the indicated deck is empty
+     */
+    public CraftingCard selectCard(int row, int col){
+        if(row < 0 || row >= levelAxisSize || col < 0 || col >= FlagColor.values().length)
+            throw new IllegalArgumentException("Row or col are not valid");
+        CraftingCard sCard = getTopCard(row, col);
+        selectedCard = sCard;
+        return sCard;
+    }
+
+    /**
+     * Returns the selected card. Null if there is no selected card
+     * @return the selected card. Null if there is no selected card
+     */
+    public CraftingCard getSelectedCard() {
+        return selectedCard;
     }
 
     /**
@@ -71,7 +116,7 @@ public class Shop {
     public CraftingCard removeCard(int level, FlagColor color){
         if(level < 1 || level > levelAxisSize)
             throw new IllegalArgumentException("Level must be between 1 and " + levelAxisSize);
-        return grid.get((level-1)*levelAxisSize + color.ordinal()).removeFirst();
+        return grid.get((levelAxisSize - level)*FlagColor.values().length + color.ordinal()).removeFirst();
     }
 
 
