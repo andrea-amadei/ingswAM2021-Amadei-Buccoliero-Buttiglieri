@@ -1,11 +1,10 @@
 package it.polimi.ingsw.model.storage;
 
+import it.polimi.ingsw.exceptions.IllegalSelectionException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.model.GameParameters;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -21,6 +20,10 @@ public class Storage {
     private final BaseStorage marketBasket;
     private Cupboard cupboard;
 
+    //the key is a resource container, the value is a map that represents the amount of resources for each resource type
+    //selected from that container
+    private final Map<ResourceContainer, Map<ResourceSingle, Integer>> selectedResources;
+
     /**
      * A new empty storage is created. The cupboard is initialized with the parameters stated in GameParameters class
      */
@@ -35,6 +38,7 @@ public class Storage {
                                       GameParameters.BASE_CUPBOARD_SHELF_SIZES.get(i)));
         }
         cupboard = new BaseCupboard(baseShelves);
+        selectedResources = new HashMap<>();
 
     }
 
@@ -84,6 +88,64 @@ public class Storage {
      */
     public Cupboard getCupboard() {
         return cupboard;
+    }
+
+    /**
+     * Returns the ResourceContainer with the specified id. It only includes cupboard shelves and the chest,
+     * @param id the id of the container
+     * @return the ResourceContainer with the specified id. It only includes cupboard shelves and the chest
+     * @throws NullPointerException if id is null
+     * @throws NoSuchElementException if the id doesn't match with any of the resourceContainers
+     */
+    public ResourceContainer getResourceContainerById(String id){
+        if(id == null)
+            throw new NullPointerException();
+        if(id.equals("Chest"))
+            return getChest();
+
+        return getCupboard().getShelfById(id);
+    }
+
+    /**
+     * Returns a map representing the selected resources
+     * @return a map representing the selected resources
+     */
+    public Map<ResourceContainer, Map<ResourceSingle, Integer>> getSelection(){
+        return selectedResources;
+    }
+
+    /**
+     * Adds the specified resources and the specified ResourceContainer to the selection
+     * @param from the ResourceContainer from which resources are selected
+     * @param res the ResourceSingle selected
+     * @param amount the amount of resources selected
+     * @throws IllegalSelectionException if the container doesn't contain the selected resources
+     * @throws NullPointerException if either from or res is null
+     * @throws IllegalArgumentException if amount <= 0
+     */
+    public void addToSelection(ResourceContainer from, ResourceSingle res, int amount) throws IllegalSelectionException {
+        if(from == null || res == null)
+            throw new NullPointerException();
+        if(amount <= 0)
+            throw new IllegalArgumentException("The selected amount must be positive");
+
+        int preInsertionValue = Optional.ofNullable(selectedResources.get(from))
+                                        .flatMap(x->Optional.ofNullable(x.get(res)))
+                                        .orElse(0);
+
+        if(Optional.ofNullable(from.getAllResources().get(res)).orElse(0) < preInsertionValue + amount)
+            throw new IllegalSelectionException("Too much resources selected for the container");
+
+        int currentValue = selectedResources.computeIfAbsent(from, (k)->new HashMap<>())
+                         .computeIfAbsent(res, (k)->0);
+        selectedResources.get(from).put(res, currentValue + amount);
+    }
+
+    /**
+     * Clears the selection
+     */
+    public void resetSelection(){
+        selectedResources.clear();
     }
 
     /**

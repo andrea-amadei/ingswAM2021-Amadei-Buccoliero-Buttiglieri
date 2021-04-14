@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.exceptions.IllegalSelectionException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.GameParameters;
@@ -65,7 +66,7 @@ public class StorageTest {
         assertDoesNotThrow(()->s.getChest().addResources(servant, 5));
         assertDoesNotThrow(()->s.getChest().addResources(stone, 1));
 
-        Map<ResourceSingle, Integer> expectedResources = new HashMap<ResourceSingle, Integer>(){{
+        Map<ResourceSingle, Integer> expectedResources = new HashMap<>(){{
             put(gold, 5);
             put(stone, 1);
             put(shield, 5);
@@ -87,6 +88,90 @@ public class StorageTest {
         LeaderDecorator decorator = new LeaderDecorator(new Shelf("leader1", ResourceTypeSingleton.getInstance().getAnyResource(), 2), s.getCupboard());
         assertDoesNotThrow(()->s.decorate(decorator));
         assertDoesNotThrow(()->s.getCupboard().getShelfById("leader1"));
+    }
+
+    @Test
+    public void addToSelectionFromHandAndShelf(){
+        ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
+        ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
+        ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+
+        Storage s = new Storage();
+        Shelf bottomShelf = s.getCupboard().getShelfById("BottomShelf");
+        Shelf middleShelf = s.getCupboard().getShelfById("MiddleShelf");
+
+        assertDoesNotThrow(()->s.getCupboard().addResource(bottomShelf, gold, 3));
+        assertDoesNotThrow(()->s.getCupboard().addResource(middleShelf, shield, 2));
+        assertDoesNotThrow(()->s.getChest().addResources(servant, 2));
+        assertDoesNotThrow(()->s.getChest().addResources(gold, 3));
+
+        assertDoesNotThrow(()->s.addToSelection(bottomShelf, gold, 2));
+        assertDoesNotThrow(()->s.addToSelection(middleShelf, shield, 2));
+        assertDoesNotThrow(()->s.addToSelection(s.getChest(), gold, 1));
+        assertDoesNotThrow(()->s.addToSelection(s.getChest(), servant, 1));
+
+        Map<ResourceContainer, Map<ResourceSingle, Integer>> expectedSelected = new HashMap<>(){
+            {
+                put(bottomShelf, new HashMap<>(){{put(gold, 2);}});
+                put(middleShelf, new HashMap<>(){{put(shield, 2);}});
+                put(s.getChest(), new HashMap<>(){{put(gold, 1); put(servant, 1);}});
+            }
+        };
+
+        assertEquals(expectedSelected, s.getSelection());
+    }
+
+    @Test
+    public void selectTooManyResources(){
+        ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
+        ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
+        ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+
+        Storage s = new Storage();
+        Shelf bottomShelf = s.getCupboard().getShelfById("BottomShelf");
+        Shelf middleShelf = s.getCupboard().getShelfById("MiddleShelf");
+
+        assertDoesNotThrow(()->s.getCupboard().addResource(bottomShelf, gold, 3));
+        assertDoesNotThrow(()->s.getCupboard().addResource(middleShelf, shield, 2));
+        assertDoesNotThrow(()->s.getChest().addResources(servant, 2));
+        assertDoesNotThrow(()->s.getChest().addResources(gold, 3));
+
+        assertThrows(IllegalSelectionException.class, ()->s.addToSelection(bottomShelf, shield, 2));
+        assertDoesNotThrow(()->s.addToSelection(middleShelf, shield, 1));
+        assertThrows(IllegalSelectionException.class, ()->s.addToSelection(middleShelf, shield, 2));
+    }
+
+    @Test
+    public void clearSelection(){
+        ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
+        ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
+        ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+
+        Storage s = new Storage();
+        Shelf bottomShelf = s.getCupboard().getShelfById("BottomShelf");
+        Shelf middleShelf = s.getCupboard().getShelfById("MiddleShelf");
+
+        assertDoesNotThrow(()->s.getCupboard().addResource(bottomShelf, gold, 3));
+        assertDoesNotThrow(()->s.getCupboard().addResource(middleShelf, shield, 2));
+        assertDoesNotThrow(()->s.getChest().addResources(servant, 2));
+        assertDoesNotThrow(()->s.getChest().addResources(gold, 3));
+
+        assertDoesNotThrow(()->s.addToSelection(bottomShelf, gold, 2));
+        assertDoesNotThrow(()->s.addToSelection(middleShelf, shield, 2));
+        assertDoesNotThrow(()->s.addToSelection(s.getChest(), gold, 1));
+        assertDoesNotThrow(()->s.addToSelection(s.getChest(), servant, 1));
+
+        s.resetSelection();
+        assertEquals(new HashMap<>(), s.getSelection());
+    }
+
+    @Test
+    public void getChestById(){
+        Storage s = new Storage();
+        assertEquals(s.getChest(), s.getResourceContainerById("Chest"));
     }
 
 }

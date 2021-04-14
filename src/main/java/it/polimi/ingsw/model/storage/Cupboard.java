@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.storage;
 import it.polimi.ingsw.exceptions.IllegalCupboardException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
@@ -20,6 +21,8 @@ public interface Cupboard {
      * Gets the shelf with the desired id
      * @param id the id of the desired shelf
      * @return the selected shelf
+     * @throws NullPointerException if id is null
+     * @throws NoSuchElementException if there is no shelf with the specified id in the cupboard
      */
     Shelf getShelfById(String id);
 

@@ -107,4 +107,21 @@ public class ShopTest {
         assertThrows(NullPointerException.class, ()->s.removeCard(2, null));
     }
 
+    @Test
+    public void selectCard(){
+        Shop s = new Shop();
+        Map<ResourceSingle, Integer> cardCost = new HashMap<>() {{
+            put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
+        }};
+        Map<ResourceType, Integer> craftingParams = new HashMap<>() {{
+            put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
+        }};
+        UpgradableCrafting upgradableCrafting = new UpgradableCrafting(craftingParams, craftingParams, 0, 2);
+        CraftingCard card = new CraftingCard(1, new LevelFlag(FlagColor.BLUE, 2), cardCost, upgradableCrafting, 12);
+
+        s.addCard(card);
+        s.selectCard(1, 0);
+        assertEquals(s.getTopCard(1, 0), s.getSelectedCard());
+    }
+
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceType;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.production.Crafting;
@@ -31,7 +32,7 @@ public class ProductionTest {
         UpgradableCrafting upgradableCrafting = new UpgradableCrafting(input, output, 1, 1);
 
         Production production1 = new Production();
-        Production production2 = new Production(new ArrayList<Crafting>() {{add(crafting);}});
+        Production production2 = new Production(new ArrayList<>() {{add(crafting);}});
 
         assertEquals(production1.getAllBaseCrafting().size(), 0);
         assertEquals(production1.getAllLeaderCrafting().size(), 0);
@@ -55,5 +56,20 @@ public class ProductionTest {
         assertEquals(production2.getLeaderCrafting(0), crafting);
         assertEquals(production2.getUpgradableCrafting(1), upgradableCrafting);
         assertEquals(production2.getBaseCrafting(0), crafting);
+    }
+
+    @Test
+    public void selectNonNullUpgradableCrafting(){
+
+        ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+
+        Production production = new Production();
+        production.setUpgradableCrafting(2,
+                new UpgradableCrafting(new HashMap<>(){{put(gold, 2);}}, new HashMap<>(){{put(servant, 2);}}, 0, 1
+        ));
+
+        production.selectUpgradableCrafting(2);
+        assertEquals(production.getUpgradableCrafting(2), production.getSelectedUpgradableCrafting());
     }
 }
