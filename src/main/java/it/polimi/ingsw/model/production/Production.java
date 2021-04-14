@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.GameParameters;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * The production class defines the methods to interact with every crafting aspect of the game.
@@ -17,6 +18,8 @@ public class Production {
     private final List<Crafting> leaderCrafting;
     private final List<UpgradableCrafting> upgradableCrafting;
 
+    private UpgradableCrafting selectedUpgradableCrafting;
+
     /**
      * Creates a new production instance.
      * Set every crafting slot to empty.
@@ -28,6 +31,8 @@ public class Production {
 
         for(int i=0; i < GameParameters.UPGRADABLE_CRAFTING_NUMBER; i++)
             upgradableCrafting.add(null);
+
+        selectedUpgradableCrafting = null;
     }
 
     /**
@@ -123,5 +128,39 @@ public class Production {
             throw new IndexOutOfBoundsException("Index must be between 0 and " + (GameParameters.UPGRADABLE_CRAFTING_NUMBER - 1));
 
         upgradableCrafting.set(index, crafting);
+    }
+
+    /**
+     * Selects an upgradable crafting from the production.
+     * @param index the index of the upgradable crafting
+     * @return the selected upgradable crafting
+     * @throws IndexOutOfBoundsException if index is out of bound
+     * @throws NoSuchElementException if the selected slot is null
+     */
+    public UpgradableCrafting selectUpgradableCrafting(int index){
+        if(index < 0 || index >= upgradableCrafting.size())
+            throw new IndexOutOfBoundsException("The index specified for the upgradable crafting is out of bound");
+        if(upgradableCrafting.get(index) == null)
+            throw new NoSuchElementException("the slot is empty");
+
+        UpgradableCrafting result = upgradableCrafting.get(index);
+        selectedUpgradableCrafting = result;
+
+        return result;
+    }
+
+    /**
+     * Returns the selected upgradable crafting.
+     * @return the selected upgradable crafting.
+     */
+    public UpgradableCrafting getSelectedUpgradableCrafting(){
+        return selectedUpgradableCrafting;
+    }
+
+    /**
+     * Removes the selection from the previously selected upgradable crafting
+     */
+    public void resetUpgradableCraftingSelection(){
+        selectedUpgradableCrafting = null;
     }
 }
