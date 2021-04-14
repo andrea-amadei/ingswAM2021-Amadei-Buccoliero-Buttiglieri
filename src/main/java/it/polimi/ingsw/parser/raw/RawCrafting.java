@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.parser.raw;
+package it.polimi.ingsw.parser.raw;
 
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
@@ -6,7 +6,7 @@ import it.polimi.ingsw.exceptions.NegativeCraftingIngredientException;
 import it.polimi.ingsw.gamematerials.ResourceType;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.production.Crafting;
-import it.polimi.ingsw.server.parser.RawObject;
+import it.polimi.ingsw.parser.RawObject;
 
 import java.util.HashMap;
 import java.util.Map;

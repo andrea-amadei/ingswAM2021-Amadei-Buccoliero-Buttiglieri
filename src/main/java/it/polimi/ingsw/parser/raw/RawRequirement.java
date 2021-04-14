@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.parser.raw;
+package it.polimi.ingsw.parser.raw;
 
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.leader.FlagRequirement;
 import it.polimi.ingsw.model.leader.LevelFlagRequirement;
 import it.polimi.ingsw.model.leader.Requirement;
 import it.polimi.ingsw.model.leader.ResourceRequirement;
-import it.polimi.ingsw.server.parser.RawObject;
+import it.polimi.ingsw.parser.RawObject;
 
 import java.util.NoSuchElementException;
 

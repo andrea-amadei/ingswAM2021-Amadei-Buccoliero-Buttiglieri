@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.production;
 
-import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.exceptions.NegativeCraftingIngredientException;
 import it.polimi.ingsw.exceptions.NotReadyToCraftException;
@@ -8,7 +7,7 @@ import it.polimi.ingsw.gamematerials.*;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.storage.LimitedStorage;
 import it.polimi.ingsw.server.Console;
-import it.polimi.ingsw.server.parser.SerializedObject;
+import it.polimi.ingsw.parser.SerializedObject;
 
 import java.util.HashMap;
 import java.util.HashSet;

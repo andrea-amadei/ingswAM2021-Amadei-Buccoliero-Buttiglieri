@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.parser;
+package it.polimi.ingsw.parser;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -7,8 +7,8 @@ import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.model.production.CraftingCard;
 import it.polimi.ingsw.server.Console;
-import it.polimi.ingsw.server.parser.raw.RawCraftingCardList;
-import it.polimi.ingsw.server.parser.raw.RawLeaderCardList;
+import it.polimi.ingsw.parser.raw.RawCraftingCardList;
+import it.polimi.ingsw.parser.raw.RawLeaderCardList;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

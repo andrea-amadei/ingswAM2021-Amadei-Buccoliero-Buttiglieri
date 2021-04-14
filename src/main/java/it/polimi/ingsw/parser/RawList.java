@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.parser;
+package it.polimi.ingsw.parser;
 
 import java.util.List;
 

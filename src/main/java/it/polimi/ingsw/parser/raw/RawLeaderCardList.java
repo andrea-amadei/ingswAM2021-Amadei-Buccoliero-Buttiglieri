@@ -1,7 +1,7 @@
-package it.polimi.ingsw.server.parser.raw;
+package it.polimi.ingsw.parser.raw;
 
 import com.google.gson.annotations.SerializedName;
-import it.polimi.ingsw.server.parser.RawList;
+import it.polimi.ingsw.parser.RawList;
 
 import java.util.List;
 

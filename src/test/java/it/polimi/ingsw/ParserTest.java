@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.exceptions.ParserException;
-import it.polimi.ingsw.server.parser.JSONParser;
+import it.polimi.ingsw.parser.JSONParser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
