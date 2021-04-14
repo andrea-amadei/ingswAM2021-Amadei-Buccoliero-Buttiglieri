@@ -105,6 +105,13 @@ public class Shop {
     }
 
     /**
+     * Resets the selected card. Its value will be null
+     */
+    public void resetSelectedCard(){
+        selectedCard = null;
+    }
+
+    /**
      * Retrieves and removes the first element of the specified deck. If the deck is empty an exception is thrown
      * @param level the level of the desired card
      * @param color the color of the desired card
