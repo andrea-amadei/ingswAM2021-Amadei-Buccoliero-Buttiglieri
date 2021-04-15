@@ -38,41 +38,41 @@ class FaithPathTest {
         assertThrows(IllegalArgumentException.class, () -> new FaithPath(new ArrayList<>()));
 
         assertThrows(InvalidFaithPathException.class, () ->
-                new FaithPath(new ArrayList<FaithPathTile>() {{
+                new FaithPath(new ArrayList<>() {{
                     add(new FaithPathTile(1, 1, 0, 0, 0, false));
                     add(new FaithPathTile(1, 1, 1, 0, 0, false));
                 }}));
 
         assertThrows(InvalidFaithPathException.class, () ->
-                new FaithPath(new ArrayList<FaithPathTile>() {{
+                new FaithPath(new ArrayList<>() {{
                     add(new FaithPathTile(1, 1, 0, 0, 0, false));
                     add(new FaithPathTile(2, 1, 1, 0, 0, false));
                     add(new FaithPathTile(3, 1, 1, 0, 0, false));
                 }}));
 
         assertThrows(InvalidFaithPathException.class, () ->
-                new FaithPath(new ArrayList<FaithPathTile>() {{
+                new FaithPath(new ArrayList<>() {{
                     add(new FaithPathTile(1, 1, 0, 0, 0, false));
                     add(new FaithPathTile(2, 1, 1, 0, 1, true));
                     add(new FaithPathTile(3, 1, 2, 0, 1, true));
                 }}));
 
         assertThrows(InvalidFaithPathException.class, () ->
-                new FaithPath(new ArrayList<FaithPathTile>() {{
+                new FaithPath(new ArrayList<>() {{
                     add(new FaithPathTile(1, 1, 0, 0, 0, false));
                     add(new FaithPathTile(2, 1, 1, 0, 0, false));
                     add(new FaithPathTile(3, 1, 3, 0, 0, false));
                 }}));
 
         assertThrows(InvalidFaithPathException.class, () ->
-                new FaithPath(new ArrayList<FaithPathTile>() {{
+                new FaithPath(new ArrayList<>() {{
                     add(new FaithPathTile(1, 1, 0, 0, 0, false));
                     add(new FaithPathTile(2, 1, 1, 0, 1, false));
                     add(new FaithPathTile(3, 1, 2, 0, 1, false));
                 }}));
 
         assertDoesNotThrow(() ->
-                new FaithPath(new ArrayList<FaithPathTile>() {{
+                new FaithPath(new ArrayList<>() {{
                     add(new FaithPathTile(1, 1, 0, 0, 0, false));
                     add(new FaithPathTile(2, 1, 1, 0, 1, false));
                     add(new FaithPathTile(3, 1, 2, 0, 1, true));
@@ -82,7 +82,7 @@ class FaithPathTest {
     @Test
     @DisplayName("Getters test")
     public void getterTest() {
-        FaithPath fp = new FaithPath(new ArrayList<FaithPathTile>() {{
+        FaithPath fp = new FaithPath(new ArrayList<>() {{
             add(new FaithPathTile(1, 1, 0, 0, 0, false));
             add(new FaithPathTile(2, 1, 1, 0, 1, false));
             add(new FaithPathTile(3, 1, 2, 0, 1, true));
@@ -95,7 +95,7 @@ class FaithPathTest {
     @Test
     @DisplayName("Movement test")
     public void movementTest() {
-        FaithPath fp = new FaithPath(new ArrayList<FaithPathTile>() {{
+        FaithPath fp = new FaithPath(new ArrayList<>() {{
             add(new FaithPathTile(1, 1, 0, 0, 0, false));
             add(new FaithPathTile(2, 1, 1, 1, 1, false));
             add(new FaithPathTile(3, 1, 2, 2, 1, true));
@@ -121,10 +121,10 @@ class FaithPathTest {
     @Test
     @DisplayName("To String test")
     public void toStringTest() {
-        FaithPath fp = new FaithPath(new ArrayList<FaithPathTile>() {{
+        FaithPath fp = new FaithPath(new ArrayList<>() {{
             add(new FaithPathTile(1, 1, 0, 0, 1, true));
         }});
 
-        assertEquals("0> (1, 1) 0 pts group 1 CHECK\n", fp.toString());
+        assertEquals("0) (1, 1) 0 pts group 1 CHECK\n", fp.toString());
     }
 }

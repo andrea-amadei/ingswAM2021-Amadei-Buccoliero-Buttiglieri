@@ -96,7 +96,7 @@ public class FaithPathTile implements SerializedObject {
         StringBuilder str = new StringBuilder();
 
         str .append(getOrder())
-            .append("> (")
+            .append(") (")
             .append(getX())
             .append(", ")
             .append(getY())
