@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.GameParameters;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * The production class defines the methods to interact with every crafting aspect of the game.
@@ -13,11 +14,19 @@ import java.util.List;
  *      - Upgradable crafting can be purchased or upgraded from the shop
  */
 public class Production {
+
+    public enum CraftingType {
+        BASE,
+        UPGRADABLE,
+        LEADER
+    }
+
     private final List<Crafting> baseCrafting;
     private final List<Crafting> leaderCrafting;
     private final List<UpgradableCrafting> upgradableCrafting;
 
-    private Integer selectedUpgradableCrafting;
+    private Integer selectedCrafting;
+    private CraftingType selectedType;
 
     /**
      * Creates a new production instance.
@@ -31,7 +40,8 @@ public class Production {
         for(int i=0; i < GameParameters.UPGRADABLE_CRAFTING_NUMBER; i++)
             upgradableCrafting.add(null);
 
-        selectedUpgradableCrafting = null;
+        selectedCrafting = null;
+        selectedType = null;
     }
 
     /**
@@ -134,24 +144,44 @@ public class Production {
      * @param index the index of the upgradable crafting
      * @throws IndexOutOfBoundsException if index is out of bound
      */
-    public void selectUpgradableCrafting(int index){
+    public void selectUpgradableCrafting(CraftingType type, int index){
+        if(type == null)
+            throw new NullPointerException();
+
         if(index < 0 || index >= upgradableCrafting.size())
             throw new IndexOutOfBoundsException("The index specified for the upgradable crafting is out of bound");
-        selectedUpgradableCrafting = index;
+
+        selectedCrafting = index;
+        selectedType = type;
     }
 
     /**
-     * Returns the selected upgradable crafting.
-     * @return the selected upgradable crafting.
+     * Returns the selected crafting index.
+     * @return the selected crafting index.
      */
-    public Integer getSelectedUpgradableCrafting(){
-        return selectedUpgradableCrafting;
+    public Integer getSelectedCraftingIndex() {
+        if(selectedCrafting == null)
+            throw new NoSuchElementException("No element was selected");
+
+        return selectedCrafting;
+    }
+
+    /**
+     * Returns the selected crafting type.
+     * @return the selected crafting type.
+     */
+    public CraftingType getSelectedCraftingType() {
+        if(selectedType == null)
+            throw new NoSuchElementException("No element was selected");
+
+        return selectedType;
     }
 
     /**
      * Removes the selection from the previously selected upgradable crafting
      */
     public void resetUpgradableCraftingSelection(){
-        selectedUpgradableCrafting = null;
+        selectedCrafting = null;
+        selectedType = null;
     }
 }

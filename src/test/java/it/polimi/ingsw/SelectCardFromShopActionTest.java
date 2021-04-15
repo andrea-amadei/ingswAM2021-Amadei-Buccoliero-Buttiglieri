@@ -18,6 +18,7 @@ import org.junit.jupiter.api.TestInstance;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SelectCardFromShopActionTest {
@@ -39,7 +40,7 @@ public class SelectCardFromShopActionTest {
         assertDoesNotThrow(()->new SelectCardFromShopAction("Ernestino", 0, 0, 2).execute(gameContext));
         Shop shop = gameContext.getGameModel().getShop();
 
-        assertEquals(2, player1.getBoard().getProduction().getSelectedUpgradableCrafting());
+        assertEquals(2, player1.getBoard().getProduction().getSelectedCraftingIndex());
         assertEquals(shop.getTopCard(0,0), shop.getSelectedCard());
     }
 
@@ -48,7 +49,7 @@ public class SelectCardFromShopActionTest {
         assertThrows(IllegalActionException.class,
                 ()->new SelectCardFromShopAction("Ernestino", 1, 1, 2).execute(gameContext));
         assertNull(gameContext.getGameModel().getShop().getSelectedCard());
-        assertNull(player1.getBoard().getProduction().getSelectedUpgradableCrafting());
+        assertThrows(NoSuchElementException.class, () -> player1.getBoard().getProduction().getSelectedCraftingIndex());
     }
 
     @Test
@@ -61,7 +62,7 @@ public class SelectCardFromShopActionTest {
 
         assertDoesNotThrow(()->new SelectCardFromShopAction("Ernestino", 2, 0, 2).execute(gameContext));
 
-        assertEquals(2, production.getSelectedUpgradableCrafting());
+        assertEquals(2, production.getSelectedCraftingIndex());
         assertEquals(shop.getTopCard(2, 0), shop.getSelectedCard());
     }
 
@@ -75,7 +76,7 @@ public class SelectCardFromShopActionTest {
 
         assertThrows(IllegalActionException.class, ()->new SelectCardFromShopAction("Ernestino", 2, 0, 2).execute(gameContext));
 
-        assertNull(production.getSelectedUpgradableCrafting());
+        assertThrows(NoSuchElementException.class, production::getSelectedCraftingIndex);
         assertNull(shop.getSelectedCard());
     }
 

@@ -84,13 +84,13 @@ public class SelectCardFromShopAction implements Action{
 
         //try to select the target upgradable crafting
         try{
-            production.selectUpgradableCrafting(upgradableCraftingId);
+            production.selectUpgradableCrafting(Production.CraftingType.UPGRADABLE, upgradableCraftingId);
         }catch(IndexOutOfBoundsException e){
             shop.resetSelectedCard();
             throw new IllegalActionException(e.getMessage());
         }
 
-        Integer upgradableCraftingIndex = production.getSelectedUpgradableCrafting();
+        Integer upgradableCraftingIndex = production.getSelectedCraftingIndex();
         UpgradableCrafting upgradableCrafting = production.getUpgradableCrafting(upgradableCraftingIndex);
 
         //check if the new crafting can be put on the selected one

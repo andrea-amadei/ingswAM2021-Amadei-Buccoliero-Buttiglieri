@@ -69,7 +69,7 @@ public class BuyFromShopAction implements Action{
 
         Map<ResourceContainer, Map<ResourceSingle, Integer>> selectedResources = storage.getSelection();
         CraftingCard card = shop.getSelectedCard();
-        Integer selectedCrafting = production.getSelectedUpgradableCrafting();
+        Integer selectedCrafting = production.getSelectedCraftingIndex();
 
         if(selectedResources == null || card == null || selectedCrafting == null)
             throw new IllegalActionException("Trying to buy a card without having selected all the necessary");

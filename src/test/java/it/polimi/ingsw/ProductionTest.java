@@ -69,7 +69,7 @@ public class ProductionTest {
                 new UpgradableCrafting(new HashMap<>(){{put(gold, 2);}}, new HashMap<>(){{put(servant, 2);}}, 0, 1
         ));
 
-        production.selectUpgradableCrafting(2);
-        assertEquals(2, production.getSelectedUpgradableCrafting());
+        production.selectUpgradableCrafting(Production.CraftingType.UPGRADABLE ,2);
+        assertEquals(2, production.getSelectedCraftingIndex());
     }
 }
