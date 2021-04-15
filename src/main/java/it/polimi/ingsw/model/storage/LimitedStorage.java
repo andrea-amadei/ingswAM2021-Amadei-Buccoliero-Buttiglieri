@@ -7,6 +7,7 @@ import it.polimi.ingsw.gamematerials.ResourceSingle;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * The LimitedStorage class is a generic container of resources with custom limits.
@@ -264,7 +265,7 @@ public class LimitedStorage extends BaseStorage {
             if(super.getResources(i) != singleResourceLimit.get(i))
                 return false;
 
-        return other.totalAmountOfResources() == groupResourceLimit.get(group);
+        return other.totalAmountOfResources() == Optional.ofNullable(groupResourceLimit.get(group)).orElse(0);
     }
 
     /**

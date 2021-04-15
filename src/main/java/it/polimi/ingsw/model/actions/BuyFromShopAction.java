@@ -125,6 +125,7 @@ public class BuyFromShopAction implements Action{
         //reset all selections
         shop.resetSelectedCard();
         production.resetUpgradableCraftingSelection();
+        storage.resetSelection();
 
         //write the messages
         PayloadComponent updates = new InfoPayload(player + " has bought a card from market");
