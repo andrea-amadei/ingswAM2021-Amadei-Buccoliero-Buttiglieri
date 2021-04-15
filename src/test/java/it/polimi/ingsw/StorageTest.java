@@ -165,7 +165,7 @@ public class StorageTest {
         assertDoesNotThrow(()->s.addToSelection(s.getChest(), servant, 1));
 
         s.resetSelection();
-        assertEquals(new HashMap<>(), s.getSelection());
+        assertNull(s.getSelection());
     }
 
     @Test
