@@ -54,7 +54,7 @@ public class FaithPath {
 
                 // if not, create a new set and add it
             } else {
-                coordinates.put(i.getX(), new HashSet<Integer>() {{
+                coordinates.put(i.getX(), new HashSet<>() {{
                     add(i.getY());
                 }});
             }
@@ -153,23 +153,7 @@ public class FaithPath {
         StringBuilder str = new StringBuilder();
 
         for(FaithPathTile i : tiles) {
-            str .append(i.getOrder())
-                .append("> (")
-                .append(i.getX())
-                .append(", ")
-                .append(i.getY())
-                .append(") ")
-                .append(i.getVictoryPoints())
-                .append(" pts");
-
-            if(i.getPopeGroup() != 0)
-                str .append(" group ")
-                    .append(i.getPopeGroup());
-
-            if(i.isPopeCheck())
-                str.append(" CHECK");
-
-            str.append('\n');
+            str.append(i.toString()).append('\n');
         }
 
         return str.toString();
