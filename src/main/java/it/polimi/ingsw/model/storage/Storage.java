@@ -22,7 +22,7 @@ public class Storage {
 
     //the key is a resource container, the value is a map that represents the amount of resources for each resource type
     //selected from that container
-    private final Map<ResourceContainer, Map<ResourceSingle, Integer>> selectedResources;
+    private Map<ResourceContainer, Map<ResourceSingle, Integer>> selectedResources;
 
     /**
      * A new empty storage is created. The cupboard is initialized with the parameters stated in GameParameters class
@@ -142,10 +142,10 @@ public class Storage {
     }
 
     /**
-     * Clears the selection
+     * Sets the selection to null
      */
     public void resetSelection(){
-        selectedResources.clear();
+        selectedResources = null;
     }
 
     /**
