@@ -1,0 +1,204 @@
+{
+  "tiles": [
+    {
+      "order": 0,
+      "x": 1,
+      "y": 1,
+      "victory_points": 0,
+      "pope_group": 0,
+      "pope_check": false
+    },
+    {
+      "order": 1,
+      "x": 2,
+      "y": 1,
+      "victory_points": 0,
+      "pope_group": 0,
+      "pope_check": false
+    },
+    {
+      "order": 2,
+      "x": 3,
+      "y": 1,
+      "victory_points": 0,
+      "pope_group": 0,
+      "pope_check": false
+    },
+    {
+      "order": 3,
+      "x": 3,
+      "y": 2,
+      "victory_points": 1,
+      "pope_group": 0,
+      "pope_check": false
+    },
+    {
+      "order": 4,
+      "x": 3,
+      "y": 3,
+      "victory_points": 0,
+      "pope_group": 0,
+      "pope_check": false
+    },
+    {
+      "order": 5,
+      "x": 4,
+      "y": 3,
+      "victory_points": 0,
+      "pope_group": 1,
+      "pope_check": false
+    },
+    {
+      "order": 6,
+      "x": 5,
+      "y": 3,
+      "victory_points": 1,
+      "pope_group": 1,
+      "pope_check": false
+    },
+    {
+      "order": 7,
+      "x": 6,
+      "y": 3,
+      "victory_points": 0,
+      "pope_group": 1,
+      "pope_check": false
+    },
+    {
+      "order": 8,
+      "x": 7,
+      "y": 3,
+      "victory_points": 0,
+      "pope_group": 1,
+      "pope_check": true
+    },
+    {
+      "order": 9,
+      "x": 8,
+      "y": 3,
+      "victory_points": 2,
+      "pope_group": 0,
+      "pope_check": false
+    },
+    {
+      "order": 10,
+      "x": 8,
+      "y": 2,
+      "victory_points": 0,
+      "pope_group": 0,
+      "pope_check": false
+    },
+    {
+      "order": 11,
+      "x": 8,
+      "y": 1,
+      "victory_points": 0,
+      "pope_group": 0,
+      "pope_check": false
+    },
+    {
+      "order": 12,
+      "x": 9,
+      "y": 1,
+      "victory_points": 2,
+      "pope_group": 2,
+      "pope_check": false
+    },
+    {
+      "order": 13,
+      "x": 10,
+      "y": 1,
+      "victory_points": 0,
+      "pope_group": 2,
+      "pope_check": false
+    },
+    {
+      "order": 14,
+      "x": 11,
+      "y": 1,
+      "victory_points": 0,
+      "pope_group": 2,
+      "pope_check": false
+    },
+    {
+      "order": 15,
+      "x": 12,
+      "y": 1,
+      "victory_points": 3,
+      "pope_group": 2,
+      "pope_check": false
+    },
+    {
+      "order": 16,
+      "x": 13,
+      "y": 1,
+      "victory_points": 0,
+      "pope_group": 2,
+      "pope_check": true
+    },
+    {
+      "order": 17,
+      "x": 13,
+      "y": 2,
+      "victory_points": 0,
+      "pope_group": 0,
+      "pope_check": false
+    },
+    {
+      "order": 18,
+      "x": 13,
+      "y": 3,
+      "victory_points": 3,
+      "pope_group": 0,
+      "pope_check": false
+    },
+    {
+      "order": 19,
+      "x": 14,
+      "y": 3,
+      "victory_points": 0,
+      "pope_group": 3,
+      "pope_check": false
+    },
+    {
+      "order": 20,
+      "x": 15,
+      "y": 3,
+      "victory_points": 0,
+      "pope_group": 3,
+      "pope_check": false
+    },
+    {
+      "order": 21,
+      "x": 16,
+      "y": 3,
+      "victory_points": 4,
+      "pope_group": 3,
+      "pope_check": false
+    },
+    {
+      "order": 22,
+      "x": 17,
+      "y": 3,
+      "victory_points": 0,
+      "pope_group": 3,
+      "pope_check": false
+    },
+    {
+      "order": 23,
+      "x": 18,
+      "y": 3,
+      "victory_points": 0,
+      "pope_group": 3,
+      "pope_check": false
+    },
+    {
+      "order": 24,
+      "x": 19,
+      "y": 3,
+      "victory_points": 4,
+      "pope_group": 3,
+      "pope_check": true
+    }
+  ]
+}
