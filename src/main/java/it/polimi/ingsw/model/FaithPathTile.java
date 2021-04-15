@@ -1,9 +1,12 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.parser.SerializedObject;
+import it.polimi.ingsw.server.Console;
+
 /**
  * The FaithPathTile is an immutable class containing all the information about a tile of the faith path
  */
-public class FaithPathTile {
+public class FaithPathTile implements SerializedObject {
     private final int x, y;
 
     private final int order;
@@ -86,5 +89,33 @@ public class FaithPathTile {
      */
     public boolean isPopeCheck() {
         return popeCheck;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+
+        str .append(getOrder())
+            .append("> (")
+            .append(getX())
+            .append(", ")
+            .append(getY())
+            .append(") ")
+            .append(getVictoryPoints())
+            .append(" pts");
+
+        if(getPopeGroup() != 0)
+            str .append(" group ")
+                .append(getPopeGroup());
+
+        if(isPopeCheck())
+            str.append(" CHECK");
+
+        return str.toString();
+    }
+
+    @Override
+    public void printDebugInfo() {
+        Console.log(toString());
     }
 }
