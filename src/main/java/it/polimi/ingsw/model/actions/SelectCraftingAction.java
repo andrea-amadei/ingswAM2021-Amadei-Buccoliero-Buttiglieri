@@ -7,6 +7,7 @@ import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.fsm.GameContext;
+import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.Production;
 
 import java.util.Collections;
@@ -23,7 +24,7 @@ public class SelectCraftingAction implements Action {
         if(player == null || craftingType == null)
             throw new NullPointerException();
 
-        if(index <= 0)
+        if(index < 0)
             throw new IllegalArgumentException("Index must be positive");
 
         this.player = player;
@@ -56,8 +57,8 @@ public class SelectCraftingAction implements Action {
 
         Production production = currentPlayer.getBoard().getProduction();
 
-        if(production.getCrafting(craftingType, index) == null)
-            throw new IllegalActionException("Cannot select an empty crafting slot");
+        //if(production.getCrafting(craftingType, index) == null)
+           // throw new IllegalActionException("Cannot select an empty crafting slot");
 
         try {
             production.selectCrafting(craftingType, index);
@@ -65,7 +66,18 @@ public class SelectCraftingAction implements Action {
             throw new IllegalActionException(e.getMessage());
         }
 
-        //send the message
+        Crafting crafting;
+        try{
+            crafting = production.getSelectedCrafting();
+        } catch (IndexOutOfBoundsException e){
+            throw new IllegalActionException(e.getMessage());
+        }
+
+        if(crafting == null)
+            throw new IllegalActionException("Cannot select an empty crafting slot");
+
+
+            //send the message
         List<String> targets = Collections.singletonList(player);
         PayloadComponent info = new InfoPayload(player + " selected the crafting at (" + craftingType + ", " + index + ")");
         Message message = new Message(targets, Collections.singletonList(info));

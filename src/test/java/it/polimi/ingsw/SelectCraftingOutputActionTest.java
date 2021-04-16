@@ -44,13 +44,13 @@ public class SelectCraftingOutputActionTest {
 
     @Test
     public void selectBaseCraftingConversion(){
-        player1.getBoard().getProduction().selectUpgradableCrafting(Production.CraftingType.UPGRADABLE, 0);
+        player1.getBoard().getProduction().selectCrafting(Production.CraftingType.UPGRADABLE, 0);
         assertDoesNotThrow(()->new SelectCraftingOutputAction("Paolo", new HashMap<>(){{put(gold, 2);put(shield, 1);}}).execute(gameContext));
     }
 
     @Test
     public void selectBaseCraftingWithWrongConversion(){
-        player1.getBoard().getProduction().selectUpgradableCrafting(Production.CraftingType.UPGRADABLE, 0);
+        player1.getBoard().getProduction().selectCrafting(Production.CraftingType.UPGRADABLE, 0);
         assertThrows(IllegalActionException.class, ()->new SelectCraftingOutputAction("Paolo", new HashMap<>(){{put(gold, 1);put(shield, 1);}}).execute(gameContext));
     }
 
@@ -61,7 +61,7 @@ public class SelectCraftingOutputActionTest {
 
     @Test
     public void selectBaseCraftingWithTooBigConversion(){
-        player1.getBoard().getProduction().selectUpgradableCrafting(Production.CraftingType.UPGRADABLE, 0);
+        player1.getBoard().getProduction().selectCrafting(Production.CraftingType.UPGRADABLE, 0);
         assertDoesNotThrow(()->new SelectCraftingOutputAction("Paolo", new HashMap<>(){{put(gold, 2);put(shield, 1);put(shield, 1);}}).execute(gameContext));
     }
 
