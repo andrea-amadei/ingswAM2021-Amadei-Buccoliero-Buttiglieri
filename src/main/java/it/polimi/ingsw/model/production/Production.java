@@ -177,19 +177,19 @@ public class Production {
         return selectedType;
     }
 
-    public Crafting getSelectedCrafting(int index) {
+    public Crafting getSelectedCrafting() {
         if(selectedType == null || selectedCrafting == null)
             throw new NoSuchElementException("No element was selected");
 
         switch (selectedType) {
             case UPGRADABLE:
-                return getUpgradableCrafting(index);
+                return getUpgradableCrafting(selectedCrafting);
 
             case BASE:
-                return getBaseCrafting(index);
+                return getBaseCrafting(selectedCrafting);
 
             case LEADER:
-                return getLeaderCrafting(index);
+                return getLeaderCrafting(selectedCrafting);
 
             // This shouldn't be happening at all
             default:
