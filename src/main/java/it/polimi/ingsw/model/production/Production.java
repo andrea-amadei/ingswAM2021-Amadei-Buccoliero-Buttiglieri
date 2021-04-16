@@ -25,7 +25,7 @@ public class Production {
     private final List<Crafting> leaderCrafting;
     private final List<UpgradableCrafting> upgradableCrafting;
 
-    private Integer selectedCrafting;
+    private Integer selectedIndex;
     private CraftingType selectedType;
 
     /**
@@ -40,7 +40,7 @@ public class Production {
         for(int i=0; i < GameParameters.UPGRADABLE_CRAFTING_NUMBER; i++)
             upgradableCrafting.add(null);
 
-        selectedCrafting = null;
+        selectedIndex = null;
         selectedType = null;
     }
 
@@ -60,6 +60,9 @@ public class Production {
 
         for(int i=0; i < GameParameters.UPGRADABLE_CRAFTING_NUMBER; i++)
             upgradableCrafting.add(null);
+
+        selectedIndex = null;
+        selectedType = null;
     }
 
     /**
@@ -73,6 +76,7 @@ public class Production {
      * Returns the specified base crafting
      * @param index the index of the selected base crafting
      * @return the specified base crafting
+     * @throws IndexOutOfBoundsException if the index is out of bounds
      */
     public Crafting getBaseCrafting(int index) {
         return baseCrafting.get(index);
@@ -89,6 +93,7 @@ public class Production {
      * Returns the specified leader crafting
      * @param index the index of the selected leader crafting
      * @return the specified leader crafting
+     * @throws IndexOutOfBoundsException if the index is out of bounds
      */
     public Crafting getLeaderCrafting(int index) {
         return leaderCrafting.get(index);
@@ -105,9 +110,38 @@ public class Production {
      * Returns the specified upgradable crafting
      * @param index the index of the selected upgradable crafting
      * @return the specified upgradable crafting
+     * @throws IndexOutOfBoundsException if the index is out of bounds
      */
     public UpgradableCrafting getUpgradableCrafting(int index) {
         return upgradableCrafting.get(index);
+    }
+
+    /**
+     * Returns a crafting, given its type (BASE, UPGRADABLE or LEADER) and its index.
+     * @param type the type of crafting. Can either be BASE, UPGRADABLE or LEADER
+     * @param index the index of the crafting, starting from 0. Must be inbounds
+     * @return the requested crafting
+     * @throws NullPointerException if type is null
+     * @throws IndexOutOfBoundsException if the index is out of bounds
+     */
+    public Crafting getCrafting(CraftingType type, int index) {
+        if(type == null)
+            throw new NullPointerException();
+
+        switch (type) {
+            case UPGRADABLE:
+                return getUpgradableCrafting(index);
+
+            case BASE:
+                return getBaseCrafting(index);
+
+            case LEADER:
+                return getLeaderCrafting(index);
+
+            // This shouldn't be happening at all
+            default:
+                return null;
+        }
     }
 
     /**
@@ -140,18 +174,19 @@ public class Production {
     }
 
     /**
-     * Selects an upgradable crafting from the production.
-     * @param index the index of the upgradable crafting
-     * @throws IndexOutOfBoundsException if index is out of bound
+     * Mark as selected a crafting from the production.
+     * @param type the crafting type (BASE, UPGRADABLE or LEADER)
+     * @param index the index of the crafting
+     * @throws IndexOutOfBoundsException if index is out of bounds
      */
-    public void selectUpgradableCrafting(CraftingType type, int index){
+    public void selectCrafting(CraftingType type, int index){
         if(type == null)
             throw new NullPointerException();
 
         if(index < 0 || index >= upgradableCrafting.size())
             throw new IndexOutOfBoundsException("The index specified for the upgradable crafting is out of bound");
 
-        selectedCrafting = index;
+        selectedIndex = index;
         selectedType = type;
     }
 
@@ -160,10 +195,10 @@ public class Production {
      * @return the selected crafting index.
      */
     public Integer getSelectedCraftingIndex() {
-        if(selectedCrafting == null)
+        if(selectedIndex == null)
             throw new NoSuchElementException("No element was selected");
 
-        return selectedCrafting;
+        return selectedIndex;
     }
 
     /**
@@ -177,24 +212,16 @@ public class Production {
         return selectedType;
     }
 
+    /**
+     * Returns the selected crafting. Throws NoSuchElementException if none is selected.
+     * @return the selected crafting
+     * @throws NoSuchElementException if nothing is currently selected
+     */
     public Crafting getSelectedCrafting() {
-        if(selectedType == null || selectedCrafting == null)
+        if(selectedType == null || selectedIndex == null)
             throw new NoSuchElementException("No element was selected");
 
-        switch (selectedType) {
-            case UPGRADABLE:
-                return getUpgradableCrafting(selectedCrafting);
-
-            case BASE:
-                return getBaseCrafting(selectedCrafting);
-
-            case LEADER:
-                return getLeaderCrafting(selectedCrafting);
-
-            // This shouldn't be happening at all
-            default:
-                return null;
-        }
+        return getCrafting(selectedType, selectedIndex);
     }
 
     /**
@@ -202,14 +229,14 @@ public class Production {
      * @return true if a crating is selected, false otherwise
      */
     public boolean isCraftingSelected() {
-        return selectedCrafting != null && selectedType != null;
+        return selectedIndex != null && selectedType != null;
     }
 
     /**
      * Removes the selection from the previously selected upgradable crafting
      */
     public void resetUpgradableCraftingSelection(){
-        selectedCrafting = null;
+        selectedIndex = null;
         selectedType = null;
     }
 }

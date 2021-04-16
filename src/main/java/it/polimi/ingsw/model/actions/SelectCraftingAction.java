@@ -55,7 +55,7 @@ public class SelectCraftingAction implements Action {
         }
 
         try {
-            currentPlayer.getBoard().getProduction().selectUpgradableCrafting(craftingType, index);
+            production.selectCrafting(craftingType, index);
         } catch (IndexOutOfBoundsException e) {
             throw new IllegalActionException(e.getMessage());
         }

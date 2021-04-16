@@ -73,7 +73,7 @@ public class ProductionTest {
 
         Production production = new Production(new ArrayList<>() {{add(crafting);}});
 
-        assertDoesNotThrow(() -> production.selectUpgradableCrafting(Production.CraftingType.BASE, 1));
+        assertDoesNotThrow(() -> production.selectCrafting(Production.CraftingType.BASE, 1));
         assertTrue(production.isCraftingSelected());
     }
 
@@ -88,7 +88,7 @@ public class ProductionTest {
                 new UpgradableCrafting(new HashMap<>(){{put(gold, 2);}}, new HashMap<>(){{put(servant, 2);}}, 0, 1
         ));
 
-        production.selectUpgradableCrafting(Production.CraftingType.UPGRADABLE ,2);
+        production.selectCrafting(Production.CraftingType.UPGRADABLE ,2);
         assertEquals(2, production.getSelectedCraftingIndex());
     }
 }
