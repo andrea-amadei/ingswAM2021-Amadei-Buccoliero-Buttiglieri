@@ -46,7 +46,6 @@ public class SelectCraftingAction implements Action {
             throw new NullPointerException();
 
         GameModel model = gameContext.getGameModel();
-        Production production;
         Player currentPlayer;
 
         try {
