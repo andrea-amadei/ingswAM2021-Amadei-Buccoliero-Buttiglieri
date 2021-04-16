@@ -178,6 +178,14 @@ public class Production {
     }
 
     /**
+     * Returns true if a crating is selected, false otherwise
+     * @return true if a crating is selected, false otherwise
+     */
+    public boolean isCraftingSelected() {
+        return selectedCrafting != null && selectedType != null;
+    }
+
+    /**
      * Removes the selection from the previously selected upgradable crafting
      */
     public void resetUpgradableCraftingSelection(){

@@ -59,6 +59,25 @@ public class ProductionTest {
     }
 
     @Test
+    @DisplayName("Is selected")
+    public void isSelectedTest() {
+        HashMap<ResourceType, Integer> input = new HashMap<>();
+        input.put(ResourceTypeSingleton.getInstance().getServantResource(), 1);
+        input.put(ResourceTypeSingleton.getInstance().getShieldResource(), 2);
+
+        HashMap<ResourceType, Integer> output = new HashMap<>();
+        output.put(ResourceTypeSingleton.getInstance().getStoneResource(), 1);
+        output.put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
+
+        Crafting crafting = new Crafting(input, output, 1);
+
+        Production production = new Production(new ArrayList<>() {{add(crafting);}});
+
+        assertDoesNotThrow(() -> production.selectUpgradableCrafting(Production.CraftingType.BASE, 1));
+        assertTrue(production.isCraftingSelected());
+    }
+
+    @Test
     public void selectNonNullUpgradableCrafting(){
 
         ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
