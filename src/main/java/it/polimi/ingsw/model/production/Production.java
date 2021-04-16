@@ -133,7 +133,7 @@ public class Production {
         if(crafting == null)
             throw new NullPointerException();
 
-        if(index <= 0 || index > GameParameters.UPGRADABLE_CRAFTING_NUMBER)
+        if(index < 0 || index >= GameParameters.UPGRADABLE_CRAFTING_NUMBER)
             throw new IndexOutOfBoundsException("Index must be between 0 and " + (GameParameters.UPGRADABLE_CRAFTING_NUMBER - 1));
 
         upgradableCrafting.set(index, crafting);
@@ -148,7 +148,7 @@ public class Production {
         if(type == null)
             throw new NullPointerException();
 
-        if(index <= 0 || index > upgradableCrafting.size())
+        if(index < 0 || index >= upgradableCrafting.size())
             throw new IndexOutOfBoundsException("The index specified for the upgradable crafting is out of bound");
 
         selectedCrafting = index;
@@ -175,6 +175,26 @@ public class Production {
             throw new NoSuchElementException("No element was selected");
 
         return selectedType;
+    }
+
+    public Crafting getSelectedCrafting(int index) {
+        if(selectedType == null || selectedCrafting == null)
+            throw new NoSuchElementException("No element was selected");
+
+        switch (selectedType) {
+            case UPGRADABLE:
+                return getUpgradableCrafting(index);
+
+            case BASE:
+                return getBaseCrafting(index);
+
+            case LEADER:
+                return getLeaderCrafting(index);
+
+            // This shouldn't be happening at all
+            default:
+                return null;
+        }
     }
 
     /**
