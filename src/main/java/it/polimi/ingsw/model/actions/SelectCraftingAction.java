@@ -54,6 +54,11 @@ public class SelectCraftingAction implements Action {
             throw new IllegalActionException(e.getMessage());
         }
 
+        Production production = currentPlayer.getBoard().getProduction();
+
+        if(production.getCrafting(craftingType, index) == null)
+            throw new IllegalActionException("Cannot select an empty crafting slot");
+
         try {
             production.selectCrafting(craftingType, index);
         } catch (IndexOutOfBoundsException e) {
