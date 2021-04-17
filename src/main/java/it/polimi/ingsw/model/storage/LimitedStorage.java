@@ -15,11 +15,13 @@ import java.util.Optional;
  * removing resources, an IllegalResourceTransferException can be thrown if the operation cannot be completed without
  * exceeding the storage limits.
  */
-public class LimitedStorage extends BaseStorage {
+public class LimitedStorage extends ResourceContainer {
     private final Map<ResourceSingle, Integer> singleResourceLimit;
     private final Map<ResourceGroup, Integer> groupResourceLimit;
 
-    private final BaseStorage other = new BaseStorage();
+    private final BaseStorage base;
+    private final BaseStorage other;
+
     private transient ResourceGroup group;
 
     /**
@@ -35,18 +37,18 @@ public class LimitedStorage extends BaseStorage {
      * @throws IllegalArgumentException if any of the limits specify an amount equal or below zero
      */
     public LimitedStorage(Map<ResourceSingle, Integer> singleResourceLimit, Map<ResourceGroup, Integer> groupResourceLimit) {
-        super();
-
         if(singleResourceLimit == null)
             throw new NullPointerException();
 
+        // if groupResourceLimit is null, create one
         if(groupResourceLimit == null)
             groupResourceLimit = new HashMap<>();
 
         //TODO: to be removed in future
         if(groupResourceLimit.size() > 1)
-            throw new UnsupportedOperationException("Only one group limit is currently expected");
+            throw new UnsupportedOperationException("Only one group limit is currently allowed");
 
+        // check for illegal amounts of resources
         for(ResourceSingle i : singleResourceLimit.keySet())
             if(singleResourceLimit.get(i) <= 0)
                 throw new IllegalArgumentException("Limit values cannot be negative or zero");
@@ -55,9 +57,13 @@ public class LimitedStorage extends BaseStorage {
             if(groupResourceLimit.get(i) <= 0)
                 throw new IllegalArgumentException("Limit values cannot be negative or zero");
 
+        // initialize everything
         this.singleResourceLimit = singleResourceLimit;
         this.groupResourceLimit = groupResourceLimit;
+        base = new BaseStorage();
+        other = new BaseStorage();
 
+        // assign temporary object group for easier access
         if(groupResourceLimit.size() == 1)
             group = groupResourceLimit.keySet().iterator().next();
     }
@@ -77,11 +83,10 @@ public class LimitedStorage extends BaseStorage {
      *                                  resources cannot fit in their own limits
      */
     public LimitedStorage(Map<ResourceSingle, Integer> resources, Map<ResourceSingle, Integer> singleResourceLimit, Map<ResourceGroup, Integer> groupResourceLimit) {
-        super();
-
         if(resources == null || singleResourceLimit == null)
             throw new NullPointerException();
 
+        // if groupResourceLimit is null, create one
         if(groupResourceLimit == null)
             groupResourceLimit = new HashMap<>();
 
@@ -89,6 +94,7 @@ public class LimitedStorage extends BaseStorage {
         if(groupResourceLimit.size() > 1)
             throw new UnsupportedOperationException("Only one group limit is currently expected");
 
+        // check for illegal amounts of resources
         for(ResourceSingle i : singleResourceLimit.keySet())
             if(singleResourceLimit.get(i) <= 0)
                 throw new IllegalArgumentException("Limit values cannot be negative or zero");
@@ -97,12 +103,17 @@ public class LimitedStorage extends BaseStorage {
             if(groupResourceLimit.get(i) <= 0)
                 throw new IllegalArgumentException("Limit values cannot be negative or zero");
 
+        // initialize everything
         this.singleResourceLimit = singleResourceLimit;
         this.groupResourceLimit = groupResourceLimit;
+        base = new BaseStorage();
+        other = new BaseStorage();
 
+        // assign temporary object group for easier access
         if(groupResourceLimit.size() == 1)
             group = groupResourceLimit.keySet().iterator().next();
 
+        // add all the given resources to the storage
         for(ResourceSingle i : resources.keySet())
             try {
                 addResources(i, resources.get(i));
@@ -112,11 +123,14 @@ public class LimitedStorage extends BaseStorage {
     }
 
     /**
+     * Returns a map of the stored resources with their amount
      * @return a map of the stored resources with their amount
      */
     public Map<ResourceSingle, Integer> getAllResources() {
-        Map<ResourceSingle, Integer> map = new HashMap<>(super.getAllResources());
+        // get all resources in base
+        Map<ResourceSingle, Integer> map = new HashMap<>(base.getAllResources());
 
+        // add to it all the resources from other
         for(ResourceSingle i : other.getAllResources().keySet())
             if(map.containsKey(i))
                 map.put(i, map.get(i) + other.getResources(i));
@@ -148,15 +162,15 @@ public class LimitedStorage extends BaseStorage {
         if(singleResourceLimit.containsKey(resource)) {
 
             // if the resource doesn't exceed the limits assign all of it. We are good!
-            if(amount + super.getResources(resource) <= singleResourceLimit.get(resource)) {
-                super.addResources(resource, amount);
+            if(amount + base.getResources(resource) <= singleResourceLimit.get(resource)) {
+                base.addResources(resource, amount);
                 return;
             }
 
             // else, if the resource exceed the limits, assign ony what can fit and keep the reset for later
             else {
                 // compute the maximum assignable amount
-                toStorage = singleResourceLimit.get(resource) - super.getResources(resource);
+                toStorage = singleResourceLimit.get(resource) - base.getResources(resource);
 
                 // compute what's left
                 leftToAssign -= toStorage;
@@ -173,7 +187,7 @@ public class LimitedStorage extends BaseStorage {
 
         // finally, we can assign all of it :)
         if(toStorage > 0)
-            super.addResources(resource, toStorage);
+            base.addResources(resource, toStorage);
 
         other.addResources(resource, leftToAssign);
     }
@@ -216,14 +230,14 @@ public class LimitedStorage extends BaseStorage {
         }
 
         // if there is not enough to remove from the regular storage, we cannot remove it :(
-        if(super.getResources(resource) < leftToRemove)
+        if(base.getResources(resource) < leftToRemove)
             throw new IllegalResourceTransferException("The requested amount to remove was not available in the storage");
 
         // finally, we can remove all of it :)
         if(fromOther > 0)
             other.removeResources(resource, fromOther);
 
-        super.removeResources(resource, leftToRemove);
+        base.removeResources(resource, leftToRemove);
     }
 
     /**
@@ -236,7 +250,7 @@ public class LimitedStorage extends BaseStorage {
         if(resource == null)
             throw new NullPointerException();
 
-        return super.getResources(resource) + other.getResources(resource);
+        return base.getResources(resource) + other.getResources(resource);
     }
 
     /**
@@ -246,8 +260,8 @@ public class LimitedStorage extends BaseStorage {
     public int  totalAmountOfResources() {
         int tot = 0;
 
-        for(ResourceSingle i : super.getAllResources().keySet())
-            tot += super.getResources(i);
+        for(ResourceSingle i : base.getAllResources().keySet())
+            tot += base.getResources(i);
 
         for(ResourceSingle i : other.getAllResources().keySet())
             tot += other.getResources(i);
@@ -262,7 +276,7 @@ public class LimitedStorage extends BaseStorage {
      */
     public boolean isFull() {
         for(ResourceSingle i : singleResourceLimit.keySet())
-            if(super.getResources(i) != singleResourceLimit.get(i))
+            if(base.getResources(i) != singleResourceLimit.get(i))
                 return false;
 
         return other.totalAmountOfResources() == Optional.ofNullable(groupResourceLimit.get(group)).orElse(0);
@@ -272,11 +286,12 @@ public class LimitedStorage extends BaseStorage {
      * Clears all resources and resets their tracking. All the limits stand in place. Good as new!
      */
     public void reset() {
-        super.reset();
+        base.reset();
         other.reset();
     }
 
     /**
+     * Returns a map of the single resource's limits in place
      * @return a map of the single resource's limits in place
      */
     public Map<ResourceSingle, Integer> getSingleResourceLimit() {
@@ -284,6 +299,7 @@ public class LimitedStorage extends BaseStorage {
     }
 
     /**
+     * Returns a map of the group resource's limits in place
      * @return a map of the group resource's limits in place
      */
     public Map<ResourceGroup, Integer> getGroupResourceLimit() {
@@ -359,6 +375,6 @@ public class LimitedStorage extends BaseStorage {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), singleResourceLimit, groupResourceLimit, other);
+        return Objects.hash(base.hashCode(), singleResourceLimit, groupResourceLimit, other);
     }
 }
