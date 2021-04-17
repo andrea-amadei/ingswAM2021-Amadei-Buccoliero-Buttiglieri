@@ -178,7 +178,9 @@ public class LimitedStorage extends ResourceContainer {
         }
 
         // if there is no other storage or cannot fit the group criteria, we cannot assign all of it :(
-        if(groupResourceLimit.size() == 0 || !resource.isA(group))
+        if(group == null)
+            throw new IllegalResourceTransferException("The requested amount to add could not fit within the limits");
+        if(!resource.isA(group))
             throw new IllegalResourceTransferException("The requested amount to add could not fit within the limits");
 
         // if what's left to assign can't fit the other storage, we cannot assign all of it :(  (again)
@@ -279,7 +281,7 @@ public class LimitedStorage extends ResourceContainer {
             if(base.getResources(i) != singleResourceLimit.get(i))
                 return false;
 
-        return other.totalAmountOfResources() == Optional.ofNullable(groupResourceLimit.get(group)).orElse(0);
+        return other.totalAmountOfResources() == (group == null ? 0 : groupResourceLimit.get(group));
     }
 
     /**
