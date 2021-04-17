@@ -68,6 +68,7 @@ public abstract class ResourceContainer {
     public abstract void removeResources(ResourceSingle resource, int amount) throws IllegalResourceTransferException;
 
     /**
+     * Returns a map of the stored resources with their given amount
      * @return a map of the stored resources with their given amount
      */
     public abstract Map<ResourceSingle, Integer> getAllResources();

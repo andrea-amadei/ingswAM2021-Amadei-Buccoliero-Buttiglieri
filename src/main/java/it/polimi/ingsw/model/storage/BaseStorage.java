@@ -39,6 +39,7 @@ public class BaseStorage extends ResourceContainer {
     }
 
     /**
+     * Returns a map of the stored resources with their amount
      * @return a map of the stored resources with their amount
      */
     public Map<ResourceSingle, Integer> getAllResources() {
