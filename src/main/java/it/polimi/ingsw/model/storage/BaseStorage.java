@@ -53,7 +53,7 @@ public class BaseStorage extends ResourceContainer {
      * @throws NullPointerException if resource is null
      * @throws IllegalArgumentException if the amount is zero or below
      */
-    public void addResources(ResourceSingle resource, int amount) throws IllegalResourceTransferException {
+    public void addResources(ResourceSingle resource, int amount) {
         if(resource == null)
             throw new NullPointerException();
 
