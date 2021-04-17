@@ -16,7 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
-@Deprecated
+@Deprecated(forRemoval = true)
 public final class XMLParser {
     private static final boolean DEBUG_MODE = true;
     private static final boolean BEST_EFFORT_MODE = false;
