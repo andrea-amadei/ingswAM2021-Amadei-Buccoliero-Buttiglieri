@@ -203,19 +203,12 @@ public class Crafting implements SerializedObject {
 
         for(ResourceType i : output.keySet())
             if(!i.isGroup())
-                try {
-                    player.getBoard().getStorage().getChest().addResources((ResourceSingle) i, output.get(i));
-                } catch(IllegalResourceTransferException e) {
-                    throw new UnsupportedOperationException("This shouldn't happen adn yet it happened...");
-                }
+                player.getBoard().getStorage().getChest().addResources((ResourceSingle) i, output.get(i));
+
 
         for(ResourceGroup i : conversion.keySet())
             for(ResourceSingle j : conversion.get(i).keySet())
-                try {
-                    player.getBoard().getStorage().getChest().addResources(j, conversion.get(i).get(j));
-                } catch(IllegalResourceTransferException e) {
-                    throw new UnsupportedOperationException("This shouldn't happen adn yet it happened...");
-                }
+                player.getBoard().getStorage().getChest().addResources(j, conversion.get(i).get(j));
 
         // TODO: Remake this with the faith path
         if(faithOutput > 0)
