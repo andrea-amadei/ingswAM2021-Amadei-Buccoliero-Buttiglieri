@@ -74,6 +74,7 @@ public class Crafting implements SerializedObject {
     }
 
     /**
+     * Returns a copy of the inputs
      * @return a copy of the inputs
      */
     public Map<ResourceType, Integer> getInput() {
@@ -81,6 +82,7 @@ public class Crafting implements SerializedObject {
     }
 
     /**
+     * Returns a copy of the outputs
      * @return a copy of the outputs
      */
     public Map<ResourceType, Integer> getOutput() {
@@ -88,6 +90,7 @@ public class Crafting implements SerializedObject {
     }
 
     /**
+     * Returns the faith points outputted by the recipe
      * @return the faith points outputted by the recipe
      */
     public int getFaithOutput() {
