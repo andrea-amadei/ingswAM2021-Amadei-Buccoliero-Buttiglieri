@@ -64,8 +64,6 @@ public class CraftingTest {
         assertEquals(crafting.getInput(), input);
         assertEquals(crafting.getOutput(), output);
         assertEquals(crafting.getFaithOutput(), 1);
-
-        assertEquals(crafting.getCraftingPot().getSingleResourceLimit(), input);
     }
 
     @Test
@@ -116,8 +114,8 @@ public class CraftingTest {
     }
 
     @Test
-    @DisplayName("Crafting")
-    public void craftingTest() {
+    @DisplayName("Activate crafting")
+    public void activateCraftingTest() {
         Player player = new Player("Name", 0);
 
         HashMap<ResourceType, Integer> input = new HashMap<>();
@@ -135,18 +133,9 @@ public class CraftingTest {
 
         assertThrows(NullPointerException.class, () -> crafting.activateCrafting(null));
 
-        assertDoesNotThrow(() ->
-                crafting.getCraftingPot().addResources(ResourceTypeSingleton.getInstance().getGoldResource(), 2));
-
         assertThrows(NotReadyToCraftException.class, () -> crafting.activateCrafting(player));
 
-        crafting.getCraftingPot().reset();
         crafting.setGroupConversion(ResourceTypeSingleton.getInstance().getAnyResource(), conversion);
-
-        assertThrows(NotReadyToCraftException.class, () -> crafting.activateCrafting(player));
-
-        assertDoesNotThrow(() ->
-                crafting.getCraftingPot().addResources(ResourceTypeSingleton.getInstance().getGoldResource(), 2));
 
         assertEquals(player.getBoard().getStorage().getChest().getResources(ResourceTypeSingleton.getInstance().getStoneResource()), 0);
         assertEquals(player.getBoard().getFaithHolder().getFaithPoints(), 0);

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.production;
 
-import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.exceptions.NegativeCraftingIngredientException;
 import it.polimi.ingsw.exceptions.NotReadyToCraftException;
 import it.polimi.ingsw.gamematerials.*;
@@ -23,7 +22,6 @@ public class Crafting implements SerializedObject {
     private final Map<ResourceType, Integer> input;
     private final Map<ResourceType, Integer> output;
     private final int faithOutput;
-    private final LimitedStorage craftingPot;
 
     private final transient Set<ResourceGroup> undecided;
     private final transient Map<ResourceGroup, Map<ResourceSingle, Integer>> conversion;
@@ -65,15 +63,6 @@ public class Crafting implements SerializedObject {
         this.output = output;
         this.faithOutput = faithOutput;
 
-        Map<ResourceSingle, Integer> inputSingle = new HashMap<>();
-        Map<ResourceGroup, Integer> inputGroup = new HashMap<>();
-
-        for(ResourceType i : input.keySet())
-            if(!i.isGroup())
-                inputSingle.put((ResourceSingle) i, input.get(i));
-            else
-                inputGroup.put((ResourceGroup) i, input.get(i));
-
         conversion = new HashMap<>();
         undecided = new HashSet<>();
 
@@ -82,8 +71,6 @@ public class Crafting implements SerializedObject {
                 conversion.put((ResourceGroup) i, null);
                 undecided.add((ResourceGroup) i);
             }
-
-        craftingPot = new LimitedStorage(inputSingle, inputGroup);
     }
 
     /**
@@ -105,13 +92,6 @@ public class Crafting implements SerializedObject {
      */
     public int getFaithOutput() {
         return faithOutput;
-    }
-
-    /**
-     * @return the crafting pot
-     */
-    public LimitedStorage getCraftingPot() {
-        return craftingPot;
     }
 
     /**
@@ -182,7 +162,7 @@ public class Crafting implements SerializedObject {
      * @return true the crafting recipe is ready to craft, false otherwise
      */
     public boolean readyToCraft() {
-        return undecided.size() == 0 && craftingPot.isFull();
+        return undecided.size() == 0;
     }
 
     /**
@@ -198,8 +178,6 @@ public class Crafting implements SerializedObject {
                 throw new NotReadyToCraftException("Not all undecided outputs are resolved");
             else
                 throw new NotReadyToCraftException("Crafting pot doesn't contain all the necessary ingredients");
-
-        craftingPot.reset();
 
         for(ResourceType i : output.keySet())
             if(!i.isGroup())
