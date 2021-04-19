@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.fsm;
 
+import it.polimi.ingsw.exceptions.CountdownException;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
 
@@ -10,6 +11,8 @@ public class GameContext {
     private final GameModel gameModel;
     private Player currentPlayer;
     private boolean playerMoved;
+    private boolean countdownStarted;
+    private int turnsLeft;
 
     /**
      * Creates a new game context. Current player is initially null
@@ -19,9 +22,12 @@ public class GameContext {
     public GameContext(GameModel gameModel){
         if(gameModel == null)
             throw new NullPointerException();
+
         this.gameModel = gameModel;
         currentPlayer = null;
         playerMoved = false;
+        countdownStarted = false;
+        turnsLeft = -1;
     }
 
     /**
@@ -53,11 +59,83 @@ public class GameContext {
         this.currentPlayer = currentPlayer;
     }
 
+    /**
+     * Returns true if the current player has already made a move, false otherwise
+     * @return true if the current player has already made a move, false otherwise
+     */
     public boolean hasPlayerMoved() {
         return playerMoved;
     }
 
+    /**
+     * Sets if the current player has already moved
+     * @param playerMoved true if the current player has already made a move, false otherwise
+     */
     public void setPlayerMoved(boolean playerMoved) {
         this.playerMoved = playerMoved;
+    }
+
+    /**
+     * Starts a new turn countdown to mark the end of the game
+     * @param turnsLeft the amount of turns (one for player) left to play
+     * @throws IllegalArgumentException if turns left isn't positive
+     * @throws CountdownException if the countdown was already running
+     */
+    public void startCountdown(int turnsLeft) {
+        if(turnsLeft <= 0)
+            throw new IllegalArgumentException("Turns left must be positive");
+
+        if(countdownStarted)
+            throw new CountdownException("Cannot start countdown while another is already in place");
+
+        countdownStarted = true;
+        this.turnsLeft = turnsLeft;
+    }
+
+    /**
+     * Returns the amount of turns left
+     * @return the amount of turns left
+     * @throws CountdownException if no countdown is active or the countdown already ended
+     */
+    public int getTurnsLeft() {
+        if(!countdownStarted)
+            throw new CountdownException("Cannot advance countdown since no countdown is active");
+
+        if(turnsLeft <= 0)
+            throw new CountdownException("Cannot advance countdown since the countdown already ended");
+
+        return turnsLeft;
+    }
+
+    /**
+     * Returns true if the countdown already started, false otherwise
+     * @return true if the countdown already started, false otherwise
+     */
+    public boolean hasCountdownStarted() {
+        return countdownStarted;
+    }
+
+    /**
+     * Returns true if the countdown already ended, false otherwise
+     * @return true if the countdown already ended, false otherwise
+     */
+    public boolean hasCountdownEnded() {
+        return countdownStarted && turnsLeft == 0;
+    }
+
+    /**
+     * Advance the countdown by one
+     * @return true if, after the advancement, the countdown ended; false otherwise
+     * @throws CountdownException if no countdown is active or the countdown already ended
+     */
+    public boolean advanceCountdown() {
+        if(!countdownStarted)
+            throw new CountdownException("Cannot advance countdown since no countdown is active");
+
+        if(turnsLeft <= 0)
+            throw new CountdownException("Cannot advance countdown since the countdown already ended");
+
+        turnsLeft--;
+        return turnsLeft == 0;
     }
 }
