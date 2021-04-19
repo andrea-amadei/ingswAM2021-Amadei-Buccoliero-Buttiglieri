@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.fsm;
 
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.actions.*;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
  * Every concrete state can override some handleAction overloads to properly handle the acceptable transitions for
  * that particular concrete state.
  */
-public abstract class State implements InterruptLauncher{
+public abstract class State implements InterruptLauncher, ActionHandler{
     private final GameContext gameContext;
     private State nextState;
     private InterruptListener interruptListener;
@@ -31,35 +32,6 @@ public abstract class State implements InterruptLauncher{
         nextState = null;
         interruptListener = null;
     }
-
-    /**
-     * It handles the specific action required. By default it throws an FSMTransitionFailedException.
-     * If a specific state needs to handle the action, this method will be overloaded.
-     * If the action is handled, this method will set the nextState.
-     * @param activateLeaderAction the action to be executed
-     * @return the list of messages to be sent to the client
-     * @throws NullPointerException if the action is null
-     * @throws FSMTransitionFailedException if the action cannot be handled
-     */
-    public List<Message> handleAction(ActivateLeaderAction activateLeaderAction) throws FSMTransitionFailedException {
-        if(activateLeaderAction == null)
-            throw new NullPointerException();
-        throw new FSMTransitionFailedException("Cannot execute this command now");
-    }
-
-    //TODO: add doc for every overload (?)
-    public List<Message> handleAction(BuyFromMarketAction buyFromMarketAction) throws FSMTransitionFailedException {
-        if(buyFromMarketAction == null)
-            throw new NullPointerException();
-        throw new FSMTransitionFailedException("Cannot execute this command now");
-    }
-    public List<Message> handleAction(ConfirmTidyAction confirmTidyAction) throws FSMTransitionFailedException {
-        if(confirmTidyAction == null)
-            throw new NullPointerException();
-        throw new FSMTransitionFailedException("Cannot execute this command now");
-    }
-    //TODO: add all other possible actions
-
 
     /**
      * This method will be executed every time this state is entered from a different state
@@ -84,6 +56,20 @@ public abstract class State implements InterruptLauncher{
      * @return the list of messages to be sent to the client
      */
     public List<Message> onExit(){return new ArrayList<>();}
+
+
+    /**
+     * Checks if the specified player is the current player
+     * @param player the specified player
+     * @throws FSMTransitionFailedException if the specified player is not the current player
+     * @throws NullPointerException if player is null
+     */
+    protected void checkCurrentPlayer(Player player) throws FSMTransitionFailedException{
+        if(player == null)
+            throw new NullPointerException();
+        if(!gameContext.getCurrentPlayer().equals(player))
+            throw new FSMTransitionFailedException("Player is not the current player");
+    }
 
     /**
      * Returns the next state. Null if the next state is not set
