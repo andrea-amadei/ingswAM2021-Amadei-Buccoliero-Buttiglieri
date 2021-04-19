@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.Player;
 public class GameContext {
     private final GameModel gameModel;
     private Player currentPlayer;
+    private boolean playerMoved;
 
     /**
      * Creates a new game context. Current player is initially null
@@ -20,6 +21,7 @@ public class GameContext {
             throw new NullPointerException();
         this.gameModel = gameModel;
         currentPlayer = null;
+        playerMoved = false;
     }
 
     /**
@@ -49,5 +51,13 @@ public class GameContext {
             throw new IllegalArgumentException("The specified player is not part of the game");
 
         this.currentPlayer = currentPlayer;
+    }
+
+    public boolean hasPlayerMoved() {
+        return playerMoved;
+    }
+
+    public void setPlayerMoved(boolean playerMoved) {
+        this.playerMoved = playerMoved;
     }
 }
