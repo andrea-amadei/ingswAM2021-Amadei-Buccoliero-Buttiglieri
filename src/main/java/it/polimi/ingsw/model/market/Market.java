@@ -100,6 +100,13 @@ public class Market {
     }
 
     /**
+     * Clears the selected marbles
+     */
+    public void resetSelectedMarbles(){
+        selectedMarbles.clear();
+    }
+
+    /**
      * Performs a pickRow operation. Marbles of the specified row are left-shifted.
      * The exceeding marble becomes the new extra marble.
      * The old extra marble becomes the right-first marble of the specified row.
