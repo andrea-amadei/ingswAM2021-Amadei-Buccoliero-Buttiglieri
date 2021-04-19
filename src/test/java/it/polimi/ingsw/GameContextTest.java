@@ -1,9 +1,11 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.exceptions.CountdownException;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.fsm.GameContext;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -40,6 +42,84 @@ public class GameContextTest {
         GameContext context = new GameContext(model);
         context.setCurrentPlayer(model.getPlayers().get(0));
         assertEquals(model.getPlayers().get(0), context.getCurrentPlayer());
+    }
+
+    @Test
+    @DisplayName("Player moved")
+    public void playerMovedTest() {
+        GameContext context = new GameContext(model);
+        context.setCurrentPlayer(model.getPlayers().get(0));
+
+        assertFalse(context.hasPlayerMoved());
+        context.setPlayerMoved(true);
+        assertTrue(context.hasPlayerMoved());
+
+        context.setCurrentPlayer(model.getPlayers().get(1));
+        assertFalse(context.hasPlayerMoved());
+    }
+
+    @Test
+    @DisplayName("Turn countdown")
+    public void countdownTest() {
+        GameContext context = new GameContext(model);
+        context.setCurrentPlayer(model.getPlayers().get(0));
+
+        assertFalse(context.hasCountdownStarted());
+
+        context.startCountdown(3);
+        assertTrue(context.hasCountdownStarted());
+
+        assertFalse(context.advanceCountdown());
+        assertFalse(context.advanceCountdown());
+
+        assertEquals(1, context.getTurnsLeft());
+
+        assertFalse(context.hasCountdownEnded());
+
+        assertTrue(context.advanceCountdown());
+        assertTrue(context.hasCountdownEnded());
+    }
+
+    @Test
+    @DisplayName("Invalid countdown start")
+    public void invalidCountdownStartTest() {
+        GameContext context = new GameContext(model);
+        context.setCurrentPlayer(model.getPlayers().get(0));
+
+        assertThrows(IllegalArgumentException.class, () -> context.startCountdown(-1));
+    }
+
+    @Test
+    @DisplayName("Countdown not started yet")
+    public void countdownNotStartedYet() {
+        GameContext context = new GameContext(model);
+        context.setCurrentPlayer(model.getPlayers().get(0));
+
+        assertThrows(CountdownException.class, context::advanceCountdown);
+        assertThrows(CountdownException.class, context::getTurnsLeft);
+    }
+
+    @Test
+    @DisplayName("Countdown already started")
+    public void countdownAlreadyStartedTest() {
+        GameContext context = new GameContext(model);
+        context.setCurrentPlayer(model.getPlayers().get(0));
+
+        context.startCountdown(4);
+        assertThrows(CountdownException.class, () -> context.startCountdown(2));
+    }
+
+    @Test
+    @DisplayName("Countdown already ended")
+    public void countdownAlreadyEndedTest() {
+        GameContext context = new GameContext(model);
+        context.setCurrentPlayer(model.getPlayers().get(0));
+
+        context.startCountdown(1);
+        context.advanceCountdown();
+
+        assertThrows(CountdownException.class, context::advanceCountdown);
+        assertThrows(CountdownException.class, context::getTurnsLeft);
     }
 
     @Test
