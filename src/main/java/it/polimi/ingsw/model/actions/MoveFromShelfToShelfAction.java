@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 /**
  * action moves resources between a player's shelves
  */
+@Deprecated
 public class MoveFromShelfToShelfAction implements Action{
 
     private final String player;
