@@ -5,7 +5,6 @@ import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.PayloadComponent;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.model.GameParameters;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.holder.ConversionHolder;
@@ -31,12 +30,12 @@ public class BuyFromMarketAction implements Action{
      * @param isRow true if the player wants to select a row. False if the player wants to select a column
      * @param index the index of the row/col
      * @throws NullPointerException if player is null
-     * @throws IndexOutOfBoundsException if index is out of bound
+     * @throws IndexOutOfBoundsException if index is negative
      */
     public BuyFromMarketAction(String player, boolean isRow, int index){
         if(player == null)
             throw new NullPointerException();
-        if(index < 0 || (isRow && index >= GameParameters.MARKET_ROWS) || (!isRow && index >= GameParameters.MARKET_COLUMNS))
+        if(index < 0)
             throw new IndexOutOfBoundsException();
 
         this.player = player;

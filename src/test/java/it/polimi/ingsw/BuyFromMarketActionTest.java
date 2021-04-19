@@ -59,8 +59,12 @@ public class BuyFromMarketActionTest {
 
     @Test
     public void outOfBoundIndexException(){
-        assertThrows(IndexOutOfBoundsException.class, ()->new BuyFromMarketAction("test", true, 14));
         assertThrows(IndexOutOfBoundsException.class, ()->new BuyFromMarketAction("test", true, -1));
+    }
+
+    @Test
+    public void tooBigColumnException(){
+        assertThrows(IllegalActionException.class, ()->new BuyFromMarketAction("test", false, 14).execute(gameContext));
     }
 
     @Test
