@@ -57,6 +57,7 @@ public class GameContext {
             throw new IllegalArgumentException("The specified player is not part of the game");
 
         this.currentPlayer = currentPlayer;
+        playerMoved = false;
     }
 
     /**
