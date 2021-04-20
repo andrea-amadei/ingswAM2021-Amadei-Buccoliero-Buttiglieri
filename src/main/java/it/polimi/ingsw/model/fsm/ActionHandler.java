@@ -46,5 +46,23 @@ public interface ActionHandler {
         throw new FSMTransitionFailedException("Cannot execute this command now");
     }
 
+    default List<Message> handleAction(SelectCardFromShopAction selectCardFromShopAction) throws FSMTransitionFailedException{
+        if(selectCardFromShopAction == null)
+            throw new NullPointerException();
+        throw new FSMTransitionFailedException("Cannot execute this command now");
+    }
+
+    default List<Message> handleAction(SelectResourcesAction selectResourcesAction) throws FSMTransitionFailedException{
+        if(selectResourcesAction == null)
+            throw new NullPointerException();
+        throw new FSMTransitionFailedException("Cannot execute this command now");
+    }
+
+    default List<Message> handleAction(BuyFromShopAction buyFromShopAction) throws  FSMTransitionFailedException{
+        if(buyFromShopAction == null)
+            throw new NullPointerException();
+        throw new FSMTransitionFailedException("Cannot execute this command now");
+    }
+
     //TODO: add the other actions
 }
