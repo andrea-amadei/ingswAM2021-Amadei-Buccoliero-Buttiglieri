@@ -262,7 +262,7 @@ public class Production {
     /**
      * Removes the selection from the previously selected upgradable crafting
      */
-    public void resetUpgradableCraftingSelection(){
+    public void resetCraftingSelection(){
         selectedIndex = null;
         selectedType = null;
     }

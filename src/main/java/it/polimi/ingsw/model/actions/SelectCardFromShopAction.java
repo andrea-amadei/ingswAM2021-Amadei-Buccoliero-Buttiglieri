@@ -97,14 +97,14 @@ public class SelectCardFromShopAction implements Action{
         if(upgradableCrafting == null) {
             if(card.getFlag().getLevel() != 1){
                 shop.resetSelectedCard();
-                production.resetUpgradableCraftingSelection();
+                production.resetCraftingSelection();
                 throw new IllegalActionException("Tried to add a card of level " + card.getFlag().getLevel()
                                                  + " upon an empty slot");
             }
         }else{
             if(card.getFlag().getLevel() != upgradableCrafting.getLevel() + 1){
                 shop.resetSelectedCard();
-                production.resetUpgradableCraftingSelection();
+                production.resetCraftingSelection();
                 throw new IllegalActionException("Tried to add a card of level " + card.getFlag().getLevel()
                                                  + " upon a slot of level " + upgradableCrafting.getLevel());
             }

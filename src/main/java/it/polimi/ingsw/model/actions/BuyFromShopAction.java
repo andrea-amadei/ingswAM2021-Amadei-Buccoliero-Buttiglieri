@@ -128,7 +128,7 @@ public class BuyFromShopAction implements Action{
 
         //reset all selections
         shop.resetSelectedCard();
-        production.resetUpgradableCraftingSelection();
+        production.resetCraftingSelection();
         storage.resetSelection();
 
         //write the messages
