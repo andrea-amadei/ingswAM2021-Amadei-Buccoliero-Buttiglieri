@@ -29,7 +29,6 @@ public class MarketStateTest {
 
     private final ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
     private final ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
-    private final ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
 
     @BeforeEach
     public void init(){
