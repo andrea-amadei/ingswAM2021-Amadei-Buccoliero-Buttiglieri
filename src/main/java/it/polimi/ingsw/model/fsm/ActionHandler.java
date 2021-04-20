@@ -2,9 +2,7 @@ package it.polimi.ingsw.model.fsm;
 
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
-import it.polimi.ingsw.model.actions.ActivateLeaderAction;
-import it.polimi.ingsw.model.actions.BuyFromMarketAction;
-import it.polimi.ingsw.model.actions.ConfirmTidyAction;
+import it.polimi.ingsw.model.actions.*;
 
 import java.util.List;
 
@@ -32,6 +30,18 @@ public interface ActionHandler {
 
     default List<Message> handleAction(ConfirmTidyAction confirmTidyAction) throws FSMTransitionFailedException {
         if(confirmTidyAction == null)
+            throw new NullPointerException();
+        throw new FSMTransitionFailedException("Cannot execute this command now");
+    }
+
+    default List<Message> handleAction(SelectConversionsAction selectConversionsAction) throws FSMTransitionFailedException{
+        if(selectConversionsAction == null)
+            throw new NullPointerException();
+        throw new FSMTransitionFailedException("Cannot execute this command now");
+    }
+
+    default List<Message> handleAction(BackAction backAction) throws FSMTransitionFailedException{
+        if(backAction == null)
             throw new NullPointerException();
         throw new FSMTransitionFailedException("Cannot execute this command now");
     }
