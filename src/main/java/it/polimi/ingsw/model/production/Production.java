@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.production;
 
+import it.polimi.ingsw.exceptions.NotReadyToCraftException;
 import it.polimi.ingsw.model.GameParameters;
+import it.polimi.ingsw.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -233,10 +235,61 @@ public class Production {
     }
 
     /**
+     * Returns true if at least a crafting is ready, false otherwise
+     * @return true if at least a crafting is ready, false otherwise
+     */
+    public boolean isCraftingReady() {
+        boolean ready = false;
+
+        for(Crafting i : baseCrafting)
+            if(i.readyToCraft()) {
+                ready = true;
+            }
+
+        for(Crafting i : upgradableCrafting)
+            if(i.readyToCraft()) {
+                ready = true;
+            }
+
+        for(Crafting i : leaderCrafting)
+            if(i.readyToCraft()) {
+                ready = true;
+            }
+
+        return ready;
+    }
+
+    /**
      * Removes the selection from the previously selected upgradable crafting
      */
     public void resetUpgradableCraftingSelection(){
         selectedIndex = null;
         selectedType = null;
+    }
+
+    /**
+     * Activates all productions that are ready
+     * @param player the player activating the production
+     * @throws NotReadyToCraftException if no crafting is ready to craft
+     */
+    //TODO: return all changes
+    public void activateProduction(Player player) {
+        if(player == null)
+            throw new NullPointerException();
+
+        if(!isCraftingReady())
+            throw new NotReadyToCraftException("No crafting is ready to craft");
+
+        for(Crafting i : baseCrafting)
+            if(i.readyToCraft())
+                i.activateCrafting(player);
+
+        for(Crafting i : upgradableCrafting)
+            if(i.readyToCraft())
+                i.activateCrafting(player);
+
+        for(Crafting i : leaderCrafting)
+            if(i.readyToCraft())
+                i.activateCrafting(player);
     }
 }
