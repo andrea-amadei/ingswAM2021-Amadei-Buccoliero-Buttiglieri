@@ -64,5 +64,23 @@ public interface ActionHandler {
         throw new FSMTransitionFailedException("Cannot execute this command now");
     }
 
+    default List<Message> handleAction(ConfirmAction confirmAction) throws FSMTransitionFailedException{
+        if(confirmAction == null)
+            throw new NullPointerException();
+        throw new FSMTransitionFailedException("Cannot execute this command now");
+    }
+
+    default List<Message> handleAction(SelectCraftingAction selectCraftingAction) throws FSMTransitionFailedException{
+        if(selectCraftingAction == null)
+            throw new NullPointerException();
+        throw new FSMTransitionFailedException("Cannot execute this command now");
+    }
+
+    default List<Message> handleAction(SelectCraftingOutputAction selectCraftingOutputAction) throws FSMTransitionFailedException{
+        if(selectCraftingOutputAction == null)
+            throw new NullPointerException();
+        throw new FSMTransitionFailedException("Cannot execute this command now");
+    }
+
     //TODO: add the other actions
 }
