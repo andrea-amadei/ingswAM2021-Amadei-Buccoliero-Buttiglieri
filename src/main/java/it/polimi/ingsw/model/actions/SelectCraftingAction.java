@@ -57,9 +57,6 @@ public class SelectCraftingAction implements Action {
 
         Production production = currentPlayer.getBoard().getProduction();
 
-        //if(production.getCrafting(craftingType, index) == null)
-           // throw new IllegalActionException("Cannot select an empty crafting slot");
-
         try {
             production.selectCrafting(craftingType, index);
         } catch (IndexOutOfBoundsException e) {
@@ -76,8 +73,7 @@ public class SelectCraftingAction implements Action {
         if(crafting == null)
             throw new IllegalActionException("Cannot select an empty crafting slot");
 
-
-            //send the message
+        //send the message
         List<String> targets = Collections.singletonList(player);
         PayloadComponent info = new InfoPayload(player + " selected the crafting at (" + craftingType + ", " + index + ")");
         Message message = new Message(targets, Collections.singletonList(info));
