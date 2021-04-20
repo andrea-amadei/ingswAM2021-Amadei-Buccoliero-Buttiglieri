@@ -140,6 +140,12 @@ public class CraftingTest {
         assertEquals(player.getBoard().getStorage().getChest().getResources(ResourceTypeSingleton.getInstance().getStoneResource()), 0);
         assertEquals(player.getBoard().getFaithHolder().getFaithPoints(), 0);
 
+        assertFalse(crafting.readyToCraft());
+        assertFalse(crafting.hasAllResourcesTransferred());
+        assertThrows(NotReadyToCraftException.class, () -> crafting.activateCrafting(player));
+
+        crafting.setAllResourcesTransferred(true);
+
         crafting.activateCrafting(player);
 
         assertEquals(player.getBoard().getStorage().getChest().getResources(ResourceTypeSingleton.getInstance().getStoneResource()), 2);
