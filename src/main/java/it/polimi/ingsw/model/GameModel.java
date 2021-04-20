@@ -8,6 +8,7 @@ import it.polimi.ingsw.server.DummyBuilder;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * The model of the game. It contains the list of players, the market, the shop and the faith path
@@ -45,6 +46,14 @@ public class GameModel {
      * @return the list of players
      */
     public List<Player> getPlayers (){ return players;}
+
+    /**
+     * Returns a list with all player's names
+     * @return a list with all player's names
+     */
+    public List<String> getPlayerNames() {
+        return getPlayers().stream().map(Player::getUsername).collect(Collectors.toList());
+    }
 
     /**
      * Gets the player with the specified username
