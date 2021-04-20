@@ -1,15 +1,17 @@
-package it.polimi.ingsw.model.fsm;
+package it.polimi.ingsw.model.fsm.states;
 
 import it.polimi.ingsw.common.InfoPayload;
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.actions.SelectConversionsAction;
+import it.polimi.ingsw.model.fsm.GameContext;
+import it.polimi.ingsw.model.fsm.State;
 
 import java.util.Collections;
 import java.util.List;
 
-public class ConversionSelectionState extends State{
+public class ConversionSelectionState extends State {
     /**
      * A new State is created with the provided game context. The nextState and the interruptListener
      * are both initially null

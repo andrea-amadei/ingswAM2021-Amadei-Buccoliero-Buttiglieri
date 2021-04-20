@@ -2,7 +2,6 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
-import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.gamematerials.MarbleColor;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
@@ -11,6 +10,9 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.actions.BuyFromMarketAction;
 import it.polimi.ingsw.model.actions.SelectConversionsAction;
 import it.polimi.ingsw.model.fsm.*;
+import it.polimi.ingsw.model.fsm.states.BasketCollectState;
+import it.polimi.ingsw.model.fsm.states.ConversionSelectionState;
+import it.polimi.ingsw.model.fsm.states.MarketState;
 import it.polimi.ingsw.model.market.ConversionActuator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
