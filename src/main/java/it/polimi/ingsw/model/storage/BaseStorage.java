@@ -126,6 +126,7 @@ public class BaseStorage extends ResourceContainer {
         resources.clear();
     }
 
+    /*
     @Override
     public boolean equals(Object o) {
         // if they are the same return true
@@ -162,4 +163,5 @@ public class BaseStorage extends ResourceContainer {
     public int hashCode() {
         return Objects.hash(resources);
     }
+*/
 }
