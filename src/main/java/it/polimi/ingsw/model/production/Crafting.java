@@ -26,6 +26,8 @@ public class Crafting implements SerializedObject {
     private final transient Set<ResourceGroup> undecided;
     private final transient Map<ResourceGroup, Map<ResourceSingle, Integer>> conversion;
 
+    private transient boolean allResourcesTransferred;
+
     /**
      * Creates a new crafting recipe
      * @param input the input ingredients of the recipe and their respective amount.
@@ -71,6 +73,8 @@ public class Crafting implements SerializedObject {
                 conversion.put((ResourceGroup) i, null);
                 undecided.add((ResourceGroup) i);
             }
+
+        allResourcesTransferred = false;
     }
 
     /**
@@ -160,18 +164,49 @@ public class Crafting implements SerializedObject {
     }
 
     /**
+     * Resets all undecided outputs
+     */
+    public void resetUndecidedOutputs() {
+        conversion.clear();
+        undecided.clear();
+
+        for(ResourceType i : output.keySet())
+            if(i.isGroup()) {
+                conversion.put((ResourceGroup) i, null);
+                undecided.add((ResourceGroup) i);
+            }
+    }
+
+    /**
+     * Returns true if all the necessary resources have been transferred, false otherwise
+     * @return true if all the necessary resources have been transferred, false otherwise
+     */
+    public boolean hasAllResourcesTransferred() {
+        return allResourcesTransferred;
+    }
+
+    /**
+     * Sets if all resources have been transferred or not
+     * @param allResourcesTransferred true if all resources have been transferred, false otherwise
+     */
+    public void setAllResourcesTransferred(boolean allResourcesTransferred) {
+        this.allResourcesTransferred = allResourcesTransferred;
+    }
+
+    /**
      * Returns true if the crafting pot contains all the necessary ingredients and all the undecided resources are
      * resolved, false otherwise.
      * @return true the crafting recipe is ready to craft, false otherwise
      */
     public boolean readyToCraft() {
-        return undecided.size() == 0;
+        return undecided.size() == 0 && allResourcesTransferred;
     }
 
     /**
      * Activates the current crafting and converts all necessary resources
      * @param player the player who performed the action
      */
+    //TODO: return payload with all resources (+ faith) changed
     public void activateCrafting(Player player) {
         if(player == null)
             throw new NullPointerException();
@@ -180,12 +215,11 @@ public class Crafting implements SerializedObject {
             if(undecided.size() != 0)
                 throw new NotReadyToCraftException("Not all undecided outputs are resolved");
             else
-                throw new NotReadyToCraftException("Crafting pot doesn't contain all the necessary ingredients");
+                throw new NotReadyToCraftException("Not all ingredients have been transferred");
 
         for(ResourceType i : output.keySet())
             if(!i.isGroup())
                 player.getBoard().getStorage().getChest().addResources((ResourceSingle) i, output.get(i));
-
 
         for(ResourceGroup i : conversion.keySet())
             for(ResourceSingle j : conversion.get(i).keySet())
@@ -194,6 +228,9 @@ public class Crafting implements SerializedObject {
         // TODO: Remake this with the faith path
         if(faithOutput > 0)
             player.getBoard().getFaithHolder().addFaithPoints(faithOutput);
+
+        resetUndecidedOutputs();
+        allResourcesTransferred = false;
     }
 
     @Override
