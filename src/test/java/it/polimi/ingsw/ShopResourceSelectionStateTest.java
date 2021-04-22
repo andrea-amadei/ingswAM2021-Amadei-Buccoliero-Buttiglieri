@@ -5,7 +5,7 @@ import it.polimi.ingsw.gamematerials.*;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.actions.BackAction;
-import it.polimi.ingsw.model.actions.BuyFromShopAction;
+import it.polimi.ingsw.model.actions.ConfirmAction;
 import it.polimi.ingsw.model.actions.SelectResourcesAction;
 import it.polimi.ingsw.model.fsm.*;
 import it.polimi.ingsw.model.fsm.states.MenuState;
@@ -121,7 +121,7 @@ public class ShopResourceSelectionStateTest {
             throw new RuntimeException();
         }
         try{
-            messages3 = currentState.handleAction(new BuyFromShopAction("Ernestino"));
+            messages3 = currentState.handleAction(new ConfirmAction("Ernestino"));
         }catch(FSMTransitionFailedException e){
             throw new RuntimeException();
         }
@@ -137,6 +137,60 @@ public class ShopResourceSelectionStateTest {
     }
 
     @Test
+    public void successfulBuyFromShopWithDiscounts(){
+
+        List<Message> messages2, messages3;
+
+        try{
+            messages2 = currentState.handleAction(new SelectResourcesAction("Ernestino", "Chest", servant, 2));
+        }catch(FSMTransitionFailedException e){
+            throw new RuntimeException();
+        }
+
+        gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getDiscountHolder().addDiscount(gold, 2);
+
+        try{
+            messages3 = currentState.handleAction(new ConfirmAction("Ernestino"));
+        }catch(FSMTransitionFailedException e){
+            e.printStackTrace(System.out);
+            throw new RuntimeException();
+        }
+
+        assertTrue(messages2.size() > 0);
+        assertTrue(messages3.size() > 0);
+        assertTrue(currentState.getNextState() instanceof MenuState);
+        assertTrue(gameContext.hasPlayerMoved());
+        assertNull(gameContext.getCurrentPlayer().getBoard().getStorage().getSelection());
+        assertNull(gameContext.getGameModel().getShop().getSelectedCard());
+        assertEquals(craftingCard1.getCrafting(), gameContext.getCurrentPlayer().getBoard().getProduction().getUpgradableCrafting(0));
+    }
+
+    @Test
+    public void successfulBuyFromShopFreeCard(){
+        List<Message> messages3;
+
+
+        gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getDiscountHolder().addDiscount(gold, 2);
+        gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getDiscountHolder().addDiscount(servant, 2);
+
+        try{
+            messages3 = currentState.handleAction(new ConfirmAction("Ernestino"));
+        }catch(FSMTransitionFailedException e){
+            e.printStackTrace(System.out);
+            throw new RuntimeException();
+        }
+
+        assertTrue(messages3.size() > 0);
+        assertTrue(currentState.getNextState() instanceof MenuState);
+        assertTrue(gameContext.hasPlayerMoved());
+        assertNull(gameContext.getCurrentPlayer().getBoard().getStorage().getSelection());
+        assertNull(gameContext.getGameModel().getShop().getSelectedCard());
+        assertEquals(craftingCard1.getCrafting(), gameContext.getCurrentPlayer().getBoard().getProduction().getUpgradableCrafting(0));
+    }
+
+
+
+    @Test
     public void failedBuyDueToInsufficientFunds(){
         try{
             currentState.handleAction(new SelectResourcesAction("Ernestino", "Chest", gold, 2));
@@ -144,7 +198,7 @@ public class ShopResourceSelectionStateTest {
             throw new RuntimeException();
         }
 
-        assertThrows(FSMTransitionFailedException.class, ()-> currentState.handleAction(new BuyFromShopAction("Ernestino")));
+        assertThrows(FSMTransitionFailedException.class, ()-> currentState.handleAction(new ConfirmAction("Ernestino")));
     }
 
     @Test
