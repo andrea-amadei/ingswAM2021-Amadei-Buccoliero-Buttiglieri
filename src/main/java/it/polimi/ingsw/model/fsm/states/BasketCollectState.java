@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.actions.MoveFromBasketToShelfAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -73,8 +74,9 @@ public class BasketCollectState extends State {
 
         List<Message> messages;
 
+        //TODO: change messages because of abstract list
         try {
-            messages = confirmAction.execute(getGameContext());
+            messages = new ArrayList<>(confirmAction.execute(getGameContext()));
         }catch(IllegalActionException e){
             throw new FSMTransitionFailedException(e.getMessage());
         }
