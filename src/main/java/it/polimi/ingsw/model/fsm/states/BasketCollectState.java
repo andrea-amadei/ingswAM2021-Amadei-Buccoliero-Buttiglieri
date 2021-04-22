@@ -1,7 +1,21 @@
 package it.polimi.ingsw.model.fsm.states;
 
+import it.polimi.ingsw.common.InfoPayload;
+import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.common.PayloadComponent;
+import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
+import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.model.FaithPath;
+import it.polimi.ingsw.model.GameModel;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.actions.ConfirmAction;
+import it.polimi.ingsw.model.actions.MoveFromBasketToShelfAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class BasketCollectState extends State {
     /**
@@ -13,5 +27,110 @@ public class BasketCollectState extends State {
      */
     public BasketCollectState(GameContext gameContext) {
         super(gameContext);
+    }
+
+
+    /**
+     * The player moves some resources from the basket to the deposits.
+     * After the execution, the state doesn't change.
+     * @param moveFromBasketToShelfAction the action to be performed
+     * @return the list of messages that need to be sent to the clients
+     * @throws NullPointerException if moveFromBasketToShelfAction is null
+     * @throws FSMTransitionFailedException if the action cannot be performed
+     */
+    @Override
+    public List<Message> handleAction(MoveFromBasketToShelfAction moveFromBasketToShelfAction) throws FSMTransitionFailedException {
+        if(moveFromBasketToShelfAction == null)
+            throw new NullPointerException();
+
+        List<Message> messages;
+
+        try {
+            messages = moveFromBasketToShelfAction.execute(getGameContext());
+        }catch(IllegalActionException e){
+            throw new FSMTransitionFailedException(e.getMessage());
+        }
+
+        setNextState(this);
+
+        return messages;
+    }
+
+    /**
+     * The player confirms that he/she doesn't want to collect more resources from the marketBasket. All remaining
+     * resources are discarded and the other players get a faith point for each discarded resources.
+     * Note: PopeCheck interrupt might happen here.
+     * New state is MenuState
+     * @param confirmAction the action to be performed
+     * @return the list of messages that need to be sent to the clients
+     * @throws NullPointerException if confirmAction is null
+     * @throws FSMTransitionFailedException if the action cannot be performed
+     */
+    @Override
+    public List<Message> handleAction(ConfirmAction confirmAction) throws FSMTransitionFailedException {
+        if(confirmAction == null)
+            throw new NullPointerException();
+
+        List<Message> messages;
+
+        try {
+            messages = confirmAction.execute(getGameContext());
+        }catch(IllegalActionException e){
+            throw new FSMTransitionFailedException(e.getMessage());
+        }
+
+        Player currentPlayer = getGameContext().getCurrentPlayer();
+        List<Player> otherPlayers;
+        GameModel model = getGameContext().getGameModel();
+        FaithPath faithPath = model.getFaithPath();
+
+
+        otherPlayers = model.getPlayers().stream()
+                .filter(x->!x.getUsername().equals(currentPlayer.getUsername()))
+                .collect(Collectors.toList());
+
+        int droppedResources = currentPlayer.getBoard().getStorage().getMarketBasket().totalAmountOfResources();
+
+        if(droppedResources > 0) {
+            currentPlayer.getBoard().getStorage().getMarketBasket().reset();
+
+            for (Player p : otherPlayers)
+                faithPath.executeMovement(droppedResources, p);
+        }
+
+        //build the message
+        List<String> targets = model.getPlayers().stream().map(Player::getUsername).collect(Collectors.toList());
+        PayloadComponent payload = new InfoPayload("Everyone got "+droppedResources+" faith point/s and "
+                + currentPlayer.getUsername() + " "
+                + "has discarded all resources in the market basket");
+
+
+        messages.add(new Message(targets, Collections.singletonList(payload)));
+        setNextState(new MenuState(getGameContext()));
+
+        return messages;
+    }
+
+    /**
+     * This method will be executed every time this state is entered from a different state.
+     * It informs the current player of the possible actions to be performed
+     * @return the list of messages to be sent to the client
+     */
+    @Override
+    public List<Message> onEntry() {
+        List<Message> messages = super.onEntry();
+        messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
+                Collections.singletonList(new InfoPayload("Possible Actions: MoveFromBasketToShelf, EndMarketAction"))));
+
+        return messages;
+    }
+
+    /**
+     * Returns a string representation of the object.
+     * @return a string representation of the object.
+     */
+    @Override
+    public String toString() {
+        return "BasketCollectState";
     }
 }

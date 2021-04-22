@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class EndMarketAction implements Action{
 
     private final String player;
