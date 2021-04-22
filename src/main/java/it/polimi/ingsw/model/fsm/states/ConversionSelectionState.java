@@ -27,7 +27,7 @@ public class ConversionSelectionState extends State {
      * The client specifies the chosen conversions.
      * If the action can be performed, the selected resources are moved to the market basket and the faith points
      * are added to the faith path. Note: the faith path could launch an interrupt.
-     * Next state is BasketCollectState
+     * Next state is ResourceTidyingState
      * @param selectConversionsAction the action to be performed
      * @return the list of messages that need to be sent to the clients
      * @throws NullPointerException if selectConversion is null
@@ -46,7 +46,7 @@ public class ConversionSelectionState extends State {
             throw new FSMTransitionFailedException(e.getMessage());
         }
 
-        setNextState(new BasketCollectState(getGameContext()));
+        setNextState(new ResourceTidyingState(getGameContext()));
 
         return messages;
     }

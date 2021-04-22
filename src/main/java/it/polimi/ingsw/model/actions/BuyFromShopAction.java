@@ -20,6 +20,7 @@ import it.polimi.ingsw.server.Console;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class BuyFromShopAction implements Action{
 
     private final String player;

@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.fsm.*;
 import it.polimi.ingsw.model.fsm.states.BasketCollectState;
 import it.polimi.ingsw.model.fsm.states.ConversionSelectionState;
 import it.polimi.ingsw.model.fsm.states.MarketState;
+import it.polimi.ingsw.model.fsm.states.ResourceTidyingState;
 import it.polimi.ingsw.model.market.ConversionActuator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,7 +70,7 @@ public class ConversionSelectionStateTest {
         }
 
         assertTrue(messages.size() > 0);
-        assertTrue(currentState.getNextState() instanceof BasketCollectState);
+        assertTrue(currentState.getNextState() instanceof ResourceTidyingState);
     }
 }
 

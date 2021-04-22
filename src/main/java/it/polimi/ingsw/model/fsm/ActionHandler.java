@@ -58,11 +58,6 @@ public interface ActionHandler {
         throw new FSMTransitionFailedException("Cannot execute this command now");
     }
 
-    default List<Message> handleAction(BuyFromShopAction buyFromShopAction) throws  FSMTransitionFailedException{
-        if(buyFromShopAction == null)
-            throw new NullPointerException();
-        throw new FSMTransitionFailedException("Cannot execute this command now");
-    }
 
     default List<Message> handleAction(ConfirmAction confirmAction) throws FSMTransitionFailedException{
         if(confirmAction == null)
@@ -81,6 +76,19 @@ public interface ActionHandler {
             throw new NullPointerException();
         throw new FSMTransitionFailedException("Cannot execute this command now");
     }
+
+    default List<Message> handleAction(MoveFromBasketToShelfAction moveFromBasketToShelfAction) throws FSMTransitionFailedException{
+        if(moveFromBasketToShelfAction == null)
+            throw new NullPointerException();
+        throw new FSMTransitionFailedException("Cannot execute this command now");
+    }
+
+    default List<Message> handleAction(ResourcesMoveAction resourcesMoveAction) throws FSMTransitionFailedException{
+        if(resourcesMoveAction == null)
+            throw new NullPointerException();
+        throw new FSMTransitionFailedException("Cannot execute this command now");
+    }
+
 
     //TODO: add the other actions
 }
