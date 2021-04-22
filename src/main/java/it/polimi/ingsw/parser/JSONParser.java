@@ -47,7 +47,7 @@ public final class JSONParser {
             throw new ParserException(message);
     }
 
-    public static <O extends SerializedObject, R extends UniqueRawObject<O>, L extends RawList<R>> List<O> parse(String json, String description, Class<L> rawListClass) throws ParserException {
+    public static <O extends SerializedObject, R extends UniqueRawObject<O>, L extends OrderedRawList<R>> List<O> parseOrderedList(String json, String description, Class<L> rawListClass) throws ParserException {
         L rawList;
         O object;
         List<O> list = new ArrayList<>();
@@ -118,7 +118,7 @@ public final class JSONParser {
         return list;
     }
 
-    public static <O extends SerializedObject, R extends UniqueRawObject<O>, L extends RawList<R>> List<O> parse(Path path, String description, Class<L> rawListClass) throws ParserException, IOException {
+    public static <O extends SerializedObject, R extends UniqueRawObject<O>, L extends OrderedRawList<R>> List<O> parseOrderedList(Path path, String description, Class<L> rawListClass) throws ParserException, IOException {
         // test for null or non existing file
         if(path == null)
             throw new NullPointerException();
@@ -127,35 +127,102 @@ public final class JSONParser {
         if(!Files.exists(path))
             throw new FileNotFoundException("File does not exists");
 
-        return parse(Files.readString(path), description, rawListClass);
+        return parseOrderedList(Files.readString(path), description, rawListClass);
+    }
+
+    public static <O extends SerializedObject, R extends RawObject<O>, L extends RawList<R>> List<O> parseList(String json, String description, Class<L> rawListClass) throws ParserException {
+        L rawList;
+        O object;
+        List<O> list = new ArrayList<>();
+
+        int successful = 0, skipped = 0;
+
+        // PHASE 1: GET RAW OBJECTS
+        if(SHOW_LOGS)
+            Console.log("JSON PARSER - Parsing " + description.toLowerCase() + " (phase 1/2) ...");
+
+        try {
+            rawList = gson.fromJson(json, rawListClass);
+        } catch (JsonSyntaxException e) {
+            throw new ParserException(e.getMessage());
+        }
+
+        // test if the list is working
+        if(rawList.getList() == null || rawList.getList().size() == 0)
+            throw new ParserException("Unable to parse any card");
+
+        // PHASE 2: CONVERT OBJECTS
+        if(SHOW_LOGS)
+            Console.log("JSON PARSER - Converting raw data from " + description.toLowerCase() + " (phase 2/2) ...");
+
+        // for each raw object
+        for(R rawObject : rawList.getList()) {
+            // convert object
+            try {
+                object = rawObject.convert();
+            } catch (IllegalRawConversionException e) {
+                errorHandler(e.getMessage());
+                skipped++;
+                continue;
+            }
+
+            // add to list
+            list.add(object);
+
+            // print debug messages
+            if(SHOW_LOGS && DEBUG_MODE) {
+                Console.log("----- " + description + " " + (rawList.getList().indexOf(rawObject) + 1) + " -----");
+                object.printDebugInfo();
+            }
+
+            successful++;
+        }
+
+        // DONE!
+        if(SHOW_LOGS)
+            Console.log("JSON PARSER - Parsing of " + description + " done! Successful = " + successful + ", Skipped = " + skipped);
+
+        return list;
+    }
+
+    public static <O extends SerializedObject, R extends RawObject<O>, L extends RawList<R>> List<O> parseList(Path path, String description, Class<L> rawListClass) throws ParserException, IOException {
+        // test for null or non existing file
+        if(path == null)
+            throw new NullPointerException();
+
+        // test if file exists
+        if(!Files.exists(path))
+            throw new FileNotFoundException("File does not exists");
+
+        return parseList(Files.readString(path), description, rawListClass);
     }
 
     public static List<LeaderCard> parseLeaders(Path path) throws ParserException, IOException {
-        return parse(path, "Leaders", RawLeaderCardList.class);
+        return parseOrderedList(path, "Leaders", RawLeaderCardList.class);
     }
 
     public static List<LeaderCard> parseLeaders(String json) throws ParserException {
-        return parse(json, "Leaders", RawLeaderCardList.class);
+        return parseOrderedList(json, "Leaders", RawLeaderCardList.class);
     }
 
     public static List<CraftingCard> parseCraftingCards(Path path) throws ParserException, IOException {
-        return parse(path, "Crafting Cards", RawCraftingCardList.class);
+        return parseOrderedList(path, "Crafting Cards", RawCraftingCardList.class);
     }
 
     public static List<CraftingCard> parseCraftingCards(String json) throws ParserException {
-        return parse(json, "Crafting Cards", RawCraftingCardList.class);
+        return parseOrderedList(json, "Crafting Cards", RawCraftingCardList.class);
     }
 
     public static List<Crafting> parseBaseCrafting(Path path) throws ParserException, IOException {
-        return parse(path, "Base Crafting", RawCraftingList.class);
+        return parseList(path, "Base Crafting", RawCraftingList.class);
     }
 
     public static List<Crafting> parseBaseCrafting(String json) throws ParserException {
-        return parse(json, "Base Crafting", RawCraftingList.class);
+        return parseList(json, "Base Crafting", RawCraftingList.class);
     }
 
     public static FaithPath parseFaithPath(Path path) throws ParserException, IOException {
-        List<FaithPathTile> tiles = parse(path, "Faith Path Tiles", RawFaithPathTileList.class);
+        List<FaithPathTile> tiles = parseOrderedList(path, "Faith Path Tiles", RawFaithPathTileList.class);
 
         try {
             return new FaithPath(tiles);
@@ -165,7 +232,7 @@ public final class JSONParser {
     }
 
     public static FaithPath parseFaithPath(String json) throws ParserException {
-        List<FaithPathTile> tiles = parse(json, "Faith Path Tiles", RawFaithPathTileList.class);
+        List<FaithPathTile> tiles = parseOrderedList(json, "Faith Path Tiles", RawFaithPathTileList.class);
 
         try {
             return new FaithPath(tiles);
