@@ -80,6 +80,13 @@ public abstract class State implements InterruptLauncher, ActionHandler{
     }
 
     /**
+     * Sets the next state to null
+     */
+    public void resetNextState(){
+        nextState = null;
+    }
+
+    /**
      * Sets the next state
      * @param nextState the nextState
      * @throws NullPointerException if nextState is null
