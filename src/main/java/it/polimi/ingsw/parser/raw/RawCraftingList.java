@@ -5,12 +5,12 @@ import it.polimi.ingsw.parser.RawList;
 
 import java.util.List;
 
-public class RawCraftingList implements RawList<RawBaseCrafting> {
+public class RawCraftingList implements RawList<RawCrafting> {
     @SerializedName(value = "base", alternate = "base_crafting")
-    private List<RawBaseCrafting> baseCrafting;
+    private List<RawCrafting> baseCrafting;
 
     @Override
-    public List<RawBaseCrafting> getList() {
+    public List<RawCrafting> getList() {
         return baseCrafting;
     }
 }
