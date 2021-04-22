@@ -16,6 +16,19 @@ public final class GameParameters {
     public static final int MAX_CARD_LEVEL = 3;
     public static final int MIN_CARD_LEVEL = 1;
 
+    public static final int AMOUNT_OF_LEADERS_TO_DISCARD = 2;
+
+    public static final int FIRST_PLAYER_AMOUNT_OF_FAITH_POINTS_ON_START = 0;
+    public static final int SECOND_PLAYER_AMOUNT_OF_FAITH_POINTS_ON_START = 0;
+    public static final int THIRD_PLAYER_AMOUNT_OF_FAITH_POINTS_ON_START = 1;
+    public static final int FOURTH_PLAYER_AMOUNT_OF_FAITH_POINTS_ON_START = 1;
+
+    public static final int FIRST_PLAYER_AMOUNT_OF_RESOURCES_ON_START = 0;
+    public static final int SECOND_PLAYER_AMOUNT_OF_RESOURCES_ON_START = 1;
+    public static final int THIRD_PLAYER_AMOUNT_OF_RESOURCES_ON_START = 1;
+    public static final int FOURTH_PLAYER_AMOUNT_OF_RESOURCES_ON_START = 2;
+
+
     public static final List<String> BASE_CUPBOARD_SHELF_NAMES = Arrays.asList("BottomShelf", "MiddleShelf", "TopShelf");
     public static final List<ResourceType> BASE_CUPBOARD_SHELF_TYPES = Arrays.asList(
             ResourceTypeSingleton.getInstance().getAnyResource(),
