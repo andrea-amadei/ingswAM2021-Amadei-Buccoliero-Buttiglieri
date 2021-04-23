@@ -51,7 +51,7 @@ public final class JSONParser {
         L rawList;
         O object;
         List<O> list = new ArrayList<>();
-        Set<Integer> ids = new HashSet<>();
+        Set<String> ids = new HashSet<>();
 
         int successful = 0, skipped = 0;
 
@@ -75,13 +75,6 @@ public final class JSONParser {
 
         // for each raw object
         for(R rawObject : rawList.getList()) {
-            // check if id is present
-            if(rawObject.getId() == 0) {
-                errorHandler("Missing mandatory object id");
-                skipped++;
-                continue;
-            }
-
             // check if id is unique
             if (ids.contains(rawObject.getId())) {
                 errorHandler("Duplicate object property \"id\" " + rawObject.getId());

@@ -28,8 +28,8 @@ public class RawLeaderCard implements UniqueRawObject<LeaderCard> {
     private List<RawRequirement> requirements;
 
     @Override
-    public int getId() {
-        return id;
+    public String getId() {
+        return String.format("%03d", id);
     }
 
     public String getName() {

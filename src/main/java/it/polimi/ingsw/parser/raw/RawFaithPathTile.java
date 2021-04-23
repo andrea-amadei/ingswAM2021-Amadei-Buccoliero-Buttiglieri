@@ -39,7 +39,7 @@ public class RawFaithPathTile implements UniqueRawObject<FaithPathTile> {
     }
 
     @Override
-    public int getId() {
-        return order + 1;
+    public String getId() {
+        return String.format("%03d", order);
     }
 }

@@ -32,8 +32,8 @@ public class RawCraftingCard implements UniqueRawObject<CraftingCard> {
     @SerializedName("points")
     private int points;
 
-    public int getId() {
-        return id;
+    public String getId() {
+        return String.format("%03d", id);
     }
 
     public FlagColor getFlag() {
