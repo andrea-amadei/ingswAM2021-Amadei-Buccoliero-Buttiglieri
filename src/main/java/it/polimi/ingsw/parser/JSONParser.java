@@ -47,7 +47,7 @@ public final class JSONParser {
             throw new ParserException(message);
     }
 
-    public static <O extends SerializableObject<?>, R extends UniqueRawObject<O>, L extends OrderedRawList<R>> List<O> parseOrderedList(String json, String description, Class<L> rawListClass) throws ParserException {
+    public static <O extends UniqueSerializableObject<?>, R extends UniqueRawObject<O>, L extends OrderedRawList<R>> List<O> parseOrderedList(String json, String description, Class<L> rawListClass) throws ParserException {
         L rawList;
         O object;
         List<O> list = new ArrayList<>();
@@ -104,6 +104,9 @@ public final class JSONParser {
             successful++;
         }
 
+        // Sort the list based on string ids
+        list.sort(Comparator.comparing(a -> a.getStringId()));
+
         // DONE!
         if(SHOW_LOGS)
             Console.log("JSON PARSER - Parsing of " + description + " done! Successful = " + successful + ", Skipped = " + skipped);
@@ -111,7 +114,7 @@ public final class JSONParser {
         return list;
     }
 
-    public static <O extends SerializableObject<?>, R extends UniqueRawObject<O>, L extends OrderedRawList<R>> List<O> parseOrderedList(Path path, String description, Class<L> rawListClass) throws ParserException, IOException {
+    public static <O extends UniqueSerializableObject<?>, R extends UniqueRawObject<O>, L extends OrderedRawList<R>> List<O> parseOrderedList(Path path, String description, Class<L> rawListClass) throws ParserException, IOException {
         // test for null or non existing file
         if(path == null)
             throw new NullPointerException();
