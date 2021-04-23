@@ -63,6 +63,22 @@ public class Shelf extends ResourceContainer{
     }
 
     /**
+     * Returns the types allowed to be stored in this shelf
+     * @return the types allowed to be stored in this shelf
+     */
+    public ResourceType getAcceptedTypes() {
+        return acceptedTypes;
+    }
+
+    /**
+     * Returns the maximum amount of resources the shelf can hold
+     * @return the maximum amount of resources the shelf can hold
+     */
+    public int getMaxAmount() {
+        return maxAmount;
+    }
+
+    /**
      * Adds resources to this shelf. The current type of the shelf is updated
      * @param resource the type of resources to insert
      * @param amount the amount of resources to insert
