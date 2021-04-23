@@ -3,8 +3,9 @@ package it.polimi.ingsw.model.production;
 import it.polimi.ingsw.exceptions.NegativeCostException;
 import it.polimi.ingsw.gamematerials.LevelFlag;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
+import it.polimi.ingsw.parser.UniqueSerializableObject;
+import it.polimi.ingsw.parser.raw.RawCraftingCard;
 import it.polimi.ingsw.server.Console;
-import it.polimi.ingsw.parser.SerializableObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +15,7 @@ import java.util.Map;
  * Can grant victory points.
  * The class is immutable.
  */
-public class CraftingCard implements SerializableObject {
+public class CraftingCard implements UniqueSerializableObject<RawCraftingCard> {
     private final int id;
     private final LevelFlag flag;
     private final Map<ResourceSingle, Integer> cost;
@@ -102,5 +103,10 @@ public class CraftingCard implements SerializableObject {
         Console.log("Flag: " + getFlag());
         Console.log("Cost: " + getCost());
         Console.log("Crafting: " + getCrafting());
+    }
+
+    @Override
+    public String getStringId() {
+        return String.format("%03d", getId());
     }
 }

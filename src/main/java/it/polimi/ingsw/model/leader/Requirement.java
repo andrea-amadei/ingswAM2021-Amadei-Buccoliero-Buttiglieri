@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.leader;
 
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.parser.raw.RawRequirement;
 import it.polimi.ingsw.server.Console;
 import it.polimi.ingsw.parser.SerializableObject;
 
@@ -9,7 +10,7 @@ import it.polimi.ingsw.parser.SerializableObject;
  * flag with level, resource)
  * provides isSatisfied method, to verify that requirements are satisfied
  */
-public interface Requirement extends SerializableObject {
+public interface Requirement extends SerializableObject<RawRequirement> {
 
     /**
      * isSatisfied verifies if the selected players satisfies all requirements to activate

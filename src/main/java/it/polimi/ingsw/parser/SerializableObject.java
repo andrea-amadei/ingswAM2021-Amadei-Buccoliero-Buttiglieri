@@ -1,5 +1,5 @@
 package it.polimi.ingsw.parser;
 
-public interface SerializableObject {
+public interface SerializableObject<R extends RawObject<?>> {
     void printDebugInfo();
 }

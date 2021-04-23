@@ -47,7 +47,7 @@ public final class JSONParser {
             throw new ParserException(message);
     }
 
-    public static <O extends SerializableObject, R extends UniqueRawObject<O>, L extends OrderedRawList<R>> List<O> parseOrderedList(String json, String description, Class<L> rawListClass) throws ParserException {
+    public static <O extends SerializableObject<?>, R extends UniqueRawObject<O>, L extends OrderedRawList<R>> List<O> parseOrderedList(String json, String description, Class<L> rawListClass) throws ParserException {
         L rawList;
         O object;
         List<O> list = new ArrayList<>();
@@ -111,7 +111,7 @@ public final class JSONParser {
         return list;
     }
 
-    public static <O extends SerializableObject, R extends UniqueRawObject<O>, L extends OrderedRawList<R>> List<O> parseOrderedList(Path path, String description, Class<L> rawListClass) throws ParserException, IOException {
+    public static <O extends SerializableObject<?>, R extends UniqueRawObject<O>, L extends OrderedRawList<R>> List<O> parseOrderedList(Path path, String description, Class<L> rawListClass) throws ParserException, IOException {
         // test for null or non existing file
         if(path == null)
             throw new NullPointerException();
@@ -123,7 +123,7 @@ public final class JSONParser {
         return parseOrderedList(Files.readString(path), description, rawListClass);
     }
 
-    public static <O extends SerializableObject, R extends RawObject<O>, L extends RawList<R>> List<O> parseList(String json, String description, Class<L> rawListClass) throws ParserException {
+    public static <O extends SerializableObject<?>, R extends RawObject<O>, L extends RawList<R>> List<O> parseList(String json, String description, Class<L> rawListClass) throws ParserException {
         L rawList;
         O object;
         List<O> list = new ArrayList<>();
@@ -178,7 +178,7 @@ public final class JSONParser {
         return list;
     }
 
-    public static <O extends SerializableObject, R extends RawObject<O>, L extends RawList<R>> List<O> parseList(Path path, String description, Class<L> rawListClass) throws ParserException, IOException {
+    public static <O extends SerializableObject<?>, R extends RawObject<O>, L extends RawList<R>> List<O> parseList(Path path, String description, Class<L> rawListClass) throws ParserException, IOException {
         // test for null or non existing file
         if(path == null)
             throw new NullPointerException();

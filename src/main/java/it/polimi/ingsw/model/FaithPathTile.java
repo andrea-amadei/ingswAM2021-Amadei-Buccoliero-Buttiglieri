@@ -1,12 +1,13 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.parser.SerializableObject;
+import it.polimi.ingsw.parser.UniqueSerializableObject;
+import it.polimi.ingsw.parser.raw.RawFaithPathTile;
 import it.polimi.ingsw.server.Console;
 
 /**
  * The FaithPathTile is an immutable class containing all the information about a tile of the faith path
  */
-public class FaithPathTile implements SerializableObject {
+public class FaithPathTile implements UniqueSerializableObject<RawFaithPathTile> {
     private final int x, y;
 
     private final int order;
@@ -117,5 +118,10 @@ public class FaithPathTile implements SerializableObject {
     @Override
     public void printDebugInfo() {
         Console.log(toString());
+    }
+
+    @Override
+    public String getStringId() {
+        return String.format("%03d", order);
     }
 }
