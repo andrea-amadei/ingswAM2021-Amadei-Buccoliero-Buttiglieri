@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.holder.ConversionHolder;
 import it.polimi.ingsw.model.holder.DiscountHolder;
 import it.polimi.ingsw.model.holder.FaithHolder;
@@ -11,6 +12,7 @@ import it.polimi.ingsw.model.storage.Storage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 /**
  * The board of the player. It contains everything owned by the player
@@ -106,5 +108,25 @@ public class Board {
         if(card == null)
             throw new NullPointerException();
         leaderCards.add(card);
+    }
+
+    /**
+     * Method removes leader cards based on their indexes
+     * @param indexes the list of indexes of leader cards to remove
+     * @throws NullPointerException iff pointer to indexes is null
+     * @throws IndexOutOfBoundsException iff indexes are out of bound
+     */
+    public void removeLeaderCardsByIndex(List<Integer> indexes){
+        if(indexes == null)
+            throw new NullPointerException();
+
+        //checking if leaders' IDs are valid
+        for(Integer i : indexes)
+            if(i < 0 || i >= leaderCards.size())
+                throw new IndexOutOfBoundsException("Leaders indexes must be between 0 and amount of owned leaders minus 1");
+
+        //removing leader cards
+        List<LeaderCard> leadersToRemove = indexes.stream().map(leaderCards::get).collect(Collectors.toList());
+        leaderCards.removeAll(leadersToRemove);
     }
 }
