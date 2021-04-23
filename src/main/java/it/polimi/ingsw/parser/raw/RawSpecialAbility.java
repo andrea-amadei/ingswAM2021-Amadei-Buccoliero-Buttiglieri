@@ -11,6 +11,7 @@ import it.polimi.ingsw.parser.RawObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 public class RawSpecialAbility implements RawObject<SpecialAbility> {
     @SerializedName("type")
@@ -36,6 +37,40 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
 
     @SerializedName(value = "faithOutput", alternate = "faith_output")
     private int faithOutput;
+
+    public RawSpecialAbility() { }
+
+    public RawSpecialAbility(ConversionAbility conversionAbility) {
+        type = "conversion";
+
+        from = conversionAbility.getFrom();
+        to = conversionAbility.getTo().getResources().stream().map(ResourceType::getId).collect(Collectors.toList());
+        faithOutput = conversionAbility.getTo().getFaith();
+    }
+
+    public RawSpecialAbility(CraftingAbility craftingAbility) {
+        type = "crafting";
+
+        crafting = new RawCrafting(craftingAbility.getCrafting());
+    }
+
+    public RawSpecialAbility(DiscountAbility discountAbility) {
+        type = "discount";
+
+        resource = discountAbility.getResource().getId();
+        amount = discountAbility.getAmount();
+    }
+
+    public RawSpecialAbility(StorageAbility storageAbility) {
+        type = "storage";
+
+        acceptedTypes = storageAbility.getShelf().getAcceptedTypes().getId();
+        amount = storageAbility.getShelf().getMaxAmount();
+    }
+
+    public RawSpecialAbility(SpecialAbility specialAbility) {
+        throw new IllegalArgumentException("Unsupported special ability!");
+    }
 
     public String getType() {
         return type;
@@ -126,7 +161,7 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
                 if(crafting == null)
                     throw new IllegalRawConversionException("Illegal or absent field \"crafting\" for a \"" + type + "\" special ability");
 
-                // no need to catch this since it will already throw  the right exception
+                // no need to catch this since it will already throw the right exception
                 return new CraftingAbility(crafting.convert());
 
             case "storage":

@@ -23,6 +23,20 @@ public class RawFaithPathTile implements UniqueRawObject<FaithPathTile> {
     @SerializedName(value = "pope_check", alternate = "popeCheck")
     private boolean popeCheck;
 
+    public RawFaithPathTile() { }
+
+    public RawFaithPathTile(FaithPathTile faithPathTile) {
+        if(faithPathTile == null)
+            throw new NullPointerException();
+
+        x = faithPathTile.getX();
+        y = faithPathTile.getY();
+        order = faithPathTile.getOrder();
+        victoryPoints = faithPathTile.getVictoryPoints();
+        popeGroup = faithPathTile.getPopeGroup();
+        popeCheck = faithPathTile.isPopeCheck();
+    }
+
     @Override
     public FaithPathTile convert() throws IllegalRawConversionException {
         if(x <= 0)

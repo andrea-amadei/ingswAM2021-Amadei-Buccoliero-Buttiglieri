@@ -27,6 +27,34 @@ public class RawRequirement implements RawObject<Requirement> {
     @SerializedName("amount")
     private int amount;
 
+    public RawRequirement() { }
+
+    public RawRequirement(FlagRequirement flagRequirement) {
+        type = "flag";
+
+        flag = flagRequirement.getFlag().getColor();
+        amount = flagRequirement.getAmount();
+    }
+
+    public RawRequirement(LevelFlagRequirement levelFlagRequirement) {
+        type = "level_flag";
+
+        flag = levelFlagRequirement.getFlag().getColor();
+        level = levelFlagRequirement.getFlag().getLevel();
+        amount = levelFlagRequirement.getAmount();
+    }
+
+    public RawRequirement(ResourceRequirement resourceRequirement) {
+        type = "resource";
+
+        resource = resourceRequirement.getResource().getId();
+        amount = resourceRequirement.getAmount();
+    }
+
+    public RawRequirement(Requirement requirement) {
+        throw new IllegalArgumentException("Unsupported requirement!");
+    }
+
     public String getType() {
         return type;
     }

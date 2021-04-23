@@ -11,6 +11,7 @@ import it.polimi.ingsw.parser.RawObject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 public class RawCrafting implements RawObject<Crafting> {
     @SerializedName("input")
@@ -21,6 +22,25 @@ public class RawCrafting implements RawObject<Crafting> {
 
     @SerializedName(value = "faithOutput", alternate = "faith_output")
     private int faithOutput;
+
+    public RawCrafting() { }
+
+    public RawCrafting(Crafting crafting) {
+        if(crafting == null)
+            throw new NullPointerException();
+
+        input = crafting.getInput()
+                        .entrySet()
+                        .stream()
+                        .collect(Collectors.toMap(e -> e.getKey().getId().toUpperCase(), Map.Entry::getValue));
+
+        output = crafting   .getOutput()
+                            .entrySet()
+                            .stream()
+                            .collect(Collectors.toMap(e -> e.getKey().getId().toUpperCase(), Map.Entry::getValue));
+
+        faithOutput = crafting.getFaithOutput();
+    }
 
     public Map<String, Integer> getInput() {
         return input;

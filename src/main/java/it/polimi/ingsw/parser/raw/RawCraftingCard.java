@@ -12,6 +12,7 @@ import it.polimi.ingsw.parser.UniqueRawObject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 public class RawCraftingCard implements UniqueRawObject<CraftingCard> {
     @SerializedName("id")
@@ -31,6 +32,26 @@ public class RawCraftingCard implements UniqueRawObject<CraftingCard> {
 
     @SerializedName("points")
     private int points;
+
+    public RawCraftingCard() { }
+
+    public RawCraftingCard(CraftingCard craftingCard) {
+        if(craftingCard == null)
+            throw new NullPointerException();
+
+        id = craftingCard.getId();
+        flag = craftingCard.getFlag().getColor();
+        level = craftingCard.getCrafting().getLevel();
+
+        cost = craftingCard.getCost()
+                .entrySet()
+                .stream()
+                .collect(Collectors.toMap(e -> e.getKey().getId().toUpperCase(), Map.Entry::getValue));
+
+        crafting = new RawCrafting(craftingCard.getCrafting());
+
+        points = craftingCard.getPoints();
+    }
 
     public String getId() {
         return String.format("%03d", id);
