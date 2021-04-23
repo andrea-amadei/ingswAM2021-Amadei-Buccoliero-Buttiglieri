@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.leader;
 
 import it.polimi.ingsw.gamematerials.LevelFlag;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.parser.raw.RawRequirement;
 
 import java.util.Map;
 import java.util.Set;
@@ -79,5 +80,10 @@ public class LevelFlagRequirement implements Requirement{
                 "flag=" + flag +
                 ", amount=" + amount +
                 '}';
+    }
+
+    @Override
+    public RawRequirement toRaw() {
+        return new RawRequirement(this);
     }
 }

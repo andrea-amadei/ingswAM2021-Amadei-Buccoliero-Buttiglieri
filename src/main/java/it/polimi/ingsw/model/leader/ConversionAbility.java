@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.leader;
 import it.polimi.ingsw.gamematerials.MarbleColor;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.market.ConversionActuator;
+import it.polimi.ingsw.parser.raw.RawSpecialAbility;
 
 
 /**
@@ -72,5 +73,10 @@ public class ConversionAbility implements SpecialAbility {
                 "from=" + from +
                 ", to=" + to +
                 '}';
+    }
+
+    @Override
+    public RawSpecialAbility toRaw() {
+        return new RawSpecialAbility(this);
     }
 }

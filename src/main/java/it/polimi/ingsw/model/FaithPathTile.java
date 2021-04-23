@@ -116,6 +116,11 @@ public class FaithPathTile implements UniqueSerializableObject<RawFaithPathTile>
     }
 
     @Override
+    public RawFaithPathTile toRaw() {
+        return new RawFaithPathTile(this);
+    }
+
+    @Override
     public void printDebugInfo() {
         Console.log(toString());
     }

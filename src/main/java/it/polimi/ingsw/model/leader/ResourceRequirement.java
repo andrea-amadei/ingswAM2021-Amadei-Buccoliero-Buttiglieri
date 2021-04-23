@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.leader;
 
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.parser.raw.RawRequirement;
 
 /**
  * Class ResourceRequirement implements Requirement Interface
@@ -75,5 +76,10 @@ public class ResourceRequirement implements Requirement{
                 "resource=" + resource +
                 ", amount=" + amount +
                 '}';
+    }
+
+    @Override
+    public RawRequirement toRaw() {
+        return new RawRequirement(this);
     }
 }

@@ -97,6 +97,11 @@ public class CraftingCard implements UniqueSerializableObject<RawCraftingCard> {
     }
 
     @Override
+    public RawCraftingCard toRaw() {
+        return new RawCraftingCard(this);
+    }
+
+    @Override
     public void printDebugInfo() {
         Console.log("Id: " + getId());
         Console.log("Points: " + getPoints());

@@ -159,6 +159,11 @@ public class LeaderCard implements UniqueSerializableObject<RawLeaderCard> {
     }
 
     @Override
+    public RawLeaderCard toRaw() {
+        return new RawLeaderCard(this);
+    }
+
+    @Override
     public void printDebugInfo() {
         Console.log("Id: " + getId());
         Console.log("Name: " + getName());

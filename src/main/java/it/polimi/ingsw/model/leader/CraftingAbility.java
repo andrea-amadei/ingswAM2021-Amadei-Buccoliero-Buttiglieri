@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.leader;
 
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.production.Crafting;
+import it.polimi.ingsw.parser.raw.RawSpecialAbility;
 
 /**
  * Class CraftingAbility implements SpecialAbility interface
@@ -56,5 +57,10 @@ public class CraftingAbility implements SpecialAbility {
         return "CraftingAbility{" +
                 "crafting=" + crafting +
                 '}';
+    }
+
+    @Override
+    public RawSpecialAbility toRaw() {
+        return new RawSpecialAbility(this);
     }
 }

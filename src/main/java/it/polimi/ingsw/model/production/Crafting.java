@@ -234,6 +234,11 @@ public class Crafting implements SerializableObject<RawCrafting> {
     }
 
     @Override
+    public RawCrafting toRaw() {
+        return new RawCrafting(this);
+    }
+
+    @Override
     public String toString() {
         StringBuilder str = new StringBuilder(this.getClass().getSimpleName()).append("{");
 

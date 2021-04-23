@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.leader;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.storage.LeaderDecorator;
 import it.polimi.ingsw.model.storage.Shelf;
+import it.polimi.ingsw.parser.raw.RawSpecialAbility;
 
 /**
  * Class StorageAbility implements SpecialAbility interface
@@ -56,5 +57,10 @@ public class StorageAbility implements SpecialAbility {
         return "StorageAbility{" +
                 "shelf=" + shelf +
                 '}';
+    }
+
+    @Override
+    public RawSpecialAbility toRaw() {
+        return new RawSpecialAbility(this);
     }
 }

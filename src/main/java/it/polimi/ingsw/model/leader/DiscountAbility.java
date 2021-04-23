@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.leader;
 
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.parser.raw.RawSpecialAbility;
 
 /**
  * Class DiscountAbility implements SpecialAbility Interface
@@ -71,5 +72,10 @@ public class DiscountAbility implements SpecialAbility {
                 "resource=" + resource +
                 ", amount=" + amount +
                 '}';
+    }
+
+    @Override
+    public RawSpecialAbility toRaw() {
+        return new RawSpecialAbility(this);
     }
 }
