@@ -4,7 +4,7 @@ import it.polimi.ingsw.exceptions.AlreadyActiveException;
 import it.polimi.ingsw.exceptions.RequirementsNotSatisfiedException;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.server.Console;
-import it.polimi.ingsw.parser.SerializedObject;
+import it.polimi.ingsw.parser.SerializableObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Class LeaderCard allows to instantiate leader cards and use them in game
  */
-public class LeaderCard implements SerializedObject {
+public class LeaderCard implements SerializableObject {
 
     private final int id;
     private final String name;

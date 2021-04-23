@@ -1,5 +1,5 @@
 package it.polimi.ingsw.parser;
 
-public interface UniqueRawObject<O extends SerializedObject> extends RawObject<O> {
-    int getId();
+public interface UniqueRawObject<O extends SerializableObject> extends RawObject<O> {
+    String getId();
 }

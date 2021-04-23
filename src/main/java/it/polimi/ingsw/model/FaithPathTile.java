@@ -1,12 +1,12 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.parser.SerializedObject;
+import it.polimi.ingsw.parser.SerializableObject;
 import it.polimi.ingsw.server.Console;
 
 /**
  * The FaithPathTile is an immutable class containing all the information about a tile of the faith path
  */
-public class FaithPathTile implements SerializedObject {
+public class FaithPathTile implements SerializableObject {
     private final int x, y;
 
     private final int order;
