@@ -59,7 +59,7 @@ public class Board {
     public LeaderCard getLeaderCardByID(int id){
         if(id <= 0)
             throw new IllegalArgumentException("Non existent ID number");
-        return leaderCards.stream().filter(x->x.getId() == id).findFirst().orElseThrow(NoSuchElementException::new);
+        return leaderCards.stream().filter(x -> x.getId() == id).findFirst().orElseThrow(NoSuchElementException::new);
     }
 
     /**
