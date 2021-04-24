@@ -76,12 +76,12 @@ public final class JSONParser {
         // for each raw object
         for(R rawObject : rawList.getList()) {
             // check if id is unique
-            if (ids.contains(rawObject.getId())) {
-                errorHandler("Duplicate object property \"id\" " + rawObject.getId());
+            if (ids.contains(rawObject.getStringId())) {
+                errorHandler("Duplicate object property \"id\" " + rawObject.getStringId());
                 skipped++;
                 continue;
             } else
-                ids.add(rawObject.getId());
+                ids.add(rawObject.getStringId());
 
             // convert object
             try {

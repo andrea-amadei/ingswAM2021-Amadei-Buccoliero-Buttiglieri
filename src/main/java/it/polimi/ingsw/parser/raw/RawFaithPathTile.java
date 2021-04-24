@@ -38,8 +38,32 @@ public class RawFaithPathTile implements UniqueRawObject<FaithPathTile> {
         popeCheck = faithPathTile.isPopeCheck();
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public int getVictoryPoints() {
+        return victoryPoints;
+    }
+
+    public int getPopeGroup() {
+        return popeGroup;
+    }
+
+    public boolean isPopeCheck() {
+        return popeCheck;
+    }
+
     @Override
-    public String getId() {
+    public String getStringId() {
         return String.format("%03d", order);
     }
 

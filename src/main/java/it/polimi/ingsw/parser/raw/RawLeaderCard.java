@@ -46,8 +46,12 @@ public class RawLeaderCard implements UniqueRawObject<LeaderCard> {
     }
 
     @Override
-    public String getId() {
+    public String getStringId() {
         return String.format("%03d", id);
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {

@@ -54,8 +54,13 @@ public class RawCraftingCard implements UniqueRawObject<CraftingCard> {
         points = craftingCard.getPoints();
     }
 
-    public String getId() {
+    @Override
+    public String getStringId() {
         return String.format("%03d", id);
+    }
+
+    public int getId() {
+        return id;
     }
 
     public FlagColor getFlag() {
