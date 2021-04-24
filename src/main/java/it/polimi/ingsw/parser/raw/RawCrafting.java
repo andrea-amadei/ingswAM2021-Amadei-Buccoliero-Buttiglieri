@@ -1,11 +1,13 @@
 package it.polimi.ingsw.parser.raw;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.NegativeCraftingIngredientException;
 import it.polimi.ingsw.gamematerials.ResourceType;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.production.Crafting;
+import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.parser.RawObject;
 
 import java.util.HashMap;
@@ -89,5 +91,10 @@ public class RawCrafting implements RawObject<Crafting> {
         }
 
         return c;
+    }
+
+    @Override
+    public String toString() {
+        return JSONSerializer.toJson(this);
     }
 }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.model.leader.Requirement;
 import it.polimi.ingsw.model.leader.SpecialAbility;
+import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.server.Console;
 import it.polimi.ingsw.parser.UniqueRawObject;
 
@@ -94,5 +95,10 @@ public class RawLeaderCard implements UniqueRawObject<LeaderCard> {
         } catch (IllegalArgumentException e) {
             throw new IllegalRawConversionException(e.getMessage() + " (id: " + id + ")");
         }
+    }
+
+    @Override
+    public String toString() {
+        return JSONSerializer.toJson(this);
     }
 }

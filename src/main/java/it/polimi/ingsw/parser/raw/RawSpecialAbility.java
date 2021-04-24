@@ -6,6 +6,7 @@ import it.polimi.ingsw.gamematerials.*;
 import it.polimi.ingsw.model.leader.*;
 import it.polimi.ingsw.model.market.ConversionActuator;
 import it.polimi.ingsw.model.storage.Shelf;
+import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.parser.RawObject;
 
 import java.util.ArrayList;
@@ -221,5 +222,10 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
             default:
                 throw new IllegalRawConversionException("Unknown type \"" + type + "\"");
         }
+    }
+
+    @Override
+    public String toString() {
+        return JSONSerializer.toJson(this);
     }
 }

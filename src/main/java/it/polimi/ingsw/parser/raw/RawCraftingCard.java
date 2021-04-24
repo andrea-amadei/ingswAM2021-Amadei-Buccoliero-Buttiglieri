@@ -6,6 +6,7 @@ import it.polimi.ingsw.gamematerials.*;
 import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.CraftingCard;
 import it.polimi.ingsw.model.production.UpgradableCrafting;
+import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.server.Console;
 import it.polimi.ingsw.parser.UniqueRawObject;
 
@@ -120,5 +121,10 @@ public class RawCraftingCard implements UniqueRawObject<CraftingCard> {
         } catch (IllegalArgumentException e) {
             throw new IllegalRawConversionException(e.getMessage() + " (id: " + id + ")");
         }
+    }
+
+    @Override
+    public String toString() {
+        return JSONSerializer.toJson(this);
     }
 }

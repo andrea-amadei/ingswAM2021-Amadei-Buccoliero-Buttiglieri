@@ -3,6 +3,7 @@ package it.polimi.ingsw.parser.raw;
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.model.FaithPathTile;
+import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.parser.UniqueRawObject;
 
 public class RawFaithPathTile implements UniqueRawObject<FaithPathTile> {
@@ -38,6 +39,11 @@ public class RawFaithPathTile implements UniqueRawObject<FaithPathTile> {
     }
 
     @Override
+    public String getId() {
+        return String.format("%03d", order);
+    }
+
+    @Override
     public FaithPathTile toObject() throws IllegalRawConversionException {
         if(x <= 0)
             throw new IllegalRawConversionException("Missing or illegal mandatory field \"x\" in faith path tile");
@@ -53,7 +59,7 @@ public class RawFaithPathTile implements UniqueRawObject<FaithPathTile> {
     }
 
     @Override
-    public String getId() {
-        return String.format("%03d", order);
+    public String toString() {
+        return JSONSerializer.toJson(this);
     }
 }

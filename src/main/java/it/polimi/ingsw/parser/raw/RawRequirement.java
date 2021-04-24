@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.leader.FlagRequirement;
 import it.polimi.ingsw.model.leader.LevelFlagRequirement;
 import it.polimi.ingsw.model.leader.Requirement;
 import it.polimi.ingsw.model.leader.ResourceRequirement;
+import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.parser.RawObject;
 
 import java.util.NoSuchElementException;
@@ -160,5 +161,10 @@ public class RawRequirement implements RawObject<Requirement> {
             default:
                 throw new IllegalRawConversionException("Unknown type \"" + type + "\"");
         }
+    }
+
+    @Override
+    public String toString() {
+        return JSONSerializer.toJson(this);
     }
 }
