@@ -52,7 +52,33 @@ public class RawRequirement implements RawObject<Requirement> {
     }
 
     public RawRequirement(Requirement requirement) {
-        throw new IllegalArgumentException("Unsupported requirement!");
+        if(requirement instanceof FlagRequirement) {
+            FlagRequirement flagRequirement = (FlagRequirement) requirement;
+
+            type = "flag";
+
+            flag = flagRequirement.getFlag().getColor();
+            amount = flagRequirement.getAmount();
+        }
+        else if(requirement instanceof LevelFlagRequirement) {
+            LevelFlagRequirement levelFlagRequirement = (LevelFlagRequirement) requirement;
+
+            type = "level_flag";
+
+            flag = levelFlagRequirement.getFlag().getColor();
+            level = levelFlagRequirement.getFlag().getLevel();
+            amount = levelFlagRequirement.getAmount();
+        }
+        else if(requirement instanceof ResourceRequirement) {
+            ResourceRequirement resourceRequirement = (ResourceRequirement) requirement;
+
+            type = "resource";
+
+            resource = resourceRequirement.getResource().getId();
+            amount = resourceRequirement.getAmount();
+        }
+        else
+            throw new IllegalArgumentException("Unsupported requirement!");
     }
 
     public String getType() {

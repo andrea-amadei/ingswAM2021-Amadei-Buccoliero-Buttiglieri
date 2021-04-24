@@ -69,7 +69,40 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
     }
 
     public RawSpecialAbility(SpecialAbility specialAbility) {
-        throw new IllegalArgumentException("Unsupported special ability!");
+        if(specialAbility instanceof ConversionAbility) {
+            ConversionAbility conversionAbility = (ConversionAbility) specialAbility;
+
+            type = "conversion";
+
+            from = conversionAbility.getFrom();
+            to = conversionAbility.getTo().getResources().stream().map(ResourceType::getId).collect(Collectors.toList());
+            faithOutput = conversionAbility.getTo().getFaith();
+        }
+        else if(specialAbility instanceof CraftingAbility) {
+            CraftingAbility craftingAbility = (CraftingAbility) specialAbility;
+
+            type = "crafting";
+
+            crafting = new RawCrafting(craftingAbility.getCrafting());
+        }
+        else if(specialAbility instanceof DiscountAbility) {
+            DiscountAbility discountAbility = (DiscountAbility) specialAbility;
+
+            type = "discount";
+
+            resource = discountAbility.getResource().getId();
+            amount = discountAbility.getAmount();
+        }
+        else if(specialAbility instanceof StorageAbility) {
+            StorageAbility storageAbility = (StorageAbility) specialAbility;
+
+            type = "storage";
+
+            acceptedTypes = storageAbility.getShelf().getAcceptedTypes().getId();
+            amount = storageAbility.getShelf().getMaxAmount();
+        }
+        else
+            throw new IllegalArgumentException("Unsupported special ability!");
     }
 
     public String getType() {
