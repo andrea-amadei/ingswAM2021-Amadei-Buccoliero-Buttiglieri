@@ -101,7 +101,7 @@ public class RawRequirement implements RawObject<Requirement> {
         return amount;
     }
 
-    public Requirement convert() throws IllegalRawConversionException {
+    public Requirement toObject() throws IllegalRawConversionException {
         if(type == null)
             throw new IllegalRawConversionException("Mandatory field \"type\" is missing");
 

@@ -85,7 +85,7 @@ public final class JSONParser {
 
             // convert object
             try {
-                object = rawObject.convert();
+                object = rawObject.toObject();
             } catch (IllegalRawConversionException e) {
                 errorHandler(e.getMessage());
                 skipped++;
@@ -155,7 +155,7 @@ public final class JSONParser {
         for(R rawObject : rawList.getList()) {
             // convert object
             try {
-                object = rawObject.convert();
+                object = rawObject.toObject();
             } catch (IllegalRawConversionException e) {
                 errorHandler(e.getMessage());
                 skipped++;

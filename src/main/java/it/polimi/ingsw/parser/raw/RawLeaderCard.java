@@ -66,7 +66,7 @@ public class RawLeaderCard implements UniqueRawObject<LeaderCard> {
     }
 
     @Override
-    public LeaderCard convert() throws IllegalRawConversionException {
+    public LeaderCard toObject() throws IllegalRawConversionException {
         if(name == null)
             throw new IllegalRawConversionException("Missing mandatory field \"name\" (id: " + id + ")");
 
@@ -85,10 +85,10 @@ public class RawLeaderCard implements UniqueRawObject<LeaderCard> {
 
         try {
             for(RawSpecialAbility i : abilities)
-                a.add(i.convert());
+                a.add(i.toObject());
 
             for(RawRequirement i : requirements)
-                r.add(i.convert());
+                r.add(i.toObject());
 
             return new LeaderCard(id, name, points, a, r);
         } catch (IllegalArgumentException e) {

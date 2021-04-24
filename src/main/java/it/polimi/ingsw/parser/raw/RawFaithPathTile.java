@@ -38,7 +38,7 @@ public class RawFaithPathTile implements UniqueRawObject<FaithPathTile> {
     }
 
     @Override
-    public FaithPathTile convert() throws IllegalRawConversionException {
+    public FaithPathTile toObject() throws IllegalRawConversionException {
         if(x <= 0)
             throw new IllegalRawConversionException("Missing or illegal mandatory field \"x\" in faith path tile");
 

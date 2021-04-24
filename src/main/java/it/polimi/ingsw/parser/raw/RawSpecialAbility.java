@@ -137,7 +137,7 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
         return faithOutput;
     }
 
-    public SpecialAbility convert() throws IllegalRawConversionException {
+    public SpecialAbility toObject() throws IllegalRawConversionException {
         List<ResourceSingle> sList = new ArrayList<>();
         ResourceSingle s;
         ResourceType t;
@@ -195,7 +195,7 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
                     throw new IllegalRawConversionException("Illegal or absent field \"crafting\" for a \"" + type + "\" special ability");
 
                 // no need to catch this since it will already throw the right exception
-                return new CraftingAbility(crafting.convert());
+                return new CraftingAbility(crafting.toObject());
 
             case "storage":
             case "storage_ability":

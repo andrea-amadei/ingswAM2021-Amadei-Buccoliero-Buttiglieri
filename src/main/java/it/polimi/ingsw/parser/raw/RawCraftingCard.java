@@ -78,7 +78,7 @@ public class RawCraftingCard implements UniqueRawObject<CraftingCard> {
     }
 
     @Override
-    public CraftingCard convert() throws IllegalRawConversionException {
+    public CraftingCard toObject() throws IllegalRawConversionException {
         if(flag == null)
             throw new IllegalRawConversionException("Missing mandatory field \"flag\" in crafting card (id: " + id + ")");
 
@@ -102,7 +102,7 @@ public class RawCraftingCard implements UniqueRawObject<CraftingCard> {
 
         try {
             levelFlag = new LevelFlag(flag, level);
-            newCrafting = crafting.convert();
+            newCrafting = crafting.toObject();
             upgradableCrafting = new UpgradableCrafting(newCrafting.getInput(), newCrafting.getOutput(), newCrafting.getFaithOutput(), level);
         } catch (IllegalArgumentException e) {
             throw new IllegalRawConversionException(e.getMessage() + " (id: " + id + ")");

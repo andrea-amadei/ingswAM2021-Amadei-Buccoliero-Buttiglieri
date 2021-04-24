@@ -54,7 +54,7 @@ public class RawCrafting implements RawObject<Crafting> {
         return faithOutput;
     }
 
-    public Crafting convert() throws IllegalRawConversionException {
+    public Crafting toObject() throws IllegalRawConversionException {
         if(input == null)
             throw new IllegalRawConversionException("Missing mandatory field \"input\" in crafting");
 
