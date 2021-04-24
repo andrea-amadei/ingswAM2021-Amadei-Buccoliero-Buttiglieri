@@ -193,6 +193,17 @@ public final class JSONParser {
         return parseList(Files.readString(path), description, rawListClass);
     }
 
+    public static <O extends SerializableObject<?>, R extends RawObject<O>> R parse(String json, Class<R> rawObjectClass) throws ParserException {
+        if(json == null)
+            throw new NullPointerException();
+
+        try {
+            return gson.fromJson(json, rawObjectClass);
+        } catch (JsonSyntaxException e) {
+            throw new ParserException(e.getMessage());
+        }
+    }
+
     public static List<LeaderCard> parseLeaders(Path path) throws ParserException, IOException {
         return parseOrderedList(path, "Leaders", RawLeaderCardList.class);
     }
