@@ -1,6 +1,5 @@
 package it.polimi.ingsw.parser.raw;
 
-import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.NegativeCraftingIngredientException;
