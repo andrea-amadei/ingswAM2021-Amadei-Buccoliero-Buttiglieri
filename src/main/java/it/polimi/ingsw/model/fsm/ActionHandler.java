@@ -9,7 +9,7 @@ import java.util.List;
 public interface ActionHandler {
     /**
      * It handles the specific action required. By default it throws an FSMTransitionFailedException.
-     * If a specific state needs to handle the action, this method will be overloaded.
+     * If a specific state needs to handle the action, this method will be override.
      * If the action is handled, this method will set the nextState.
      * @param activateLeaderAction the action to be executed
      * @return the list of messages to be sent to the client
@@ -89,6 +89,35 @@ public interface ActionHandler {
         throw new FSMTransitionFailedException("Cannot execute this command now");
     }
 
+    default List<Message> handleAction(SelectPlayAction selectPlayAction) throws FSMTransitionFailedException{
+        if(selectPlayAction == null)
+            throw new NullPointerException();
+        throw new FSMTransitionFailedException("Cannot execute this command now");
+    }
+
+    default List<Message> handleAction(DiscardLeaderAction discardLeaderAction) throws FSMTransitionFailedException{
+        if(discardLeaderAction == null)
+            throw new NullPointerException();
+        throw new FSMTransitionFailedException("Cannot execute this command now");
+    }
+
+    default List<Message> handleAction(EndGameAction endGameAction) throws FSMTransitionFailedException{
+        if(endGameAction == null)
+            throw new NullPointerException();
+        throw new FSMTransitionFailedException("Cannot execute this command now");
+    }
+
+    default List<Message> handleAction(LorenzoMoveAction lorenzoMoveAction) throws FSMTransitionFailedException{
+        if(lorenzoMoveAction == null)
+            throw new NullPointerException();
+        throw new FSMTransitionFailedException("Cannot execute this command now");
+    }
+
+    default List<Message> handleAction(NextTurnAction nextTurnAction) throws FSMTransitionFailedException{
+        if(nextTurnAction == null)
+            throw new NullPointerException();
+        throw new FSMTransitionFailedException("Cannot execute this command now");
+    }
 
     //TODO: add the other actions
 }
