@@ -1,8 +1,9 @@
-package it.polimi.ingsw.parser.raw;
+package it.polimi.ingsw.parser.raw.list;
 
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.parser.OrderedRawList;
 import it.polimi.ingsw.parser.RawList;
+import it.polimi.ingsw.parser.raw.RawFaithPathTile;
 
 import java.util.List;
 

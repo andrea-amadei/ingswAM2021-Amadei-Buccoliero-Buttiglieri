@@ -10,7 +10,10 @@ import it.polimi.ingsw.model.FaithPathTile;
 import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.CraftingCard;
-import it.polimi.ingsw.parser.raw.*;
+import it.polimi.ingsw.parser.raw.list.RawCraftingCardList;
+import it.polimi.ingsw.parser.raw.list.RawCraftingList;
+import it.polimi.ingsw.parser.raw.list.RawFaithPathTileList;
+import it.polimi.ingsw.parser.raw.list.RawLeaderCardList;
 import it.polimi.ingsw.server.Console;
 
 import java.io.FileNotFoundException;
