@@ -1,13 +1,16 @@
 package it.polimi.ingsw.gamematerials;
 
 import it.polimi.ingsw.model.GameParameters;
+import it.polimi.ingsw.parser.SerializableObject;
+import it.polimi.ingsw.parser.raw.RawLevelFlag;
+import it.polimi.ingsw.server.Console;
 
 import java.util.Objects;
 
 /**
  * The LevelFlag class extends the BaseFlag class and represent a flag, defined by its color and level
  */
-public class LevelFlag extends BaseFlag {
+public class LevelFlag extends BaseFlag implements SerializableObject<RawLevelFlag> {
     private final int level;
 
     /**
@@ -51,5 +54,15 @@ public class LevelFlag extends BaseFlag {
                 "color=" + getColor() +
                 ", level=" + level +
                 '}';
+    }
+
+    @Override
+    public RawLevelFlag toRaw() {
+        return new RawLevelFlag(this);
+    }
+
+    @Override
+    public void printDebugInfo() {
+        Console.log(toString());
     }
 }
