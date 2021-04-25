@@ -39,21 +39,21 @@ public class LimitedStorageTest {
         map2.put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
         map2.put(ResourceTypeSingleton.getInstance().getShieldResource(), 1);
 
-        assertThrows(NullPointerException.class, () -> new LimitedStorage(null, group));
-        assertThrows(NullPointerException.class, () -> new LimitedStorage(null, single, group));
-        assertThrows(NullPointerException.class, () -> new LimitedStorage(map1, null, group));
+        assertThrows(NullPointerException.class, () -> new LimitedStorage(null, group, "id"));
+        assertThrows(NullPointerException.class, () -> new LimitedStorage(null, single, group, "id"));
+        assertThrows(NullPointerException.class, () -> new LimitedStorage(map1, null, group, "id"));
 
-        assertThrows(IllegalArgumentException.class, () -> new LimitedStorage(invalid_single, group));
-        assertThrows(IllegalArgumentException.class, () -> new LimitedStorage(map1, invalid_single, group));
-        assertThrows(IllegalArgumentException.class, () -> new LimitedStorage(single, invalid_group));
-        assertThrows(IllegalArgumentException.class, () -> new LimitedStorage(map1, single, invalid_group));
+        assertThrows(IllegalArgumentException.class, () -> new LimitedStorage(invalid_single, group, "id"));
+        assertThrows(IllegalArgumentException.class, () -> new LimitedStorage(map1, invalid_single, group, "id"));
+        assertThrows(IllegalArgumentException.class, () -> new LimitedStorage(single, invalid_group, "id"));
+        assertThrows(IllegalArgumentException.class, () -> new LimitedStorage(map1, single, invalid_group, "id"));
 
-        assertDoesNotThrow(() -> new LimitedStorage(single, null));
-        assertDoesNotThrow(() -> new LimitedStorage(single, group));
-        assertDoesNotThrow(() -> new LimitedStorage(map1, single, null));
-        assertDoesNotThrow(() -> new LimitedStorage(map1, single, group));
+        assertDoesNotThrow(() -> new LimitedStorage(single, null, "id"));
+        assertDoesNotThrow(() -> new LimitedStorage(single, group, "id"));
+        assertDoesNotThrow(() -> new LimitedStorage(map1, single, null, "id"));
+        assertDoesNotThrow(() -> new LimitedStorage(map1, single, group, "id"));
 
-        assertThrows(IllegalArgumentException.class, () -> new LimitedStorage(map2, single, null));
+        assertThrows(IllegalArgumentException.class, () -> new LimitedStorage(map2, single, null, "id"));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class LimitedStorageTest {
         Map<ResourceGroup, Integer> group = new HashMap<>();
         group.put(any, 1);
 
-        LimitedStorage ls = new LimitedStorage(single, group);
+        LimitedStorage ls = new LimitedStorage(single, group, "id");
 
         assertDoesNotThrow(() -> ls.addResources(gold, 3));
         assertThrows(IllegalResourceTransferException.class, () -> ls.addResources(gold, 1));
@@ -107,7 +107,7 @@ public class LimitedStorageTest {
         Map<ResourceSingle, Integer> map2 = new HashMap<>();
         map2.put(gold, 3);
 
-        LimitedStorage ls = new LimitedStorage(single, group);
+        LimitedStorage ls = new LimitedStorage(single, group, "id");
 
         assertEquals(ls.getSingleResourceLimit(), single);
         assertEquals(ls.getGroupResourceLimit(), group);
@@ -141,7 +141,7 @@ public class LimitedStorageTest {
         Map<ResourceGroup, Integer> group = new HashMap<>();
         group.put(any, 1);
 
-        LimitedStorage ls = new LimitedStorage(single, group);
+        LimitedStorage ls = new LimitedStorage(single, group, "id");
 
         assertDoesNotThrow(() -> ls.addResources(gold, 1));
         assertFalse(ls.isFull());
@@ -163,7 +163,7 @@ public class LimitedStorageTest {
         Map<ResourceGroup, Integer> group = new HashMap<>();
         group.put(any, 1);
 
-        LimitedStorage ls = new LimitedStorage(single, group);
+        LimitedStorage ls = new LimitedStorage(single, group, "id");
 
         assertThrows(NullPointerException.class, () -> ls.addResources(null ,1));
         assertThrows(IllegalArgumentException.class, () -> ls.addResources(gold ,-1));
@@ -186,7 +186,7 @@ public class LimitedStorageTest {
         Map<ResourceGroup, Integer> group = new HashMap<>();
         group.put(any, 1);
 
-        LimitedStorage ls1 = new LimitedStorage(single, group);
+        LimitedStorage ls1 = new LimitedStorage(single, group, "id");
 
         // preliminary
         assertNotEquals(ls1, null);
@@ -202,20 +202,20 @@ public class LimitedStorageTest {
         Map<ResourceSingle, Integer> single3 = new HashMap<>();
         single3.put(shield, 3);
 
-        assertNotEquals(ls1, new LimitedStorage(single1, group));
-        assertNotEquals(new LimitedStorage(single1, group), new LimitedStorage(single2, group));
-        assertNotEquals(new LimitedStorage(single2, group), new LimitedStorage(single3, group));
+        assertNotEquals(ls1, new LimitedStorage(single1, group, "id"));
+        assertNotEquals(new LimitedStorage(single1, group, "id"), new LimitedStorage(single2, group, "id"));
+        assertNotEquals(new LimitedStorage(single2, group, "id"), new LimitedStorage(single3, group, "id"));
 
         // group
         Map<ResourceGroup, Integer> group1 = new HashMap<>();
         Map<ResourceGroup, Integer> group2 = new HashMap<>();
         group2.put(any, 2);
 
-        assertNotEquals(ls1, new LimitedStorage(single, group1));
-        assertNotEquals(ls1, new LimitedStorage(single, group2));
+        assertNotEquals(ls1, new LimitedStorage(single, group1, "id"));
+        assertNotEquals(ls1, new LimitedStorage(single, group2, "id"));
 
         // resources
-        LimitedStorage ls2 = new LimitedStorage(single, group);
+        LimitedStorage ls2 = new LimitedStorage(single, group, "id");
 
         assertDoesNotThrow(() -> ls1.addResources(gold, 1));
         assertDoesNotThrow(() -> ls2.addResources(gold, 1));

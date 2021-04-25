@@ -409,7 +409,7 @@ public class LeaderDecoratorTest {
 
         Cupboard c2 = c1;
 
-        ResourceContainer container = new BaseStorage();
+        ResourceContainer container = new BaseStorage("id");
         assertDoesNotThrow(() -> container.addResources(servant, 1));
 
         assertDoesNotThrow(() -> c2.addResourceFromContainer(container, leaderShelf2, servant, 1));
@@ -436,7 +436,7 @@ public class LeaderDecoratorTest {
 
         Cupboard c2 = c1;
 
-        ResourceContainer container = new BaseStorage();
+        ResourceContainer container = new BaseStorage("id");
         assertDoesNotThrow(() -> container.addResources(servant, 1));
 
         assertDoesNotThrow(() -> c2.addResourceFromContainer(container, leaderShelf2, servant, 1));
@@ -464,7 +464,7 @@ public class LeaderDecoratorTest {
 
         Cupboard c2 = c1;
 
-        ResourceContainer container = new BaseStorage();
+        ResourceContainer container = new BaseStorage("id");
         assertDoesNotThrow(() -> c2.addResource(leaderShelf1, stone, 2));
 
         assertDoesNotThrow(() -> c2.moveResourceToContainer(container, leaderShelf1, stone, 1));
@@ -491,7 +491,7 @@ public class LeaderDecoratorTest {
 
         Cupboard c2 = c1;
 
-        ResourceContainer container = new BaseStorage();
+        ResourceContainer container = new BaseStorage("id");
         assertDoesNotThrow(() -> c2.addResource(leaderShelf1, stone, 2));
 
         assertThrows(NoSuchElementException.class, () -> c2.moveResourceToContainer(container, new Shelf("test", stone, 2), stone, 1));
@@ -517,7 +517,7 @@ public class LeaderDecoratorTest {
 
         Cupboard c2 = c1;
 
-        ResourceContainer container = new BaseStorage();
+        ResourceContainer container = new BaseStorage("id");
         assertDoesNotThrow(() -> c2.addResource(leaderShelf1, stone, 2));
 
         assertThrows(IllegalCupboardException.class, () -> c2.moveResourceToContainer(container, leaderShelf1, servant, 1));

@@ -3,6 +3,8 @@ package it.polimi.ingsw.model.storage;
 import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.gamematerials.ResourceGroup;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
+import it.polimi.ingsw.parser.raw.RawStorage;
+import it.polimi.ingsw.server.Console;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +20,8 @@ import java.util.Optional;
 public class LimitedStorage extends ResourceContainer {
     private final Map<ResourceSingle, Integer> singleResourceLimit;
     private final Map<ResourceGroup, Integer> groupResourceLimit;
+
+    private final String id;
 
     private final BaseStorage base;
     private final BaseStorage other;
@@ -36,8 +40,8 @@ public class LimitedStorage extends ResourceContainer {
      *                                       Might be lifted in the future!
      * @throws IllegalArgumentException if any of the limits specify an amount equal or below zero
      */
-    public LimitedStorage(Map<ResourceSingle, Integer> singleResourceLimit, Map<ResourceGroup, Integer> groupResourceLimit) {
-        if(singleResourceLimit == null)
+    public LimitedStorage(Map<ResourceSingle, Integer> singleResourceLimit, Map<ResourceGroup, Integer> groupResourceLimit, String id) {
+        if(singleResourceLimit == null || id == null)
             throw new NullPointerException();
 
         // if groupResourceLimit is null, create one
@@ -60,12 +64,14 @@ public class LimitedStorage extends ResourceContainer {
         // initialize everything
         this.singleResourceLimit = singleResourceLimit;
         this.groupResourceLimit = groupResourceLimit;
-        base = new BaseStorage();
-        other = new BaseStorage();
+        base = new BaseStorage("base");
+        other = new BaseStorage("other");
 
         // assign temporary object group for easier access
         if(groupResourceLimit.size() == 1)
             group = groupResourceLimit.keySet().iterator().next();
+
+        this.id = id;
     }
 
     /**
@@ -82,8 +88,8 @@ public class LimitedStorage extends ResourceContainer {
      * @throws IllegalArgumentException if any of the limits specify an amount equal or below zero or the given initial
      *                                  resources cannot fit in their own limits
      */
-    public LimitedStorage(Map<ResourceSingle, Integer> resources, Map<ResourceSingle, Integer> singleResourceLimit, Map<ResourceGroup, Integer> groupResourceLimit) {
-        if(resources == null || singleResourceLimit == null)
+    public LimitedStorage(Map<ResourceSingle, Integer> resources, Map<ResourceSingle, Integer> singleResourceLimit, Map<ResourceGroup, Integer> groupResourceLimit, String id) {
+        if(resources == null || singleResourceLimit == null || id == null)
             throw new NullPointerException();
 
         // if groupResourceLimit is null, create one
@@ -106,8 +112,8 @@ public class LimitedStorage extends ResourceContainer {
         // initialize everything
         this.singleResourceLimit = singleResourceLimit;
         this.groupResourceLimit = groupResourceLimit;
-        base = new BaseStorage();
-        other = new BaseStorage();
+        base = new BaseStorage("base");
+        other = new BaseStorage("other");
 
         // assign temporary object group for easier access
         if(groupResourceLimit.size() == 1)
@@ -120,6 +126,8 @@ public class LimitedStorage extends ResourceContainer {
             } catch (IllegalResourceTransferException e) {
                 throw new IllegalArgumentException("Unable to create object with resources exceeding limits");
             }
+
+        this.id = id;
     }
 
     /**
@@ -138,6 +146,15 @@ public class LimitedStorage extends ResourceContainer {
                 map.put(i, other.getResources(i));
 
         return map;
+    }
+
+    /**
+     * Returns the id of this storage
+     * @return the id of this storage
+     */
+    @Override
+    public String getId() {
+        return id;
     }
 
     /**
@@ -306,6 +323,16 @@ public class LimitedStorage extends ResourceContainer {
      */
     public Map<ResourceGroup, Integer> getGroupResourceLimit() {
         return new HashMap<>(groupResourceLimit);
+    }
+
+    @Override
+    public RawStorage toRaw() {
+        return new RawStorage(this);
+    }
+
+    @Override
+    public void printDebugInfo() {
+        Console.log(toString());
     }
 
     @Override

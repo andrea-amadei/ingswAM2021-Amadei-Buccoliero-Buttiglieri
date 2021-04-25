@@ -20,16 +20,16 @@ class BaseStorageTest {
 
         BaseStorage bs;
 
-        bs = new BaseStorage();
+        bs = new BaseStorage("id");
         assertEquals(bs.getAllResources().size(), 0);
 
-        bs = new BaseStorage(map);
+        bs = new BaseStorage(map, "id");
         assertEquals(bs.getAllResources().size(), 2);
     }
 
     @Test
     public void addRemoveSetTest() {
-        BaseStorage bs = new BaseStorage();
+        BaseStorage bs = new BaseStorage("id");
 
         bs.addResources(ResourceTypeSingleton.getInstance().getServantResource(), 1);
         bs.addResources(ResourceTypeSingleton.getInstance().getShieldResource(), 2);
@@ -65,9 +65,9 @@ class BaseStorageTest {
         map.put(ResourceTypeSingleton.getInstance().getGoldResource(), -1);
 
         assertThrows(NullPointerException.class, () -> new BaseStorage(null));
-        assertThrows(IllegalArgumentException.class, () -> new BaseStorage(map));
+        assertThrows(IllegalArgumentException.class, () -> new BaseStorage(map, "id"));
 
-        bs = new BaseStorage();
+        bs = new BaseStorage("id");
 
         assertThrows(NullPointerException.class, () -> bs.addResources(null, 1));
         assertThrows(NullPointerException.class, () -> bs.removeResources(null, 1));
@@ -89,11 +89,11 @@ class BaseStorageTest {
 
     @Test
     public void movementTest() {
-        BaseStorage bs1 = new BaseStorage();
+        BaseStorage bs1 = new BaseStorage("id");
         bs1.addResources(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
         bs1.addResources(ResourceTypeSingleton.getInstance().getStoneResource(), 2);
 
-        BaseStorage bs2 = new BaseStorage();
+        BaseStorage bs2 = new BaseStorage("id");
 
         assertThrows(NullPointerException.class, () ->
                 bs1.moveTo(null, ResourceTypeSingleton.getInstance().getGoldResource(), 1));

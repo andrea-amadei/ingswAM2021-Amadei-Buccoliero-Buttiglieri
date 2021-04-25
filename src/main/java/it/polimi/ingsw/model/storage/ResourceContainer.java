@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.storage;
 
 import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
+import it.polimi.ingsw.parser.RawObject;
+import it.polimi.ingsw.parser.SerializableObject;
+import it.polimi.ingsw.parser.raw.RawStorage;
 
 import java.util.*;
 
@@ -17,7 +20,7 @@ import java.util.*;
  *     </li>
  * </ul>
  */
-public abstract class ResourceContainer {
+public abstract class ResourceContainer implements SerializableObject<RawStorage> {
     /**
      * Moves a given amount of a given resource from a Resource Container to another
      * @param to the Resource Container to transfer the resources to
@@ -72,4 +75,22 @@ public abstract class ResourceContainer {
      * @return a map of the stored resources with their given amount
      */
     public abstract Map<ResourceSingle, Integer> getAllResources();
+
+    /**
+     * Returns the id of this container
+     * @return the id of this container
+     */
+    public abstract String getId();
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder(this.getClass().getSimpleName()).append("(id=").append(getId()).append("){");
+
+        for(ResourceSingle i : getAllResources().keySet())
+            str.append(i).append(": ").append(getAllResources().get(i)).append(" ");
+
+        str.append("}");
+
+        return str.toString();
+    }
 }

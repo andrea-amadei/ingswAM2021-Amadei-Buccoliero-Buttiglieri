@@ -28,9 +28,9 @@ public class Storage {
      * A new empty storage is created. The cupboard is initialized with the parameters stated in GameParameters class
      */
     public Storage(){
-        chest = new BaseStorage();
-        hand = new BaseStorage();
-        marketBasket = new BaseStorage();
+        chest = new BaseStorage("chest");
+        hand = new BaseStorage("hand");
+        marketBasket = new BaseStorage("basket");
         List<Shelf> baseShelves = new ArrayList<>();
         for(int i = 0; i < GameParameters.BASE_CUPBOARD_SHELF_NAMES.size(); i++){
             baseShelves.add(new Shelf(GameParameters.BASE_CUPBOARD_SHELF_NAMES.get(i),

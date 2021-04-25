@@ -143,7 +143,7 @@ public class CraftingResourceSelectionState extends State {
                 single.put((ResourceSingle) i, selectedCrafting.getInput().get(i));
 
         //creating a limited storage to check if the cost of the card is correct
-        LimitedStorage checkStorage = new LimitedStorage(single, group);
+        LimitedStorage checkStorage = new LimitedStorage(single, group, "check");
 
         //try to get all selected resources and see if the cost is correct
         Map<ResourceSingle, Integer> flatSelectedResources =

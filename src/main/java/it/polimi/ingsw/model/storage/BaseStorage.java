@@ -2,6 +2,10 @@ package it.polimi.ingsw.model.storage;
 
 import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
+import it.polimi.ingsw.gamematerials.ResourceType;
+import it.polimi.ingsw.parser.JSONSerializer;
+import it.polimi.ingsw.parser.raw.RawStorage;
+import it.polimi.ingsw.server.Console;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,12 +17,17 @@ import java.util.Objects;
  */
 public class BaseStorage extends ResourceContainer {
     private final Map<ResourceSingle, Integer> resources;
+    private final String id;
 
     /**
      * Creates an empty base storage
      */
-    public BaseStorage() {
+    public BaseStorage(String id) {
+        if(id == null)
+            throw new NullPointerException();
+
         resources = new HashMap<>();
+        this.id = id;
     }
 
     /**
@@ -27,8 +36,8 @@ public class BaseStorage extends ResourceContainer {
      * @throws NullPointerException if resources is null
      * @throws IllegalArgumentException if any given amount is zero or below
      */
-    public BaseStorage(Map<ResourceSingle, Integer> resources) {
-        if(resources == null)
+    public BaseStorage(Map<ResourceSingle, Integer> resources, String id) {
+        if(resources == null || id == null)
             throw new NullPointerException();
 
         for(ResourceSingle i : resources.keySet())
@@ -36,6 +45,7 @@ public class BaseStorage extends ResourceContainer {
                 throw new IllegalArgumentException("Resources value cannot be negative or zero");
 
         this.resources = resources;
+        this.id = id;
     }
 
     /**
@@ -44,6 +54,15 @@ public class BaseStorage extends ResourceContainer {
      */
     public Map<ResourceSingle, Integer> getAllResources() {
         return new HashMap<>(resources);
+    }
+
+    /**
+     * Returns the id of this storage
+     * @return the id of this storage
+     */
+    @Override
+    public String getId() {
+        return id;
     }
 
     /**
@@ -126,6 +145,17 @@ public class BaseStorage extends ResourceContainer {
         resources.clear();
     }
 
+    @Override
+    public RawStorage toRaw() {
+        return new RawStorage(this);
+    }
+
+    @Override
+    public void printDebugInfo() {
+        Console.log(toString());
+    }
+
+    //TODO: make equals work
     /*
     @Override
     public boolean equals(Object o) {

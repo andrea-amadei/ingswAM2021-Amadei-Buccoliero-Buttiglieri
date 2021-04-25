@@ -80,7 +80,7 @@ public class BuyFromShopAction implements Action{
             throw new IllegalActionException("Trying to buy a card without having selected all the necessary");
 
         //creating a limited storage to check if the cost of the card is correct
-        LimitedStorage checkStorage = new LimitedStorage(card.getCost(), new HashMap<>());
+        LimitedStorage checkStorage = new LimitedStorage(card.getCost(), new HashMap<>(), "check");
 
         //try to get all selected resources and see if the cost is correct
         Map<ResourceSingle, Integer> flatSelectedResources =

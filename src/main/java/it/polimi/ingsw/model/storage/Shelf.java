@@ -3,6 +3,8 @@ package it.polimi.ingsw.model.storage;
 import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceType;
+import it.polimi.ingsw.parser.raw.RawStorage;
+import it.polimi.ingsw.server.Console;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -174,5 +176,13 @@ public class Shelf extends ResourceContainer{
             return id + "{" + ((currentType != null) ? currentType + ": " + currentAmount : "") + "}";
     }
 
+    @Override
+    public RawStorage toRaw() {
+        return new RawStorage(this);
+    }
 
+    @Override
+    public void printDebugInfo() {
+        Console.log(toString());
+    }
 }

@@ -336,7 +336,7 @@ public class BaseCupboardTest {
         ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
 
         Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
-        ResourceContainer container = new BaseStorage();
+        ResourceContainer container = new BaseStorage("id");
 
         assertDoesNotThrow(()->container.addResources(gold, 3));
 
@@ -356,7 +356,7 @@ public class BaseCupboardTest {
 
         Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
 
-        ResourceContainer container = new BaseStorage();
+        ResourceContainer container = new BaseStorage("id");
 
         assertDoesNotThrow(()->container.addResources(gold, 3));
 
@@ -377,7 +377,7 @@ public class BaseCupboardTest {
 
         Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
 
-        ResourceContainer container = new BaseStorage();
+        ResourceContainer container = new BaseStorage("id");
 
         assertDoesNotThrow(()->container.addResources(gold, 3));
         assertDoesNotThrow(()->c.addResourceFromContainer(container, top, gold, 1));
@@ -394,7 +394,7 @@ public class BaseCupboardTest {
         ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
 
         Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
-        ResourceContainer container = new BaseStorage();
+        ResourceContainer container = new BaseStorage("id");
 
         assertThrows(NullPointerException.class, ()->c.moveResourceToContainer(null, bottom, gold, 2));
         assertThrows(NullPointerException.class, ()->c.moveResourceToContainer(container, null, gold, 2));
@@ -413,7 +413,7 @@ public class BaseCupboardTest {
         ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
 
         Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
-        ResourceContainer container = new BaseStorage();
+        ResourceContainer container = new BaseStorage("id");
 
         assertDoesNotThrow(()->container.addResources(gold, 3));
         assertThrows(IllegalCupboardException.class, ()->c.moveResourceToContainer(container, top, servant, 3));
@@ -429,7 +429,7 @@ public class BaseCupboardTest {
         ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
 
         Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
-        ResourceContainer container = new BaseStorage();
+        ResourceContainer container = new BaseStorage("id");
 
         assertDoesNotThrow(()->c.addResource(top, gold, 1));
 
