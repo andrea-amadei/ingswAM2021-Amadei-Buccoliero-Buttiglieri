@@ -2,6 +2,10 @@ package it.polimi.ingsw.model.market;
 
 import it.polimi.ingsw.gamematerials.MarbleColor;
 import it.polimi.ingsw.model.GameParameters;
+import it.polimi.ingsw.parser.RawObject;
+import it.polimi.ingsw.parser.SerializableObject;
+import it.polimi.ingsw.parser.raw.RawMarket;
+import it.polimi.ingsw.server.Console;
 
 import java.util.*;
 
@@ -10,7 +14,7 @@ import java.util.*;
  * Every time a row or column is picked, the selected marbles are stored in a list.
  * The market is composed of a grid of marbles and the exceeding marble.
  */
-public class Market {
+public class Market implements SerializableObject<RawMarket> {
     private final Marble [][] grid;
     private Marble oddOne;
     private final transient int rowSize;
@@ -221,12 +225,23 @@ public class Market {
     }
 
     @Override
-    public RawObject<?> toRaw() {
-        return null;
+    public RawMarket toRaw() {
+        return new RawMarket(this);
     }
 
     @Override
     public void printDebugInfo() {
+        StringBuilder str;
 
+        Console.log(String.valueOf(oddOne.getColor().name().charAt(0)));
+
+        for (int i = 0; i < rowSize; i++) {
+            str = new StringBuilder();
+
+            for (int j = 0; j < colSize; j++)
+                    str.append(grid[i][j].getColor().name().charAt(0)).append(" ");
+
+            Console.log(str.toString());
+        }
     }
 }
