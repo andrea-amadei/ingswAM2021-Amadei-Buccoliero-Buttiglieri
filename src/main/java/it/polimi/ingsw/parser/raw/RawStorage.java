@@ -28,6 +28,9 @@ public class RawStorage implements UniqueRawObject<ResourceContainer> {
     public RawStorage() { }
 
     public RawStorage(ResourceContainer resourceContainer) {
+        if(resourceContainer == null)
+            throw new NullPointerException();
+
         resources = resourceContainer.getAllResources()
                         .entrySet()
                         .stream()
