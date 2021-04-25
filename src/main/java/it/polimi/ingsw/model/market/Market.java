@@ -54,6 +54,33 @@ public class Market {
     }
 
     /**
+     * A new market is created. Marbles are shuffled using the provided random seed.
+     * The selected marbles list is initially empty.
+     * @param grid an ordered list of all marbles to be added to the market
+     * @throws IllegalArgumentException if rows/columns dimension are inconsistent with the given number of marbles.
+     */
+    public Market(List<MarbleColor> grid, MarbleColor oddOne) {
+        selectedMarbles = new ArrayList<>();
+        rowSize = GameParameters.MARKET_ROWS;
+        colSize = GameParameters.MARKET_COLUMNS;
+        this.grid = new Marble[rowSize][colSize];
+
+        if(grid.size() != rowSize * colSize)
+            throw new IllegalArgumentException("The market grid must contain " + rowSize*colSize + "(" + rowSize + "*" + colSize
+                    + ") marbles, but only " + grid.size() + " were provided");
+
+        // add marbles to the grid
+        Iterator<MarbleColor> marbleIterator = grid.listIterator(0);
+
+        for(int i = 0; i < rowSize; i++)
+            for(int j = 0; j < colSize; j++)
+                this.grid[i][j] = MarbleFactory.createMarble(marbleIterator.next());
+
+        // add the odd one
+        this.oddOne = MarbleFactory.createMarble(oddOne);
+    }
+
+    /**
      * A new market is created. Marbles are shuffled randomly.
      * The selected marbles list is initially empty.
      */
@@ -89,6 +116,14 @@ public class Market {
             throw new IndexOutOfBoundsException();
 
         return grid[row][col];
+    }
+
+    /**
+     * Gets the odd marble (the one outside of the grid)
+     * @return the odd marble
+     */
+    public Marble getOddOne() {
+        return oddOne;
     }
 
     /**
@@ -183,5 +218,15 @@ public class Market {
         }
 
         return sb.toString();
+    }
+
+    @Override
+    public RawObject<?> toRaw() {
+        return null;
+    }
+
+    @Override
+    public void printDebugInfo() {
+
     }
 }
