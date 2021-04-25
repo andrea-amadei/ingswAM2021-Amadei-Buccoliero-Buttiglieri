@@ -12,10 +12,11 @@ public class GameContext {
     private Player currentPlayer;
     private boolean playerMoved;
     private boolean countdownStarted;
+    private boolean isSinglePlayer;
     private int turnsLeft;
 
     /**
-     * Creates a new game context. Current player is initially null
+     * Creates a new game context. Current player is initially null and by default the game is multiplayer
      * @param gameModel the model of the game
      * @throws NullPointerException if gameModel is null
      */
@@ -28,6 +29,16 @@ public class GameContext {
         playerMoved = false;
         countdownStarted = false;
         turnsLeft = -1;
+        isSinglePlayer = false;
+    }
+    /**
+     * Creates a new game context specifying if the game is single player or multiplayer. Current player is initially null
+     * @param gameModel the model of the game
+     * @throws NullPointerException if gameModel is null
+     */
+    public GameContext(GameModel gameModel, boolean isSinglePlayer){
+        this(gameModel);
+        this.isSinglePlayer = isSinglePlayer;
     }
 
     /**
@@ -75,6 +86,12 @@ public class GameContext {
     public void setPlayerMoved(boolean playerMoved) {
         this.playerMoved = playerMoved;
     }
+
+    /**
+     * Returns true if the game is in single player mode
+     * @return true if the game is in single player mode
+     */
+    public boolean isSinglePlayer(){ return isSinglePlayer;}
 
     /**
      * Starts a new turn countdown to mark the end of the game
