@@ -23,10 +23,10 @@ public class RawRequirement implements RawObject<Requirement> {
     private String resource;
 
     @SerializedName("level")
-    private int level;
+    private Integer level;
 
     @SerializedName("amount")
-    private int amount;
+    private Integer amount;
 
     public RawRequirement() { }
 
@@ -104,15 +104,15 @@ public class RawRequirement implements RawObject<Requirement> {
 
     public Requirement toObject() throws IllegalRawConversionException {
         if(type == null)
-            throw new IllegalRawConversionException("Mandatory field \"type\" is missing");
+            throw new IllegalRawConversionException("Missing field \"type\" for requirement");
 
         switch (type) {
             case "flag":
                 if(flag == null)
                     throw new IllegalRawConversionException("Illegal or absent field \"flag\" for a \"" + type + "\" requirement");
 
-                if(amount == 0)
-                    throw new IllegalRawConversionException("Illegal or absent field \"amount\" for a \"" + type + "\" requirement");
+                if(amount == null)
+                    throw new IllegalRawConversionException("Missing field \"amount\" for a \"" + type + "\" requirement");
 
                 try {
                     return new FlagRequirement(new BaseFlag(flag), amount);
@@ -125,11 +125,11 @@ public class RawRequirement implements RawObject<Requirement> {
                 if(flag == null)
                     throw new IllegalRawConversionException("Illegal or absent field \"flag\" for a \"" + type + "\" requirement");
 
-                if(amount == 0)
-                    throw new IllegalRawConversionException("Illegal or absent field \"amount\" for a \"" + type + "\" requirement");
+                if(amount == null)
+                    throw new IllegalRawConversionException("Missing field \"amount\" for a \"" + type + "\" requirement");
 
-                if(level == 0)
-                    throw new IllegalRawConversionException("Illegal or absent field \"level\" for a \"" + type + "\" requirement");
+                if(level == null)
+                    throw new IllegalRawConversionException("Missing field \"level\" for a \"" + type + "\" requirement");
 
                 try {
                     return new LevelFlagRequirement(new LevelFlag(flag, level), amount);
@@ -139,10 +139,10 @@ public class RawRequirement implements RawObject<Requirement> {
 
             case "resource":
                 if(resource == null)
-                    throw new IllegalRawConversionException("Illegal or absent field \"resource\" for a \"" + type + "\" requirement");
+                    throw new IllegalRawConversionException("Missing field \"resource\" for a \"" + type + "\" requirement");
 
-                if(amount == 0)
-                    throw new IllegalRawConversionException("Illegal or absent field \"amount\" for a \"" + type + "\" requirement");
+                if(amount == null)
+                    throw new IllegalRawConversionException("Missing field \"amount\" for a \"" + type + "\" requirement");
 
                 ResourceSingle r;
 

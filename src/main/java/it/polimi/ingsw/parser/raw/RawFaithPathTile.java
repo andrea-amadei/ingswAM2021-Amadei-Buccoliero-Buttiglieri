@@ -9,14 +9,14 @@ import it.polimi.ingsw.parser.UniqueRawObject;
 public class RawFaithPathTile implements UniqueRawObject<FaithPathTile> {
 
     @SerializedName(value = "x", alternate = "coord_x")
-    private int x;
+    private Integer x;
     @SerializedName(value = "y", alternate = "coord_y")
-    private int y;
+    private Integer y;
 
     @SerializedName(value = "order", alternate = "id")
     private int order;
 
-    @SerializedName(value = "victory_points", alternate = "victoryPoints")
+    @SerializedName(value = "points", alternate = {"victoryPoints", "victory_points"})
     private int victoryPoints;
 
     @SerializedName(value = "pope_group", alternate = "popeGroup")
@@ -69,11 +69,11 @@ public class RawFaithPathTile implements UniqueRawObject<FaithPathTile> {
 
     @Override
     public FaithPathTile toObject() throws IllegalRawConversionException {
-        if(x <= 0)
-            throw new IllegalRawConversionException("Missing or illegal mandatory field \"x\" in faith path tile");
+        if(x == null)
+            throw new IllegalRawConversionException("Missing mandatory field \"x\" in faith path tile");
 
-        if(y <= 0)
-            throw new IllegalRawConversionException("Missing or illegal mandatory field \"y\" in faith path tile");
+        if(y == null)
+            throw new IllegalRawConversionException("Missing mandatory field \"y\" in faith path tile");
 
         try {
             return new FaithPathTile(x, y, order, victoryPoints, popeGroup, popeCheck);

@@ -23,7 +23,7 @@ public class RawCraftingCard implements UniqueRawObject<CraftingCard> {
     private FlagColor flag;
 
     @SerializedName("level")
-    private int level;
+    private Integer level;
 
     @SerializedName("cost")
     private Map<String, Integer> cost;
@@ -32,7 +32,7 @@ public class RawCraftingCard implements UniqueRawObject<CraftingCard> {
     private RawCrafting crafting;
 
     @SerializedName("points")
-    private int points;
+    private Integer points;
 
     public RawCraftingCard() { }
 
@@ -86,20 +86,19 @@ public class RawCraftingCard implements UniqueRawObject<CraftingCard> {
     @Override
     public CraftingCard toObject() throws IllegalRawConversionException {
         if(flag == null)
-            throw new IllegalRawConversionException("Missing mandatory field \"flag\" in crafting card (id: " + id + ")");
+            throw new IllegalRawConversionException("Illegal or absent field \"flag\" in crafting card");
 
         if(cost == null)
-            throw new IllegalRawConversionException("Missing mandatory field \"cost\" in crafting card (id: " + id + ")");
+            throw new IllegalRawConversionException("Missing mandatory field \"cost\" in crafting card");
 
         if(crafting == null)
-            throw new IllegalRawConversionException("Missing mandatory field \"crafting\" in crafting card (id: " + id + ")");
+            throw new IllegalRawConversionException("Missing mandatory field \"crafting\" in crafting card");
 
-        if(level == 0)
-            throw new IllegalRawConversionException("Missing mandatory field \"level\" in crafting card (id: " + id + ")");
+        if(level == null)
+            throw new IllegalRawConversionException("Missing mandatory field \"level\" in crafting card");
 
-        if(points == 0)
-            Console.log("Points for card " + id + " are set to 0 or absent. Is it intentional?",
-                    Console.Severity.WARNING, Console.Format.YELLOW);
+        if(points == null)
+            throw new IllegalRawConversionException("Missing mandatory field \"points\" in crafting card");
 
         LevelFlag levelFlag;
         Crafting newCrafting;
@@ -111,20 +110,20 @@ public class RawCraftingCard implements UniqueRawObject<CraftingCard> {
             newCrafting = crafting.toObject();
             upgradableCrafting = new UpgradableCrafting(newCrafting.getInput(), newCrafting.getOutput(), newCrafting.getFaithOutput(), level);
         } catch (IllegalArgumentException e) {
-            throw new IllegalRawConversionException(e.getMessage() + " (id: " + id + ")");
+            throw new IllegalRawConversionException(e.getMessage());
         }
 
         for(String i : cost.keySet())
             try {
                 newCost.put(ResourceTypeSingleton.getInstance().getResourceSingleByName(i), cost.get(i));
             } catch (NoSuchElementException e) {
-                throw new IllegalRawConversionException("\"" + i + "\" is not an available resource (id: " + id + ")");
+                throw new IllegalRawConversionException("\"" + i + "\" is not an available resource");
             }
 
         try {
             return new CraftingCard(id, levelFlag, newCost, upgradableCrafting, points);
         } catch (IllegalArgumentException e) {
-            throw new IllegalRawConversionException(e.getMessage() + " (id: " + id + ")");
+            throw new IllegalRawConversionException(e.getMessage());
         }
     }
 

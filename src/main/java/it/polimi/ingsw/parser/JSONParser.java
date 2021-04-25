@@ -87,7 +87,7 @@ public final class JSONParser {
             try {
                 object = rawObject.toObject();
             } catch (IllegalRawConversionException e) {
-                errorHandler(e.getMessage());
+                errorHandler(e.getMessage() + " (id: " + rawObject.getStringId() + ")");
                 skipped++;
                 continue;
             }

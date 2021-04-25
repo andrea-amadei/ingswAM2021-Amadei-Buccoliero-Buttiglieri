@@ -34,10 +34,10 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
     private RawCrafting crafting;
 
     @SerializedName("amount")
-    private int amount;
+    private Integer amount;
 
     @SerializedName(value = "faithOutput", alternate = "faith_output")
-    private int faithOutput;
+    private Integer faithOutput;
 
     public RawSpecialAbility() { }
 
@@ -145,7 +145,7 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
 
 
         if(type == null)
-            throw new IllegalRawConversionException("Mandatory field \"type\" is missing");
+            throw new IllegalRawConversionException("Missing field \"type\" for special ability");
 
         switch (type) {
             case "conversion":
@@ -154,7 +154,10 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
                     throw new IllegalRawConversionException("Illegal or absent field \"from\" for a \"" + type + "\" special ability");
 
                 if(to == null)
-                    throw new IllegalRawConversionException("Illegal or absent field \"to\" for a \"" + type + "\" special ability");
+                    throw new IllegalRawConversionException("Missing field \"to\" for a \"" + type + "\" special ability");
+
+                if(faithOutput == null)
+                    throw new IllegalRawConversionException("Missing field \"faith_output\" for a \"" + type + "\" special ability");
 
                 for(String i : to)
                     try {
@@ -175,8 +178,8 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
                 if(resource == null)
                     throw new IllegalRawConversionException("Illegal or absent field \"resource\" for a \"" + type + "\" special ability");
 
-                if(amount == 0)
-                    throw new IllegalRawConversionException("Illegal or absent field \"amount\" for a \"" + type + "\" special ability");
+                if(amount == null)
+                    throw new IllegalRawConversionException("Missing field \"amount\" for a \"" + type + "\" special ability");
 
                 try {
                     s = ResourceTypeSingleton.getInstance().getResourceSingleByName(resource);
@@ -203,8 +206,8 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
                 if(acceptedTypes == null)
                     throw new IllegalRawConversionException("Illegal or absent field \"accepted_types\" for a \"" + type + "\" special ability");
 
-                if(amount == 0)
-                    throw new IllegalRawConversionException("Illegal or absent field \"amount\" for a \"" + type + "\" special ability");
+                if(amount == null)
+                    throw new IllegalRawConversionException("Missing field \"amount\" for a \"" + type + "\" special ability");
 
                 try {
                     t = ResourceTypeSingleton.getInstance().getResourceTypeByName(acceptedTypes);

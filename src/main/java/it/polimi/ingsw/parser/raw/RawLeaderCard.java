@@ -21,7 +21,7 @@ public class RawLeaderCard implements UniqueRawObject<LeaderCard> {
     private String name;
 
     @SerializedName("points")
-    private int points;
+    private Integer points;
 
     @SerializedName(value = "special_abilities", alternate = {"specialAbilities", "abilities"})
     private List<RawSpecialAbility> abilities;
@@ -73,17 +73,16 @@ public class RawLeaderCard implements UniqueRawObject<LeaderCard> {
     @Override
     public LeaderCard toObject() throws IllegalRawConversionException {
         if(name == null)
-            throw new IllegalRawConversionException("Missing mandatory field \"name\" (id: " + id + ")");
+            throw new IllegalRawConversionException("Missing mandatory field \"name\"");
 
         if(abilities == null)
-            throw new IllegalRawConversionException("Missing mandatory field \"abilities\" (id: " + id + ")");
+            throw new IllegalRawConversionException("Missing mandatory field \"abilities\"");
 
         if(requirements == null)
-            throw new IllegalRawConversionException("Missing mandatory field \"requirements\" (id: " + id + ")");
+            throw new IllegalRawConversionException("Missing mandatory field \"requirements\"");
 
-        if(points == 0)
-            Console.log("Points for card " + id + " are set to 0 or absent. Is it intentional?",
-                    Console.Severity.WARNING, Console.Format.YELLOW);
+        if(points == null)
+            throw new IllegalRawConversionException("Missing mandatory field \"points\"");
 
         List<SpecialAbility> a = new ArrayList<>(abilities.size());
         List<Requirement> r = new ArrayList<>(requirements.size());
@@ -97,7 +96,7 @@ public class RawLeaderCard implements UniqueRawObject<LeaderCard> {
 
             return new LeaderCard(id, name, points, a, r);
         } catch (IllegalArgumentException e) {
-            throw new IllegalRawConversionException(e.getMessage() + " (id: " + id + ")");
+            throw new IllegalRawConversionException(e.getMessage());
         }
     }
 
