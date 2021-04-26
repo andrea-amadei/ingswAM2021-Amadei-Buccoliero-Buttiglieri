@@ -89,6 +89,11 @@ public interface ActionHandler {
         throw new FSMTransitionFailedException("Cannot execute this command now");
     }
 
+    default List<Message> handleAction(PreliminaryPickAction preliminaryPickAction) throws FSMTransitionFailedException{
+        if(preliminaryPickAction == null)
+            throw new NullPointerException();
+        throw new FSMTransitionFailedException("Cannot execute this command now");
+    }
 
     //TODO: add the other actions
 }
