@@ -24,6 +24,7 @@ public final class DummyBuilder {
     private static final ResourceGroup any = ResourceTypeSingleton.getInstance().getAnyResource();
 
     public static List<LeaderCard> buildLeaderCards(){
+        JSONParser.setShowLogs(false);
         try {
             return JSONParser.parseLeaders(Paths.get("src/main/leaders.json"));
         }catch(IOException | ParserException e1){
@@ -33,6 +34,7 @@ public final class DummyBuilder {
     }
 
     public static List<CraftingCard> buildCraftingCards(){
+        JSONParser.setShowLogs(false);
         Map<ResourceType, Integer> map1 = new HashMap<>(){{
             put(gold, 2);
             put(servant, 1);
@@ -55,6 +57,7 @@ public final class DummyBuilder {
     }
 
     public static List<FaithPathTile> buildFaithPathTiles(){
+        JSONParser.setShowLogs(false);
         List<FaithPathTile> faithTiles = new ArrayList<>();
         int i = 0;
         for(; i < 3; i++){
