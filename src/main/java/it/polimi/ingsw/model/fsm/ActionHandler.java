@@ -9,7 +9,7 @@ import java.util.List;
 public interface ActionHandler {
     /**
      * It handles the specific action required. By default it throws an FSMTransitionFailedException.
-     * If a specific state needs to handle the action, this method will be override.
+     * If a specific state needs to handle the action, this method will be overrode.
      * If the action is handled, this method will set the nextState.
      * @param activateLeaderAction the action to be executed
      * @return the list of messages to be sent to the client
@@ -115,6 +115,11 @@ public interface ActionHandler {
 
     default List<Message> handleAction(NextTurnAction nextTurnAction) throws FSMTransitionFailedException{
         if(nextTurnAction == null)
+            throw new NullPointerException();
+        throw new FSMTransitionFailedException("Cannot execute this command now");
+    }
+    default List<Message> handleAction(PreliminaryPickAction preliminaryPickAction) throws FSMTransitionFailedException{
+        if(preliminaryPickAction == null)
             throw new NullPointerException();
         throw new FSMTransitionFailedException("Cannot execute this command now");
     }
