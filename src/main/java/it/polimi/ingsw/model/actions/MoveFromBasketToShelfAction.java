@@ -3,11 +3,13 @@ package it.polimi.ingsw.model.actions;
 import it.polimi.ingsw.common.InfoPayload;
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.PayloadComponent;
+import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.storage.Shelf;
 
@@ -47,6 +49,21 @@ public class MoveFromBasketToShelfAction implements Action{
         this.resourceToMove = resourceToMove;
         this.amount = amount;
         this.shelfID = shelfID;
+    }
+
+    /**
+     * Calls the appropriate method of the handler
+     *
+     * @param handler the handler that will execute this action
+     * @return the list of messages to send to the client
+     * @throws NullPointerException         if handler is null
+     * @throws FSMTransitionFailedException if the state fails to execute this action
+     */
+    @Override
+    public List<Message> acceptHandler(ActionHandler handler) throws FSMTransitionFailedException {
+        if(handler == null)
+            throw new NullPointerException();
+        return handler.handleAction(this);
     }
 
     /**

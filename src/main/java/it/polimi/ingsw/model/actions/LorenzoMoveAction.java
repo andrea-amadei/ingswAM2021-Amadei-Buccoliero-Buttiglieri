@@ -1,13 +1,30 @@
 package it.polimi.ingsw.model.actions;
 
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LorenzoMoveAction implements Action {
+
+    /**
+     * Calls the appropriate method of the handler
+     *
+     * @param handler the handler that will execute this action
+     * @return the list of messages to send to the client
+     * @throws NullPointerException         if handler is null
+     * @throws FSMTransitionFailedException if the state fails to execute this action
+     */
+    @Override
+    public List<Message> acceptHandler(ActionHandler handler) throws FSMTransitionFailedException {
+        if(handler == null)
+            throw new NullPointerException();
+        return handler.handleAction(this);
+    }
 
     /**
      * Executes the topmost Lorenzo's action in the stack

@@ -1,7 +1,9 @@
 package it.polimi.ingsw.model.actions;
 
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
 
 import java.util.List;
@@ -12,6 +14,15 @@ import java.util.List;
  * the change applied to the model
  */
 public interface Action {
+
+    /**
+     * Calls the appropriate method of the handler
+     * @param handler the handler that will execute this action
+     * @return the list of messages to send to the client
+     * @throws NullPointerException if handler is null
+     * @throws FSMTransitionFailedException if the state fails to execute this action
+     */
+    List<Message> acceptHandler(ActionHandler handler) throws FSMTransitionFailedException;
 
     /**
      * Executes the action on the provided game context
