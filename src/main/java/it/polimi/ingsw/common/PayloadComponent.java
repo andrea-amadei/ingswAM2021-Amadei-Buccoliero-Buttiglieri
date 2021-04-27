@@ -16,8 +16,8 @@ public abstract class PayloadComponent {
 
     /**
      * Creates a new component of the specified group and type
-     * @param group the group of this component (Change, PossibleAction, ...)
-     * @param type the type of this component (UpdateShelf, UpdateHand, ...)
+     * @param group the group of this component (update, possible_action, ...)
+     * @param type the type of this component (update_shelf, update_hand, ...)
      * @throws NullPointerException if either group or type is null
      */
     public PayloadComponent(String group, String type){
