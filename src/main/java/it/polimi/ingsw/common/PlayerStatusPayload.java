@@ -22,7 +22,7 @@ public class PlayerStatusPayload extends PayloadComponent {
      * @throws NullPointerException if any attribute is null
      */
     public PlayerStatusPayload(String type, String player, String message) {
-        super("update", type);
+        super("player_status", type);
 
         if(message == null || player == null)
             throw new NullPointerException();

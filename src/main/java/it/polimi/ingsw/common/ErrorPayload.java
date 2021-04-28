@@ -16,7 +16,7 @@ public class ErrorPayload extends PayloadComponent {
      * @throws NullPointerException if any attribute is null
      */
     public ErrorPayload(String type, String message) {
-        super("possible_action", type);
+        super("error", type);
 
         if(message == null)
             throw new NullPointerException();
