@@ -12,9 +12,4 @@ public class PossibleActionPayload extends PayloadComponent {
     public PossibleActionPayload(String type) {
         super("possible_action", type);
     }
-
-    @Override
-    public PayloadComponent toPayloadComponent() throws IllegalRawConversionException {
-        return null;
-    }
 }

@@ -26,12 +26,4 @@ public abstract class PayloadComponent {
         this.group = group;
         this.type = type;
     }
-
-    //TODO: check this
-    /**
-     * Returns a new PayloadComponent with the same state of this one
-     * @return a new PayloadComponent with the same state of this one
-     * @throws IllegalRawConversionException if the new component cannot be created
-     */
-    public abstract PayloadComponent toPayloadComponent() throws IllegalRawConversionException;
 }

@@ -34,8 +34,11 @@ public class UpdatePayload extends PayloadComponent {
         this.content = content;
     }
 
-    @Override
-    public PayloadComponent toPayloadComponent() throws IllegalRawConversionException {
-        return null;
+    public String getPlayer() {
+        return player;
+    }
+
+    public Map<String, Object> getContent() {
+        return content;
     }
 }

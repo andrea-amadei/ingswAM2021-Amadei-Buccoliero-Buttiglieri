@@ -31,8 +31,11 @@ public class PlayerStatusPayload extends PayloadComponent {
         this.message = message;
     }
 
-    @Override
-    public PayloadComponent toPayloadComponent() throws IllegalRawConversionException {
-        return null;
+    public String getPlayer() {
+        return player;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

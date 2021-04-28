@@ -29,8 +29,7 @@ public class GlobalUpdatePayload extends PayloadComponent {
         this.content = content;
     }
 
-    @Override
-    public PayloadComponent toPayloadComponent() throws IllegalRawConversionException {
-        return null;
+    public Map<String, Object> getContent() {
+        return content;
     }
 }

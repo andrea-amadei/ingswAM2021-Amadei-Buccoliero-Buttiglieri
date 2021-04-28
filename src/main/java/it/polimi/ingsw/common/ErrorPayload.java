@@ -24,8 +24,7 @@ public class ErrorPayload extends PayloadComponent {
         this.message = message;
     }
 
-    @Override
-    public PayloadComponent toPayloadComponent() throws IllegalRawConversionException {
-        return null;
+    public String getMessage() {
+        return message;
     }
 }
