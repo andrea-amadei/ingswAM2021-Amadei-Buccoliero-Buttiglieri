@@ -2,6 +2,7 @@ package it.polimi.ingsw.common;
 
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
+import it.polimi.ingsw.parser.JSONSerializer;
 
 /**
  * A component of a message
@@ -25,5 +26,10 @@ public abstract class PayloadComponent {
             throw new NullPointerException();
         this.group = group;
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return JSONSerializer.toJson(this);
     }
 }

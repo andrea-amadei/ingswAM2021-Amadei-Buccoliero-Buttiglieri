@@ -20,17 +20,6 @@ public class InfoPayload extends PayloadComponent{
         this.message = message;
     }
 
-
-    //TODO: think about this
-    /**
-     * Returns a new payload component equals to this
-     * @return a new payload component equals to this
-     */
-    @Override
-    public InfoPayload toPayloadComponent(){
-        return new InfoPayload(message);
-    }
-
     /**
      * Returns the representation of this InfoPayload
      * @return the representation of this InfoPayload

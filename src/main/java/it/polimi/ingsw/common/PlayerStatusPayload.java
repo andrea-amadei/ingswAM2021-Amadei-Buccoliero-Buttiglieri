@@ -1,7 +1,6 @@
 package it.polimi.ingsw.common;
 
 import com.google.gson.annotations.SerializedName;
-import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 
 import java.util.Map;
 

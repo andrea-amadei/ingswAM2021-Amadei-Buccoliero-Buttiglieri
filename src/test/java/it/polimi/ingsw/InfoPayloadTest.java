@@ -23,11 +23,4 @@ public class InfoPayloadTest {
     public void correctCreation(){
         assertEquals("INFO: a message", new InfoPayload("a message").toString());
     }
-
-    @Test
-    public void correctFactoryCreation(){
-        InfoPayload payload = new InfoPayload("ehy");
-        assertEquals(payload.toString(), payload.toPayloadComponent().toString());
-    }
-
 }

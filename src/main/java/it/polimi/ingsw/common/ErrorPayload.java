@@ -1,7 +1,6 @@
 package it.polimi.ingsw.common;
 
 import com.google.gson.annotations.SerializedName;
-import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 
 public class ErrorPayload extends PayloadComponent {
 

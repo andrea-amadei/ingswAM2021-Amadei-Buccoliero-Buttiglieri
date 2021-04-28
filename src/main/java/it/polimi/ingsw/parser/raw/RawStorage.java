@@ -39,6 +39,11 @@ public class RawStorage implements UniqueRawObject<ResourceContainer> {
         this.id = resourceContainer.getId();
     }
 
+    public RawStorage(String id, Map<String, Integer> resources) {
+        this.resources = resources;
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }

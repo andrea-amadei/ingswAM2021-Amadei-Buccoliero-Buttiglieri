@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common;
 
-import it.polimi.ingsw.exceptions.IllegalRawConversionException;
-
 public class PossibleActionPayload extends PayloadComponent {
     /**
      * Creates a new possible action payload
