@@ -39,7 +39,7 @@ public class EndTurnState extends State {
     @Override
     public List<Message> onEntry() {
         if(getGameContext().isSinglePlayer() && !hasLorenzoPlayed && !getGameContext().hasCountdownStarted()){
-            launchInterrupt(new LorenzoMoveAction());
+            launchInterrupt(new LorenzoMoveAction(), 1);
             hasLorenzoPlayed = true;
             return new ArrayList<>();
         }
@@ -61,13 +61,13 @@ public class EndTurnState extends State {
             //if the end of the list of players has been reached and the end game sequence has been
             //triggered, then the game is ended
             if (nextPlayerIndex <= currentPlayerIndex && getGameContext().hasCountdownStarted()) {
-                launchInterrupt(new EndGameAction());
+                launchInterrupt(new EndGameAction(), 1);
                 return new ArrayList<>();
             }
 
             //else we can proceed with the next turn
             getGameContext().setCurrentPlayer(players.get(nextPlayerIndex));
-            launchInterrupt(new NextTurnAction());
+            launchInterrupt(new NextTurnAction(), 1);
             return new ArrayList<>();
         }
 

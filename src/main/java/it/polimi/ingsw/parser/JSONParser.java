@@ -234,8 +234,9 @@ public final class JSONParser {
     public static FaithPath parseFaithPath(Path path) throws ParserException, IOException {
         List<FaithPathTile> tiles = parseOrderedList(path, "Faith Path Tiles", RawFaithPathTileList.class);
 
+        //TODO: parse groups
         try {
-            return new FaithPath(tiles);
+            return new FaithPath(new ArrayList<>(), tiles);
         } catch (IllegalArgumentException | InvalidFaithPathException e) {
             throw new ParserException("Faith Path: " + e.getMessage());
         }
@@ -244,8 +245,9 @@ public final class JSONParser {
     public static FaithPath parseFaithPath(String json) throws ParserException {
         List<FaithPathTile> tiles = parseOrderedList(json, "Faith Path Tiles", RawFaithPathTileList.class);
 
+        //TODO: parse groups
         try {
-            return new FaithPath(tiles);
+            return new FaithPath(new ArrayList<>(), tiles);
         } catch (IllegalArgumentException | InvalidFaithPathException e) {
             throw new ParserException("Faith Path: " + e.getMessage());
         }

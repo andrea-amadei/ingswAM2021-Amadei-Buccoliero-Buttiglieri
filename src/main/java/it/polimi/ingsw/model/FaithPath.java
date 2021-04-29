@@ -1,6 +1,14 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.common.ActionQueue;
+import it.polimi.ingsw.common.PayloadComponent;
 import it.polimi.ingsw.exceptions.InvalidFaithPathException;
+import it.polimi.ingsw.model.actions.Action;
+import it.polimi.ingsw.model.actions.PopeCheckAction;
+import it.polimi.ingsw.model.fsm.InterruptLauncher;
+import it.polimi.ingsw.model.fsm.InterruptListener;
+import it.polimi.ingsw.utils.Pair;
+import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.*;
 
@@ -8,9 +16,16 @@ import java.util.*;
  * The class Faith Path contains al the information about the faith path for a game
  * and the methods to move players on it
  */
-public class FaithPath {
+public class FaithPath implements InterruptLauncher {
     private final List<FaithPathTile> tiles;
+    private final Map<Integer, Integer> groupPoints;
     private final int nGroups;
+    private InterruptListener listener;
+    private final boolean isSinglePlayer;
+    private int lorenzoFaith;
+
+    //The list of popeCheck tiles already triggered (indicated by their order)
+    transient private final List<Integer> alreadyTriggeredPopeCheckOrders;
 
     /**
      * Creates a new Faith Path, made of single Faith Path Tiles. The faith path must meet the following criteria:
@@ -31,18 +46,32 @@ public class FaithPath {
      *     <li>Any groups doesn't have a pope check</li>
      * </ul>
      */
-    public FaithPath(List<FaithPathTile> tiles) throws InvalidFaithPathException {
+    public FaithPath(List<Pair<Integer, Integer>> groupPointsList, List<FaithPathTile> tiles, boolean isSinglePlayer) throws InvalidFaithPathException {
         Map<Integer, Set<Integer>> coordinates = new HashMap<>();
         TreeSet<Integer> order = new TreeSet<>();
-        Map<Integer, Boolean> group = new HashMap<>();
+        alreadyTriggeredPopeCheckOrders = new ArrayList<>();
         int prev;
 
         if(tiles == null)
             throw new NullPointerException();
 
+        if(groupPointsList == null)
+            throw new NullPointerException();
+
         if(tiles.size() == 0)
             throw new IllegalArgumentException("List size must be positive");
 
+        groupPoints = new HashMap<>();
+        //creating the map
+        for(Pair<Integer, Integer> pair : groupPointsList){
+            if(pair.getFirst() <= 0)
+                throw new InvalidFaithPathException("Group ids must be positive");
+            if(groupPoints.containsKey(pair.getFirst()))
+                throw new InvalidFaithPathException("Duplicated group id");
+            groupPoints.put(pair.getFirst(), pair.getSecond());
+        }
+
+        Set<Integer> popeChecks = new HashSet<>();
         for(FaithPathTile i : tiles) {
             // CHECK FOR DUPLICATE TILES
             // if the X coordinate is already in the structure, add the Y
@@ -66,20 +95,19 @@ public class FaithPath {
             // CHECK FOR CORRECT GROUP
             // if the current tile is part of a group
             if(i.getPopeGroup() != 0) {
-                // if the current group is not already saved
-                if (!group.containsKey(i.getPopeGroup())) {
-                    group.put(i.getPopeGroup(), i.isPopeCheck());
-                }
+                // if the current group is not present
+                if (!groupPoints.containsKey(i.getPopeGroup()))
+                    throw new InvalidFaithPathException("Tile " + i.getOrder() + " references a non existing group");
 
-                // else, if the current group is already saved
+                // else, if the current group is present
                 else {
                     // if the current tile is a pope check and the group has already one
-                    if (i.isPopeCheck() && group.get(i.getPopeGroup()))
+                    if (i.isPopeCheck() && popeChecks.contains(i.getPopeGroup()))
                         throw new InvalidFaithPathException("The same group cannot have multiple pope checks");
 
-                        // else, if the current tile is a pope check but the group doesn't have one already, add it
+                    // else, if the current tile is a pope check but the group doesn't have one already, add it
                     else if (i.isPopeCheck())
-                        group.put(i.getPopeGroup(), true);
+                        popeChecks.add(i.getPopeGroup());
                 }
             }
         }
@@ -94,9 +122,8 @@ public class FaithPath {
         }
 
         // CHECK FOR POPE GROUPS WITHOUT CHECK
-        for(int i : group.keySet())
-            if(!group.get(i))
-                throw new InvalidFaithPathException("Pope group " + i + " doesn't have a pope check tile");
+        if(!groupPoints.keySet().equals(popeChecks))
+           throw new InvalidFaithPathException("A group doesn't contain a pope check");
 
         //Finally, set the list...
         this.tiles = tiles;
@@ -105,7 +132,17 @@ public class FaithPath {
         this.tiles.sort(Comparator.comparingInt(FaithPathTile::getOrder));
 
         // count groups
-        this.nGroups = group.size();
+        this.nGroups = groupPoints.size();
+
+        this.listener = null;
+
+        this.isSinglePlayer = isSinglePlayer;
+
+        this.lorenzoFaith = 0;
+    }
+
+    public FaithPath(List<Pair<Integer, Integer>> groupPointsList, List<FaithPathTile> tiles) throws InvalidFaithPathException{
+        this(groupPointsList, tiles, false);
     }
 
     /**
@@ -127,25 +164,100 @@ public class FaithPath {
      * @param amount the amount of tiles the movement covers
      * @param player the player moving
      */
-    public void executeMovement(int amount, Player player) {
+    public List<PayloadComponent> executeMovement(int amount, Player player) {
         if(player == null)
             throw new NullPointerException();
 
         if(amount <= 0)
             throw new IllegalArgumentException("Amount must be positive");
 
+        List<PayloadComponent> payloadComponents = new ArrayList<>();
+
         int faith = player.getBoard().getFaithHolder().getFaithPoints();
 
         if(faith + amount > getTotalLength() - 1)
             amount = (getTotalLength() - 1) - faith;
 
-        for(int i = faith  + 1; i <= faith + amount; i++)
-            if(tiles.get(i).getVictoryPoints() > 0)
-                player.addPoints(tiles.get(i).getVictoryPoints());
+        //for each tile the player passes, we count the amount of points to be added and we collect all triggered
+        // popeCheck(s)
+        Pair<List<Integer>, Integer> info = getMovementInformation(amount, faith);
+        List<Integer> newPopeCheckOrders = info.getFirst();
+        int pointsToAdd = info.getSecond();
 
         player.getBoard().getFaithHolder().addFaithPoints(amount);
+        payloadComponents.add(PayloadFactory.addFaith(player.getUsername(), amount));
 
-        // TODO: In case of pope check throw interrupt
+        player.addPoints(pointsToAdd);
+        payloadComponents.add(PayloadFactory.addPointsPayload(player.getUsername(), pointsToAdd));
+
+        if(newPopeCheckOrders.size() > 0)
+            launchInterrupt(new PopeCheckAction(newPopeCheckOrders), ActionQueue.Priority.SERVER_ACTION.ordinal());
+
+        return payloadComponents;
+    }
+
+    public List<PayloadComponent> executeLorenzoMovement(int amount){
+        if(amount <= 0)
+            throw new IllegalArgumentException("Amount must be positive");
+
+        List<PayloadComponent> payloadComponents = new ArrayList<>();
+
+        if(isSinglePlayer) {
+            int faith = lorenzoFaith;
+            if (faith + amount > getTotalLength() - 1)
+                amount = (getTotalLength() - 1) - faith;
+
+            //collect the new popeChecks triggered by Lorenzo
+            Pair<List<Integer>, Integer> info = getMovementInformation(amount, faith);
+            List<Integer> newPopeCheckOrders = info.getFirst();
+
+            //TODO: add payload for Lorenzo's faith
+            lorenzoFaith += amount;
+
+            if(newPopeCheckOrders.size() > 0)
+                launchInterrupt(new PopeCheckAction(newPopeCheckOrders), ActionQueue.Priority.SERVER_ACTION.ordinal());
+        }
+
+        return payloadComponents;
+    }
+
+    /**
+     * Returns the list of popeChecks triggered in this movement and the number of victory points collected
+     * @param amount the amount of steps to do
+     * @param initialFaith the initial position in the faithPath
+     * @return the pair containing the list of popeChecks triggered in this movement and
+     * the number of victory points collected
+     */
+    private Pair<List<Integer>, Integer> getMovementInformation(int amount, int initialFaith){
+        List<Integer> newPopeChecks = new ArrayList<>();
+        int pointsToAdd = 0;
+        for(int i = initialFaith  + 1; i <= initialFaith + amount; i++) {
+            int tilePoints = tiles.get(i).getVictoryPoints();
+            if (tilePoints > 0) {
+                pointsToAdd += tilePoints;
+            }
+            if(tiles.get(i).isPopeCheck()) {
+                newPopeChecks.add(tiles.get(i).getOrder());
+            }
+        }
+
+        return new Pair<>(newPopeChecks, pointsToAdd);
+    }
+
+    public List<Integer> getAlreadyTriggeredPopeChecks() {
+        return new ArrayList<>(alreadyTriggeredPopeCheckOrders);
+    }
+
+    public void addTriggeredPopeCheckOrder(int order){
+        alreadyTriggeredPopeCheckOrders.add(order);
+    }
+
+    public int getLorenzoFaith(){
+        return lorenzoFaith;
+    }
+
+    public List<FaithPathTile> getTiles(){
+        return tiles;
     }
 
     @Override
@@ -157,5 +269,39 @@ public class FaithPath {
         }
 
         return str.toString();
+    }
+
+    /**
+     * Sets the listener of the interrupts launched
+     * @param listener the listener
+     * @throws NullPointerException if listener is null
+     */
+    @Override
+    public void setListener(InterruptListener listener) {
+        if(listener == null)
+            throw new NullPointerException();
+
+        this.listener = listener;
+    }
+
+    /**
+     * Removes the listener (set to null)
+     */
+    @Override
+    public void removeListener() {
+        this.listener = null;
+    }
+
+    /**
+     * Launches the interrupt to the listener (if the listener is not null)
+     * @param interrupt the interrupt to be launched
+     * @throws NullPointerException if the interrupt is null
+     */
+    @Override
+    public void launchInterrupt(Action interrupt, int priority) {
+        if(interrupt == null)
+            throw new NullPointerException();
+        if(this.listener != null)
+            this.listener.launchInterrupt(interrupt, priority);
     }
 }

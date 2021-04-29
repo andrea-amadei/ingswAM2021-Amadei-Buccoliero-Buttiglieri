@@ -13,6 +13,7 @@ public class GameContext {
     private boolean playerMoved;
     private boolean countdownStarted;
     private boolean isSinglePlayer;
+    private boolean isHardEndTriggered;
     private int turnsLeft;
 
     /**
@@ -30,6 +31,7 @@ public class GameContext {
         countdownStarted = false;
         turnsLeft = -1;
         isSinglePlayer = false;
+        isHardEndTriggered = false;
     }
     /**
      * Creates a new game context specifying if the game is single player or multiplayer. Current player is initially null
@@ -155,5 +157,20 @@ public class GameContext {
 
         turnsLeft--;
         return turnsLeft == 0;
+    }
+
+    /**
+     * Returns true iff the hardEnd sequence is triggered
+     * @return true iff the hardEnd sequence is triggered
+     */
+    public boolean isHardEndTriggered() {
+        return isHardEndTriggered;
+    }
+
+    /**
+     * Sets the hard end to true
+     */
+    public void setHardEnd(){
+        isHardEndTriggered = true;
     }
 }

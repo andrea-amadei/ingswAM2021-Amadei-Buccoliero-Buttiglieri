@@ -154,6 +154,11 @@ public interface ActionHandler {
         throw new FSMTransitionFailedException("Cannot execute this command now");
     }
 
+    default List<Message> handleAction(PopeCheckAction popeCheckAction) throws FSMTransitionFailedException{
+        if(popeCheckAction == null)
+            throw new NullPointerException();
+        throw new FSMTransitionFailedException("Cannot execute this command now");
+    }
 
     //TODO: add the other actions
 }

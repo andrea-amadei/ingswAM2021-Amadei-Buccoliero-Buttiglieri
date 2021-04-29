@@ -14,18 +14,15 @@ public class FaithHolderTest {
 
         assertThrows(IndexOutOfBoundsException.class, () -> fh.isPopeCardReached(-1));
         assertThrows(IndexOutOfBoundsException.class, () -> fh.isPopeCardActive(-1));
-        assertThrows(IndexOutOfBoundsException.class, () -> fh.setPopeCardReached(-1));
         assertThrows(IndexOutOfBoundsException.class, () -> fh.setPopeCardActive(-1));
         assertThrows(IndexOutOfBoundsException.class, () -> fh.setPopeCardInactive(-1));
 
         assertThrows(IllegalArgumentException.class, () -> fh.addFaithPoints(-5));
 
-        assertThrows(UsedUnreachedPopeCardException.class, () -> fh.setPopeCardActive(0));
+        assertDoesNotThrow(() -> fh.setPopeCardActive(0));
         assertThrows(UsedUnreachedPopeCardException.class, () -> fh.setPopeCardInactive(0));
 
-        fh.setPopeCardReached(0);
 
-        assertThrows(AlreadyReachedPopeCardException.class, () -> fh.setPopeCardReached(0));
     }
 
     @Test
@@ -36,12 +33,9 @@ public class FaithHolderTest {
         assertFalse(fh.isPopeCardReached(0));
         assertFalse(fh.isPopeCardActive(0));
 
-        fh.setPopeCardReached(0);
 
         fh.setPopeCardActive(0);
         assertTrue(fh.isPopeCardActive(0));
-        fh.setPopeCardInactive(0);
-        assertFalse(fh.isPopeCardActive(0));
 
         fh.addFaithPoints(10);
         assertEquals(fh.getFaithPoints(), 10);

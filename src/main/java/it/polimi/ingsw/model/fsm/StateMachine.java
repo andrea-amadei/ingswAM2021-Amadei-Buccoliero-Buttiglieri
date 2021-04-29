@@ -91,8 +91,8 @@ public class StateMachine implements InterruptListener{
      * @throws NullPointerException if interrupt is null
      */
     @Override
-    public void launchInterrupt(Action interrupt) {
-        actionQueue.appendFirst(interrupt);
+    public void launchInterrupt(Action interrupt, int priority) {
+        actionQueue.addAction(interrupt, priority);
     }
 
 }

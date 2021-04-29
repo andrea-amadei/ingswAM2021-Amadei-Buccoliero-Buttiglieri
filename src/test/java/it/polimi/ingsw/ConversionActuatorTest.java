@@ -30,7 +30,7 @@ public class ConversionActuatorTest {
         for(int i = 0; i < 10; i++)
             tiles.add(new FaithPathTile(i+1,1, i, 2, 0, false));
 
-        standardFaithPath = new FaithPath(tiles);
+        standardFaithPath = new FaithPath(new ArrayList<>(), tiles);
     }
 
     @Test

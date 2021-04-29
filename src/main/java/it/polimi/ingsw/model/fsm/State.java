@@ -1,9 +1,11 @@
 package it.polimi.ingsw.model.fsm;
 
+import it.polimi.ingsw.common.ActionQueue;
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.actions.*;
+import it.polimi.ingsw.model.fsm.states.EndGameState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,60 @@ public abstract class State implements InterruptLauncher, ActionHandler{
         interruptListener = null;
     }
 
+    //Some default action handling override
+
+    /**
+     * If the action can be performed, this method returns the list of messages that need to be sent to the client.
+     * If the game needs to be ended immediately, a new EndGameAction is queued.
+     * The next state is the current state.
+     * @param popeCheckAction the action to be executed
+     * @return the list of messages that need to be sent to the clients
+     * @throws NullPointerException if backAction is null
+     * @throws FSMTransitionFailedException if the action cannot be executed
+     */
+    @Override
+    public List<Message> handleAction(PopeCheckAction popeCheckAction) throws FSMTransitionFailedException {
+        if(popeCheckAction == null)
+            throw new NullPointerException();
+
+        List<Message> messages;
+        try{
+            messages = new ArrayList<>(popeCheckAction.execute(getGameContext()));
+        }catch(IllegalActionException e){
+            throw new FSMTransitionFailedException(e.getMessage());
+        }
+
+        if(getGameContext().isHardEndTriggered())
+            launchInterrupt(new EndGameAction(), ActionQueue.Priority.SERVER_ACTION.ordinal());
+
+        setNextState(this);
+        return messages;
+    }
+
+    /**
+     * If the action can be performed, this method returns the list of messages that need to be sent to the client.
+     * The next state is the end state.
+     * @param endGameAction the action to be executed
+     * @return the list of messages that need to be sent to the clients
+     * @throws NullPointerException if backAction is null
+     * @throws FSMTransitionFailedException if the action cannot be executed
+     */
+    @Override
+    public List<Message> handleAction(EndGameAction endGameAction) throws FSMTransitionFailedException {
+        if(endGameAction == null)
+            throw new NullPointerException();
+
+        List<Message> messages;
+        try{
+            messages = new ArrayList<>(endGameAction.execute(getGameContext()));
+        }catch(IllegalActionException e){
+            throw new FSMTransitionFailedException(e.getMessage());
+        }
+
+        setNextState(new EndGameState(getGameContext()));
+        return messages;
+    }
+
     /**
      * This method will be executed every time this state is entered from a different state
      * @return the list of messages to be sent to the client
@@ -56,20 +112,6 @@ public abstract class State implements InterruptLauncher, ActionHandler{
      * @return the list of messages to be sent to the client
      */
     public List<Message> onExit(){return new ArrayList<>();}
-
-
-    /**
-     * Checks if the specified player is the current player
-     * @param player the specified player
-     * @throws FSMTransitionFailedException if the specified player is not the current player
-     * @throws NullPointerException if player is null
-     */
-    protected void checkCurrentPlayer(Player player) throws FSMTransitionFailedException{
-        if(player == null)
-            throw new NullPointerException();
-        if(!gameContext.getCurrentPlayer().equals(player))
-            throw new FSMTransitionFailedException("Player is not the current player");
-    }
 
     /**
      * Returns the next state. Null if the next state is not set
@@ -132,11 +174,11 @@ public abstract class State implements InterruptLauncher, ActionHandler{
      * @throws NullPointerException if the interrupt is null
      */
     @Override
-    public void launchInterrupt(Action interrupt) {
+    public void launchInterrupt(Action interrupt, int priority) {
         if(interrupt == null)
             throw new NullPointerException();
         if(interruptListener != null)
-            interruptListener.launchInterrupt(interrupt);
+            interruptListener.launchInterrupt(interrupt, priority);
     }
 
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.holder;
 
+import it.polimi.ingsw.exceptions.AlreadyActiveException;
 import it.polimi.ingsw.exceptions.AlreadyReachedPopeCardException;
 import it.polimi.ingsw.exceptions.UsedUnreachedPopeCardException;
 import it.polimi.ingsw.model.GameParameters;
@@ -14,7 +15,7 @@ public class FaithHolder {
     private int faithPoints;
     private final List<CheckpointStatus> checkpoints;
 
-    private enum CheckpointStatus {
+    public enum CheckpointStatus {
         UNREACHED,
         INACTIVE,
         ACTIVE
@@ -65,19 +66,15 @@ public class FaithHolder {
     }
 
     /**
-     * Updates a given Pope Card to reached if never reached before
+     * Returns the status of the pope card at the specified index
      * @param index the index of the pope card
-     * @throws IndexOutOfBoundsException if the index is out of bounds
-     * @throws AlreadyReachedPopeCardException if the pope card was already reached before
+     * @return the status of the pope card at the specified index
      */
-    public void setPopeCardReached(int index) {
-        if(index < 0 || index > GameParameters.FAITH_CHECKPOINT_NUMBER - 1)
-            throw new IndexOutOfBoundsException("Index must be between 0 and " + (GameParameters.FAITH_CHECKPOINT_NUMBER - 1));
+    public CheckpointStatus getPopeCardStatus(int index){
+        if(index < 0 || index > checkpoints.size() - 1)
+            throw new IndexOutOfBoundsException("Index must be between 0 and " + (checkpoints.size() - 1));
 
-        if(checkpoints.get(index).equals(CheckpointStatus.UNREACHED))
-            checkpoints.set(index, CheckpointStatus.ACTIVE);
-        else
-            throw new AlreadyReachedPopeCardException("Pope card " + index + " was already reached when set to reached");
+        return checkpoints.get(index);
     }
 
     /**
@@ -90,10 +87,10 @@ public class FaithHolder {
         if(index < 0 || index > GameParameters.FAITH_CHECKPOINT_NUMBER - 1)
             throw new IndexOutOfBoundsException("Index must be between 0 and " + (GameParameters.FAITH_CHECKPOINT_NUMBER - 1));
 
-        if(!checkpoints.get(index).equals(CheckpointStatus.UNREACHED))
+        if(checkpoints.get(index).equals(CheckpointStatus.UNREACHED))
             checkpoints.set(index, CheckpointStatus.ACTIVE);
         else
-            throw new UsedUnreachedPopeCardException("Pope card " + index + " was unreached but set to active");
+            throw new AlreadyReachedPopeCardException("Pope card " + index + " wasn't unreached, cannot set it to active");
     }
 
     /**
@@ -106,10 +103,10 @@ public class FaithHolder {
         if(index < 0 || index > GameParameters.FAITH_CHECKPOINT_NUMBER - 1)
             throw new IndexOutOfBoundsException("Index must be between 0 and " + (GameParameters.FAITH_CHECKPOINT_NUMBER - 1));
 
-        if(!checkpoints.get(index).equals(CheckpointStatus.UNREACHED))
+        if(checkpoints.get(index).equals(CheckpointStatus.UNREACHED))
             checkpoints.set(index, CheckpointStatus.INACTIVE);
         else
-            throw new UsedUnreachedPopeCardException("Pope card " + index + " was unreached but set to inactive");
+            throw new UsedUnreachedPopeCardException("Pope card " + index + " wasn't unreached, cannot set it to inactive");
     }
 
     /**

@@ -77,5 +77,9 @@ public final class DummyBuilder {
         faithTiles.add(new FaithPathTile(i+1, 1, i, 4, 2, true));
 
         return faithTiles;
+
+        //Order:  0 1 2 3 4 5 6 7 8 9 10 11 12
+        //Points: 4 4 4 4 4 4 4 4 4 4 4  4  4
+        //Checks:             X             X
     }
 }

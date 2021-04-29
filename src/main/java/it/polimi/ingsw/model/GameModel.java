@@ -4,7 +4,9 @@ import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.production.CraftingCard;
 import it.polimi.ingsw.server.DummyBuilder;
+import it.polimi.ingsw.utils.Pair;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
@@ -33,7 +35,12 @@ public class GameModel {
         shop = new Shop();
         for(CraftingCard card : DummyBuilder.buildCraftingCards())
             shop.addCard(card);
-        faithPath = new FaithPath(DummyBuilder.buildFaithPathTiles());
+        List<FaithPathTile> tiles = DummyBuilder.buildFaithPathTiles();
+        List<Pair<Integer, Integer>> groupPoints = new ArrayList<>(){{
+            add(new Pair<>(1, 3));
+            add(new Pair<>(2, 6));
+        }};
+        faithPath = new FaithPath(groupPoints, tiles);
         leaderCards = DummyBuilder.buildLeaderCards();
     }
 

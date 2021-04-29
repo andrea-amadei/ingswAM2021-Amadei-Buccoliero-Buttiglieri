@@ -25,7 +25,7 @@ public class DummyStateTest {
 
         public Action toBeLaunched;
         @Override
-        public void launchInterrupt(Action interrupt) {
+        public void launchInterrupt(Action interrupt, int priority) {
             toBeLaunched = interrupt;
         }
     }
@@ -51,7 +51,7 @@ public class DummyStateTest {
         DummyListener listener = new DummyListener();
         dummyState.setListener(listener);
         Action interrupt = new BuyFromMarketAction("bob", true, 2);
-        dummyState.launchInterrupt(interrupt);
+        dummyState.launchInterrupt(interrupt, 0);
 
         assertEquals(interrupt, listener.toBeLaunched);
     }
