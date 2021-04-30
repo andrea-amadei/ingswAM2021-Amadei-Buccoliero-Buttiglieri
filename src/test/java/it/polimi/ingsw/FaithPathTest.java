@@ -1,10 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.exceptions.InvalidFaithPathException;
-import it.polimi.ingsw.model.FaithPath;
-import it.polimi.ingsw.model.FaithPathTile;
-import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.actions.Action;
 import it.polimi.ingsw.model.actions.PopeCheckAction;
 import it.polimi.ingsw.model.fsm.InterruptListener;
@@ -74,7 +71,7 @@ class FaithPathTest {
         assertThrows(InvalidFaithPathException.class, () ->
                 new FaithPath(
                     new ArrayList<>(){{
-                       add(new Pair<>(1, 2));
+                       add(new FaithPathGroup(1, 2));
                     }},
                     new ArrayList<>() {{
                         add(new FaithPathTile(1, 1, 0, 0, 0, false));
@@ -93,7 +90,7 @@ class FaithPathTest {
         assertThrows(InvalidFaithPathException.class, () ->
                 new FaithPath(
                         new ArrayList<>(){{
-                            add(new Pair<>(1, 2));
+                            add(new FaithPathGroup(1, 2));
                         }},
                         new ArrayList<>() {{
                             add(new FaithPathTile(1, 1, 0, 0, 0, false));
@@ -105,7 +102,7 @@ class FaithPathTest {
         assertDoesNotThrow(() ->
                 new FaithPath(
                         new ArrayList<>(){{
-                            add(new Pair<>(1, 2));
+                            add(new FaithPathGroup(1, 2));
                         }},
                         new ArrayList<>() {{
                             add(new FaithPathTile(1, 1, 0, 0, 0, false));
@@ -120,7 +117,7 @@ class FaithPathTest {
     public void getterTest() {
         FaithPath fp = new FaithPath(
                         new ArrayList<>(){{
-                            add(new Pair<>(1, 2));
+                            add(new FaithPathGroup(1, 2));
                         }},
                         new ArrayList<>() {{
                             add(new FaithPathTile(1, 1, 0, 0, 0, false));
@@ -138,7 +135,7 @@ class FaithPathTest {
     public void movementTest() {
         FaithPath fp = new FaithPath(
                 new ArrayList<>(){{
-                    add(new Pair<>(1, 2));
+                    add(new FaithPathGroup(1, 2));
                 }},
                 new ArrayList<>() {{
                     add(new FaithPathTile(1, 1, 0, 0, 0, false));
@@ -171,7 +168,7 @@ class FaithPathTest {
     @DisplayName("To String test")
     public void toStringTest() {
         FaithPath fp = new FaithPath(new ArrayList<>(){{
-            add(new Pair<>(1,2));
+            add(new FaithPathGroup(1,2));
         }},
             new ArrayList<>() {{
             add(new FaithPathTile(1, 1, 0, 0, 1, true));
@@ -184,8 +181,8 @@ class FaithPathTest {
     public void handleMorePopeChecksInAMovement() throws NoSuchFieldException, IllegalAccessException {
         FaithPath fp = new FaithPath(
                 new ArrayList<>(){{
-                    add(new Pair<>(1, 2));
-                    add(new Pair<>(2, 4));
+                    add(new FaithPathGroup(1, 2));
+                    add(new FaithPathGroup(2, 4));
                 }},
                 new ArrayList<>() {{
                     add(new FaithPathTile(1, 1, 0, 0, 0, false));
@@ -214,8 +211,8 @@ class FaithPathTest {
     public void addFaithToLorenzoInMultiplayerMode(){
         FaithPath fp = new FaithPath(
                 new ArrayList<>(){{
-                    add(new Pair<>(1, 2));
-                    add(new Pair<>(2, 4));
+                    add(new FaithPathGroup(1, 2));
+                    add(new FaithPathGroup(2, 4));
                 }},
                 new ArrayList<>() {{
                     add(new FaithPathTile(1, 1, 0, 0, 0, false));
@@ -240,8 +237,8 @@ class FaithPathTest {
     public void addFaithToLorenzoInSinglePlayerMode() throws NoSuchFieldException, IllegalAccessException {
         FaithPath fp = new FaithPath(
                 new ArrayList<>(){{
-                    add(new Pair<>(1, 2));
-                    add(new Pair<>(2, 4));
+                    add(new FaithPathGroup(1, 2));
+                    add(new FaithPathGroup(2, 4));
                 }},
                 new ArrayList<>() {{
                     add(new FaithPathTile(1, 1, 0, 0, 0, false));

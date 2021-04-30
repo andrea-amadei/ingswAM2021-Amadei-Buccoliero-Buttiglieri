@@ -200,5 +200,19 @@
       "pope_group": 3,
       "pope_check": true
     }
+  ],
+  "groups": [
+    {
+      "group": 1,
+      "points": 2
+    },
+    {
+      "group": 2,
+      "points": 3
+    },
+    {
+      "group": 3,
+      "points": 4
+    }
   ]
 }

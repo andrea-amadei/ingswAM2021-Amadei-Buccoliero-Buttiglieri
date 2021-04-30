@@ -6,14 +6,12 @@ import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.InvalidFaithPathException;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.model.FaithPath;
+import it.polimi.ingsw.model.FaithPathGroup;
 import it.polimi.ingsw.model.FaithPathTile;
 import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.CraftingCard;
-import it.polimi.ingsw.parser.raw.list.RawCraftingCardList;
-import it.polimi.ingsw.parser.raw.list.RawCraftingList;
-import it.polimi.ingsw.parser.raw.list.RawFaithPathTileList;
-import it.polimi.ingsw.parser.raw.list.RawLeaderCardList;
+import it.polimi.ingsw.parser.raw.list.*;
 import it.polimi.ingsw.server.Console;
 
 import java.io.FileNotFoundException;
@@ -233,10 +231,10 @@ public final class JSONParser {
 
     public static FaithPath parseFaithPath(Path path) throws ParserException, IOException {
         List<FaithPathTile> tiles = parseOrderedList(path, "Faith Path Tiles", RawFaithPathTileList.class);
+        List<FaithPathGroup> groups = parseOrderedList(path, "Faith Path Group", RawFaithPathGroupList.class);
 
-        //TODO: parse groups
         try {
-            return new FaithPath(new ArrayList<>(), tiles);
+            return new FaithPath(groups, tiles);
         } catch (IllegalArgumentException | InvalidFaithPathException e) {
             throw new ParserException("Faith Path: " + e.getMessage());
         }
@@ -244,10 +242,10 @@ public final class JSONParser {
 
     public static FaithPath parseFaithPath(String json) throws ParserException {
         List<FaithPathTile> tiles = parseOrderedList(json, "Faith Path Tiles", RawFaithPathTileList.class);
+        List<FaithPathGroup> groups = parseOrderedList(json, "Faith Path Group", RawFaithPathGroupList.class);
 
-        //TODO: parse groups
         try {
-            return new FaithPath(new ArrayList<>(), tiles);
+            return new FaithPath(groups, tiles);
         } catch (IllegalArgumentException | InvalidFaithPathException e) {
             throw new ParserException("Faith Path: " + e.getMessage());
         }
