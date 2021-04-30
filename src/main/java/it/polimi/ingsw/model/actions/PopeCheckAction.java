@@ -75,11 +75,11 @@ public class PopeCheckAction implements Action{
                 if(playerGroup == checkpointGroup || playerFaith > popeTileOrder){
                     p.getBoard().getFaithHolder().setPopeCardActive(checkpointIndex);
                     payloadComponents.add(
-                            PayloadFactory.changePopeCardPayload(p.getUsername(), FaithHolder.CheckpointStatus.ACTIVE, checkpointIndex));
+                            PayloadFactory.changePopeCard(p.getUsername(), FaithHolder.CheckpointStatus.ACTIVE, checkpointIndex));
                 }else{
                     p.getBoard().getFaithHolder().setPopeCardInactive(checkpointIndex);
                     payloadComponents.add(
-                            PayloadFactory.changePopeCardPayload(p.getUsername(), FaithHolder.CheckpointStatus.INACTIVE, checkpointIndex));
+                            PayloadFactory.changePopeCard(p.getUsername(), FaithHolder.CheckpointStatus.INACTIVE, checkpointIndex));
                 }
             }
         }

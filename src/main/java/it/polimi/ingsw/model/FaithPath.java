@@ -188,7 +188,7 @@ public class FaithPath implements InterruptLauncher {
         payloadComponents.add(PayloadFactory.addFaith(player.getUsername(), amount));
 
         player.addPoints(pointsToAdd);
-        payloadComponents.add(PayloadFactory.addPointsPayload(player.getUsername(), pointsToAdd));
+        payloadComponents.add(PayloadFactory.addPoints(player.getUsername(), pointsToAdd));
 
         if(newPopeCheckOrders.size() > 0)
             launchInterrupt(new PopeCheckAction(newPopeCheckOrders), ActionQueue.Priority.SERVER_ACTION.ordinal());

@@ -12,13 +12,13 @@ import it.polimi.ingsw.parser.raw.RawStorage;
 import java.util.HashMap;
 
 public class PayloadFactory {
-    public static UpdatePayload createAddLeaderCardPayload(String player, Integer id){
+    public static UpdatePayload addLeaderCard(String player, Integer id){
         return new UpdatePayload("add_leader_card", player, new HashMap<>(){{
             put("id", id);
         }});
     }
 
-    public static UpdatePayload discardLeaderCardPayload(String player, Integer id){
+    public static UpdatePayload discardLeaderCard(String player, Integer id){
         return new UpdatePayload("discard_leader_card", player, new HashMap<>(){{
             put("id", id);
         }});
@@ -57,39 +57,39 @@ public class PayloadFactory {
         }});
     }
 
-    public static UpdatePayload changePopeCardPayload(String player, FaithHolder.CheckpointStatus status, Integer index){
+    public static UpdatePayload changePopeCard(String player, FaithHolder.CheckpointStatus status, Integer index){
         return new UpdatePayload("change_pope_card", player, new HashMap<>(){{
             put("status", status);
             put("index", index);
         }});
     }
 
-    public static UpdatePayload addPointsPayload(String player, Integer amount){
+    public static UpdatePayload addPoints(String player, Integer amount){
         return new UpdatePayload("add_points", player, new HashMap<>(){{
             put("amount", amount);
         }});
     }
 
-    public static UpdatePayload addFlagPayload(String player, RawLevelFlag flag){
+    public static UpdatePayload addFlag(String player, RawLevelFlag flag){
         return new UpdatePayload("add_flag", player, new HashMap<>(){{
             put("flag", flag);
         }});
     }
 
-    public static UpdatePayload addDiscountPayload(String player, String resource, Integer discount){
+    public static UpdatePayload addDiscount(String player, String resource, Integer discount){
         return new UpdatePayload("add_discount", player, new HashMap<>(){{
             put("resource", resource);
             put("discount", discount);
         }});
     }
 
-    public static UpdatePayload addBoughtCardPayload(String player, Integer amount){
+    public static UpdatePayload addBoughtCard(String player, Integer amount){
         return new UpdatePayload("add_bought_card", player, new HashMap<>(){{
             put("amount", amount);
         }});
     }
 
-    public static UpdatePayload selectedResourcePayload(String player, String containerId, String resource, Integer amount){
+    public static UpdatePayload selectedResource(String player, String containerId, String resource, Integer amount){
         return new UpdatePayload("selected_resource", player, new HashMap<>(){{
             put("container_id", containerId);
             put("resource", resource);
@@ -97,27 +97,35 @@ public class PayloadFactory {
         }});
     }
 
-    public static UpdatePayload selectedCraftingPayload(String player, Production.CraftingType craftingType, Integer index){
+    public static UpdatePayload selectedCrafting(String player, Production.CraftingType craftingType, Integer index){
         return new UpdatePayload("selected_crafting", player, new HashMap<>(){{
             put("crafting_type", craftingType);
             put("index", index);
         }});
     }
 
-    public static UpdatePayload selectedShopCardPayload(String player, Integer x, Integer y){
+    public static UpdatePayload selectedShopCard(String player, Integer x, Integer y){
         return new UpdatePayload("selected_shop_card", player, new HashMap<>(){{
             put("x", x);
             put("y", y);
         }});
     }
 
-    public static UpdatePayload unselectPayload(String player, String section){
+    public static UpdatePayload unselect(String player, String section){
         return new UpdatePayload("unselect", player, new HashMap<>(){{
             put("section", section);
         }});
     }
 
-    public static GlobalUpdatePayload changeShopPayload(Integer x, Integer y, Integer id){
+    public static UpdatePayload addShelf(String player, String id, String resourceType, Integer size){
+        return new UpdatePayload("add_shelf", player, new HashMap<>(){{
+            put("id", id);
+            put("resource_type", resourceType);
+            put("size", size);
+        }});
+    }
+
+    public static GlobalUpdatePayload changeShop(Integer x, Integer y, Integer id){
         return new GlobalUpdatePayload("change_shop", new HashMap<>(){{
             put("x", x);
             put("y", y);
@@ -125,7 +133,7 @@ public class PayloadFactory {
         }});
     }
 
-    public static GlobalUpdatePayload changeMarketPayload(RawMarket market){
+    public static GlobalUpdatePayload changeMarket(RawMarket market){
         return new GlobalUpdatePayload("change_market", new HashMap<>(){{
             put("market", market);
         }});
