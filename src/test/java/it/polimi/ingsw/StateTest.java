@@ -57,5 +57,7 @@ public class StateTest {
         assertEquals(FaithHolder.CheckpointStatus.INACTIVE, player3.getBoard().getFaithHolder().getPopeCardStatus(0));
         assertEquals(FaithHolder.CheckpointStatus.INACTIVE, player3.getBoard().getFaithHolder().getPopeCardStatus(1));
 
+        assertEquals(57, player1.getPoints());
+
     }
 }

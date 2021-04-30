@@ -17,6 +17,7 @@ import java.util.*;
  * and the methods to move players on it
  */
 public class FaithPath implements InterruptLauncher {
+    private final List<FaithPathGroup> faithGroupList;
     private final List<FaithPathTile> tiles;
     private final int nGroups;
     private InterruptListener listener;
@@ -123,6 +124,7 @@ public class FaithPath implements InterruptLauncher {
         if(!groups.equals(popeChecks))
            throw new InvalidFaithPathException("A group doesn't contain a pope check");
 
+        this.faithGroupList = faithGroupList;
         //Finally, set the list...
         this.tiles = tiles;
 
@@ -254,6 +256,9 @@ public class FaithPath implements InterruptLauncher {
         return lorenzoFaith;
     }
 
+    public List<FaithPathGroup> getFaithGroupList(){
+        return faithGroupList;
+    }
     public List<FaithPathTile> getTiles(){
         return tiles;
     }

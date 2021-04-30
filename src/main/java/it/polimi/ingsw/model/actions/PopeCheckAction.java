@@ -5,6 +5,7 @@ import it.polimi.ingsw.common.PayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.FaithPath;
+import it.polimi.ingsw.model.FaithPathGroup;
 import it.polimi.ingsw.model.FaithPathTile;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.fsm.ActionHandler;
@@ -65,10 +66,14 @@ public class PopeCheckAction implements Action{
             int popeTileOrder = newPopeCheckOrders.get(i);
             int checkpointIndex = i + alreadyTriggeredPopeCheckOrders.size();
             int checkpointGroup = tiles.get(popeTileOrder).getPopeGroup();
-
+            int checkPointVictoryPoints = faithPath.getFaithGroupList()
+                                                   .stream()
+                                                   .filter(g -> g.getGroup() == (checkpointGroup))
+                                                   .map(FaithPathGroup::getPoints)
+                                                   .findAny()
+                                                   .orElse(0);
             //for each player, we check if it needs to activate the popeCard. In this case, victory points are added.
             //If the player needs to discard its popeCard, so it is done.
-            //TODO: add points when a popeCard gets activated
             for(Player p : gameContext.getGameModel().getPlayers()){
                 int playerFaith = p.getBoard().getFaithHolder().getFaithPoints();
                 int playerGroup = tiles.get(playerFaith).getPopeGroup();
@@ -76,6 +81,9 @@ public class PopeCheckAction implements Action{
                     p.getBoard().getFaithHolder().setPopeCardActive(checkpointIndex);
                     payloadComponents.add(
                             PayloadFactory.changePopeCard(p.getUsername(), FaithHolder.CheckpointStatus.ACTIVE, checkpointIndex));
+
+                    p.addPoints(checkPointVictoryPoints);
+                    payloadComponents.add(PayloadFactory.addPoints(p.getUsername(), checkPointVictoryPoints));
                 }else{
                     p.getBoard().getFaithHolder().setPopeCardInactive(checkpointIndex);
                     payloadComponents.add(
