@@ -18,7 +18,6 @@ import java.util.*;
  */
 public class FaithPath implements InterruptLauncher {
     private final List<FaithPathTile> tiles;
-    private final Map<Integer, Integer> groupPoints;
     private final int nGroups;
     private InterruptListener listener;
     private final boolean isSinglePlayer;
@@ -46,7 +45,7 @@ public class FaithPath implements InterruptLauncher {
      *     <li>Any groups doesn't have a pope check</li>
      * </ul>
      */
-    public FaithPath(List<Pair<Integer, Integer>> groupPointsList, List<FaithPathTile> tiles, boolean isSinglePlayer) throws InvalidFaithPathException {
+    public FaithPath(List<FaithPathGroup> faithGroupList, List<FaithPathTile> tiles, boolean isSinglePlayer) throws InvalidFaithPathException {
         Map<Integer, Set<Integer>> coordinates = new HashMap<>();
         TreeSet<Integer> order = new TreeSet<>();
         alreadyTriggeredPopeCheckOrders = new ArrayList<>();
@@ -55,20 +54,19 @@ public class FaithPath implements InterruptLauncher {
         if(tiles == null)
             throw new NullPointerException();
 
-        if(groupPointsList == null)
+        if(faithGroupList == null)
             throw new NullPointerException();
 
         if(tiles.size() == 0)
             throw new IllegalArgumentException("List size must be positive");
 
-        groupPoints = new HashMap<>();
-        //creating the map
-        for(Pair<Integer, Integer> pair : groupPointsList){
-            if(pair.getFirst() <= 0)
-                throw new InvalidFaithPathException("Group ids must be positive");
-            if(groupPoints.containsKey(pair.getFirst()))
+        // checking every group is unique
+        Set<Integer> groups = new HashSet<>();
+        for(FaithPathGroup group : faithGroupList) {
+            if(groups.contains(group.getGroup()))
                 throw new InvalidFaithPathException("Duplicated group id");
-            groupPoints.put(pair.getFirst(), pair.getSecond());
+
+            groups.add(group.getGroup());
         }
 
         Set<Integer> popeChecks = new HashSet<>();
@@ -96,7 +94,7 @@ public class FaithPath implements InterruptLauncher {
             // if the current tile is part of a group
             if(i.getPopeGroup() != 0) {
                 // if the current group is not present
-                if (!groupPoints.containsKey(i.getPopeGroup()))
+                if (!groups.contains(i.getPopeGroup()))
                     throw new InvalidFaithPathException("Tile " + i.getOrder() + " references a non existing group");
 
                 // else, if the current group is present
@@ -122,7 +120,7 @@ public class FaithPath implements InterruptLauncher {
         }
 
         // CHECK FOR POPE GROUPS WITHOUT CHECK
-        if(!groupPoints.keySet().equals(popeChecks))
+        if(!groups.equals(popeChecks))
            throw new InvalidFaithPathException("A group doesn't contain a pope check");
 
         //Finally, set the list...
@@ -132,7 +130,7 @@ public class FaithPath implements InterruptLauncher {
         this.tiles.sort(Comparator.comparingInt(FaithPathTile::getOrder));
 
         // count groups
-        this.nGroups = groupPoints.size();
+        this.nGroups = groups.size();
 
         this.listener = null;
 
@@ -141,8 +139,8 @@ public class FaithPath implements InterruptLauncher {
         this.lorenzoFaith = 0;
     }
 
-    public FaithPath(List<Pair<Integer, Integer>> groupPointsList, List<FaithPathTile> tiles) throws InvalidFaithPathException{
-        this(groupPointsList, tiles, false);
+    public FaithPath(List<FaithPathGroup> faithGroupList, List<FaithPathTile> tiles) throws InvalidFaithPathException{
+        this(faithGroupList, tiles, false);
     }
 
     /**

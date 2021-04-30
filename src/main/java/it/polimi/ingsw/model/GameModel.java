@@ -36,9 +36,9 @@ public class GameModel {
         for(CraftingCard card : DummyBuilder.buildCraftingCards())
             shop.addCard(card);
         List<FaithPathTile> tiles = DummyBuilder.buildFaithPathTiles();
-        List<Pair<Integer, Integer>> groupPoints = new ArrayList<>(){{
-            add(new Pair<>(1, 3));
-            add(new Pair<>(2, 6));
+        List<FaithPathGroup> groupPoints = new ArrayList<>(){{
+            add(new FaithPathGroup(1, 3));
+            add(new FaithPathGroup(2, 6));
         }};
         faithPath = new FaithPath(groupPoints, tiles);
         leaderCards = DummyBuilder.buildLeaderCards();
