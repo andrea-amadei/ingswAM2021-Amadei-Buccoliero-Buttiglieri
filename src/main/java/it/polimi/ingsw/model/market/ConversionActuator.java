@@ -1,12 +1,16 @@
 package it.polimi.ingsw.model.market;
 
+import it.polimi.ingsw.common.PayloadComponent;
 import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.model.FaithPath;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.storage.ResourceContainer;
+import it.polimi.ingsw.parser.raw.RawStorage;
+import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -43,9 +47,11 @@ public class ConversionActuator {
      * @throws NullPointerException if player or faithPath is null
      * @throws IllegalResourceTransferException if resources cannot be added
      */
-    public void actuateConversion(Player player, FaithPath faithPath) throws IllegalResourceTransferException{
+    public List<PayloadComponent> actuateConversion(Player player, FaithPath faithPath) throws IllegalResourceTransferException{
         if(player == null || faithPath == null)
             throw new NullPointerException();
+
+        List<PayloadComponent> payload = new ArrayList<>();
 
         int alreadyTransferred = 0;
 
@@ -56,6 +62,10 @@ public class ConversionActuator {
             for (ResourceSingle res : resourceOutput) {
                 marketBasket.addResources(res, 1);
                 alreadyTransferred++;
+                payload.add(PayloadFactory.changeResources(player.getUsername(),
+                        new RawStorage("MarketBasket", new HashMap<>(){{
+                            put(res.toString().toLowerCase(), 1);
+                        }})));
             }
         }catch(IllegalResourceTransferException e){
             //if for some reason (shouldn't happen for base storage) resources cannot be transferred, the previous state
@@ -72,7 +82,9 @@ public class ConversionActuator {
 
         //now add the faith points
         if(faithOutput > 0)
-            faithPath.executeMovement(faithOutput, player);
+            payload.addAll(faithPath.executeMovement(faithOutput, player));
+
+        return payload;
     }
 
     /**
