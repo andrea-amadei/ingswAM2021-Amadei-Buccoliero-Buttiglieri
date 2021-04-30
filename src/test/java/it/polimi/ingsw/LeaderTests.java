@@ -158,7 +158,7 @@ public class LeaderTests {
     }
 
     @Test
-    public void isSatisfiedMethodTest() throws IllegalResourceTransferException {
+    public void isSatisfiedMethodTest() {
         Player player1 = new Player("Player", 2);
         Player player2 = new Player("Mikasa", 3);
         ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
@@ -189,6 +189,31 @@ public class LeaderTests {
         LeaderCard leaderCard = new LeaderCard(5, "Eren", 9, abilities, requirements);
 
         assertThrows(NullPointerException.class, ()-> leaderCard.isSatisfied(null));
+    }
+
+    @Test
+    public void activateMultipleAbilities() throws RequirementsNotSatisfiedException, AlreadyActiveException {
+        List<SpecialAbility> abilities = new ArrayList<>();
+        List<Requirement> requirements = new ArrayList<>();
+        ConversionActuator conversionActuator = new ConversionActuator(Collections.singletonList(ResourceTypeSingleton.getInstance().getServantResource()), 0);
+        SpecialAbility conversionAbility = new ConversionAbility(MarbleColor.YELLOW, conversionActuator);
+        SpecialAbility storageAbility = new StorageAbility(new Shelf("shelf1", ResourceTypeSingleton.getInstance().getServantResource(), 2));
+        SpecialAbility craftingAbility = new CraftingAbility(new Crafting(new HashMap<>(){{
+            put(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
+            put(ResourceTypeSingleton.getInstance().getServantResource(), 1);
+        }}, new HashMap<>(){{
+            put(ResourceTypeSingleton.getInstance().getStoneResource(), 2);
+        }}, 2));
+        Requirement flagRequirement = new FlagRequirement(new BaseFlag(FlagColor.BLUE), 1);
+        abilities.add(conversionAbility);
+        abilities.add(storageAbility);
+        abilities.add(craftingAbility);
+        requirements.add(flagRequirement);
+        LeaderCard leaderCard = new LeaderCard(3, "Genoveffa", 7, abilities, requirements);
+        Player player = new Player("Player", 2);
+        player.getBoard().getFlagHolder().addFlag(new LevelFlag(FlagColor.BLUE, 2));
+
+        leaderCard.activate(player);
     }
 
 

@@ -1,8 +1,14 @@
 package it.polimi.ingsw.model.leader;
 
+import it.polimi.ingsw.common.PayloadComponent;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.production.Crafting;
+import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.parser.raw.RawSpecialAbility;
+import it.polimi.ingsw.utils.PayloadFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class CraftingAbility implements SpecialAbility interface
@@ -42,10 +48,17 @@ public class CraftingAbility implements SpecialAbility {
      * @throws NullPointerException if the pointer to player is null
      */
     @Override
-    public void activate(Player player) {
+    public List<PayloadComponent> activate(Player player) {
+        List<PayloadComponent> payload = new ArrayList<>();
+
         if(player == null)
             throw new NullPointerException();
         player.getBoard().getProduction().addLeaderCrafting(crafting);
+
+        Integer index = player.getBoard().getProduction().getAllLeaderCrafting().size() - 1;
+        payload.add(PayloadFactory.addCrafting(player.getUsername(), crafting.toRaw(), Production.CraftingType.LEADER, index));
+
+        return payload;
     }
 
     /**

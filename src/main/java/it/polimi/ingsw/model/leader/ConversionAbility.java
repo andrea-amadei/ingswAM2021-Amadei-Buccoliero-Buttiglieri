@@ -1,9 +1,13 @@
 package it.polimi.ingsw.model.leader;
 
+import it.polimi.ingsw.common.PayloadComponent;
 import it.polimi.ingsw.gamematerials.MarbleColor;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.market.ConversionActuator;
 import it.polimi.ingsw.parser.raw.RawSpecialAbility;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -56,11 +60,12 @@ public class ConversionAbility implements SpecialAbility {
      * @throws NullPointerException if the pointer to player is null
      */
     @Override
-    public void activate(Player player){
+    public List<PayloadComponent> activate(Player player){
         if(player == null)
             throw new NullPointerException();
         player.getBoard().getConversionHolder().addConversionActuator(from, to);
 
+        return new ArrayList<>();
     }
 
     /**

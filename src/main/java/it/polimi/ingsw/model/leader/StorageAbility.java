@@ -1,9 +1,14 @@
 package it.polimi.ingsw.model.leader;
 
+import it.polimi.ingsw.common.PayloadComponent;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.storage.LeaderDecorator;
 import it.polimi.ingsw.model.storage.Shelf;
 import it.polimi.ingsw.parser.raw.RawSpecialAbility;
+import it.polimi.ingsw.utils.PayloadFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class StorageAbility implements SpecialAbility interface
@@ -42,7 +47,8 @@ public class StorageAbility implements SpecialAbility {
      * @throws NullPointerException if the pointer to player is null
      */
     @Override
-    public void activate(Player player) {
+    public List<PayloadComponent> activate(Player player) {
+        List<PayloadComponent> payload = new ArrayList<>();
 
         if(player == null)
             throw new NullPointerException();
@@ -50,6 +56,10 @@ public class StorageAbility implements SpecialAbility {
         LeaderDecorator leaderDecorator = new LeaderDecorator(shelf, player.getBoard().getStorage().getCupboard());
         player.getBoard().getStorage().decorate(leaderDecorator);
 
+        payload.add(PayloadFactory.addShelf(player.getUsername(), shelf.getId(), shelf.getAcceptedTypes().toString().toLowerCase(),
+                shelf.getMaxAmount()));
+
+        return payload;
     }
 
     @Override

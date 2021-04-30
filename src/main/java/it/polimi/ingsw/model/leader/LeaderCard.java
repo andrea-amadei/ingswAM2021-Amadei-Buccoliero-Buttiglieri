@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.leader;
 
+import it.polimi.ingsw.common.PayloadComponent;
 import it.polimi.ingsw.exceptions.AlreadyActiveException;
 import it.polimi.ingsw.exceptions.RequirementsNotSatisfiedException;
 import it.polimi.ingsw.model.Player;
@@ -76,7 +77,7 @@ public class LeaderCard implements UniqueSerializableObject<RawLeaderCard> {
      * @throws RequirementsNotSatisfiedException if a player tries to activate a leader card whose
      * requirements are not satisfied
      */
-    public void activate(Player player) throws RequirementsNotSatisfiedException, AlreadyActiveException {
+    public List<PayloadComponent> activate(Player player) throws RequirementsNotSatisfiedException, AlreadyActiveException {
         if(player == null)
             throw new NullPointerException();
         if(!LeaderCard.this.isSatisfied(player))
@@ -84,11 +85,13 @@ public class LeaderCard implements UniqueSerializableObject<RawLeaderCard> {
         if(LeaderCard.this.status)
             throw new AlreadyActiveException();
 
+        List<PayloadComponent> payload = new ArrayList<>();
         for(SpecialAbility specialAbility : abilities){
-            specialAbility.activate(player);
+            payload.addAll(specialAbility.activate(player));
         }
         status = true;
 
+        return payload;
     }
 
     /**
