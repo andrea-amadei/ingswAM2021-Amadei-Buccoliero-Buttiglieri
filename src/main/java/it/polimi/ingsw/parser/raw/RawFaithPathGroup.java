@@ -8,7 +8,7 @@ import it.polimi.ingsw.parser.UniqueRawObject;
 
 public class RawFaithPathGroup implements UniqueRawObject<FaithPathGroup> {
 
-    @SerializedName("group")
+    @SerializedName(value = "group", alternate = "id")
     private Integer group;
 
     @SerializedName("points")
@@ -39,6 +39,17 @@ public class RawFaithPathGroup implements UniqueRawObject<FaithPathGroup> {
 
     @Override
     public FaithPathGroup toObject() throws IllegalRawConversionException {
-        return null;
+        if(group == null)
+            throw new IllegalRawConversionException("Missing mandatory field \"group\" in faith path group");
+
+        if(points == null)
+            throw new IllegalRawConversionException("Missing mandatory field \"points\" in faith path group");
+
+        try {
+            return new FaithPathGroup(group, points);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalRawConversionException(e.getMessage());
+        }
+
     }
 }
