@@ -29,13 +29,6 @@ public class StateMachine implements InterruptListener{
         this.currentState = initialState;
     }
 
-    //TODO: delete this, since the first state will be set in the constructor. This method is for debug only
-    public void debugSetState(State state){
-        if(state == null)
-            throw new NullPointerException();
-        currentState = state;
-        state.setListener(this);
-    }
 
     /**
      * Executes the specified action. It firstly calls the onActionStart of the current state, then proceeds to try
