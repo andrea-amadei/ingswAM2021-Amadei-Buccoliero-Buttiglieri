@@ -1,17 +1,18 @@
 package it.polimi.ingsw.model.production;
 
+import it.polimi.ingsw.common.PayloadComponent;
 import it.polimi.ingsw.exceptions.NegativeCraftingIngredientException;
 import it.polimi.ingsw.exceptions.NotReadyToCraftException;
 import it.polimi.ingsw.gamematerials.*;
+import it.polimi.ingsw.model.FaithPath;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.parser.raw.RawCrafting;
+import it.polimi.ingsw.parser.raw.RawStorage;
 import it.polimi.ingsw.server.Console;
 import it.polimi.ingsw.parser.SerializableObject;
+import it.polimi.ingsw.utils.PayloadFactory;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * The Crafting class represents the recipe for a crafting.
@@ -206,8 +207,7 @@ public class Crafting implements SerializableObject<RawCrafting> {
      * Activates the current crafting and converts all necessary resources
      * @param player the player who performed the action
      */
-    //TODO: return payload with all resources (+ faith) changed
-    public void activateCrafting(Player player) {
+    public List<PayloadComponent> activateCrafting(Player player, FaithPath faithPath) {
         if(player == null)
             throw new NullPointerException();
 
@@ -217,20 +217,35 @@ public class Crafting implements SerializableObject<RawCrafting> {
             else
                 throw new NotReadyToCraftException("Not all ingredients have been transferred");
 
+        List<PayloadComponent> payload = new ArrayList<>();
+
+        Map<String, Integer> addedResources = new HashMap<>();
         for(ResourceType i : output.keySet())
-            if(!i.isGroup())
+            if(!i.isGroup()) {
                 player.getBoard().getStorage().getChest().addResources((ResourceSingle) i, output.get(i));
+                addedResources.putIfAbsent(i.toString().toLowerCase(), 0);
+                addedResources.put(i.toString().toLowerCase(), addedResources.get(i.toString().toLowerCase()) + output.get(i));
+            }
 
         for(ResourceGroup i : conversion.keySet())
-            for(ResourceSingle j : conversion.get(i).keySet())
+            for(ResourceSingle j : conversion.get(i).keySet()) {
                 player.getBoard().getStorage().getChest().addResources(j, conversion.get(i).get(j));
+                addedResources.putIfAbsent(j.toString().toLowerCase(), 0);
+                addedResources.put(j.toString().toLowerCase(), addedResources.get(j.toString().toLowerCase()) + conversion.get(i).get(j));
+            }
 
-        // TODO: Remake this with the faith path
+        payload.add(PayloadFactory.changeResources(player.getUsername(),
+                new RawStorage("Chest", addedResources)));
+
+
         if(faithOutput > 0)
-            player.getBoard().getFaithHolder().addFaithPoints(faithOutput);
+            payload.addAll(faithPath.executeMovement(faithOutput, player));
+
 
         resetUndecidedOutputs();
         allResourcesTransferred = false;
+
+        return payload;
     }
 
     @Override

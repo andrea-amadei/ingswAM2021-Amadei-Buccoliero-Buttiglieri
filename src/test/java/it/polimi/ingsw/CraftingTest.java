@@ -4,15 +4,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import it.polimi.ingsw.exceptions.NegativeCraftingIngredientException;
 import it.polimi.ingsw.exceptions.NotReadyToCraftException;
+import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceType;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
+import it.polimi.ingsw.model.FaithPath;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.UpgradableCrafting;
+import it.polimi.ingsw.parser.JSONParser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 @DisplayName("Crafting and UpgradableCrafting tests")
@@ -115,8 +120,11 @@ public class CraftingTest {
 
     @Test
     @DisplayName("Activate crafting")
-    public void activateCraftingTest() {
+    public void activateCraftingTest() throws ParserException, IOException {
         Player player = new Player("Name", 0);
+
+
+        FaithPath fp = JSONParser.parseFaithPath(Paths.get("src/main/faith.json"));
 
         HashMap<ResourceType, Integer> input = new HashMap<>();
         input.put(ResourceTypeSingleton.getInstance().getGoldResource(), 1);
@@ -131,9 +139,9 @@ public class CraftingTest {
 
         Crafting crafting = new Crafting(input, output, 1);
 
-        assertThrows(NullPointerException.class, () -> crafting.activateCrafting(null));
+        assertThrows(NullPointerException.class, () -> crafting.activateCrafting(null, fp));
 
-        assertThrows(NotReadyToCraftException.class, () -> crafting.activateCrafting(player));
+        assertThrows(NotReadyToCraftException.class, () -> crafting.activateCrafting(player, fp));
 
         crafting.setGroupConversion(ResourceTypeSingleton.getInstance().getAnyResource(), conversion);
 
@@ -142,11 +150,11 @@ public class CraftingTest {
 
         assertFalse(crafting.readyToCraft());
         assertFalse(crafting.hasAllResourcesTransferred());
-        assertThrows(NotReadyToCraftException.class, () -> crafting.activateCrafting(player));
+        assertThrows(NotReadyToCraftException.class, () -> crafting.activateCrafting(player, fp));
 
         crafting.setAllResourcesTransferred(true);
 
-        crafting.activateCrafting(player);
+        crafting.activateCrafting(player, fp);
 
         assertEquals(player.getBoard().getStorage().getChest().getResources(ResourceTypeSingleton.getInstance().getStoneResource()), 2);
         assertEquals(player.getBoard().getFaithHolder().getFaithPoints(), 1);

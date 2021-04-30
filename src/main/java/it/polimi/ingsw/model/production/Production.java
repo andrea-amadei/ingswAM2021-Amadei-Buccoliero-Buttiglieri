@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.production;
 
+import it.polimi.ingsw.common.PayloadComponent;
 import it.polimi.ingsw.exceptions.NotReadyToCraftException;
+import it.polimi.ingsw.model.FaithPath;
 import it.polimi.ingsw.model.GameParameters;
 import it.polimi.ingsw.model.Player;
 
@@ -270,26 +272,31 @@ public class Production {
     /**
      * Activates all productions that are ready
      * @param player the player activating the production
+     * @param fp the faith path
+     * @throws NullPointerException if either player or fp is null
      * @throws NotReadyToCraftException if no crafting is ready to craft
      */
     //TODO: return all changes
-    public void activateProduction(Player player) {
-        if(player == null)
+    public List<PayloadComponent> activateProduction(Player player, FaithPath fp) {
+        if(player == null || fp == null)
             throw new NullPointerException();
 
         if(!isCraftingReady())
             throw new NotReadyToCraftException("No crafting is ready to craft");
 
+        List<PayloadComponent> payload = new ArrayList<>();
         for(Crafting i : baseCrafting)
             if(i.readyToCraft())
-                i.activateCrafting(player);
+                payload.addAll(i.activateCrafting(player, fp));
 
         for(Crafting i : upgradableCrafting)
             if(i.readyToCraft())
-                i.activateCrafting(player);
+                payload.addAll(i.activateCrafting(player, fp));
 
         for(Crafting i : leaderCrafting)
             if(i.readyToCraft())
-                i.activateCrafting(player);
+                payload.addAll(i.activateCrafting(player, fp));
+
+        return payload;
     }
 }
