@@ -88,6 +88,7 @@ public class DiscardLeaderAction implements Action{
 
         List<PayloadComponent> faithUpdates = new ArrayList<>(gameContext.getGameModel().getFaithPath().executeMovement(1, currentPlayer));
         PayloadComponent coveredCardUpdate = PayloadFactory.changeCoveredLeaderCard(currentPlayer.getUsername(), -1);
+        PayloadComponent dropCardUpdate = PayloadFactory.discardLeaderCard(currentPlayer.getUsername(), leaderID);
 
         //List of all usernames except the current player
         List<String> otherPlayersDestination = model.getPlayers()
@@ -101,7 +102,8 @@ public class DiscardLeaderAction implements Action{
 
         return Arrays.asList(
                 new Message(allDestinations, faithUpdates),
-                new Message(otherPlayersDestination, Collections.singletonList(coveredCardUpdate))
+                new Message(otherPlayersDestination, Collections.singletonList(coveredCardUpdate)),
+                new Message(Collections.singletonList(currentPlayer.getUsername()), Collections.singletonList(dropCardUpdate))
         );
     }
 }
