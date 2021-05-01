@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -72,9 +73,7 @@ public class ConfirmAction implements Action {
         if(!currentPlayer.equals(gameContext.getCurrentPlayer()))
             throw new IllegalActionException("The current player doesn't match the executor player");
 
-        List<String> targets = model.getPlayers().stream().map(Player::getUsername).collect(Collectors.toList());
-        PayloadComponent payload = new InfoPayload("Player " + player + " confirmed");
-        Message message = new Message(targets, Collections.singletonList(payload));
-        return Collections.singletonList(message);
+        return new ArrayList<>();
+
     }
 }
