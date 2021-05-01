@@ -60,7 +60,6 @@ public class MoveFromBasketToShelfActionTest {
                         .getShelfById("BottomShelf").getAllResources());
         assertEquals(0, gameContext.getGameModel().getPlayerById("Ernestino").getBoard().
                 getStorage().getMarketBasket().totalAmountOfResources());
-        assertEquals("INFO: 1 of Servant have been moved from Ernestino's basket to their BottomShelf", messages.get(0).toString());
     }
 
     @Test

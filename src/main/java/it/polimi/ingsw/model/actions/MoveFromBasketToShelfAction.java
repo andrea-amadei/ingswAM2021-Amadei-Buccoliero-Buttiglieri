@@ -12,10 +12,10 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.storage.Shelf;
+import it.polimi.ingsw.parser.raw.RawStorage;
+import it.polimi.ingsw.utils.PayloadFactory;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -106,11 +106,24 @@ public class MoveFromBasketToShelfAction implements Action{
                 .map(Player::getUsername)
                 .collect(Collectors.toList());
 
-        PayloadComponent payload = new InfoPayload(amount + " of "
+        PayloadComponent _payload = new InfoPayload(amount + " of "
                 + resourceToMove
                 + " have been moved from "
                 + currentPlayer.getUsername() + "'s basket to their " + shelf.getId()) ;
 
-        return Collections.singletonList(new Message(destinations, Collections.singletonList(payload)));
+        List<PayloadComponent> payload = new ArrayList<>();
+
+        payload.add(PayloadFactory.changeResources(currentPlayer.getUsername(),
+                new RawStorage("MarketBasket", new HashMap<>(){{
+                    put(resourceToMove.toString().toLowerCase(), -amount);
+                }})
+                ));
+        payload.add(PayloadFactory.changeResources(currentPlayer.getUsername(),
+                new RawStorage(shelf.getId(), new HashMap<>(){{
+                    put(resourceToMove.toString().toLowerCase(), amount);
+                }})
+                ));
+
+        return Collections.singletonList(new Message(destinations, payload));
     }
 }
