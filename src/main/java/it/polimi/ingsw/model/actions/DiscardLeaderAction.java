@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.actions;
 
-import it.polimi.ingsw.common.InfoPayload;
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.PayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
@@ -10,10 +9,9 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.leader.LeaderCard;
+import it.polimi.ingsw.utils.PayloadFactory;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DiscardLeaderAction implements Action{
@@ -22,7 +20,7 @@ public class DiscardLeaderAction implements Action{
     private final int leaderID;
 
     /**
-     * Activate Leader action constructor
+     * Discard Leader action constructor
      * @param player the player who discards the leader
      * @param leaderID the ID number of the leader card to discard
      * @throws NullPointerException iff pointer to player is null
@@ -54,7 +52,7 @@ public class DiscardLeaderAction implements Action{
     }
 
     /**
-     * method executes the action
+     * The player discards a leader card and gets the faith points
      * @param gameContext the current context of the game
      * @return the list of messages with info about the changes to the game
      * @throws IllegalActionException iff the action cannot be performed
@@ -88,18 +86,22 @@ public class DiscardLeaderAction implements Action{
             throw new IllegalActionException(e.getMessage());
         }
 
-        gameContext.getGameModel().getFaithPath().executeMovement(1, currentPlayer);
+        List<PayloadComponent> faithUpdates = new ArrayList<>(gameContext.getGameModel().getFaithPath().executeMovement(1, currentPlayer));
+        PayloadComponent coveredCardUpdate = PayloadFactory.changeCoveredLeaderCard(currentPlayer.getUsername(), -1);
 
-        List<String> destinations = model.getPlayers()
+        //List of all usernames except the current player
+        List<String> otherPlayersDestination = model.getPlayers()
                 .stream()
                 .map(Player::getUsername)
+                .filter(name -> !name.equals(currentPlayer.getUsername()))
                 .collect(Collectors.toList());
 
-        PayloadComponent payload = new InfoPayload( currentPlayer.getUsername() +
-                " has discarded leader "
-                + leaderCard.getName()) ;
+        List<String> allDestinations = new ArrayList<>(otherPlayersDestination);
+        allDestinations.add(currentPlayer.getUsername());
 
-        return Collections.singletonList(new Message(destinations, Collections.singletonList(payload)));
-
+        return Arrays.asList(
+                new Message(allDestinations, faithUpdates),
+                new Message(otherPlayersDestination, Collections.singletonList(coveredCardUpdate))
+        );
     }
 }

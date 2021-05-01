@@ -147,7 +147,7 @@ public class MenuState extends State {
     }
 
     /**
-     * The player discard a leader card and gets the faith points
+     * The player discards a leader card and gets the faith points
      * If the action can be performed, next state remains this
      * @param discardLeaderAction the action to be executed
      * @return the list of messages to be sent to the client

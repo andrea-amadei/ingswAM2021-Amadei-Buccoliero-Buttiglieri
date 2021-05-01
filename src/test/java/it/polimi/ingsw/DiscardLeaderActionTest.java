@@ -77,7 +77,6 @@ public class DiscardLeaderActionTest {
 
         assertEquals(0, gameContext.getGameModel().getPlayerById("Ernestino").getBoard()
         .getLeaderCards().size());
-        assertEquals("INFO: Ernestino has discarded leader Lorenzo", messages.get(0).toString());
         assertEquals(1, gameContext.getGameModel().getPlayerById("Ernestino").getBoard()
         .getFaithHolder().getFaithPoints());
     }
