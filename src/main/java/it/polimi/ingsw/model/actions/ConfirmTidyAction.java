@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -70,7 +71,6 @@ public class ConfirmTidyAction implements Action{
         if(currentPlayer.getBoard().getStorage().getHand().totalAmountOfResources() > 0)
             throw new IllegalActionException("Trying to confirm tidy, but hand is not empty");
 
-        return Collections.singletonList(new Message(Collections.singletonList(player), Collections.singletonList(
-                new InfoPayload(player + " " + "has confirmed tidy"))));
+        return new ArrayList<>();
     }
 }
