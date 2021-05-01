@@ -77,7 +77,6 @@ public class ActivateLeaderActionTest {
         }
 
         assertEquals(4, gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getDiscountHolder().totalDiscountByResource(servant));
-        assertEquals("INFO: Ernestino has activated leader Lorenzo", messages.get(0).toString());
     }
 
     @Test

@@ -73,7 +73,6 @@ public class ShopStateTest {
             throw new RuntimeException();
         }
 
-        assertTrue(messages.size() > 0);
         assertTrue(currentState.getNextState() instanceof MenuState);
         assertFalse(gameContext.hasPlayerMoved());
     }

@@ -76,7 +76,6 @@ public class ShopResourceSelectionStateTest {
             throw new RuntimeException();
         }
 
-        assertTrue(messages.size() > 0);
         assertTrue(currentState.getNextState() instanceof ShopState);
         assertFalse(gameContext.hasPlayerMoved());
     }
@@ -95,8 +94,6 @@ public class ShopResourceSelectionStateTest {
             throw new RuntimeException();
         }
 
-        assertTrue(messages1.size() > 0);
-        assertTrue(messages2.size() > 0);
         assertTrue(currentState.getNextState() instanceof ShopState);
         assertFalse(gameContext.hasPlayerMoved());
         assertNull(gameContext.getCurrentPlayer().getBoard().getStorage().getSelection());

@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.holder.ConversionHolder;
 import it.polimi.ingsw.model.market.ConversionActuator;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.Market;
+import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -111,19 +112,23 @@ public class BuyFromMarketAction implements Action{
         );
 
         List<Message> messages = new ArrayList<>();
+        List<PayloadComponent> payload = new ArrayList<>();
 
         //Create the payload with the changes to the market
-        PayloadComponent update = new InfoPayload("Market changed: " + market.toString());
+        PayloadComponent update = PayloadFactory.changeMarket(market.toRaw());
 
         //Create the payload with the possible conversions
-        PayloadComponent conversionUpdate = new InfoPayload("Possible conversions: " + possibleConversions);
+
+        //TODO: add this payload component. We may need to create a raw object to serialize the conversions
+        PayloadComponent conversionInfo = new InfoPayload("Possible conversions: " + possibleConversions);
 
         //Create the message to be sent to everyone
         List<String> to = model.getPlayers().stream().map(Player::getUsername).collect(Collectors.toList());
         messages.add(new Message(to, Collections.singletonList(update)));
 
         //Create the message to be sent only to the current player
-        messages.add(new Message(Collections.singletonList(player), Collections.singletonList(conversionUpdate)));
+        //TODO: add the proper payload component
+        messages.add(new Message(Collections.singletonList(player), Collections.singletonList(conversionInfo)));
 
         return messages;
     }

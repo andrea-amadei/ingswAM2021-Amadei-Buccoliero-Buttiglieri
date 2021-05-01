@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.leader.LeaderCard;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -73,6 +74,7 @@ public class ActivateLeaderAction implements Action{
         GameModel model = gameContext.getGameModel();
         Player currentPlayer;
         LeaderCard leaderCard;
+        List<PayloadComponent> payload;
 
         try {
             currentPlayer = model.getPlayerById(player);
@@ -87,7 +89,7 @@ public class ActivateLeaderAction implements Action{
         }
 
         try {
-            leaderCard.activate(currentPlayer);
+            payload = new ArrayList<>(leaderCard.activate(currentPlayer));
         }catch(NoSuchElementException | RequirementsNotSatisfiedException | AlreadyActiveException e){
             throw new IllegalActionException(e.getMessage());
         }
@@ -97,10 +99,6 @@ public class ActivateLeaderAction implements Action{
                 .map(Player::getUsername)
                 .collect(Collectors.toList());
 
-        PayloadComponent payload = new InfoPayload( currentPlayer.getUsername() +
-                " has activated leader "
-                + leaderCard.getName()) ;
-
-        return Collections.singletonList(new Message(destinations, Collections.singletonList(payload)));
+        return Collections.singletonList(new Message(destinations, payload));
     }
 }
