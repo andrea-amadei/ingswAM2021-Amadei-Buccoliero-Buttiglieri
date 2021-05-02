@@ -194,12 +194,12 @@ public final class JSONParser {
         return parseList(Files.readString(path), description, rawListClass);
     }
 
-    public static <O extends SerializableObject<?>, R extends RawObject<O>> R parse(String json, Class<R> rawObjectClass) throws ParserException {
+    public static <O extends SerializableObject<?>, R extends RawObject<O>> O parse(String json, Class<R> rawObjectClass) throws ParserException, IllegalRawConversionException {
         if(json == null)
             throw new NullPointerException();
 
         try {
-            return gson.fromJson(json, rawObjectClass);
+            return gson.fromJson(json, rawObjectClass).toObject();
         } catch (JsonSyntaxException e) {
             throw new ParserException(e.getMessage());
         }
