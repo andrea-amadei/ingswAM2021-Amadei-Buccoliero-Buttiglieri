@@ -5,6 +5,7 @@ import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.PayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.model.FaithPath;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
@@ -12,10 +13,13 @@ import it.polimi.ingsw.model.actions.ConfirmAction;
 import it.polimi.ingsw.model.actions.MoveFromBasketToShelfAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
+import it.polimi.ingsw.parser.raw.RawStorage;
+import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class BasketCollectState extends State {
@@ -74,7 +78,6 @@ public class BasketCollectState extends State {
 
         List<Message> messages;
 
-        //TODO: change messages because of abstract list
         try {
             messages = new ArrayList<>(confirmAction.execute(getGameContext()));
         }catch(IllegalActionException e){
@@ -91,23 +94,31 @@ public class BasketCollectState extends State {
                 .filter(x->!x.getUsername().equals(currentPlayer.getUsername()))
                 .collect(Collectors.toList());
 
+        List<PayloadComponent> payload = new ArrayList<>();
+
         int droppedResources = currentPlayer.getBoard().getStorage().getMarketBasket().totalAmountOfResources();
 
         if(droppedResources > 0) {
+            //Computing the delta resources
+            Map<String, Integer> deltaResources = currentPlayer.getBoard().getStorage().getMarketBasket()
+                    .getAllResources().entrySet()
+                    .stream()
+                    .collect(Collectors.toMap(e -> e.getKey().getId().toLowerCase(), e -> -e.getValue()));
+
+            //Add the delta resources to the payload
+            payload.add(PayloadFactory.changeResources(currentPlayer.getUsername(),
+                    new RawStorage(currentPlayer.getBoard().getStorage().getMarketBasket().getId(), deltaResources)));
+
             currentPlayer.getBoard().getStorage().getMarketBasket().reset();
 
             for (Player p : otherPlayers)
-                faithPath.executeMovement(droppedResources, p);
+                payload.addAll(faithPath.executeMovement(droppedResources, p));
         }
 
         //build the message
         List<String> targets = model.getPlayers().stream().map(Player::getUsername).collect(Collectors.toList());
-        PayloadComponent payload = new InfoPayload("Everyone got "+droppedResources+" faith point/s and "
-                + currentPlayer.getUsername() + " "
-                + "has discarded all resources in the market basket");
 
-
-        messages.add(new Message(targets, Collections.singletonList(payload)));
+        messages.add(new Message(targets, payload));
         setNextState(new MenuState(getGameContext()));
 
         return messages;
@@ -120,11 +131,12 @@ public class BasketCollectState extends State {
      */
     @Override
     public List<Message> onEntry() {
-        List<Message> messages = super.onEntry();
+        /* List<Message> messages = super.onEntry();
         messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
                 Collections.singletonList(new InfoPayload("Possible Actions: MoveFromBasketToShelf, EndMarketAction"))));
-
-        return messages;
+        */
+        //TODO: add appropriate payload
+        return new ArrayList<>();
     }
 
     /**
