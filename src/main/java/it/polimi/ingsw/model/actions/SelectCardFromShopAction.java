@@ -13,7 +13,9 @@ import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.production.CraftingCard;
 import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.model.production.UpgradableCrafting;
+import it.polimi.ingsw.utils.PayloadFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -64,7 +66,7 @@ public class SelectCardFromShopAction implements Action{
     }
 
     /**
-     * Selects a card in the market and a slot in the production.
+     * Selects a card in the shop and a slot in the production.
      * Once this action is executed, the player needs to select some resources in order to buy the card.
      * The action can be executed only if row and col params are valid, if there is a card at the specified location
      * and if the selected card can be inserted in the selected upgradable crafting.
@@ -128,11 +130,15 @@ public class SelectCardFromShopAction implements Action{
         }
 
         //send the message
-        List<String> targets = Collections.singletonList(player);
-        PayloadComponent info = new InfoPayload(player + " wants to buy the card at (" + row + ", " + col + ")"
-                                                + " and wants to put it in the slot " + upgradableCraftingIndex);
+        List<String> targets = gameContext.getGameModel().getPlayerNames();
+        List<PayloadComponent> payload = new ArrayList<>();
 
-        Message message = new Message(targets, Collections.singletonList(info));
+        //Add the card selection
+        payload.add(PayloadFactory.selectedShopCard(currentPlayer.getUsername(), col, row));
+
+        //Add the crafting selection
+        payload.add(PayloadFactory.selectedCrafting(currentPlayer.getUsername(), Production.CraftingType.UPGRADABLE, upgradableCraftingIndex));
+        Message message = new Message(targets, payload);
 
         return Collections.singletonList(message);
     }
