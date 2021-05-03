@@ -11,6 +11,8 @@ import it.polimi.ingsw.model.GameParameters;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
+import it.polimi.ingsw.parser.raw.RawStorage;
+import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -74,10 +76,7 @@ public class PreliminaryPickAction implements Action{
 
         GameModel model = gameContext.getGameModel();
         Player currentPlayer;
-        List<String> destinations = model.getPlayers()
-                .stream()
-                .map(Player::getUsername)
-                .collect(Collectors.toList());
+
 
         currentPlayer = gameContext.getCurrentPlayer();
         if(!currentPlayer.getUsername().equals(player))
@@ -87,6 +86,16 @@ public class PreliminaryPickAction implements Action{
         if(leadersToDiscard.size()!= GameParameters.AMOUNT_OF_LEADERS_TO_DISCARD)
             throw new IllegalActionException("Must discard correct amount of leaders");
 
+        //get the list of leader id to discard (useful for conformity with the PayloadComponent)
+        List<Integer> leaderIdToDiscard;
+        try {
+            leaderIdToDiscard = leadersToDiscard
+                    .stream()
+                    .map(l -> currentPlayer.getBoard().getLeaderCards().get(l).getId())
+                    .collect(Collectors.toList());
+        }catch(IndexOutOfBoundsException e){
+            throw new IllegalActionException("Selected an invalid card index");
+        }
         //discard leaders
         try {
             currentPlayer.getBoard().removeLeaderCardsByIndex(leadersToDiscard);
@@ -127,24 +136,48 @@ public class PreliminaryPickAction implements Action{
                     faithPoints = GameParameters.FOURTH_PLAYER_AMOUNT_OF_FAITH_POINTS_ON_START;
         }
 
+        List<PayloadComponent> globalChanges = new ArrayList<>();
+        List<PayloadComponent> secretChanges = new ArrayList<>();
+        List<PayloadComponent> coveredCardChanges = new ArrayList<>();
+
+        List<String> allUsernames = model.getPlayers()
+                .stream()
+                .map(Player::getUsername)
+                .collect(Collectors.toList());
+
+        List<String> otherUsernames = allUsernames.stream()
+                                                  .filter(s -> !s.equals(currentPlayer.getUsername()))
+                                                  .collect(Collectors.toList());
+
         //adding faith points according to the player's order
         if(faithPoints != 0)
-            gameContext.getGameModel().getFaithPath().executeMovement(faithPoints, currentPlayer);
+            globalChanges.addAll(gameContext.getGameModel().getFaithPath().executeMovement(faithPoints, currentPlayer));
 
         //adding resources to the player's hand, according to the player's order
         for(Map.Entry<ResourceSingle, Integer> entry : chosenResources.entrySet()){
             currentPlayer.getBoard().getStorage().getHand().addResources(entry.getKey(), entry.getValue());
         }
 
-        //returning the payload
-        List<PayloadComponent> payloadComponents = new ArrayList<>();
+        //adding the payload for the added resources
+        Map<String, Integer> chosenResourcesRaw = chosenResources.entrySet()
+                .stream()
+                .collect(Collectors.toMap(e -> e.getKey().toString().toLowerCase(), Map.Entry::getValue));
+        if(chosenResourcesRaw.size() > 0)
+            globalChanges.add(PayloadFactory.changeResources(currentPlayer.getUsername(), new RawStorage("Hand", chosenResourcesRaw)));
 
-        payloadComponents.add(new InfoPayload(player + " discarded leaders.")) ;
-        for(Map.Entry<ResourceSingle, Integer> entry : chosenResources.entrySet()){
-            payloadComponents.add(new InfoPayload(player + " added " + entry.getValue() + " " + entry.getKey() +
-                    " resources to their hand."));
+        //adding the payload for the discarded leader card (the secret one)
+        for(Integer i : leaderIdToDiscard){
+            secretChanges.add(PayloadFactory.discardLeaderCard(currentPlayer.getUsername(), i));
         }
-        payloadComponents.add(new InfoPayload(player + " got " + faithPoints + " faith points."));
-        return Collections.singletonList(new Message(destinations, payloadComponents));
+
+        //adding the payload for the discarded leader card (the covered one)
+        coveredCardChanges.add(PayloadFactory.changeCoveredLeaderCard(currentPlayer.getUsername(), -leaderIdToDiscard.size()));
+
+
+        return Arrays.asList(
+                new Message(allUsernames, globalChanges),
+                new Message(Collections.singletonList(currentPlayer.getUsername()), secretChanges),
+                new Message(otherUsernames, coveredCardChanges)
+        );
     }
 }
