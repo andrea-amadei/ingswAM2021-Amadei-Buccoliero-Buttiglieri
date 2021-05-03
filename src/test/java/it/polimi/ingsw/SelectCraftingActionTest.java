@@ -75,7 +75,6 @@ public class SelectCraftingActionTest {
             throw new RuntimeException();
         }
 
-        assertEquals("INFO: Ernestino selected the crafting at (UPGRADABLE, 0)", messages.get(0).toString());
     }
 
     @Test

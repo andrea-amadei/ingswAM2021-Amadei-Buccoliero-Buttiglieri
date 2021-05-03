@@ -11,7 +11,9 @@ import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.Production;
+import it.polimi.ingsw.utils.PayloadFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -65,6 +67,7 @@ public class SelectCraftingAction implements Action {
 
         GameModel model = gameContext.getGameModel();
         Player currentPlayer;
+        List<PayloadComponent> payload = new ArrayList<>();
 
         try {
             currentPlayer = model.getPlayerById(player);
@@ -76,6 +79,7 @@ public class SelectCraftingAction implements Action {
 
         try {
             production.selectCrafting(craftingType, index);
+            payload.add(PayloadFactory.selectedCrafting(currentPlayer.getUsername(), craftingType, index));
         } catch (IndexOutOfBoundsException e) {
             throw new IllegalActionException(e.getMessage());
         }
@@ -91,9 +95,8 @@ public class SelectCraftingAction implements Action {
             throw new IllegalActionException("Cannot select an empty crafting slot");
 
         //send the message
-        List<String> targets = Collections.singletonList(player);
-        PayloadComponent info = new InfoPayload(player + " selected the crafting at (" + craftingType + ", " + index + ")");
-        Message message = new Message(targets, Collections.singletonList(info));
+        List<String> targets = gameContext.getGameModel().getPlayerNames();
+        Message message = new Message(targets, payload);
 
         return Collections.singletonList(message);
     }
