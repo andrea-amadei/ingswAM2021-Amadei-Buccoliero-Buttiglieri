@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.fsm.states;
 
 import it.polimi.ingsw.common.InfoPayload;
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.common.PayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
@@ -18,7 +19,9 @@ import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.model.storage.LimitedStorage;
 import it.polimi.ingsw.model.storage.ResourceContainer;
 import it.polimi.ingsw.model.storage.Storage;
+import it.polimi.ingsw.parser.raw.RawStorage;
 import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -63,11 +66,15 @@ public class CraftingResourceSelectionState extends State {
 
         setNextState(new CraftingState(getGameContext()));
 
-        messages.add(new Message(getGameContext().getGameModel().getPlayerNames(),
-                Arrays.asList(  new InfoPayload("Reset undecided outputs"),
-                                new InfoPayload("Reset selected crafting"),
-                                new InfoPayload("Reset selection")
-                )));
+        List<PayloadComponent> payload = new ArrayList<>();
+
+        //TODO: add the reset undecided outputs
+
+        //reset crafting selection
+        payload.add(PayloadFactory.unselect(getGameContext().getCurrentPlayer().getUsername(), "production"));
+        payload.add(PayloadFactory.unselect(getGameContext().getCurrentPlayer().getUsername(), "storage"));
+
+        messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), payload));
 
         return messages;
     }
@@ -113,8 +120,10 @@ public class CraftingResourceSelectionState extends State {
             throw new NullPointerException();
 
         List<Message> messages;
+        List<PayloadComponent> payload = new ArrayList<>();
+
         try {
-            messages = confirmAction.execute(getGameContext());
+            messages = new ArrayList<>(confirmAction.execute(getGameContext()));
         } catch(IllegalActionException e) {
             throw new FSMTransitionFailedException(e.getMessage());
         }
@@ -122,6 +131,7 @@ public class CraftingResourceSelectionState extends State {
         Storage storage = getGameContext().getCurrentPlayer().getBoard().getStorage();
         Production production = getGameContext().getCurrentPlayer().getBoard().getProduction();
 
+        //get selected resources and selected crafting
         Map<ResourceContainer, Map<ResourceSingle, Integer>> selectedResources = storage.getSelection();
         Crafting selectedCrafting;
         try {
@@ -130,9 +140,11 @@ public class CraftingResourceSelectionState extends State {
             throw new FSMTransitionFailedException(e.getMessage());
         }
 
+        //if the player has not selected any resource
         if(selectedResources == null)
             throw new FSMTransitionFailedException("No resources were selected");
 
+        //distinguish between inputs
         Map<ResourceSingle, Integer> single = new HashMap<>();
         Map<ResourceGroup, Integer> group = new HashMap<>();
 
@@ -154,36 +166,54 @@ public class CraftingResourceSelectionState extends State {
                                 Integer::sum));
 
         // check if all resources are correct
+        boolean isSelectionCorrect = true;
+        String errorMessage = "";
         try{
             for(ResourceSingle res : flatSelectedResources.keySet())
                 checkStorage.addResources(res, flatSelectedResources.get(res));
         } catch (IllegalResourceTransferException e) {
-            throw new FSMTransitionFailedException("Wrong resources selected");
+            errorMessage = "Wrong resources are selected";
+            isSelectionCorrect = false;
         }
 
-        // check if the store is full
-        if(!checkStorage.isFull())
-            throw new FSMTransitionFailedException("Too few resources selected");
+        // check if the storage is full
+        if(!checkStorage.isFull()) {
+            errorMessage = "Too few resources are selected";
+        }
+
+        if(!isSelectionCorrect){
+            getGameContext().getCurrentPlayer().getBoard().getStorage().resetSelection();
+            payload.add(PayloadFactory.unselect(getGameContext().getCurrentPlayer().getUsername(), "storage"));
+            messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), payload));
+            throw new FSMTransitionFailedException(messages, errorMessage);
+        }
 
         // remove all resources
-        for(ResourceContainer container : selectedResources.keySet())
-            for(ResourceSingle res : container.getAllResources().keySet())
+        for(ResourceContainer container : selectedResources.keySet()) {
+            Map<String, Integer> resourcesToRemove = new HashMap<>();
+            for (ResourceSingle res : container.getAllResources().keySet()) {
                 try {
                     container.removeResources(res, container.getAllResources().get(res));
+                    resourcesToRemove.put(res.getId().toLowerCase(), -container.getAllResources().get(res));
                 } catch (IllegalResourceTransferException e) {
                     Console.log("Somehow a resource transfer failed and an exception wasn't thrown before!",
                             Console.Severity.ERROR, Console.Format.RED);
+                    throw new FSMTransitionFailedException("Somehow a resource transfer failed and an exception wasn't thrown before!");
                 }
+            }
 
+            //add information about the removed resources
+            payload.add(PayloadFactory.changeResources(getGameContext().getCurrentPlayer().getUsername(),
+                    new RawStorage(container.getId(), resourcesToRemove)));
+        }
+
+        //TODO: we may want to send a message to inform the client that the selected crafting is ready to craft
         selectedCrafting.readyToCraft();
-        production.resetCraftingSelection();
 
-        //TODO: add more precise resource remove
-        messages.add(new Message(getGameContext().getGameModel().getPlayerNames(),
-                Arrays.asList(  new InfoPayload("Removed resources"),
-                                new InfoPayload("Reset selected crafting"),
-                                new InfoPayload("Marked crafting as ready")
-                )));
+        production.resetCraftingSelection();
+        payload.add(PayloadFactory.unselect(getGameContext().getCurrentPlayer().getUsername(), "production"));
+
+        messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), payload));
 
         return messages;
     }
