@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.actions;
 
-import it.polimi.ingsw.common.InfoPayload;
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.PayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
@@ -15,10 +14,10 @@ import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.storage.ResourceContainer;
 import it.polimi.ingsw.model.storage.Shelf;
 import it.polimi.ingsw.model.storage.Storage;
+import it.polimi.ingsw.parser.raw.RawStorage;
+import it.polimi.ingsw.utils.PayloadFactory;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -95,10 +94,7 @@ public class ResourcesMoveAction implements Action{
         }
         storage = currentPlayer.getBoard().getStorage();
 
-        List<String> destinations = model.getPlayers()
-                .stream()
-                .map(Player::getUsername)
-                .collect(Collectors.toList());
+
 
         //TODO: add ID to chest, hand, ecc...
         if(origin.equals("Hand")){
@@ -113,13 +109,6 @@ public class ResourcesMoveAction implements Action{
             }catch(IllegalResourceTransferException e){
                 throw new IllegalActionException(e.getMessage());
             }
-            PayloadComponent payload = new InfoPayload(amount + " of "
-                    + resourceToMove
-                    + " have been moved from "
-                    + currentPlayer.getUsername() + "'s hand to "
-                    + destinationShelf.getId());
-
-            return Collections.singletonList(new Message(destinations, Collections.singletonList(payload)));
         }
 
         else if(destination.equals("Hand")){
@@ -135,11 +124,6 @@ public class ResourcesMoveAction implements Action{
             }catch(IllegalCupboardException e){
                 throw new IllegalActionException(e.getMessage());
             }
-            PayloadComponent payload = new InfoPayload(amount + " of " + resourceToMove
-                    + " have been moved from "
-                    + currentPlayer.getUsername() + "'s " + originShelf.getId() + " to their hand");
-
-            return Collections.singletonList(new Message(destinations, Collections.singletonList(payload)));
         }
 
         else{
@@ -161,14 +145,32 @@ public class ResourcesMoveAction implements Action{
                 throw new IllegalActionException(e.getMessage());
             }
 
-            PayloadComponent payload = new InfoPayload(amount + " of "
-                    + resourceToMove
-                    + " have been moved from "
-                    + currentPlayer.getUsername() + "'s "
-                    + originShelf.getId()+ " to their " + destinationShelf.getId()) ;
-
-            return Collections.singletonList(new Message(destinations, Collections.singletonList(payload)));
         }
+
+        List<PayloadComponent> payload = new ArrayList<>();
+        List<String> allPlayers = model.getPlayers()
+                .stream()
+                .map(Player::getUsername)
+                .collect(Collectors.toList());
+
+        //removing from origin payload
+        payload.add(PayloadFactory.changeResources(
+                currentPlayer.getUsername(),
+                new RawStorage(origin,
+                        new HashMap<>(){{
+                            put(resourceToMove.toString().toLowerCase(), -amount);
+                        }})
+        ));
+        payload.add(PayloadFactory.changeResources(
+                currentPlayer.getUsername(),
+                new RawStorage(destination,
+                        new HashMap<>(){{
+                            put(resourceToMove.toString().toLowerCase(), amount);
+                        }})
+        ));
+
+        Message message = new Message(allPlayers, payload);
+        return Collections.singletonList(message);
 
 
     }

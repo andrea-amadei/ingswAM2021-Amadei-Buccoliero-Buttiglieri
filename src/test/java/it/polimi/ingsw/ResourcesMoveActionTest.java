@@ -115,7 +115,6 @@ public class ResourcesMoveActionTest {
             throw new RuntimeException();
         }
 
-        assertEquals("INFO: 1 of Shield have been moved from Genoveffa's BottomShelf to their TopShelf", messages.get(0).toString());
     }
 
     @Test
@@ -129,7 +128,6 @@ public class ResourcesMoveActionTest {
             throw new RuntimeException();
         }
 
-        assertEquals("INFO: 2 of Gold have been moved from Ernestino's hand to MiddleShelf", messages.get(0).toString());
     }
 
     @Test
@@ -143,7 +141,6 @@ public class ResourcesMoveActionTest {
             throw new RuntimeException();
         }
 
-        assertEquals("INFO: 1 of Servant have been moved from Gertrude's BottomShelf to their hand", messages.get(0).toString());
     }
 
     @Test
