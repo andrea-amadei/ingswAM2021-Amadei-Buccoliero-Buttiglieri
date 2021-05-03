@@ -2,18 +2,19 @@ package it.polimi.ingsw.model.fsm.states;
 
 import it.polimi.ingsw.common.InfoPayload;
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.common.PayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.actions.BackAction;
 import it.polimi.ingsw.model.actions.ConfirmAction;
 import it.polimi.ingsw.model.actions.SelectCraftingAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
+import it.polimi.ingsw.utils.PayloadFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CraftingState extends State {
     /**
@@ -48,7 +49,7 @@ public class CraftingState extends State {
         List<Message> messages;
 
         try {
-            messages = backAction.execute(getGameContext());
+            messages = new ArrayList<>(backAction.execute(getGameContext()));
         } catch(IllegalActionException e) {
             throw new FSMTransitionFailedException(e.getMessage());
         }
@@ -80,12 +81,24 @@ public class CraftingState extends State {
         List<Message> messages;
 
         try {
-            messages = confirmAction.execute(getGameContext());
+            messages = new ArrayList<>(confirmAction.execute(getGameContext()));
         } catch(IllegalActionException e) {
             throw new FSMTransitionFailedException(e.getMessage());
         }
 
+        //activate production and retrieve all the associated payload components
+        List<PayloadComponent> payload = new ArrayList<>(
+                getGameContext().getCurrentPlayer().getBoard().getProduction().activateProduction(
+                    getGameContext().getCurrentPlayer(),
+                    getGameContext().getGameModel().getFaithPath()
+                )
+        );
+
+        //TODO: add the message to tell the clients that those crafting are not ready anymore
+
         setNextState(new MenuState(getGameContext()));
+
+        messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), payload));
         return messages;
     }
 
@@ -107,7 +120,7 @@ public class CraftingState extends State {
         List<Message> messages;
 
         try {
-            messages = selectCraftingAction.execute(getGameContext());
+            messages = new ArrayList<>(selectCraftingAction.execute(getGameContext()));
         } catch(IllegalActionException e) {
             throw new FSMTransitionFailedException(e.getMessage());
         }
@@ -125,13 +138,15 @@ public class CraftingState extends State {
     public List<Message> onEntry() {
         List<Message> messages = super.onEntry();
 
-        if(getGameContext().getCurrentPlayer().getBoard().getProduction().isCraftingReady())
+        /*if(getGameContext().getCurrentPlayer().getBoard().getProduction().isCraftingReady())
             messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                    Collections.singletonList(new InfoPayload("Possible Actions: Confirm, SelectCrafting"))));
+                    Collections.singletonList(PayloadFactory.)));
         else
             messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
                     Collections.singletonList(new InfoPayload("Possible Actions: Back, SelectCrafting"))));
+        */
 
+        //TODO: send the possible moves to the client
         return messages;
     }
 

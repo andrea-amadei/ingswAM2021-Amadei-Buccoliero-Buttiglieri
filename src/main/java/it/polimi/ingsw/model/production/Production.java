@@ -276,7 +276,6 @@ public class Production {
      * @throws NullPointerException if either player or fp is null
      * @throws NotReadyToCraftException if no crafting is ready to craft
      */
-    //TODO: return all changes
     public List<PayloadComponent> activateProduction(Player player, FaithPath fp) {
         if(player == null || fp == null)
             throw new NullPointerException();
