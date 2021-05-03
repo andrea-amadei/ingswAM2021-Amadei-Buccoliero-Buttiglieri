@@ -98,9 +98,11 @@ public class Storage {
      * @throws NoSuchElementException if the id doesn't match with any of the resourceContainers
      */
     public ResourceContainer getResourceContainerById(String id){
+
+        //TODO: assign id consistently to the containers
         if(id == null)
             throw new NullPointerException();
-        if(id.equals("Chest"))
+        if(id.equals("Chest") || id.equals("chest"))
             return getChest();
 
         return getCupboard().getShelfById(id);

@@ -13,7 +13,9 @@ import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.storage.ResourceContainer;
 import it.polimi.ingsw.model.storage.Storage;
+import it.polimi.ingsw.utils.PayloadFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -100,13 +102,12 @@ public class SelectResourcesAction implements Action{
         }
 
         //building the message
-        List<String> targets = Collections.singletonList(player);
-        PayloadComponent payloadComponent = new InfoPayload(player + " has selected "
-                                                            + amount + " resources of type"
-                                                            + resource + " from "
-                                                            + container);
+        List<String> targets = gameContext.getGameModel().getPlayerNames();
+        List<PayloadComponent> payload = new ArrayList<>();
+        payload.add(PayloadFactory
+                .selectedResource(currentPlayer.getUsername(), container.getId(), resource.getId().toLowerCase(), amount));
 
-        Message message = new Message(targets, Collections.singletonList(payloadComponent));
+        Message message = new Message(targets, payload);
         return Collections.singletonList(message);
     }
 }
