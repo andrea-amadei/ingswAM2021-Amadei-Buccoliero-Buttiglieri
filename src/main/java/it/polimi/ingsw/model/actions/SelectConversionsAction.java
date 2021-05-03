@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.actions;
 
 import it.polimi.ingsw.common.InfoPayload;
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.common.PayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
@@ -103,7 +104,10 @@ public class SelectConversionsAction implements Action{
                 throw new IllegalActionException("The choice index is too high");
         }
 
-        List<ConversionActuator> appliedConversions = new ArrayList<>();
+        //the selection is valid, we then proceed to apply all the conversions
+
+
+        List<PayloadComponent> payload = new ArrayList<>();
 
         //apply the selected conversions
         for(int i = 0; i < selectedMarbles.size(); i++){
@@ -111,8 +115,7 @@ public class SelectConversionsAction implements Action{
             //apply the base conversion
             if(conversionHolder.getActuatorsFromColor(selectedMarbles.get(i).getColor()).size() == 0) {
                 try {
-                    selectedMarbles.get(i).getBaseConversionActuator().actuateConversion(currentPlayer, faithPath);
-                    appliedConversions.add(selectedMarbles.get(i).getBaseConversionActuator());
+                    payload.addAll(selectedMarbles.get(i).getBaseConversionActuator().actuateConversion(currentPlayer, faithPath));
                 } catch (IllegalResourceTransferException e) {
                     Console.log("Failed to choose the correct conversions, but others may have already been applied");
                     throw new IllegalActionException(e.getMessage());
@@ -122,10 +125,8 @@ public class SelectConversionsAction implements Action{
             //apply the selected conversion
             else{
                 try {
-                    conversionHolder.getActuatorsFromColor(selectedMarbles.get(i).getColor()).get(actuatorsChoice.get(i))
-                            .actuateConversion(currentPlayer, faithPath);
-                    appliedConversions.add(conversionHolder.getActuatorsFromColor(selectedMarbles.get(i).getColor())
-                            .get(actuatorsChoice.get(i)));
+                    payload.addAll(conversionHolder.getActuatorsFromColor(selectedMarbles.get(i).getColor()).get(actuatorsChoice.get(i))
+                            .actuateConversion(currentPlayer, faithPath));
                 } catch (IllegalResourceTransferException e) {
                     Console.log("Failed to choose the correct conversions, but others may have already been applied");
                     throw new IllegalActionException(e.getMessage());
@@ -133,22 +134,7 @@ public class SelectConversionsAction implements Action{
             }
         }
 
-
-        //TODO: this will be replaced with a change payload
-
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("BasketUpdate: ").append(currentPlayer.getBoard().getStorage().getMarketBasket().getAllResources()).append("\n");
-        int addedFaith = 0;
-        for(ConversionActuator actuator : appliedConversions){
-            addedFaith += actuator.getFaith();
-        }
-
-        sb.append("FaithUpdate: added ").append(addedFaith).append(" faith points");
-
-        InfoPayload payload = new InfoPayload(sb.toString());
-        Message message = new Message(model.getPlayers().stream().map(Player::getUsername).collect(Collectors.toList()),
-                Collections.singletonList(payload));
+        Message message = new Message(gameContext.getGameModel().getPlayerNames(), payload);
 
         return Collections.singletonList(message);
 
