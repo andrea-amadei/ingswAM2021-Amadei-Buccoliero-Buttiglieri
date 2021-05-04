@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.actions.PreliminaryPickAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class PreliminaryPickState extends State {
     }
 
     /**
-     * the players chooses the leaders to discard and, depending on the players' order, picks resources and adds faith points.
+     * the player chooses the leaders to discard and, depending on the player's order, picks resources and adds faith points.
      * @param preliminaryPickAction the action to execute
      * @return the list of messages to send to the clients
      * @throws FSMTransitionFailedException iff the action cannot be executed
@@ -36,7 +37,7 @@ public class PreliminaryPickState extends State {
         List<Message> messages;
 
         try{
-            messages = preliminaryPickAction.execute(getGameContext());
+            messages = new ArrayList<>(preliminaryPickAction.execute(getGameContext()));
         }catch (IllegalActionException e){
             throw new FSMTransitionFailedException(e.getMessage());
         }
@@ -52,9 +53,10 @@ public class PreliminaryPickState extends State {
     @Override
     public List<Message> onEntry() {
         List<Message> messages = super.onEntry();
+        /*
         messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
                 Collections.singletonList(new InfoPayload("Possible Actions: PreliminaryPick"))));
-
+        */
         return messages;
     }
 
