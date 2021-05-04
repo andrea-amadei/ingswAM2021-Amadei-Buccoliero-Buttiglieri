@@ -171,7 +171,7 @@ public class StorageTest {
     @Test
     public void getChestById(){
         Storage s = new Storage();
-        assertEquals(s.getChest(), s.getResourceContainerById("Chest"));
+        assertEquals(s.getChest(), s.getSpendableResourceContainerById("Chest"));
     }
 
 }

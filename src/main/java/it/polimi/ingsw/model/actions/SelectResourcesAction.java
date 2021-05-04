@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.actions;
 
-import it.polimi.ingsw.common.InfoPayload;
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.PayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
@@ -90,7 +89,7 @@ public class SelectResourcesAction implements Action{
 
         ResourceContainer container;
         try {
-            container = storage.getResourceContainerById(containerId);
+            container = storage.getSpendableResourceContainerById(containerId);
         }catch(NoSuchElementException e){
             throw new IllegalActionException(e.getMessage());
         }

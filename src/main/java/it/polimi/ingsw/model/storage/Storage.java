@@ -97,15 +97,14 @@ public class Storage {
      * @throws NullPointerException if id is null
      * @throws NoSuchElementException if the id doesn't match with any of the resourceContainers
      */
-    public ResourceContainer getResourceContainerById(String id){
+    public ResourceContainer getSpendableResourceContainerById(String id){
 
-        //TODO: assign id consistently to the containers
+        List<ResourceContainer> spendableContainers = new ArrayList<>(getCupboard().getShelves());
+        spendableContainers.add(getChest());
+
         if(id == null)
             throw new NullPointerException();
-        if(id.equals("Chest") || id.equals("chest"))
-            return getChest();
-
-        return getCupboard().getShelfById(id);
+        return spendableContainers.stream().filter(x -> x.getId().equalsIgnoreCase(id)).findFirst().orElseThrow(NoSuchElementException::new);
     }
 
     /**
