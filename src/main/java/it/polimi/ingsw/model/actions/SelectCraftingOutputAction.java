@@ -69,6 +69,7 @@ public class SelectCraftingOutputAction implements Action {
         try {
             crafting.setGroupConversion(ResourceTypeSingleton.getInstance().getAnyResource(), conversion);
         } catch (IllegalArgumentException e) {
+            //TODO: communicate to the client that there is the need to select the output again
             throw new IllegalActionException(e.getMessage());
         }
 

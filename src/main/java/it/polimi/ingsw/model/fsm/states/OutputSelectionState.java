@@ -2,13 +2,16 @@ package it.polimi.ingsw.model.fsm.states;
 
 import it.polimi.ingsw.common.InfoPayload;
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.common.PayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.actions.BackAction;
 import it.polimi.ingsw.model.actions.SelectCraftingOutputAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
+import it.polimi.ingsw.utils.PayloadFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,17 +44,20 @@ public class OutputSelectionState extends State {
 
         List<Message> messages;
         try {
-            messages = backAction.execute(getGameContext());
+            messages = new ArrayList<>(backAction.execute(getGameContext()));
         } catch(IllegalActionException e) {
             throw new FSMTransitionFailedException(e.getMessage());
         }
 
+        List<PayloadComponent> payload = new ArrayList<>();
+
         getGameContext().getCurrentPlayer().getBoard().getProduction().resetCraftingSelection();
+        payload.add(PayloadFactory.unselect(getGameContext().getCurrentPlayer().getUsername(), "production"));
 
         setNextState(new CraftingState(getGameContext()));
 
         messages.add(new Message(getGameContext().getGameModel().getPlayerNames(),
-                Collections.singletonList(new InfoPayload("Reset selected crafting"))));
+                payload));
 
         return messages;
     }
@@ -92,9 +98,12 @@ public class OutputSelectionState extends State {
     public List<Message> onEntry() {
         List<Message> messages = super.onEntry();
 
+        /*
         messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
                 Collections.singletonList(new InfoPayload("Possible Actions: Back, SelectOutputs"))));
+        */
 
+        //TODO: add the possible actions payload
         return messages;
     }
 

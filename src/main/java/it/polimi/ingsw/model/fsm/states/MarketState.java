@@ -36,8 +36,6 @@ public class MarketState extends State {
     public List<Message> handleAction(BuyFromMarketAction buyFromMarketAction) throws FSMTransitionFailedException {
         if(buyFromMarketAction == null)
             throw new NullPointerException();
-        //TODO: do we really need to check here if the action target is the current player? We may want to check that
-        //      directly in the action
 
         List<Message> messages;
         try{
@@ -47,11 +45,6 @@ public class MarketState extends State {
         }
 
         getGameContext().setPlayerMoved(true);
-
-        //Just to show how to append a new message to send to the user.
-        //TODO: delete this
-        messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                Collections.singletonList(new InfoPayload("Hi!"))));
 
         //setting the new state
         setNextState(new ConversionSelectionState(getGameContext()));
@@ -90,10 +83,13 @@ public class MarketState extends State {
      */
     @Override
     public List<Message> onEntry() {
+
+        //TODO: send appropriate possible moves
         List<Message> messages = super.onEntry();
+        /*
         messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
                 Collections.singletonList(new InfoPayload("Possible Actions: Back, BuyFromMarket"))));
-
+        */
         return messages;
     }
 

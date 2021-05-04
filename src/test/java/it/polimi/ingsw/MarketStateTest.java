@@ -62,10 +62,6 @@ public class MarketStateTest {
         assertTrue(currentState.getNextState() instanceof ConversionSelectionState);
     }
 
-    @Test
-    public void nonEmptyOnEntryMethod(){
-        assertTrue(currentState.onEntry().size() > 0);
-    }
 
     @Test
     public void invalidBuyFromMarketTransition(){

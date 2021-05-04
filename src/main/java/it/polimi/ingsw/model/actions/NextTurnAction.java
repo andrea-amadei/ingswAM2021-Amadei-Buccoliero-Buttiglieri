@@ -25,6 +25,8 @@ public class NextTurnAction implements Action{
         return handler.handleAction(this);
     }
 
+
+    //TODO:  add the payload to inform the clients of the current player
     /**
      * Informs the state machine that a new turn is started
      *

@@ -179,6 +179,7 @@ public class MenuState extends State {
      */
     @Override
     public List<Message> onEntry() {
+        //TODO: send appropriate messages
         return super.onEntry();
     }
 

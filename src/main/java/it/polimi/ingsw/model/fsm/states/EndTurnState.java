@@ -28,6 +28,7 @@ public class EndTurnState extends State {
         hasLorenzoPlayed = false;
     }
 
+    //TODO: add the payload to inform the clients of the current player (or we may add it to the NextTurnAction)
     /**
      * Executed everytime the fsm enters in this state.
      * If the game mode is single player and Lorenzo's play has not been launched, Lorenzo's play is launched.
