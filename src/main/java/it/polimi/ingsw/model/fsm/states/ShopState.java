@@ -77,9 +77,12 @@ public class ShopState extends State {
     @Override
     public List<Message> onEntry() {
         List<Message> messages = super.onEntry();
+        /*
         messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
                 Collections.singletonList(new InfoPayload("Possible Actions: Back, SelectCardFromShop"))));
+         */
 
+        //TODO: add the possible actions
         return messages;
     }
 

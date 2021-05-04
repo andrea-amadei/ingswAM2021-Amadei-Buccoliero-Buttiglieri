@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.actions.ResourcesMoveAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ResourceTidyingState extends State {
@@ -37,7 +38,7 @@ public class ResourceTidyingState extends State {
         List<Message> messages;
 
         try {
-            messages = resourcesMoveAction.execute(getGameContext());
+            messages = new ArrayList<>(resourcesMoveAction.execute(getGameContext()));
         }catch(IllegalActionException e){
             throw new FSMTransitionFailedException(e.getMessage());
         }

@@ -20,7 +20,9 @@ import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.model.storage.LimitedStorage;
 import it.polimi.ingsw.model.storage.ResourceContainer;
 import it.polimi.ingsw.model.storage.Storage;
+import it.polimi.ingsw.parser.raw.RawStorage;
 import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -52,14 +54,24 @@ public class ShopResourceSelectionState extends State {
             throw new NullPointerException();
         List<Message> messages;
 
-        getGameContext().getGameModel().getShop().resetSelectedCard();
-        getGameContext().getCurrentPlayer().getBoard().getStorage().resetSelection();
-
         try{
-            messages = backAction.execute(getGameContext());
+            messages = new ArrayList<>(backAction.execute(getGameContext()));
         }catch(IllegalActionException e){
             throw new FSMTransitionFailedException(e.getMessage());
         }
+
+        getGameContext().getGameModel().getShop().resetSelectedCard();
+        getGameContext().getCurrentPlayer().getBoard().getStorage().resetSelection();
+
+        List<PayloadComponent> payload = new ArrayList<>();
+
+        payload.add(PayloadFactory.unselect(getGameContext().getCurrentPlayer().getUsername(), "shop"));
+        payload.add(PayloadFactory.unselect(getGameContext().getCurrentPlayer().getUsername(), "production"));
+        payload.add(PayloadFactory.unselect(getGameContext().getCurrentPlayer().getUsername(), "storage"));
+
+        messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), payload));
+
+
         setNextState(new ShopState(getGameContext()));
         return messages;
     }
@@ -100,13 +112,15 @@ public class ShopResourceSelectionState extends State {
         if(confirmAction == null)
             throw new NullPointerException();
         List<Message> messages;
+        List<PayloadComponent> payload = new ArrayList<>();
 
         try{
-            messages = confirmAction.execute(getGameContext());
+            messages = new ArrayList<>(confirmAction.execute(getGameContext()));
         }catch (IllegalActionException e){
             throw new FSMTransitionFailedException(e.getMessage());
         }
 
+        //get all necessary model components
         GameModel model = getGameContext().getGameModel();
         Shop shop = model.getShop();
 
@@ -114,16 +128,19 @@ public class ShopResourceSelectionState extends State {
         Storage storage = currentPlayer.getBoard().getStorage();
         Production production = currentPlayer.getBoard().getProduction();
 
+        //get the selected resources
         Map<ResourceContainer, Map<ResourceSingle, Integer>> selectedResources = Optional.ofNullable(storage.getSelection()).orElse(new HashMap<>());
+
+        //get the selected card
         CraftingCard card = shop.getSelectedCard();
+
+        //get the selected sloth
         Integer selectedCrafting;
         try {
             selectedCrafting = production.getSelectedCraftingIndex();
         }catch(NoSuchElementException e){
             throw new FSMTransitionFailedException(e.getMessage());
         }
-        if(card == null || selectedCrafting == null)
-            throw new FSMTransitionFailedException("Trying to buy a card without having selected all the necessary");
 
         //calculate discounts if present and remove non required resources
         Map<ResourceSingle, Integer> discountedCost =
@@ -146,57 +163,97 @@ public class ShopResourceSelectionState extends State {
                         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                                 Integer::sum));
 
+        //check correctness
+        boolean isSelectionCorrect = true;
+        String errorMessage = "";
+
         try{
             for(ResourceSingle res : flatSelectedResources.keySet())
                 checkStorage.addResources(res, flatSelectedResources.get(res));
         } catch (IllegalResourceTransferException e) {
-            throw new FSMTransitionFailedException("Wrong selection");
+            isSelectionCorrect = false;
+            errorMessage = "Wrong selection";
         }
 
-        if(!checkStorage.isFull())
-            throw new FSMTransitionFailedException("Too few resources to buy the card");
+        if(!checkStorage.isFull()) {
+            isSelectionCorrect = false;
+            errorMessage = "Not enough resources selected";
+        }
+
+        //if resource selection is wrong, an error message is sent to the current player and the update to unselect
+        //the resources of the current player is sent to everyone
+        if(!isSelectionCorrect){
+            payload.add(PayloadFactory.unselect(currentPlayer.getUsername(), "storage"));
+            messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), payload));
+            throw new FSMTransitionFailedException(messages, errorMessage);
+        }
 
 
         //transaction can be done
 
         //remove resources from the storage
         for(ResourceContainer container : selectedResources.keySet()){
+            Map<String, Integer> resourcesToRemoveFromContainer = new HashMap<>();
             for(ResourceSingle res : selectedResources.get(container).keySet()){
                 try {
                     container.removeResources(res, selectedResources.get(container).get(res));
+                    resourcesToRemoveFromContainer.put(res.getId().toLowerCase(), -selectedResources.get(container).get(res));
                 } catch (IllegalResourceTransferException e) {
                     Console.log("Logic failed in ShopResourceSelectionState", Console.Severity.ERROR);
                     throw new FSMTransitionFailedException(e.getMessage());
                 }
             }
+
+            payload.add(PayloadFactory.changeResources(currentPlayer.getUsername(),
+                    new RawStorage(container.getId(), resourcesToRemoveFromContainer)
+                    ));
         }
 
         //add crafting to the production
         production.setUpgradableCrafting(selectedCrafting, card.getCrafting());
+        payload.add(PayloadFactory.addCrafting(
+                currentPlayer.getUsername(),
+                card.getCrafting().toRaw(),
+                Production.CraftingType.UPGRADABLE,
+                selectedCrafting
+        ));
 
-        //removes the card from the shop
+        //removes the card from the shop and make the payload
         shop.removeCard(card.getCrafting().getLevel(), card.getFlag().getColor());
+        int x = card.getFlag().getColor().ordinal();
+        int y = card.getFlag().getLevel() - 1;
+        int cardId;
+        try{
+            cardId = shop.getTopCard(y, x).getId();
+        }catch(NoSuchElementException e){
+            cardId = -1;
+        }
+        payload.add(PayloadFactory.changeShop(x, y, cardId));
 
         //add victory points to the player
         currentPlayer.addPoints(card.getPoints());
+        payload.add(PayloadFactory.addPoints(currentPlayer.getUsername(), card.getPoints()));
 
-        //add the flag of the player to the flag holder
+        //add the flag of the card to the flag holder
         currentPlayer.getBoard().getFlagHolder().addFlag(card.getFlag());
+        payload.add(PayloadFactory.addFlag(currentPlayer.getUsername(), card.getFlag().toRaw()));
 
         //reset all selections
         shop.resetSelectedCard();
-        production.resetCraftingSelection();
-        storage.resetSelection();
+        payload.add(PayloadFactory.unselect(currentPlayer.getUsername(), "shop"));
 
-        //write the messages
-        PayloadComponent updates = new InfoPayload(currentPlayer.getUsername() + " has bought a card from market. Resources, crafting, points, flags changed "
-                                                    +"selections are reset");
+        production.resetCraftingSelection();
+        payload.add(PayloadFactory.unselect(currentPlayer.getUsername(), "production"));
+
+        storage.resetSelection();
+        payload.add(PayloadFactory.unselect(currentPlayer.getUsername(), "storage"));
+
 
         getGameContext().setPlayerMoved(true);
-        getGameContext().getGameModel().getShop().resetSelectedCard();
-        getGameContext().getCurrentPlayer().getBoard().getStorage().resetSelection();
 
         setNextState(new MenuState(getGameContext()));
+
+        messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), payload));
         return messages;
     }
 
@@ -208,9 +265,11 @@ public class ShopResourceSelectionState extends State {
     @Override
     public List<Message> onEntry() {
         List<Message> messages = super.onEntry();
-        messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
+        /*messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
                 Collections.singletonList(new InfoPayload("Possible Actions: Back, SelectResources, BuyFromShop"))));
+         */
 
+        //TODO: add correct possible actions
         return messages;
     }
 

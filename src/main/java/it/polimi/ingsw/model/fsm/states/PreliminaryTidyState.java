@@ -75,6 +75,7 @@ public class PreliminaryTidyState extends State {
             return messages;
         }
 
+        //TODO: add the payload type to communicate to the clients the next player
         //set next connected player as next player
         Player nextPlayer = null;
         int index = getGameContext().getGameModel().getPlayers().indexOf(getGameContext().getCurrentPlayer());
@@ -107,8 +108,12 @@ public class PreliminaryTidyState extends State {
     @Override
     public List<Message> onEntry() {
         List<Message> messages = super.onEntry();
+        /*
         messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
                 Collections.singletonList(new InfoPayload("Possible Actions: ResourceMove, ConfirmTidy"))));
+         */
+
+        //TODO: add the appropriate possible actions
 
         return messages;
     }
