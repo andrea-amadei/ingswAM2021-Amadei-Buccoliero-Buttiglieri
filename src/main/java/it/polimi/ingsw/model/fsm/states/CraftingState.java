@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.fsm.states;
 
-import it.polimi.ingsw.common.InfoPayload;
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.PayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
@@ -10,10 +9,8 @@ import it.polimi.ingsw.model.actions.ConfirmAction;
 import it.polimi.ingsw.model.actions.SelectCraftingAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
-import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class CraftingState extends State {
@@ -105,8 +102,9 @@ public class CraftingState extends State {
     /**
      * The player wants to go choose the crafting to use
      *
-     * If the action can be performed, this method returns the list of messages that need to be sent to the client
-     * and sets the moved property remains false in the game context. The new state will be MenuState
+     * If the action can be performed, this method returns the list of messages that need to be sent to the client.
+     * if the crafting doesn't have any undecided outputs, the new state will be CraftingResourceSelection,
+     * otherwise next state will be OutputSelection
      * @param selectCraftingAction the action to be executed
      * @return the list of messages that need to be sent to the clients
      * @throws NullPointerException if backAction is null
@@ -125,7 +123,14 @@ public class CraftingState extends State {
             throw new FSMTransitionFailedException(e.getMessage());
         }
 
-        setNextState(new OutputSelectionState(getGameContext()));
+        //if the crafting doesn't have any undecided outputs, the new state will be CraftingResourceSelection
+        //otherwise next state will be OutputSelection
+        if(getGameContext().getCurrentPlayer().getBoard().getProduction().getSelectedCrafting().getUndecidedOutputs().isEmpty())
+            setNextState(new CraftingResourceSelectionState(getGameContext()));
+        else
+            setNextState(new OutputSelectionState(getGameContext()));
+
+
         return messages;
     }
 
