@@ -18,7 +18,7 @@ import java.util.HashMap;
 public class ProductionTest {
     @Test
     public void test() {
-        assertThrows(NullPointerException.class, () -> new Production(null));
+        assertThrows(NullPointerException.class, () -> new Production(3, null));
 
         HashMap<ResourceType, Integer> input = new HashMap<>();
         input.put(ResourceTypeSingleton.getInstance().getServantResource(), 1);
@@ -32,7 +32,7 @@ public class ProductionTest {
         UpgradableCrafting upgradableCrafting = new UpgradableCrafting(input, output, 1, 1);
 
         Production production1 = new Production();
-        Production production2 = new Production(new ArrayList<>() {{add(crafting);}});
+        Production production2 = new Production(3, new ArrayList<>() {{add(crafting);}});
 
         assertEquals(production1.getAllBaseCrafting().size(), 0);
         assertEquals(production1.getAllLeaderCrafting().size(), 0);
@@ -71,7 +71,7 @@ public class ProductionTest {
 
         Crafting crafting = new Crafting(input, output, 1);
 
-        Production production = new Production(new ArrayList<>() {{add(crafting);}});
+        Production production = new Production(3, new ArrayList<>() {{add(crafting);}});
 
         assertDoesNotThrow(() -> production.selectCrafting(Production.CraftingType.BASE, 1));
         assertTrue(production.isCraftingSelected());

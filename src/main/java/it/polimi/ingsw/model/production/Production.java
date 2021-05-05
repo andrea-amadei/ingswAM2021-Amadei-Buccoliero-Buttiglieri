@@ -35,6 +35,7 @@ public class Production {
     /**
      * Creates a new production instance.
      * Set every crafting slot to empty.
+     * This constructor should only be used in testing. The builder will use the other one
      */
     public Production() {
         baseCrafting = new ArrayList<>();
@@ -50,11 +51,30 @@ public class Production {
 
     /**
      * Creates a new production instance.
+     * Set every crafting slot to empty.
+     * This constructor is used by the builder
+     *
+     * @param upgradableCraftingNumber the number of upgradableCrafting slots
+     */
+    public Production(int upgradableCraftingNumber){
+        baseCrafting = new ArrayList<>();
+        leaderCrafting = new ArrayList<>();
+        upgradableCrafting = new ArrayList<>(upgradableCraftingNumber);
+
+        for(int i=0; i < upgradableCraftingNumber; i++)
+            upgradableCrafting.add(null);
+
+        selectedIndex = null;
+        selectedType = null;
+    }
+
+    /**
+     * Creates a new production instance.
      * Sets baseCrafting as specified and the others to empty.
      * @param baseCrafting sets the base crafting of the board.
      * @throws NullPointerException if baseCrafting is null
      */
-    public Production(List<Crafting> baseCrafting) {
+    public Production(int upgradableCraftingNumber, List<Crafting> baseCrafting) {
         if(baseCrafting == null)
             throw new NullPointerException();
         this.baseCrafting = baseCrafting;
@@ -62,7 +82,7 @@ public class Production {
         leaderCrafting = new ArrayList<>();
         upgradableCrafting = new ArrayList<>();
 
-        for(int i=0; i < GameParameters.UPGRADABLE_CRAFTING_NUMBER; i++)
+        for(int i=0; i < upgradableCraftingNumber; i++)
             upgradableCrafting.add(null);
 
         selectedIndex = null;
@@ -171,8 +191,8 @@ public class Production {
         if(crafting == null)
             throw new NullPointerException();
 
-        if(index < 0 || index >= GameParameters.UPGRADABLE_CRAFTING_NUMBER)
-            throw new IndexOutOfBoundsException("Index must be between 0 and " + (GameParameters.UPGRADABLE_CRAFTING_NUMBER - 1));
+        if(index < 0 || index >= upgradableCrafting.size())
+            throw new IndexOutOfBoundsException("Index must be between 0 and " + (upgradableCrafting.size() - 1));
 
         upgradableCrafting.set(index, crafting);
     }

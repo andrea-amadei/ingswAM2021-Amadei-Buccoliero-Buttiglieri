@@ -6,6 +6,7 @@ import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.GameParameters;
 import it.polimi.ingsw.model.storage.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.ThrowingSupplier;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,7 @@ public class StorageTest {
 
     @Test
     public void createStorage(){
-        assertDoesNotThrow(Storage::new);
+        assertDoesNotThrow((ThrowingSupplier<Storage>) Storage::new);
     }
 
     @Test

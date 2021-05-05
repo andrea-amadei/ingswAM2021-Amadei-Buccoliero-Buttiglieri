@@ -29,14 +29,27 @@ public class Board {
     /**
      * Creates a new empty board. It contains a storage, the leader cards, a discount holder, a flag holder, a faith
      * holder, a conversion holder and a production.
+     * This constructor should be used for test/mock creation only. The builder uses the other one
      */
     public Board(){
-        this.storage = new Storage();
+        this(new Storage(), new Production(), new FaithHolder());
+    }
+
+    /**
+     * Creates a new empty board. It contains a storage, the leader cards, a discount holder, a flag holder, a faith
+     * holder, a conversion holder and a production.
+     * This constructor is used by the builder
+     * @param storage the storage of this board
+     * @param production the production of this board
+     * @param faithHolder the faith holder of this board
+     */
+    public Board(Storage storage, Production production, FaithHolder faithHolder){
+        this.storage = storage;
         this.leaderCards = new ArrayList<>();
         this.discountHolder = new DiscountHolder();
         this.flagHolder = new FlagHolder();
-        this.production = new Production();
-        this.faithHolder = new FaithHolder();
+        this.production = production;
+        this.faithHolder = faithHolder;
         this.conversionHolder = new ConversionHolder();
     }
 

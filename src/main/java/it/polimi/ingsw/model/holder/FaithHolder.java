@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.holder;
 
-import it.polimi.ingsw.exceptions.AlreadyActiveException;
 import it.polimi.ingsw.exceptions.AlreadyReachedPopeCardException;
 import it.polimi.ingsw.exceptions.UsedUnreachedPopeCardException;
 import it.polimi.ingsw.model.GameParameters;
@@ -32,6 +31,14 @@ public class FaithHolder {
             checkpoints.add(CheckpointStatus.UNREACHED);
     }
 
+    public FaithHolder(int checkpointsNumber){
+        faithPoints = 0;
+        checkpoints = new ArrayList<>(checkpointsNumber);
+
+        for(int i = 0; i < checkpointsNumber; i++)
+            checkpoints.add(CheckpointStatus.UNREACHED);
+    }
+
     /**
      * @return the amount of faith points
      */
@@ -46,8 +53,8 @@ public class FaithHolder {
      * @throws IndexOutOfBoundsException if the index is out of bounds
      */
     public boolean isPopeCardReached(int index) {
-        if(index < 0 || index > GameParameters.FAITH_CHECKPOINT_NUMBER - 1)
-            throw new IndexOutOfBoundsException("Index must be between 0 and " + (GameParameters.FAITH_CHECKPOINT_NUMBER - 1));
+        if(index < 0 || index > checkpoints.size() - 1)
+            throw new IndexOutOfBoundsException("Index must be between 0 and " + (checkpoints.size() - 1));
 
         return !checkpoints.get(index).equals(CheckpointStatus.UNREACHED);
     }
@@ -59,8 +66,8 @@ public class FaithHolder {
      * @throws IndexOutOfBoundsException if the index is out of bounds
      */
     public boolean isPopeCardActive(int index) {
-        if(index < 0 || index > GameParameters.FAITH_CHECKPOINT_NUMBER - 1)
-            throw new IndexOutOfBoundsException("Index must be between 0 and " + (GameParameters.FAITH_CHECKPOINT_NUMBER - 1));
+        if(index < 0 || index > checkpoints.size() - 1)
+            throw new IndexOutOfBoundsException("Index must be between 0 and " + (checkpoints.size() - 1));
 
         return checkpoints.get(index).equals(CheckpointStatus.ACTIVE);
     }
@@ -84,8 +91,8 @@ public class FaithHolder {
      * @throws UsedUnreachedPopeCardException if the pope card was unreached
      */
     public void setPopeCardActive(int index) {
-        if(index < 0 || index > GameParameters.FAITH_CHECKPOINT_NUMBER - 1)
-            throw new IndexOutOfBoundsException("Index must be between 0 and " + (GameParameters.FAITH_CHECKPOINT_NUMBER - 1));
+        if(index < 0 || index > checkpoints.size() - 1)
+            throw new IndexOutOfBoundsException("Index must be between 0 and " + (checkpoints.size() - 1));
 
         if(checkpoints.get(index).equals(CheckpointStatus.UNREACHED))
             checkpoints.set(index, CheckpointStatus.ACTIVE);
@@ -100,8 +107,8 @@ public class FaithHolder {
      * @throws UsedUnreachedPopeCardException if the pope card was unreached
      */
     public void setPopeCardInactive(int index) {
-        if(index < 0 || index > GameParameters.FAITH_CHECKPOINT_NUMBER - 1)
-            throw new IndexOutOfBoundsException("Index must be between 0 and " + (GameParameters.FAITH_CHECKPOINT_NUMBER - 1));
+        if(index < 0 || index > checkpoints.size() - 1)
+            throw new IndexOutOfBoundsException("Index must be between 0 and " + (checkpoints.size() - 1));
 
         if(checkpoints.get(index).equals(CheckpointStatus.UNREACHED))
             checkpoints.set(index, CheckpointStatus.INACTIVE);

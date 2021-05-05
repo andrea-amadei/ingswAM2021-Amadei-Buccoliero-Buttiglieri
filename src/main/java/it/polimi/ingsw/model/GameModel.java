@@ -23,7 +23,8 @@ public class GameModel {
     private final List<LeaderCard> leaderCards;
 
     /**
-     * Creates a new GameModel. Game components are created using the builder
+     * Creates a new GameModel. This constructor creates a dummy game model.
+     * Kept for retro-compatibility with tests
      * @param players the list of the players of the game
      * @param seededRandom the seed to use
      */
@@ -46,6 +47,18 @@ public class GameModel {
 
     public GameModel(List<Player> players){
         this(players, new Random());
+    }
+
+    /**
+     * This constructor is used by the builder. The builder builds each component first and then
+     * creates the game model
+     */
+    public GameModel(List<Player> players, Market market, Shop shop, FaithPath faithPath, List<LeaderCard> leaderCards){
+        this.players = players;
+        this.market = market;
+        this.shop = shop;
+        this.faithPath = faithPath;
+        this.leaderCards = leaderCards;
     }
 
     /**

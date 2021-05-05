@@ -17,11 +17,20 @@ public class Shop {
 
 
     /**
-     * Creates a new empty shop. Cards will be inserted during the setup of the game
+     * Creates a new empty shop. Cards will be inserted during the setup of the game.
+     * This constructor should be only used for testing. The builder uses another constructor
      */
     public Shop(){
+        this(GameParameters.MAX_CARD_LEVEL);
+    }
+
+    /**
+     * Creates a new empty shop. Cards will be inserted during the setup of the game.
+     * @param levelAxisSize the maximum level of flags
+     */
+    public Shop(int levelAxisSize){
         grid = new ArrayList<>();
-        levelAxisSize = GameParameters.MAX_CARD_LEVEL;
+        this.levelAxisSize = levelAxisSize;
         int colorAxisSize = FlagColor.values().length;
 
         for(int i = 0; i < levelAxisSize; i++){
