@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.leader;
 
-import it.polimi.ingsw.common.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.parser.raw.RawSpecialAbility;
 import it.polimi.ingsw.server.Console;

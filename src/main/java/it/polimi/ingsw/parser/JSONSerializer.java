@@ -1,7 +1,7 @@
 package it.polimi.ingsw.parser;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.common.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.PayloadComponent;
 
 import java.util.Collection;
 

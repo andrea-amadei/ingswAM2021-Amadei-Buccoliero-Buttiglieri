@@ -1,8 +1,7 @@
 package it.polimi.ingsw.model.fsm.states;
 
-import it.polimi.ingsw.common.InfoPayload;
 import it.polimi.ingsw.common.Message;
-import it.polimi.ingsw.common.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
@@ -266,7 +265,7 @@ public class ShopResourceSelectionState extends State {
     public List<Message> onEntry() {
         List<Message> messages = super.onEntry();
         /*messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                Collections.singletonList(new InfoPayload("Possible Actions: Back, SelectResources, BuyFromShop"))));
+                Collections.singletonList(new InfoPayloadComponent("Possible Actions: Back, SelectResources, BuyFromShop"))));
          */
 
         //TODO: add correct possible actions

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.leader;
 
-import it.polimi.ingsw.common.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.exceptions.AlreadyActiveException;
 import it.polimi.ingsw.exceptions.RequirementsNotSatisfiedException;
 import it.polimi.ingsw.model.Player;

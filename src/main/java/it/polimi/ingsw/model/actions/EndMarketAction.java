@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.actions;
 
-import it.polimi.ingsw.common.InfoPayload;
 import it.polimi.ingsw.common.Message;
-import it.polimi.ingsw.common.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.FaithPath;
@@ -87,7 +87,7 @@ public class EndMarketAction implements Action{
 
         //build the message
         List<String> targets = model.getPlayers().stream().map(Player::getUsername).collect(Collectors.toList());
-        PayloadComponent payload = new InfoPayload("Everyone got "+droppedResources+" faith point/s and "
+        PayloadComponent payload = new InfoPayloadComponent("Everyone got "+droppedResources+" faith point/s and "
                                                  +  player + " "
                                                  + "has discarded all resources in the market basket");
 

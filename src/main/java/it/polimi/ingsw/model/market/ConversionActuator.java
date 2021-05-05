@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.market;
 
-import it.polimi.ingsw.common.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.model.FaithPath;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.common.ActionQueue;
-import it.polimi.ingsw.common.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.exceptions.InvalidFaithPathException;
 import it.polimi.ingsw.model.actions.Action;
 import it.polimi.ingsw.model.actions.PopeCheckAction;

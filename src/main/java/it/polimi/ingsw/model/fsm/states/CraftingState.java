@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.fsm.states;
 
 import it.polimi.ingsw.common.Message;
-import it.polimi.ingsw.common.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.actions.BackAction;
@@ -148,7 +148,7 @@ public class CraftingState extends State {
                     Collections.singletonList(PayloadFactory.)));
         else
             messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                    Collections.singletonList(new InfoPayload("Possible Actions: Back, SelectCrafting"))));
+                    Collections.singletonList(new InfoPayloadComponent("Possible Actions: Back, SelectCrafting"))));
         */
 
         //TODO: send the possible moves to the client

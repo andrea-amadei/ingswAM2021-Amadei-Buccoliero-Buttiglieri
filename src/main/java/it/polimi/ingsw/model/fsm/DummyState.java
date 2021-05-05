@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.fsm;
 
-import it.polimi.ingsw.common.InfoPayload;
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.model.actions.ActivateLeaderAction;
 
 import java.util.Collections;
@@ -15,7 +15,7 @@ public class DummyState extends State{
 
     @Override
     public List<Message> handleAction(ActivateLeaderAction activateLeaderAction) {
-        List<Message> messages = Collections.singletonList(new Message(Collections.singletonList("Bob"), Collections.singletonList(new InfoPayload("Hi"))));
+        List<Message> messages = Collections.singletonList(new Message(Collections.singletonList("Bob"), Collections.singletonList(new InfoPayloadComponent("Hi"))));
         setNextState(new DummyState(getGameContext()));
         return messages;
     }

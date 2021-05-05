@@ -1,5 +1,7 @@
 package it.polimi.ingsw.common;
 
+import it.polimi.ingsw.common.payload_components.PayloadComponent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +19,10 @@ public class Message {
      * @param payloadComponents the content of the message
      * @throws NullPointerException if either targets or payloadComponents is null
      */
-    public Message(List<String> targets, List<PayloadComponent> payloadComponents){
+    public Message(List<String> targets, List<PayloadComponent> payloadComponents) {
         if(targets == null || payloadComponents == null)
             throw new NullPointerException();
+
         this.targets = targets;
         this.payloadComponents = payloadComponents;
     }
