@@ -12,7 +12,7 @@ import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.CraftingCard;
 import it.polimi.ingsw.parser.raw.list.*;
-import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.Logger;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -43,7 +43,7 @@ public final class JSONParser {
 
     private static void errorHandler(String message) throws ParserException {
         if(BEST_EFFORT_MODE)
-            Console.log(message + ". Skipped...", Console.Severity.WARNING, Console.Format.YELLOW);
+            Logger.log(message + ". Skipped...", Logger.Severity.WARNING, Logger.Format.YELLOW);
         else
             throw new ParserException(message);
     }
@@ -58,7 +58,7 @@ public final class JSONParser {
 
         // PHASE 1: GET RAW OBJECTS
         if(SHOW_LOGS)
-            Console.log("JSON PARSER - Parsing " + description.toLowerCase() + " (phase 1/2) ...");
+            Logger.log("JSON PARSER - Parsing " + description.toLowerCase() + " (phase 1/2) ...");
 
         try {
             rawList = gson.fromJson(json, rawListClass);
@@ -72,7 +72,7 @@ public final class JSONParser {
 
         // PHASE 2: CONVERT OBJECTS
         if(SHOW_LOGS)
-            Console.log("JSON PARSER - Converting raw data from " + description.toLowerCase() + " (phase 2/2) ...");
+            Logger.log("JSON PARSER - Converting raw data from " + description.toLowerCase() + " (phase 2/2) ...");
 
         // for each raw object
         for(R rawObject : rawList.getList()) {
@@ -98,7 +98,7 @@ public final class JSONParser {
 
             // print debug messages
             if(SHOW_LOGS && DEBUG_MODE) {
-                Console.log("----- " + description + " " + (rawList.getList().indexOf(rawObject) + 1) + " -----");
+                Logger.log("----- " + description + " " + (rawList.getList().indexOf(rawObject) + 1) + " -----");
                 object.printDebugInfo();
             }
 
@@ -110,7 +110,7 @@ public final class JSONParser {
 
         // DONE!
         if(SHOW_LOGS)
-            Console.log("JSON PARSER - Parsing of " + description + " done! Successful = " + successful + ", Skipped = " + skipped);
+            Logger.log("JSON PARSER - Parsing of " + description + " done! Successful = " + successful + ", Skipped = " + skipped);
 
         return list;
     }
@@ -136,7 +136,7 @@ public final class JSONParser {
 
         // PHASE 1: GET RAW OBJECTS
         if(SHOW_LOGS)
-            Console.log("JSON PARSER - Parsing " + description.toLowerCase() + " (phase 1/2) ...");
+            Logger.log("JSON PARSER - Parsing " + description.toLowerCase() + " (phase 1/2) ...");
 
         try {
             rawList = gson.fromJson(json, rawListClass);
@@ -150,7 +150,7 @@ public final class JSONParser {
 
         // PHASE 2: CONVERT OBJECTS
         if(SHOW_LOGS)
-            Console.log("JSON PARSER - Converting raw data from " + description.toLowerCase() + " (phase 2/2) ...");
+            Logger.log("JSON PARSER - Converting raw data from " + description.toLowerCase() + " (phase 2/2) ...");
 
         // for each raw object
         for(R rawObject : rawList.getList()) {
@@ -168,7 +168,7 @@ public final class JSONParser {
 
             // print debug messages
             if(SHOW_LOGS && DEBUG_MODE) {
-                Console.log("----- " + description + " " + (rawList.getList().indexOf(rawObject) + 1) + " -----");
+                Logger.log("----- " + description + " " + (rawList.getList().indexOf(rawObject) + 1) + " -----");
                 object.printDebugInfo();
             }
 
@@ -177,7 +177,7 @@ public final class JSONParser {
 
         // DONE!
         if(SHOW_LOGS)
-            Console.log("JSON PARSER - Parsing of " + description + " done! Successful = " + successful + ", Skipped = " + skipped);
+            Logger.log("JSON PARSER - Parsing of " + description + " done! Successful = " + successful + ", Skipped = " + skipped);
 
         return list;
     }

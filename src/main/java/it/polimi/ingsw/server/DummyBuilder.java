@@ -28,7 +28,7 @@ public final class DummyBuilder {
         try {
             return JSONParser.parseLeaders(Paths.get("src/main/leaders.json"));
         }catch(IOException | ParserException e1){
-            Console.log(e1.getMessage(), Console.Severity.ERROR);
+            Logger.log(e1.getMessage(), Logger.Severity.ERROR);
             return null;
         }
     }

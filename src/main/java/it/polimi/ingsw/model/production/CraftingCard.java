@@ -5,7 +5,7 @@ import it.polimi.ingsw.gamematerials.LevelFlag;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.parser.UniqueSerializableObject;
 import it.polimi.ingsw.parser.raw.RawCraftingCard;
-import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -103,11 +103,11 @@ public class CraftingCard implements UniqueSerializableObject<RawCraftingCard> {
 
     @Override
     public void printDebugInfo() {
-        Console.log("Id: " + getId());
-        Console.log("Points: " + getPoints());
-        Console.log("Flag: " + getFlag());
-        Console.log("Cost: " + getCost());
-        Console.log("Crafting: " + getCrafting());
+        Logger.log("Id: " + getId());
+        Logger.log("Points: " + getPoints());
+        Logger.log("Flag: " + getFlag());
+        Logger.log("Cost: " + getCost());
+        Logger.log("Crafting: " + getCrafting());
     }
 
     @Override

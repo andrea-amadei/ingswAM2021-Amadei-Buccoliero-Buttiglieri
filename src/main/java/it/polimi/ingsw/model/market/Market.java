@@ -2,10 +2,9 @@ package it.polimi.ingsw.model.market;
 
 import it.polimi.ingsw.gamematerials.MarbleColor;
 import it.polimi.ingsw.model.GameParameters;
-import it.polimi.ingsw.parser.RawObject;
 import it.polimi.ingsw.parser.SerializableObject;
 import it.polimi.ingsw.parser.raw.RawMarket;
-import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.Logger;
 
 import java.util.*;
 
@@ -233,7 +232,7 @@ public class Market implements SerializableObject<RawMarket> {
     public void printDebugInfo() {
         StringBuilder str;
 
-        Console.log(String.valueOf(oddOne.getColor().name().charAt(0)));
+        Logger.log(String.valueOf(oddOne.getColor().name().charAt(0)));
 
         for (int i = 0; i < rowSize; i++) {
             str = new StringBuilder();
@@ -241,7 +240,7 @@ public class Market implements SerializableObject<RawMarket> {
             for (int j = 0; j < colSize; j++)
                     str.append(grid[i][j].getColor().name().charAt(0)).append(" ");
 
-            Console.log(str.toString());
+            Logger.log(str.toString());
         }
     }
 }

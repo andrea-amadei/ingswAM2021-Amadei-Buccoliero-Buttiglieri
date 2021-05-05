@@ -4,12 +4,11 @@ import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.gamematerials.ResourceGroup;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.parser.raw.RawStorage;
-import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * The LimitedStorage class is a generic container of resources with custom limits.
@@ -332,7 +331,7 @@ public class LimitedStorage extends ResourceContainer {
 
     @Override
     public void printDebugInfo() {
-        Console.log(toString());
+        Logger.log(toString());
     }
 
     @Override

@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.parser.UniqueSerializableObject;
 import it.polimi.ingsw.parser.raw.RawFaithPathTile;
-import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.Logger;
 
 /**
  * The FaithPathTile is an immutable class containing all the information about a tile of the faith path
@@ -122,7 +122,7 @@ public class FaithPathTile implements UniqueSerializableObject<RawFaithPathTile>
 
     @Override
     public void printDebugInfo() {
-        Console.log(toString());
+        Logger.log(toString());
     }
 
     @Override

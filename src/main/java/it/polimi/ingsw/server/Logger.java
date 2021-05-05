@@ -5,7 +5,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-public final class Console {
+public final class Logger {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     private static final String timeZone = "Z";
 
@@ -95,7 +95,7 @@ public final class Console {
         }
     }
 
-    private Console() { }
+    private Logger() { }
 
     private static String getCurrentTime() {
         return ZonedDateTime.ofInstant(

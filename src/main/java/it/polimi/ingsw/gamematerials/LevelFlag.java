@@ -3,7 +3,7 @@ package it.polimi.ingsw.gamematerials;
 import it.polimi.ingsw.model.GameParameters;
 import it.polimi.ingsw.parser.SerializableObject;
 import it.polimi.ingsw.parser.raw.RawLevelFlag;
-import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.Logger;
 
 import java.util.Objects;
 
@@ -63,6 +63,6 @@ public class LevelFlag extends BaseFlag implements SerializableObject<RawLevelFl
 
     @Override
     public void printDebugInfo() {
-        Console.log(toString());
+        Logger.log(toString());
     }
 }

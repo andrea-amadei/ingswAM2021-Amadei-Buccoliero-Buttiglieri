@@ -10,7 +10,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.production.Crafting;
-import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.Logger;
 
 import java.util.*;
 
@@ -71,8 +71,8 @@ public class SelectCraftingOutputAction implements Action {
         }
 
         if(crafting.getUndecidedOutputs().size() != 0)
-            Console.log("Logic failed at SelectCraftingOutputAction: after selecting conversion, there are still undecided outputs!",
-                    Console.Severity.ERROR, Console.Format.RED);
+            Logger.log("Logic failed at SelectCraftingOutputAction: after selecting conversion, there are still undecided outputs!",
+                    Logger.Severity.ERROR, Logger.Format.RED);
 
         //TODO: we need to create a payload to communicate the selected output to the player.
         return new ArrayList<>();

@@ -1,9 +1,8 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.parser.SerializableObject;
 import it.polimi.ingsw.parser.UniqueSerializableObject;
 import it.polimi.ingsw.parser.raw.RawFaithPathGroup;
-import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.Logger;
 
 /**
  * A FaithPathGroup is a group of tiles containing one and only one pope check. Every group is able to grant a
@@ -66,6 +65,6 @@ public class FaithPathGroup implements UniqueSerializableObject<RawFaithPathGrou
 
     @Override
     public void printDebugInfo() {
-        Console.log(toString());
+        Logger.log(toString());
     }
 }

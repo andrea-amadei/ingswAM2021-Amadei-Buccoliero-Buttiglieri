@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.model.leader.Requirement;
 import it.polimi.ingsw.model.leader.SpecialAbility;
 import it.polimi.ingsw.parser.JSONSerializer;
-import it.polimi.ingsw.server.Console;
 import it.polimi.ingsw.parser.UniqueRawObject;
 
 import java.util.ArrayList;

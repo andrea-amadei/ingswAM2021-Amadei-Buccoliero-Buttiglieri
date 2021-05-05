@@ -6,7 +6,7 @@ import it.polimi.ingsw.exceptions.RequirementsNotSatisfiedException;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.parser.UniqueSerializableObject;
 import it.polimi.ingsw.parser.raw.RawLeaderCard;
-import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -168,17 +168,17 @@ public class LeaderCard implements UniqueSerializableObject<RawLeaderCard> {
 
     @Override
     public void printDebugInfo() {
-        Console.log("Id: " + getId());
-        Console.log("Name: " + getName());
-        Console.log("Points: " + getPoints());
+        Logger.log("Id: " + getId());
+        Logger.log("Name: " + getName());
+        Logger.log("Points: " + getPoints());
 
-        Console.log("Requirements: " + getRequirements().size());
+        Logger.log("Requirements: " + getRequirements().size());
         for(Requirement i : getRequirements())
-            Console.log("  - " + i.toString());
+            Logger.log("  - " + i.toString());
 
-        Console.log("Special abilities: " + getAbilities().size());
+        Logger.log("Special abilities: " + getAbilities().size());
         for(SpecialAbility i : getAbilities())
-            Console.log("  - " + i.toString());
+            Logger.log("  - " + i.toString());
     }
 
     @Override

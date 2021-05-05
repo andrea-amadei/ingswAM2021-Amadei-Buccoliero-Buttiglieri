@@ -65,7 +65,7 @@ public final class XMLParser {
 
     private static void errorHandler(String message) throws ParserException {
         if(BEST_EFFORT_MODE)
-            Console.log(message, Console.Severity.WARNING, Console.Format.YELLOW);
+            Logger.log(message, Logger.Severity.WARNING, Logger.Format.YELLOW);
         else
             throw new ParserException(message);
     }
@@ -96,7 +96,7 @@ public final class XMLParser {
             if(isElementNode(cards.item(i))) {
 
                 if (DEBUG_MODE)
-                    Console.log("---------- CARD " + i + " ----------");
+                    Logger.log("---------- CARD " + i + " ----------");
 
                 // get all properties
                 card = cards.item(i).getChildNodes();
@@ -179,9 +179,9 @@ public final class XMLParser {
                 }
 
                 if (DEBUG_MODE) {
-                    Console.log("Id: " + id);
-                    Console.log("Name: " + name);
-                    Console.log("Points: " + points);
+                    Logger.log("Id: " + id);
+                    Logger.log("Name: " + name);
+                    Logger.log("Points: " + points);
                 }
             }
         }

@@ -20,7 +20,7 @@ import it.polimi.ingsw.model.storage.LimitedStorage;
 import it.polimi.ingsw.model.storage.ResourceContainer;
 import it.polimi.ingsw.model.storage.Storage;
 import it.polimi.ingsw.parser.raw.RawStorage;
-import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.Logger;
 import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.*;
@@ -198,7 +198,7 @@ public class ShopResourceSelectionState extends State {
                     container.removeResources(res, selectedResources.get(container).get(res));
                     resourcesToRemoveFromContainer.put(res.getId().toLowerCase(), -selectedResources.get(container).get(res));
                 } catch (IllegalResourceTransferException e) {
-                    Console.log("Logic failed in ShopResourceSelectionState", Console.Severity.ERROR);
+                    Logger.log("Logic failed in ShopResourceSelectionState", Logger.Severity.ERROR);
                     throw new FSMTransitionFailedException(e.getMessage());
                 }
             }

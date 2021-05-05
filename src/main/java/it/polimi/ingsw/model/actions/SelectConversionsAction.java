@@ -14,7 +14,7 @@ import it.polimi.ingsw.model.holder.ConversionHolder;
 import it.polimi.ingsw.model.market.ConversionActuator;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.Market;
-import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -115,7 +115,7 @@ public class SelectConversionsAction implements Action{
                 try {
                     payload.addAll(selectedMarbles.get(i).getBaseConversionActuator().actuateConversion(currentPlayer, faithPath));
                 } catch (IllegalResourceTransferException e) {
-                    Console.log("Failed to choose the correct conversions, but others may have already been applied");
+                    Logger.log("Failed to choose the correct conversions, but others may have already been applied");
                     throw new IllegalActionException(e.getMessage());
                 }
             }
@@ -126,7 +126,7 @@ public class SelectConversionsAction implements Action{
                     payload.addAll(conversionHolder.getActuatorsFromColor(selectedMarbles.get(i).getColor()).get(actuatorsChoice.get(i))
                             .actuateConversion(currentPlayer, faithPath));
                 } catch (IllegalResourceTransferException e) {
-                    Console.log("Failed to choose the correct conversions, but others may have already been applied");
+                    Logger.log("Failed to choose the correct conversions, but others may have already been applied");
                     throw new IllegalActionException(e.getMessage());
                 }
             }

@@ -8,7 +8,7 @@ import it.polimi.ingsw.model.FaithPath;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.parser.raw.RawCrafting;
 import it.polimi.ingsw.parser.raw.RawStorage;
-import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.Logger;
 import it.polimi.ingsw.parser.SerializableObject;
 import it.polimi.ingsw.utils.PayloadFactory;
 
@@ -272,6 +272,6 @@ public class Crafting implements SerializableObject<RawCrafting> {
 
     @Override
     public void printDebugInfo() {
-        Console.log(toString());
+        Logger.log(toString());
     }
 }

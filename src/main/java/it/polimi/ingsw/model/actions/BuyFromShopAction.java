@@ -17,7 +17,7 @@ import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.model.storage.LimitedStorage;
 import it.polimi.ingsw.model.storage.ResourceContainer;
 import it.polimi.ingsw.model.storage.Storage;
-import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.Logger;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -127,7 +127,7 @@ public class BuyFromShopAction implements Action{
                 try {
                     container.removeResources(res, selectedResources.get(container).get(res));
                 } catch (IllegalResourceTransferException e) {
-                    Console.log("Logic failed in BuyFromShopAction", Console.Severity.ERROR);
+                    Logger.log("Logic failed in BuyFromShopAction", Logger.Severity.ERROR);
                     throw new IllegalActionException(e.getMessage());
                 }
             }

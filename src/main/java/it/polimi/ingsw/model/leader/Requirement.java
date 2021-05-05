@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.leader;
 
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.parser.raw.RawRequirement;
-import it.polimi.ingsw.server.Console;
+import it.polimi.ingsw.server.Logger;
 import it.polimi.ingsw.parser.SerializableObject;
 
 /**
@@ -21,6 +21,6 @@ public interface Requirement extends SerializableObject<RawRequirement> {
 
     @Override
     default void printDebugInfo() {
-        Console.log(toString());
+        Logger.log(toString());
     }
 }
