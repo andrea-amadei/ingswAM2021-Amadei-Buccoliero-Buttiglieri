@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.fsm;
 
 import it.polimi.ingsw.common.ActionQueue;
-import it.polimi.ingsw.common.InfoPayload;
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.model.actions.Action;
 
@@ -48,7 +48,7 @@ public class StateMachine implements InterruptListener{
         try {
             messages.addAll(action.acceptHandler(currentState));
         } catch (FSMTransitionFailedException e) {
-            messages.add(new Message(Collections.singletonList("Current Sender"), Collections.singletonList(new InfoPayload("Can't execute the action"))));
+            messages.add(new Message(Collections.singletonList("Current Sender"), Collections.singletonList(new InfoPayloadComponent("Can't execute the action"))));
             currentState.resetNextState();
         }
 

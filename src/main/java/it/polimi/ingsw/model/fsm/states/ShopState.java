@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.fsm.states;
 
-import it.polimi.ingsw.common.InfoPayload;
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
@@ -9,7 +8,6 @@ import it.polimi.ingsw.model.actions.SelectCardFromShopAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
 
-import java.util.Collections;
 import java.util.List;
 
 public class ShopState extends State {
@@ -79,7 +77,7 @@ public class ShopState extends State {
         List<Message> messages = super.onEntry();
         /*
         messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                Collections.singletonList(new InfoPayload("Possible Actions: Back, SelectCardFromShop"))));
+                Collections.singletonList(new InfoPayloadComponent("Possible Actions: Back, SelectCardFromShop"))));
          */
 
         //TODO: add the possible actions

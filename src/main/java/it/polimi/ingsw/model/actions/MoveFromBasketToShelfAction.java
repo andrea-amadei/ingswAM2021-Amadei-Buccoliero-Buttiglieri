@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.actions;
 
-import it.polimi.ingsw.common.InfoPayload;
 import it.polimi.ingsw.common.Message;
-import it.polimi.ingsw.common.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
@@ -106,7 +106,7 @@ public class MoveFromBasketToShelfAction implements Action{
                 .map(Player::getUsername)
                 .collect(Collectors.toList());
 
-        PayloadComponent _payload = new InfoPayload(amount + " of "
+        PayloadComponent _payload = new InfoPayloadComponent(amount + " of "
                 + resourceToMove
                 + " have been moved from "
                 + currentPlayer.getUsername() + "'s basket to their " + shelf.getId()) ;

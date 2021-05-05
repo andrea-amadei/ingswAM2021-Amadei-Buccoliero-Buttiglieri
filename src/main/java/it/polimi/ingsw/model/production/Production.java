@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.production;
 
-import it.polimi.ingsw.common.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.exceptions.NotReadyToCraftException;
 import it.polimi.ingsw.model.FaithPath;
 import it.polimi.ingsw.model.GameParameters;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.fsm.states;
 
-import it.polimi.ingsw.common.InfoPayload;
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.actions.SelectConversionsAction;
@@ -60,7 +60,7 @@ public class ConversionSelectionState extends State {
     public List<Message> onEntry() {
         List<Message> messages = super.onEntry();
         messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                Collections.singletonList(new InfoPayload("Possible Actions: SelectConversions"))));
+                Collections.singletonList(new InfoPayloadComponent("Possible Actions: SelectConversions"))));
 
         return messages;
     }

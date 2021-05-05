@@ -1,8 +1,7 @@
 package it.polimi.ingsw;
 
 
-import it.polimi.ingsw.common.InfoPayload;
-import it.polimi.ingsw.common.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,16 +10,16 @@ public class InfoPayloadTest {
 
     @Test
     public void validCreation(){
-        assertDoesNotThrow(()->new InfoPayload(""));
+        assertDoesNotThrow(()->new InfoPayloadComponent(""));
     }
 
     @Test
     public void nullCreation(){
-        assertThrows(NullPointerException.class, () -> new InfoPayload(null));
+        assertThrows(NullPointerException.class, () -> new InfoPayloadComponent(null));
     }
 
     @Test
     public void correctCreation(){
-        assertEquals("INFO: a message", new InfoPayload("a message").toString());
+        assertEquals("INFO: a message", new InfoPayloadComponent("a message").toString());
     }
 }

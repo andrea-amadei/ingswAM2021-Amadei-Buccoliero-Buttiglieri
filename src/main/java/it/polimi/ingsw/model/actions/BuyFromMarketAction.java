@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.actions;
 
-import it.polimi.ingsw.common.InfoPayload;
 import it.polimi.ingsw.common.Message;
-import it.polimi.ingsw.common.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.GameModel;
@@ -120,7 +120,7 @@ public class BuyFromMarketAction implements Action{
         //Create the payload with the possible conversions
 
         //TODO: add this payload component. We may need to create a raw object to serialize the conversions
-        PayloadComponent conversionInfo = new InfoPayload("Possible conversions: " + possibleConversions);
+        PayloadComponent conversionInfo = new InfoPayloadComponent("Possible conversions: " + possibleConversions);
 
         //Create the message to be sent to everyone
         List<String> to = model.getPlayers().stream().map(Player::getUsername).collect(Collectors.toList());
