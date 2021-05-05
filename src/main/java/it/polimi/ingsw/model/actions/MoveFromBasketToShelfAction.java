@@ -106,10 +106,6 @@ public class MoveFromBasketToShelfAction implements Action{
                 .map(Player::getUsername)
                 .collect(Collectors.toList());
 
-        PayloadComponent _payload = new InfoPayloadComponent(amount + " of "
-                + resourceToMove
-                + " have been moved from "
-                + currentPlayer.getUsername() + "'s basket to their " + shelf.getId()) ;
 
         List<PayloadComponent> payload = new ArrayList<>();
 

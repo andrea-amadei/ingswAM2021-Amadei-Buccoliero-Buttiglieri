@@ -57,7 +57,7 @@ public class BaseCupboard implements Cupboard{
     }
 
     /**
-     * Gets the shelf with the desired id
+     * Gets the shelf with the desired id (case insensitive)
      * @param id the id of the desired shelf
      * @return the selected shelf
      * @throws NullPointerException if id is null
@@ -67,7 +67,7 @@ public class BaseCupboard implements Cupboard{
     public Shelf getShelfById(String id) {
         if(id == null)
             throw new NullPointerException();
-        return shelves.stream().filter(x->x.getId().equals(id)).findFirst().orElseThrow(NoSuchElementException::new);
+        return shelves.stream().filter(x-> x.getId().equalsIgnoreCase(id)).findFirst().orElseThrow(NoSuchElementException::new);
     }
     /**
      * Moves an amount of resources from one shelf to another

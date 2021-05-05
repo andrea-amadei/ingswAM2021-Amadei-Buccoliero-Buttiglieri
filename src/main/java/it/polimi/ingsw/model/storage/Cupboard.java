@@ -18,7 +18,7 @@ public interface Cupboard {
     Set<Shelf> getShelves();
 
     /**
-     * Gets the shelf with the desired id
+     * Gets the shelf with the desired id (case insensitive)
      * @param id the id of the desired shelf
      * @return the selected shelf
      * @throws NullPointerException if id is null

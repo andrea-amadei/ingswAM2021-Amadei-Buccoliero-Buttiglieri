@@ -57,15 +57,29 @@ public class Market implements SerializableObject<RawMarket> {
     }
 
     /**
-     * A new market is created. Marbles are shuffled using the provided random seed.
+     * A new market is created with the specified configuration.
      * The selected marbles list is initially empty.
+     * This should only be used in test. The builder will use another constructor.
      * @param grid an ordered list of all marbles to be added to the market
      * @throws IllegalArgumentException if rows/columns dimension are inconsistent with the given number of marbles.
      */
     public Market(List<MarbleColor> grid, MarbleColor oddOne) {
+        this(grid, oddOne, GameParameters.MARKET_ROWS, GameParameters.MARKET_COLUMNS);
+    }
+
+    /**
+     * A new market is created with the specified configuration.
+     * The selected marbles list is initially empty.
+     * TThe builder will use this constructor.
+     * @param grid an ordered list of all marbles to be added to the market
+     * @param oddOne the outer marble
+     * @param rowSize the rows size
+     * @param colSize the columns size
+     */
+    public Market(List<MarbleColor> grid, MarbleColor oddOne, int rowSize, int colSize){
         selectedMarbles = new ArrayList<>();
-        rowSize = GameParameters.MARKET_ROWS;
-        colSize = GameParameters.MARKET_COLUMNS;
+        this.rowSize = rowSize;
+        this.colSize = colSize;
         this.grid = new Marble[rowSize][colSize];
 
         if(grid.size() != rowSize * colSize)
@@ -82,6 +96,7 @@ public class Market implements SerializableObject<RawMarket> {
         // add the odd one
         this.oddOne = MarbleFactory.createMarble(oddOne);
     }
+
 
     /**
      * A new market is created. Marbles are shuffled randomly.

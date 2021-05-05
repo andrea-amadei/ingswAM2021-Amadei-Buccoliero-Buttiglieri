@@ -89,7 +89,7 @@ public class SelectResourcesAction implements Action{
 
         ResourceContainer container;
         try {
-            container = storage.getResourceContainerById(containerId);
+            container = storage.getSpendableResourceContainerById(containerId);
         }catch(NoSuchElementException e){
             throw new IllegalActionException(e.getMessage());
         }

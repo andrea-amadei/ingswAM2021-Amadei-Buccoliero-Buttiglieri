@@ -47,7 +47,7 @@ public class LeaderDecorator implements Cupboard{
     }
 
     /**
-     * Gets the shelf with the desired id
+     * Gets the shelf with the desired id (case insensitive)
      * @param id the id of the desired shelf
      * @return the selected shelf
      * @throws NullPointerException if id is null
@@ -60,7 +60,7 @@ public class LeaderDecorator implements Cupboard{
             requestedShelf = decoratedCupboard.getShelfById(id);
             return requestedShelf;
         }catch(NoSuchElementException e){
-            if(leaderShelf.getId().equals(id))
+            if(leaderShelf.getId().equalsIgnoreCase(id))
                 return leaderShelf;
         }
 

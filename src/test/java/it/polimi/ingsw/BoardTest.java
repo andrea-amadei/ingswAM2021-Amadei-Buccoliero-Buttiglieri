@@ -6,6 +6,7 @@ import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.leader.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.ThrowingSupplier;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -15,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BoardTest {
     @Test
     public void checkBoardInstantiation(){
-        assertDoesNotThrow(Board::new);
+        assertDoesNotThrow((ThrowingSupplier<Board>) Board::new);
     }
 
     @Test

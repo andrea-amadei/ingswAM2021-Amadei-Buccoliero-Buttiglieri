@@ -25,12 +25,13 @@ public class Storage {
     private Map<ResourceContainer, Map<ResourceSingle, Integer>> selectedResources;
 
     /**
-     * A new empty storage is created. The cupboard is initialized with the parameters stated in GameParameters class
+     * A new empty storage is created. The cupboard is initialized with the parameters stated in GameParameters class.
+     * This constructor should only be used for tests, the builder uses the other one
      */
     public Storage(){
         chest = new BaseStorage("chest");
         hand = new BaseStorage("hand");
-        marketBasket = new BaseStorage("basket");
+        marketBasket = new BaseStorage("marketbasket");
         List<Shelf> baseShelves = new ArrayList<>();
         for(int i = 0; i < GameParameters.BASE_CUPBOARD_SHELF_NAMES.size(); i++){
             baseShelves.add(new Shelf(GameParameters.BASE_CUPBOARD_SHELF_NAMES.get(i),
@@ -41,6 +42,23 @@ public class Storage {
         selectedResources = new HashMap<>();
 
     }
+
+    /**
+     * A new empty storage is created.
+     * This constructor is used by the builder
+     * @param chest the chest of this storage
+     * @param hand the hand of this storage
+     * @param marketBasket the marketBasket of this storage
+     * @param baseShelves the baseShelves of this storage
+     */
+    public Storage(BaseStorage chest, BaseStorage hand, BaseStorage marketBasket, List<Shelf> baseShelves){
+        this.chest = chest;
+        this.hand = hand;
+        this.marketBasket = marketBasket;
+        this.cupboard = new BaseCupboard(baseShelves);
+        selectedResources = new HashMap<>();
+    }
+
 
     /**
      * Returns the chest of this storage
@@ -97,15 +115,14 @@ public class Storage {
      * @throws NullPointerException if id is null
      * @throws NoSuchElementException if the id doesn't match with any of the resourceContainers
      */
-    public ResourceContainer getResourceContainerById(String id){
+    public ResourceContainer getSpendableResourceContainerById(String id){
 
-        //TODO: assign id consistently to the containers
+        List<ResourceContainer> spendableContainers = new ArrayList<>(getCupboard().getShelves());
+        spendableContainers.add(getChest());
+
         if(id == null)
             throw new NullPointerException();
-        if(id.equals("Chest") || id.equals("chest"))
-            return getChest();
-
-        return getCupboard().getShelfById(id);
+        return spendableContainers.stream().filter(x -> x.getId().equalsIgnoreCase(id)).findFirst().orElseThrow(NoSuchElementException::new);
     }
 
     /**
