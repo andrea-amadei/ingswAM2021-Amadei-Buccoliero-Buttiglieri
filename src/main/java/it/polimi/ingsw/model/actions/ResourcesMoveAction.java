@@ -96,8 +96,7 @@ public class ResourcesMoveAction implements Action{
 
 
 
-        //TODO: add ID to chest, hand, ecc...
-        if(origin.equals("Hand")){
+        if(origin.equalsIgnoreCase(currentPlayer.getBoard().getStorage().getHand().getId())){
             Shelf destinationShelf;
             try {
                 destinationShelf = storage.getCupboard().getShelfById(destination);
@@ -111,7 +110,7 @@ public class ResourcesMoveAction implements Action{
             }
         }
 
-        else if(destination.equals("Hand")){
+        else if(destination.equalsIgnoreCase(currentPlayer.getBoard().getStorage().getHand().getId())){
             Shelf originShelf;
             ResourceContainer hand = storage.getHand();
             try {
