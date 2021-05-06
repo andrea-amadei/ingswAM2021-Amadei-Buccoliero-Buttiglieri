@@ -5,12 +5,14 @@ import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
 import it.polimi.ingsw.common.payload_components.groups.UpdatePayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.updates.*;
 import it.polimi.ingsw.model.holder.FaithHolder;
+import it.polimi.ingsw.model.market.ConversionActuator;
 import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.parser.raw.RawCrafting;
 import it.polimi.ingsw.parser.raw.RawLevelFlag;
 import it.polimi.ingsw.parser.raw.RawMarket;
 import it.polimi.ingsw.parser.raw.RawStorage;
 
+import java.util.List;
 import java.util.Set;
 
 public class PayloadFactory {
@@ -92,6 +94,10 @@ public class PayloadFactory {
 
     public static PossibleActionPayloadComponent possibleActions(Set<PossibleActions> possibleActions){
         return new PossibleActionPayloadComponent(possibleActions);
+    }
+
+    public static UpdatePayloadComponent changePossibleConversions(String player, List<List<ConversionActuator>> possibleConversions){
+        return new ChangePossibleConversionPayloadComponent(player, possibleConversions);
     }
 
 }

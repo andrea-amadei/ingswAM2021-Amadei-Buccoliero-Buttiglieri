@@ -118,17 +118,14 @@ public class BuyFromMarketAction implements Action{
         PayloadComponent update = PayloadFactory.changeMarket(market.toRaw());
 
         //Create the payload with the possible conversions
-
-        //TODO: add this payload component. We may need to create a raw object to serialize the conversions
-        PayloadComponent conversionInfo = new InfoPayloadComponent("Possible conversions: " + possibleConversions);
+        payload.add(PayloadFactory.changePossibleConversions(currentPlayer.getUsername(), possibleConversions));
 
         //Create the message to be sent to everyone
         List<String> to = model.getPlayers().stream().map(Player::getUsername).collect(Collectors.toList());
         messages.add(new Message(to, Collections.singletonList(update)));
 
         //Create the message to be sent only to the current player
-        //TODO: add the proper payload component
-        messages.add(new Message(Collections.singletonList(player), Collections.singletonList(conversionInfo)));
+        messages.add(new Message(Collections.singletonList(player), payload));
 
         return messages;
     }
