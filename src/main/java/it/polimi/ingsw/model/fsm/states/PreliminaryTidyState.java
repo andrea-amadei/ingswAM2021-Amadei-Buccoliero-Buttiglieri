@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.fsm.states;
 
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.Player;
@@ -8,7 +9,10 @@ import it.polimi.ingsw.model.actions.ConfirmTidyAction;
 import it.polimi.ingsw.model.actions.ResourcesMoveAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
+import it.polimi.ingsw.utils.PayloadFactory;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 public class PreliminaryTidyState extends State {
@@ -106,12 +110,15 @@ public class PreliminaryTidyState extends State {
     @Override
     public List<Message> onEntry() {
         List<Message> messages = super.onEntry();
-        /*
-        messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                Collections.singletonList(new InfoPayloadComponent("Possible Actions: ResourceMove, ConfirmTidy"))));
-         */
 
-        //TODO: add the appropriate possible actions
+        messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
+                Collections.singletonList(PayloadFactory.possibleActions(
+                        new HashSet<>(){{
+                            add(PossibleActions.RESOURCE_MOVE);
+                            add(PossibleActions.CONFIRM_TIDY);
+                        }}
+                ))));
+
 
         return messages;
     }

@@ -1,13 +1,17 @@
 package it.polimi.ingsw.model.fsm.states;
 
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.actions.PreliminaryPickAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
+import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 public class PreliminaryPickState extends State {
@@ -51,10 +55,14 @@ public class PreliminaryPickState extends State {
     @Override
     public List<Message> onEntry() {
         List<Message> messages = super.onEntry();
-        /*
+
         messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                Collections.singletonList(new InfoPayloadComponent("Possible Actions: PreliminaryPick"))));
-        */
+                Collections.singletonList(PayloadFactory.possibleActions(
+                        new HashSet<>(){{
+                            add(PossibleActions.PRELIMINARY_PICK);
+                        }}
+                ))));
+
         return messages;
     }
 

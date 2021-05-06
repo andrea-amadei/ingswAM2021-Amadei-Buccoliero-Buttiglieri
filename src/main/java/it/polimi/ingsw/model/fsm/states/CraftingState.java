@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.fsm.states;
 
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.actions.BackAction;
@@ -9,8 +10,11 @@ import it.polimi.ingsw.model.actions.ConfirmAction;
 import it.polimi.ingsw.model.actions.SelectCraftingAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
+import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 public class CraftingState extends State {
@@ -143,15 +147,25 @@ public class CraftingState extends State {
     public List<Message> onEntry() {
         List<Message> messages = super.onEntry();
 
-        /*if(getGameContext().getCurrentPlayer().getBoard().getProduction().isCraftingReady())
+        if(getGameContext().getCurrentPlayer().getBoard().getProduction().isCraftingReady())
             messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                    Collections.singletonList(PayloadFactory.)));
+                    Collections.singletonList(PayloadFactory.possibleActions(
+                            new HashSet<>(){{
+                                add(PossibleActions.ACTIVATE_PRODUCTION);
+                                add(PossibleActions.SELECT_CRAFTING);
+                                add(PossibleActions.BACK);
+                            }}
+                    ))));
         else
             messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                    Collections.singletonList(new InfoPayloadComponent("Possible Actions: Back, SelectCrafting"))));
-        */
+                    Collections.singletonList(PayloadFactory.possibleActions(
+                            new HashSet<>(){{
+                                add(PossibleActions.SELECT_CRAFTING);
+                                add(PossibleActions.BACK);
+                            }}
+                    ))));
 
-        //TODO: send the possible moves to the client
+
         return messages;
     }
 

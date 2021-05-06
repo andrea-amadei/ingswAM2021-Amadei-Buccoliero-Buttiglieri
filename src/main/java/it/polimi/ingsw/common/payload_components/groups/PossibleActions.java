@@ -2,13 +2,21 @@ package it.polimi.ingsw.common.payload_components.groups;
 
 public enum PossibleActions {
     ACTIVATE_LEADER,
+    ACTIVATE_PRODUCTION,
     BACK,
     BUY_FROM_MARKET,
+    CONFIRM,
+    CONFIRM_TIDY,
     DISCARD_LEADER,
     END_MARKET_ACTION,
     END_TURN,
     MOVE_FROM_BASKET_TO_SHELF,
+    PRELIMINARY_PICK,
     RESOURCE_MOVE,
+    SELECT_CARD_FROM_SHOP,
     SELECT_CONVERSIONS,
-    SELECT_PLAY
+    SELECT_CRAFTING,
+    SELECT_OUTPUTS,
+    SELECT_PLAY,
+    SELECT_RESOURCES,
 }
