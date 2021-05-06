@@ -9,8 +9,10 @@ import it.polimi.ingsw.model.actions.LorenzoMoveAction;
 import it.polimi.ingsw.model.actions.NextTurnAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
+import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class EndTurnState extends State {
@@ -28,7 +30,6 @@ public class EndTurnState extends State {
         hasLorenzoPlayed = false;
     }
 
-    //TODO: add the payload to inform the clients of the current player (or we may add it to the NextTurnAction)
     /**
      * Executed everytime the fsm enters in this state.
      * If the game mode is single player and Lorenzo's play has not been launched, Lorenzo's play is launched.
@@ -69,7 +70,10 @@ public class EndTurnState extends State {
             //else we can proceed with the next turn
             getGameContext().setCurrentPlayer(players.get(nextPlayerIndex));
             launchInterrupt(new NextTurnAction(), 1);
-            return new ArrayList<>();
+            return Collections.singletonList(
+                    new Message(getGameContext().getGameModel().getPlayerNames(),
+                            Collections.singletonList(PayloadFactory.changeCurrentPlayer(getGameContext().getCurrentPlayer().getUsername())))
+            );
         }
 
         return new ArrayList<>();

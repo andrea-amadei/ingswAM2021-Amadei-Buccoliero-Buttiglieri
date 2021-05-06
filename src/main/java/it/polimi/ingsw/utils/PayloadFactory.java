@@ -100,4 +100,8 @@ public class PayloadFactory {
         return new ChangePossibleConversionPayloadComponent(player, possibleConversions);
     }
 
+    public static UpdatePayloadComponent changeCurrentPlayer(String newPlayer){
+        return new ChangeCurrentPlayerPayloadComponent(newPlayer);
+    }
+
 }
