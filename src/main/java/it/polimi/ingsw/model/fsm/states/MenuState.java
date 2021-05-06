@@ -1,13 +1,17 @@
 package it.polimi.ingsw.model.fsm.states;
 
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.actions.*;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
+import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 public class MenuState extends State {
@@ -179,8 +183,18 @@ public class MenuState extends State {
      */
     @Override
     public List<Message> onEntry() {
-        //TODO: send appropriate messages
-        return super.onEntry();
+        return Collections.singletonList(
+                new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
+                        Collections.singletonList(PayloadFactory.possibleActions(
+                                new HashSet<>(){{
+                                    add(PossibleActions.ACTIVATE_LEADER);
+                                    add(PossibleActions.DISCARD_LEADER);
+                                    add(PossibleActions.RESOURCE_MOVE);
+                                    add(PossibleActions.END_TURN);
+                                    add(PossibleActions.SELECT_PLAY);
+                                }}
+                        )))
+        );
     }
 
 

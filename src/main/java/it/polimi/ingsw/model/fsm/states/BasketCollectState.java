@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.fsm.states;
 
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.FaithPath;
@@ -14,9 +15,7 @@ import it.polimi.ingsw.model.fsm.State;
 import it.polimi.ingsw.parser.raw.RawStorage;
 import it.polimi.ingsw.utils.PayloadFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BasketCollectState extends State {
@@ -128,11 +127,15 @@ public class BasketCollectState extends State {
      */
     @Override
     public List<Message> onEntry() {
-        /* List<Message> messages = super.onEntry();
+        List<Message> messages = super.onEntry();
         messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                Collections.singletonList(new InfoPayloadComponent("Possible Actions: MoveFromBasketToShelf, EndMarketAction"))));
-        */
-        //TODO: add appropriate payload
+                Collections.singletonList(PayloadFactory.possibleActions(
+                        new HashSet<>(){{
+                            add(PossibleActions.MOVE_FROM_BASKET_TO_SHELF);
+                            add(PossibleActions.END_MARKET_ACTION);
+                        }}
+                ))));
+
         return new ArrayList<>();
     }
 

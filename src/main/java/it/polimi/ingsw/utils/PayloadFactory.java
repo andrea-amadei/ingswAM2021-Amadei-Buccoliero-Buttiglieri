@@ -1,5 +1,7 @@
 package it.polimi.ingsw.utils;
 
+import it.polimi.ingsw.common.payload_components.groups.PossibleActionPayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
 import it.polimi.ingsw.common.payload_components.groups.UpdatePayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.updates.*;
 import it.polimi.ingsw.model.holder.FaithHolder;
@@ -8,6 +10,8 @@ import it.polimi.ingsw.parser.raw.RawCrafting;
 import it.polimi.ingsw.parser.raw.RawLevelFlag;
 import it.polimi.ingsw.parser.raw.RawMarket;
 import it.polimi.ingsw.parser.raw.RawStorage;
+
+import java.util.Set;
 
 public class PayloadFactory {
     public static UpdatePayloadComponent addLeaderCard(String player, Integer id){
@@ -84,6 +88,10 @@ public class PayloadFactory {
 
     public static UpdatePayloadComponent changeMarket(RawMarket market){
         return new ChangeMarketUpdatePayloadComponent(market);
+    }
+
+    public static PossibleActionPayloadComponent possibleActions(Set<PossibleActions> possibleActions){
+        return new PossibleActionPayloadComponent(possibleActions);
     }
 
 }

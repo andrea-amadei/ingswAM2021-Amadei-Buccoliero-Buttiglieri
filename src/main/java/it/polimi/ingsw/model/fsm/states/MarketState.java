@@ -1,13 +1,17 @@
 package it.polimi.ingsw.model.fsm.states;
 
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.actions.BackAction;
 import it.polimi.ingsw.model.actions.BuyFromMarketAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
+import it.polimi.ingsw.utils.PayloadFactory;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 public class MarketState extends State {
@@ -82,12 +86,14 @@ public class MarketState extends State {
     @Override
     public List<Message> onEntry() {
 
-        //TODO: send appropriate possible moves
         List<Message> messages = super.onEntry();
-        /*
         messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                Collections.singletonList(new InfoPayloadComponent("Possible Actions: Back, BuyFromMarket"))));
-        */
+                Collections.singletonList(PayloadFactory.possibleActions(
+                        new HashSet<>(){{
+                            add(PossibleActions.BACK);
+                            add(PossibleActions.BUY_FROM_MARKET);
+                        }}
+                ))));
         return messages;
     }
 
