@@ -64,22 +64,10 @@ public class Market implements SerializableObject<RawMarket> {
      * @throws IllegalArgumentException if rows/columns dimension are inconsistent with the given number of marbles.
      */
     public Market(List<MarbleColor> grid, MarbleColor oddOne) {
-        this(grid, oddOne, GameParameters.MARKET_ROWS, GameParameters.MARKET_COLUMNS);
-    }
 
-    /**
-     * A new market is created with the specified configuration.
-     * The selected marbles list is initially empty.
-     * TThe builder will use this constructor.
-     * @param grid an ordered list of all marbles to be added to the market
-     * @param oddOne the outer marble
-     * @param rowSize the rows size
-     * @param colSize the columns size
-     */
-    public Market(List<MarbleColor> grid, MarbleColor oddOne, int rowSize, int colSize){
         selectedMarbles = new ArrayList<>();
-        this.rowSize = rowSize;
-        this.colSize = colSize;
+        this.rowSize = GameParameters.MARKET_ROWS;
+        this.colSize = GameParameters.MARKET_COLUMNS;
         this.grid = new Marble[rowSize][colSize];
 
         if(grid.size() != rowSize * colSize)
@@ -95,6 +83,36 @@ public class Market implements SerializableObject<RawMarket> {
 
         // add the odd one
         this.oddOne = MarbleFactory.createMarble(oddOne);
+    }
+
+    /**
+     * A new market is created with the specified configuration.
+     * The selected marbles list is initially empty.
+     * TThe builder will use this constructor.
+     * @param grid an ordered list of all marbles to be added to the market
+     * @param oddOne the outer marble
+     * @param rowSize the rows size
+     * @param colSize the columns size
+     */
+    public Market(List<Marble> grid, Marble oddOne, int rowSize, int colSize){
+        selectedMarbles = new ArrayList<>();
+        this.rowSize = rowSize;
+        this.colSize = colSize;
+        this.grid = new Marble[rowSize][colSize];
+
+        if(grid.size() != rowSize * colSize)
+            throw new IllegalArgumentException("The market grid must contain " + rowSize*colSize + "(" + rowSize + "*" + colSize
+                    + ") marbles, but only " + grid.size() + " were provided");
+
+        // add marbles to the grid
+        Iterator<Marble> marbleIterator = grid.listIterator(0);
+
+        for(int i = 0; i < rowSize; i++)
+            for(int j = 0; j < colSize; j++)
+                this.grid[i][j] = marbleIterator.next();
+
+        // add the odd one
+        this.oddOne = oddOne;
     }
 
 

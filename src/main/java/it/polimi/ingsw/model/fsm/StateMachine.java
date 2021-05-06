@@ -20,13 +20,14 @@ public class StateMachine implements InterruptListener{
         this.actionQueue = actionQueue;
         this.gameContext = gameContext;
 
-        //TODO: set to SetupState at first
+        //TODO: set to SetupState at first and connect the listener
         currentState = null;
     }
 
     public StateMachine(ActionQueue actionQueue, GameContext gameContext, State initialState){
         this(actionQueue, gameContext);
         this.currentState = initialState;
+        initialState.setListener(this);
     }
 
 
@@ -88,4 +89,7 @@ public class StateMachine implements InterruptListener{
         actionQueue.addAction(interrupt, priority);
     }
 
+    public GameContext getGameContext() {
+        return gameContext;
+    }
 }
