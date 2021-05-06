@@ -9,9 +9,9 @@ public final class Logger {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     private static final String timeZone = "Z";
 
-    private static final String RESET = "\033[0m";
-
     public enum Format {
+        RESET("\033[0m"),
+
         BLACK("\033[0;30m"),
         RED("\033[0;31m"),
         GREEN("\033[0;32m"),
@@ -108,14 +108,14 @@ public final class Logger {
         System.out.println( "[" + getCurrentTime() + "] " +
                             Severity.INFO + ": " +
                             message +
-                            RESET);
+                            Format.RESET);
     }
 
     public static void log(String message, Severity severity) {
         System.out.println( "[" + getCurrentTime() + "] " +
                 severity + ": " +
                 message +
-                RESET);
+                Format.RESET);
     }
 
     public static void log(String message, Severity severity, Format format) {
@@ -123,6 +123,6 @@ public final class Logger {
                 format +
                 severity + ": " +
                 message +
-                RESET);
+                Format.RESET);
     }
 }
