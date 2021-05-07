@@ -1,6 +1,6 @@
 package it.polimi.ingsw.utils;
 
-public enum ForegroundColors {
+public enum ForegroundColor {
     RESET("\033[0m"),
 
     BLACK("\033[0;30m"),
@@ -41,7 +41,7 @@ public enum ForegroundColors {
 
     private final String value;
 
-    ForegroundColors(String value) {
+    ForegroundColor(String value) {
         this.value = value;
     }
 

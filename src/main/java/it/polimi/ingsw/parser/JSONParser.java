@@ -13,7 +13,7 @@ import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.CraftingCard;
 import it.polimi.ingsw.parser.raw.list.*;
 import it.polimi.ingsw.server.Logger;
-import it.polimi.ingsw.utils.ForegroundColors;
+import it.polimi.ingsw.utils.ForegroundColor;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -44,7 +44,7 @@ public final class JSONParser {
 
     private static void errorHandler(String message) throws ParserException {
         if(BEST_EFFORT_MODE)
-            Logger.log(message + ". Skipped...", Logger.Severity.WARNING, ForegroundColors.YELLOW);
+            Logger.log(message + ". Skipped...", Logger.Severity.WARNING, ForegroundColor.YELLOW);
         else
             throw new ParserException(message);
     }

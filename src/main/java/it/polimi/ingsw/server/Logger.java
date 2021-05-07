@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.utils.BackgroundColors;
-import it.polimi.ingsw.utils.ForegroundColors;
+import it.polimi.ingsw.utils.BackgroundColor;
+import it.polimi.ingsw.utils.ForegroundColor;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -42,29 +42,29 @@ public final class Logger {
         System.out.println( "[" + getCurrentTime() + "] " +
                             Severity.INFO + ": " +
                             message +
-                            BackgroundColors.RESET);
+                            BackgroundColor.RESET);
     }
 
     public static void log(String message, Severity severity) {
         System.out.println( "[" + getCurrentTime() + "] " +
                 severity + ": " +
                 message +
-                BackgroundColors.RESET);
+                BackgroundColor.RESET);
     }
 
-    public static void log(String message, Severity severity, ForegroundColors foreground) {
+    public static void log(String message, Severity severity, ForegroundColor foreground) {
         System.out.println( "[" + getCurrentTime() + "] " +
                 foreground +
                 severity + ": " +
                 message +
-                BackgroundColors.RESET);
+                BackgroundColor.RESET);
     }
 
-    public static void log(String message, Severity severity, ForegroundColors foreground, BackgroundColors background) {
+    public static void log(String message, Severity severity, ForegroundColor foreground, BackgroundColor background) {
         System.out.println( "[" + getCurrentTime() + "] " +
                 foreground + background +
                 severity + ": " +
                 message +
-                BackgroundColors.RESET);
+                BackgroundColor.RESET);
     }
 }

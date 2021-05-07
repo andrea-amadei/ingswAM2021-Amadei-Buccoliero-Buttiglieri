@@ -1,6 +1,6 @@
 package it.polimi.ingsw.utils;
 
-public enum BackgroundColors {
+public enum BackgroundColor {
     RESET("\033[0m"),
 
     BLACK("\033[40m"),
@@ -23,7 +23,7 @@ public enum BackgroundColors {
 
     private final String value;
 
-    BackgroundColors(String value) {
+    BackgroundColor(String value) {
         this.value = value;
     }
 
