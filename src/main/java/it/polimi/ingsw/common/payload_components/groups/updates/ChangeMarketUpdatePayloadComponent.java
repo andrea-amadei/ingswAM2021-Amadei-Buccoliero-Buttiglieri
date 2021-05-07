@@ -1,11 +1,13 @@
 package it.polimi.ingsw.common.payload_components.groups.updates;
 
 import com.google.gson.annotations.SerializedName;
+import it.polimi.ingsw.annotations.SerializedGroup;
 import it.polimi.ingsw.annotations.SerializedType;
 import it.polimi.ingsw.common.payload_components.groups.UpdatePayloadComponent;
 import it.polimi.ingsw.parser.raw.RawMarket;
 
 @SerializedType("change_market")
+@SerializedGroup("update")
 public class ChangeMarketUpdatePayloadComponent implements UpdatePayloadComponent {
 
     @SerializedName("market")

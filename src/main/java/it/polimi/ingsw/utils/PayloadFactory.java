@@ -6,6 +6,7 @@ import it.polimi.ingsw.common.payload_components.groups.UpdatePayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.updates.*;
 import it.polimi.ingsw.model.holder.FaithHolder;
 import it.polimi.ingsw.model.market.ConversionActuator;
+import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.parser.raw.RawCrafting;
 import it.polimi.ingsw.parser.raw.RawLevelFlag;
@@ -96,8 +97,8 @@ public class PayloadFactory {
         return new PossibleActionPayloadComponent(possibleActions);
     }
 
-    public static UpdatePayloadComponent changePossibleConversions(String player, List<List<ConversionActuator>> possibleConversions){
-        return new ChangePossibleConversionPayloadComponent(player, possibleConversions);
+    public static UpdatePayloadComponent changePossibleConversions(String player, List<Marble> selectedMarbles, List<List<ConversionActuator>> possibleConversions){
+        return new ChangePossibleConversionsUpdatePayloadComponent(player, selectedMarbles, possibleConversions);
     }
 
     public static UpdatePayloadComponent changeCurrentPlayer(String newPlayer){

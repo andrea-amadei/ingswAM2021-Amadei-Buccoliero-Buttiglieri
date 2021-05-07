@@ -5,6 +5,7 @@ import it.polimi.ingsw.annotations.SerializedType;
 import it.polimi.ingsw.common.payload_components.groups.SpecificUpdatePayloadComponent;
 import it.polimi.ingsw.gamematerials.MarbleColor;
 import it.polimi.ingsw.model.market.ConversionActuator;
+import it.polimi.ingsw.model.market.Marble;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public class ChangePossibleConversionsUpdatePayloadComponent extends SpecificUpdatePayloadComponent {
 
     @SerializedName(value = "selected_marbles", alternate = "selectedMarbles")
-    private List<MarbleColor> selectedMarbles;
+    private List<Marble> selectedMarbles;
 
     @SerializedName(value = "possible_conversions", alternate = "possibleConversions")
     private List<List<ConversionActuator>> possibleConversions;
@@ -22,7 +23,7 @@ public class ChangePossibleConversionsUpdatePayloadComponent extends SpecificUpd
      */
     public ChangePossibleConversionsUpdatePayloadComponent() { }
 
-    public ChangePossibleConversionsUpdatePayloadComponent(String player, List<MarbleColor> selectedMarbles, List<List<ConversionActuator>> possibleConversions) {
+    public ChangePossibleConversionsUpdatePayloadComponent(String player, List<Marble> selectedMarbles, List<List<ConversionActuator>> possibleConversions) {
         super(player);
 
         if(selectedMarbles == null || possibleConversions == null)
@@ -32,7 +33,7 @@ public class ChangePossibleConversionsUpdatePayloadComponent extends SpecificUpd
         this.possibleConversions = possibleConversions;
     }
 
-    public List<MarbleColor> getSelectedMarbles() {
+    public List<Marble> getSelectedMarbles() {
         return selectedMarbles;
     }
 

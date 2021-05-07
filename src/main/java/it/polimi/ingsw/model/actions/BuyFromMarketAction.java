@@ -118,7 +118,7 @@ public class BuyFromMarketAction implements Action{
         PayloadComponent update = PayloadFactory.changeMarket(market.toRaw());
 
         //Create the payload with the possible conversions
-        payload.add(PayloadFactory.changePossibleConversions(currentPlayer.getUsername(), possibleConversions));
+        payload.add(PayloadFactory.changePossibleConversions(currentPlayer.getUsername(), selectedMarbles, possibleConversions));
 
         //Create the message to be sent to everyone
         List<String> to = model.getPlayers().stream().map(Player::getUsername).collect(Collectors.toList());

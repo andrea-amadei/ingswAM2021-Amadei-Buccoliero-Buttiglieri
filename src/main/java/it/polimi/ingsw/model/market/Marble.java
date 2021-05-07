@@ -9,7 +9,7 @@ import it.polimi.ingsw.gamematerials.MarbleColor;
  */
 public class Marble {
     private final MarbleColor color;
-    private final ConversionActuator baseConversionActuator;
+    private transient final ConversionActuator baseConversionActuator;
 
     /**
      * Creates a new marble with a color and a default actuator. Note: it should only be created by the factory class
