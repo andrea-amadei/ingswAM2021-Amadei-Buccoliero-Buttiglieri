@@ -196,8 +196,8 @@ public class ShopResourceSelectionState extends State {
             Map<String, Integer> resourcesToRemoveFromContainer = new HashMap<>();
             for(ResourceSingle res : selectedResources.get(container).keySet()){
                 try {
-                    container.removeResources(res, selectedResources.get(container).get(res));
                     resourcesToRemoveFromContainer.put(res.getId().toLowerCase(), -selectedResources.get(container).get(res));
+                    container.removeResources(res, selectedResources.get(container).get(res));
                 } catch (IllegalResourceTransferException e) {
                     Logger.log("Logic failed in ShopResourceSelectionState", Logger.Severity.ERROR);
                     throw new FSMTransitionFailedException(e.getMessage());
