@@ -5,6 +5,7 @@ import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.model.actions.Action;
 import it.polimi.ingsw.model.fsm.StateMachine;
+import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.server.clienthandling.ClientHub;
 
 import java.util.ArrayList;
@@ -17,9 +18,9 @@ import java.util.Map;
  * and sends the messages to the clients
  */
 public class Controller extends Thread{
-    private StateMachine stateMachine;
-    private ActionQueue actionQueue;
-    private ClientHub clientHub;
+    private final StateMachine stateMachine;
+    private final ActionQueue actionQueue;
+    private final ClientHub clientHub;
 
     /**
      * Creates the controller with a state machine, an action queue and a clientHub
@@ -43,7 +44,7 @@ public class Controller extends Thread{
         return stateMachine.executeAction(action);
     }
 
-    //TODO: we may want to send to the clients that have lost connections, the preciously sent messages
+    //TODO: we may want to send the previously sent messages to the clients that have lost connections (store them in queues?)
     /**
      * Sends all messages to the correct clients (if connected)
      * @param messages the messages to be sent
@@ -58,10 +59,18 @@ public class Controller extends Thread{
             for(String target : m.getTargets()){
                     messageDictionary.get(target).addAll(m.getPayloadComponents());
                 }
+        }
+        //TODO: for each entry send the payload to the socket
+        for(Map.Entry<String, List<PayloadComponent>> entry : messageDictionary.entrySet()){
+            if(clientHub.getClientByName(entry.getKey()).getSecond() != null) {
+                System.out.println("-----------------------------------------------------------");
+                System.out.println("payloads for: " + entry.getKey());
+                System.out.println(JSONSerializer.toJson(entry.getValue()));
             }
         }
+    }
 
-        //TODO: for each entry
+
 }
 
 
