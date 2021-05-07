@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.actions.Action;
 
 import java.util.*;
 
-//TODO: needs to be synchronized (concurrent access of controller and client handlers)
+//TODO: add priority of producer/consumer to the controller thread
 public class ActionQueue {
 
     /**
@@ -62,21 +62,21 @@ public class ActionQueue {
      * @param action the action to be added to the queue
      * @param priority the priority of this action
      */
-    public void addAction(Action action, int priority){
+    public synchronized void addAction(Action action, int priority){
         ActionWrapper wrapper = new ActionWrapper(action, currentSequenceNumber, priority);
         actions.add(wrapper);
         currentSequenceNumber++;
+        notifyAll();
     }
 
-    //TODO: the exception will be substituted with a wait statement (the controller is the consumer)
     /**
      * Pops the first action from the deque. The action is removed from the deque.
      * @return the popped action
      * @throws NoSuchElementException if the deque is empty
      */
-    public Action pop(){
-        if(actions.isEmpty())
-            throw new NoSuchElementException("The action deque is empty");
+    public synchronized Action pop() throws InterruptedException {
+        while(actions.isEmpty())
+            wait();
 
         return actions.poll().getAction();
     }

@@ -88,7 +88,7 @@ public class StateMachineTest {
         StateMachine fsm = new StateMachine(actionQueue, gameContext, menuState);
 
         actionQueue.addAction(new ResourcesMoveAction("Ernestino", "Hand", "BottomShelf", gold, 1), 0);
-        List<Message> messages = fsm.executeAction(actionQueue.pop());
+        assertDoesNotThrow(()->fsm.executeAction(actionQueue.pop()));
 
         assertTrue(fsm.getCurrentState() instanceof MenuState);
 
@@ -101,7 +101,7 @@ public class StateMachineTest {
         StateMachine fsm = new StateMachine(actionQueue, gameContext, menuState);
 
         actionQueue.addAction(new ResourcesMoveAction("Ernestino", "Hand", "BottomShelf", gold, 4), 0);
-        List<Message> messages = fsm.executeAction(actionQueue.pop());
+        assertDoesNotThrow(()->fsm.executeAction(actionQueue.pop()));
 
         assertTrue(fsm.getCurrentState() instanceof MenuState);
     }
