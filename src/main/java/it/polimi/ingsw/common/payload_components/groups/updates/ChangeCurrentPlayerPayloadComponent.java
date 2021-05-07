@@ -1,9 +1,11 @@
 package it.polimi.ingsw.common.payload_components.groups.updates;
 
+import it.polimi.ingsw.annotations.SerializedGroup;
 import it.polimi.ingsw.annotations.SerializedType;
 import it.polimi.ingsw.common.payload_components.groups.UpdatePayloadComponent;
 
 @SerializedType("change_current_player")
+@SerializedGroup("update")
 public class ChangeCurrentPlayerPayloadComponent implements UpdatePayloadComponent {
 
     private final String newPlayer;
