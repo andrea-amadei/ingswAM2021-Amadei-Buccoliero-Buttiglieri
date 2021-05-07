@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.clienthandling;
 
 import it.polimi.ingsw.common.ActionQueue;
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.exceptions.DuplicateUsernameException;
 import it.polimi.ingsw.exceptions.GameNotInLobbyException;
 import it.polimi.ingsw.exceptions.GameNotReadyException;
@@ -76,8 +77,8 @@ public class Match {
 
         //TODO: use the real builder to build the state machine (it automatically creates the game model and game
         //      context. Launch a new thread that will handle the queue consumption
-        //this.stateMachine = DummyBuilder.buildController(usernames, new Random(), isSinglePlayer, actionQueue);
-
+        this.stateMachine = DummyBuilder.buildController(clientHub.getUsernames(), new Random(), isSinglePlayer, actionQueue);
+        new Controller(stateMachine, actionQueue, clientHub).start();
     }
 
     public void endGame() throws GameNotStartedException{

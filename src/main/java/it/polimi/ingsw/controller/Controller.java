@@ -62,11 +62,28 @@ public class Controller extends Thread{
         }
         //TODO: for each entry send the payload to the socket
         for(Map.Entry<String, List<PayloadComponent>> entry : messageDictionary.entrySet()){
-            if(clientHub.getClientByName(entry.getKey()).getSecond() != null) {
+            if (clientHub.getClientByName(entry.getKey()).getSecond() != null) {
                 System.out.println("-----------------------------------------------------------");
                 System.out.println("payloads for: " + entry.getKey());
-                System.out.println(JSONSerializer.toJson(entry.getValue()));
+                for (PayloadComponent component : entry.getValue()) {
+                    System.out.println(JSONSerializer.toJson(component));
+                }
             }
+        }
+    }
+
+    @SuppressWarnings("InfiniteLoopStatement")
+    @Override
+    public void run(){
+        while(true) {
+            List<Message> messages = new ArrayList<>();
+            try {
+                messages.addAll(consumeMove());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            sendMessages(messages);
         }
     }
 
