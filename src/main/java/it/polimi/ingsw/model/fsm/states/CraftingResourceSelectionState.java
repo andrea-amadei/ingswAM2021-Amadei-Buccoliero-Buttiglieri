@@ -22,6 +22,7 @@ import it.polimi.ingsw.model.storage.ResourceContainer;
 import it.polimi.ingsw.model.storage.Storage;
 import it.polimi.ingsw.parser.raw.RawStorage;
 import it.polimi.ingsw.server.Logger;
+import it.polimi.ingsw.utils.ForegroundColors;
 import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.*;
@@ -198,7 +199,7 @@ public class CraftingResourceSelectionState extends State {
                     resourcesToRemove.put(res.getId().toLowerCase(), -container.getAllResources().get(res));
                 } catch (IllegalResourceTransferException e) {
                     Logger.log("Somehow a resource transfer failed and an exception wasn't thrown before!",
-                            Logger.Severity.ERROR, Logger.Format.RED);
+                            Logger.Severity.ERROR, ForegroundColors.RED);
                     throw new FSMTransitionFailedException("Somehow a resource transfer failed and an exception wasn't thrown before!");
                 }
             }
