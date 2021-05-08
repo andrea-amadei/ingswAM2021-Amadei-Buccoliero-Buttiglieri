@@ -37,16 +37,11 @@ public class SelectCardFromShopAction implements Action{
      * @throws IllegalArgumentException if row, col and upgradableCraftingId are not non negative
      */
     public SelectCardFromShopAction(String player, int row, int col, int upgradableCraftingId){
-        if(player == null)
-            throw new NullPointerException();
-
-        if(row < 0 || col < 0 || upgradableCraftingId < 0)
-            throw new IllegalArgumentException("row, col and upgradableCraftingId can't be negative");
-
         this.player = player;
         this.row = row;
         this.col = col;
         this.upgradableCraftingId = upgradableCraftingId;
+        checkFormat();
     }
 
     /**
@@ -150,5 +145,20 @@ public class SelectCardFromShopAction implements Action{
     @Override
     public String getSender() {
         return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null)
+            throw new NullPointerException();
+
+        if(row < 0 || col < 0 || upgradableCraftingId < 0)
+            throw new IllegalArgumentException("row, col and upgradableCraftingId can't be negative");
+
     }
 }

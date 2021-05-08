@@ -20,11 +20,9 @@ public class SelectCraftingOutputAction implements Action {
     private final Map<ResourceSingle, Integer> conversion;
 
     public SelectCraftingOutputAction(String player, Map<ResourceSingle, Integer> conversion) {
-        if(player == null || conversion == null)
-            throw new NullPointerException();
-
         this.player = player;
         this.conversion = conversion;
+        checkFormat();
     }
 
     /**
@@ -86,5 +84,16 @@ public class SelectCraftingOutputAction implements Action {
     @Override
     public String getSender() {
         return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null || conversion == null)
+            throw new NullPointerException();
     }
 }

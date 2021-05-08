@@ -31,14 +31,9 @@ public class ActivateLeaderAction implements Action{
      * @throws IllegalArgumentException iff leader ID is negative or zero
      */
     public ActivateLeaderAction(String player, int leaderID){
-
-        if(player == null)
-            throw new NullPointerException();
-        if(leaderID <= 0)
-            throw new IllegalArgumentException("Leader ID cannot be negative or zero");
-
         this.player = player;
         this.leaderID = leaderID;
+        checkFormat();
     }
 
 
@@ -109,5 +104,13 @@ public class ActivateLeaderAction implements Action{
     @Override
     public String getSender() {
         return player;
+    }
+
+    @Override
+    public void checkFormat() {
+        if(player == null)
+            throw new NullPointerException();
+        if(leaderID <= 0)
+            throw new IllegalArgumentException("Leader ID cannot be negative or zero");
     }
 }

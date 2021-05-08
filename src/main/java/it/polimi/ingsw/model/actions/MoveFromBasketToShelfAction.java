@@ -38,17 +38,11 @@ public class MoveFromBasketToShelfAction implements Action{
      * @throws IllegalArgumentException iff amount of resources to move is negative or zero
      */
     public MoveFromBasketToShelfAction(String player, ResourceSingle resourceToMove, int amount, String shelfID){
-
-        if(player == null || resourceToMove == null || shelfID == null)
-            throw new NullPointerException();
-
-        if(amount <= 0)
-            throw new IllegalArgumentException("Amount cannot be negative or zero");
-
         this.player = player;
         this.resourceToMove = resourceToMove;
         this.amount = amount;
         this.shelfID = shelfID;
+        checkFormat();
     }
 
     /**
@@ -131,5 +125,19 @@ public class MoveFromBasketToShelfAction implements Action{
     @Override
     public String getSender() {
         return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null || resourceToMove == null || shelfID == null)
+            throw new NullPointerException();
+
+        if(amount <= 0)
+            throw new IllegalArgumentException("Amount cannot be negative or zero");
     }
 }

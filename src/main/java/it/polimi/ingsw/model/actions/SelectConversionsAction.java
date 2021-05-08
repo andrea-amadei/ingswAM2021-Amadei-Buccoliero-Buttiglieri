@@ -37,12 +37,9 @@ public class SelectConversionsAction implements Action{
      * @throws IllegalArgumentException if some values of actuatorsChoice are negative
      */
     public SelectConversionsAction(String player, List<Integer> actuatorsChoice){
-        if(player == null || actuatorsChoice == null)
-            throw new NullPointerException();
-        if(actuatorsChoice.stream().anyMatch(x->x<0))
-            throw new IllegalArgumentException("Actuator choices can't be negative");
         this.player = player;
         this.actuatorsChoice = actuatorsChoice;
+        checkFormat();
     }
 
     /**
@@ -146,5 +143,18 @@ public class SelectConversionsAction implements Action{
     @Override
     public String getSender() {
         return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null || actuatorsChoice == null)
+            throw new NullPointerException();
+        if(actuatorsChoice.stream().anyMatch(x->x<0))
+            throw new IllegalArgumentException("Actuator choices can't be negative");
     }
 }

@@ -38,4 +38,11 @@ public interface Action {
      * @return the sender of this action
      */
     String getSender();
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    void checkFormat();
 }

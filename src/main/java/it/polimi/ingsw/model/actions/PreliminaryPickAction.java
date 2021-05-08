@@ -31,19 +31,10 @@ public class PreliminaryPickAction implements Action{
      * @throws IllegalArgumentException iff IDs of leaders or amount of chosen resources are negative.
      */
     public PreliminaryPickAction(String player, List<Integer> leadersToDiscard, Map<ResourceSingle, Integer> chosenResources){
-        if(player == null || leadersToDiscard == null || chosenResources == null)
-            throw new NullPointerException();
-
-        for(Integer i : leadersToDiscard)
-            if(i<0)
-                throw new IllegalArgumentException("IDs of leaders to discard must be between 0 and total amount of leaders");
-        for(Map.Entry<ResourceSingle, Integer> entry : chosenResources.entrySet())
-            if(entry.getValue()<0)
-                throw new IllegalArgumentException("Amount of chosen resources cannot be negative");
-
         this.player = player;
         this.leadersToDiscard = leadersToDiscard;
         this.chosenResources = chosenResources;
+        checkFormat();
     }
 
     /**
@@ -188,5 +179,23 @@ public class PreliminaryPickAction implements Action{
     @Override
     public String getSender() {
         return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null || leadersToDiscard == null || chosenResources == null)
+            throw new NullPointerException();
+
+        for(Integer i : leadersToDiscard)
+            if(i<0)
+                throw new IllegalArgumentException("IDs of leaders to discard must be between 0 and total amount of leaders");
+        for(Map.Entry<ResourceSingle, Integer> entry : chosenResources.entrySet())
+            if(entry.getValue()<0)
+                throw new IllegalArgumentException("Amount of chosen resources cannot be negative");
     }
 }

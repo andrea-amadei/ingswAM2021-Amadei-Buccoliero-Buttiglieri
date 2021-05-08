@@ -33,9 +33,8 @@ public class BuyFromShopAction implements Action{
      * @throws NullPointerException if player is null
      */
     public BuyFromShopAction(String player){
-        if(player == null)
-            throw new NullPointerException();
         this.player = player;
+        checkFormat();
     }
 
     /**
@@ -163,5 +162,16 @@ public class BuyFromShopAction implements Action{
     @Override
     public String getSender() {
         return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null)
+            throw new NullPointerException();
     }
 }

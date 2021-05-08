@@ -36,14 +36,10 @@ public class BuyFromMarketAction implements Action{
      * @throws IndexOutOfBoundsException if index is negative
      */
     public BuyFromMarketAction(String player, boolean isRow, int index){
-        if(player == null)
-            throw new NullPointerException();
-        if(index < 0)
-            throw new IndexOutOfBoundsException();
-
         this.player = player;
         this.isRow = isRow;
         this.index = index;
+        checkFormat();
     }
 
 
@@ -138,5 +134,18 @@ public class BuyFromMarketAction implements Action{
     @Override
     public String getSender() {
         return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null)
+            throw new NullPointerException();
+        if(index < 0)
+            throw new IndexOutOfBoundsException();
     }
 }
