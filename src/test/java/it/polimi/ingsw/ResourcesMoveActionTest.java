@@ -55,6 +55,7 @@ public class ResourcesMoveActionTest {
 
     @Test
     public void resourcesAreMovedToHand(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Gertrude"));
         Action action = new ResourcesMoveAction("Gertrude", "BottomShelf", "Hand", servant, 1);
         assertDoesNotThrow(()-> action.execute(gameContext));
 
@@ -64,6 +65,7 @@ public class ResourcesMoveActionTest {
 
     @Test
     public void resourcesAreMovedToShelfFromShelf(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Genoveffa"));
         Action action = new ResourcesMoveAction("Genoveffa", "BottomShelf", "TopShelf", shield, 1);
         assertDoesNotThrow(()-> action.execute(gameContext));
 
@@ -74,6 +76,7 @@ public class ResourcesMoveActionTest {
 
     @Test
     public void resourcesAreMovedToShelfFromHand(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new ResourcesMoveAction("Ernestino", "Hand", "MiddleShelf", gold, 2);
         assertDoesNotThrow(()-> action.execute(gameContext));
 
@@ -84,6 +87,7 @@ public class ResourcesMoveActionTest {
 
     @Test
     public void resourcesAreRemovedFromHand(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new ResourcesMoveAction("Ernestino", "Hand", "MiddleShelf", gold, 2);
         assertDoesNotThrow(()-> action.execute(gameContext));
 
@@ -95,7 +99,10 @@ public class ResourcesMoveActionTest {
     public void resourcesAreRemovedFromShelf(){
         Action action = new ResourcesMoveAction("Genoveffa", "BottomShelf", "TopShelf", shield, 1);
         Action action1 = new ResourcesMoveAction("Gertrude", "BottomShelf", "Hand", servant, 1);
+
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Genoveffa"));
         assertDoesNotThrow(()-> action.execute(gameContext));
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Gertrude"));
         assertDoesNotThrow(()-> action1.execute(gameContext));
 
         assertEquals(gameContext.getGameModel().getPlayerById("Genoveffa").getBoard().getStorage().getCupboard()
@@ -106,6 +113,7 @@ public class ResourcesMoveActionTest {
 
     @Test
     public void shelfToShelfMessage(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Genoveffa"));
         Action action = new ResourcesMoveAction("Genoveffa", "BottomShelf", "TopShelf", shield, 1);
         List<Message> messages;
 
@@ -119,6 +127,7 @@ public class ResourcesMoveActionTest {
 
     @Test
     public void handToShelfMessage(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new ResourcesMoveAction("Ernestino", "Hand", "MiddleShelf", gold, 2);
         List<Message> messages;
 
@@ -132,6 +141,7 @@ public class ResourcesMoveActionTest {
 
     @Test
     public void shelfToHandMessage(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Gertrude"));
         Action action = new ResourcesMoveAction("Gertrude", "BottomShelf", "Hand", servant, 1);
         List<Message> messages;
 
@@ -177,24 +187,28 @@ public class ResourcesMoveActionTest {
 
     @Test
     public void noSuchPlayer(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Gertrude"));
         Action action = new ResourcesMoveAction("Pollo", "Hand", "BottomShelf", shield, 1);
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
     }
 
     @Test
     public void noSuchOrigin(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Genoveffa"));
         Action action = new ResourcesMoveAction("Genoveffa", "Landfill", "BottomShelf", shield, 1);
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
     }
 
     @Test
     public void noSuchDestination(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Genoveffa"));
         Action action = new ResourcesMoveAction("Genoveffa", "BottomShelf", "DisneyLand", servant, 2);
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
     }
 
     @Test
     public void fullDestinationShelf(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Gertrude"));
         Action action = new ResourcesMoveAction("Gertrude", "Hand", "MiddleShelf", gold, 1);
         Action action1 = new ResourcesMoveAction("Gertrude", "BottomShelf", "MiddleShelf", servant, 1);
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
@@ -203,12 +217,14 @@ public class ResourcesMoveActionTest {
 
     @Test
     public void movingResourceNotPresentInHand(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Gertrude"));
         Action action = new ResourcesMoveAction("Gertrude", "Hand", "TopShelf", shield, 1);
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
     }
 
     @Test
     public void movingResourceNotPresentInShelf(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Genoveffa"));
         Action action = new ResourcesMoveAction("Genoveffa", "BottomShelf", "MiddleShelf", gold, 1);
         Action action1 = new ResourcesMoveAction("Genoveffa", "BottomShelf", "Hand", gold, 1);
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
@@ -217,6 +233,7 @@ public class ResourcesMoveActionTest {
 
     @Test
     public void movingResourceToIncompatibleShelf(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Genoveffa"));
         Action action = new ResourcesMoveAction("Genoveffa", "MiddleShelf", "BottomShelf", servant, 1);
         Action action1 = new ResourcesMoveAction("Genoveffa", "Hand", "BottomShelf", servant, 1);
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));

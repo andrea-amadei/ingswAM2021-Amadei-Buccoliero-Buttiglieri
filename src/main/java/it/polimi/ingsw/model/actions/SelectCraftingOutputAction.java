@@ -49,11 +49,10 @@ public class SelectCraftingOutputAction implements Action {
         Player currentPlayer;
         Crafting crafting;
 
-        try {
-            currentPlayer = model.getPlayerById(player);
-        } catch(NoSuchElementException e) {
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
 
         try {
             crafting = currentPlayer.getBoard().getProduction().getSelectedCrafting();

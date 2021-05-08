@@ -76,11 +76,10 @@ public class SelectConversionsAction implements Action{
         Market market = model.getMarket();
         Player currentPlayer;
 
-        try{
-            currentPlayer = model.getPlayerById(player);
-        }catch(NoSuchElementException e){
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
 
         ConversionHolder conversionHolder = currentPlayer.getBoard().getConversionHolder();
         FaithPath faithPath = model.getFaithPath();

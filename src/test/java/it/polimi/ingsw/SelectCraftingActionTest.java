@@ -49,6 +49,7 @@ public class SelectCraftingActionTest {
 
     @Test
     public void selectsCorrectCraftingType(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new SelectCraftingAction("Ernestino", Production.CraftingType.UPGRADABLE, 0);
         assertDoesNotThrow(()-> action.execute(gameContext));
 
@@ -58,6 +59,7 @@ public class SelectCraftingActionTest {
 
     @Test
     public void selectsCorrectIndex(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new SelectCraftingAction("Ernestino", Production.CraftingType.UPGRADABLE, 0);
         assertDoesNotThrow(()-> action.execute(gameContext));
 
@@ -67,6 +69,7 @@ public class SelectCraftingActionTest {
 
     @Test
     public void messages(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new SelectCraftingAction("Ernestino", Production.CraftingType.UPGRADABLE, 0);
         List<Message> messages;
         try{
@@ -100,12 +103,14 @@ public class SelectCraftingActionTest {
 
     @Test
     public void invalidPlayer(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new SelectCraftingAction("Andrea Dipré", Production.CraftingType.BASE, 1);
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
     }
 
     @Test
     public void indexOutOfBound(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Letteria"));
         Action action = new SelectCraftingAction("Letteria", Production.CraftingType.BASE, GameParameters.UPGRADABLE_CRAFTING_NUMBER);
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
 
@@ -113,12 +118,14 @@ public class SelectCraftingActionTest {
 
     @Test
     public void selectingNonExistentSlot(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Letteria"));
         Action action = new SelectCraftingAction("Letteria", Production.CraftingType.LEADER, 2);
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
     }
 
     @Test
     public void selectEmptySlot(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Letteria"));
         Action action = new SelectCraftingAction("Letteria", Production.CraftingType.UPGRADABLE, 0);
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
     }

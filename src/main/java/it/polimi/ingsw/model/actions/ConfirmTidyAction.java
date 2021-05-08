@@ -57,13 +57,11 @@ public class ConfirmTidyAction implements Action{
         if(gameContext == null)
             throw new NullPointerException();
         Player currentPlayer;
-        GameModel model = gameContext.getGameModel();
 
-        try {
-            currentPlayer = model.getPlayerById(player);
-        }catch(NoSuchElementException e){
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
 
         if(currentPlayer.getBoard().getStorage().getHand().totalAmountOfResources() > 0)
             throw new IllegalActionException("Trying to confirm tidy, but hand is not empty");

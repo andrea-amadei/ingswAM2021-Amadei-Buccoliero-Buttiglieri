@@ -47,6 +47,7 @@ public class SelectConversionsActionTest {
 
     @Test
     public void pickWithMultipleConversions(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Genoveffa"));
         assertDoesNotThrow(()->new BuyFromMarketAction("Genoveffa", false, 2).execute(gameContext));
         assertDoesNotThrow(()->new SelectConversionsAction("Genoveffa", Arrays.asList(0,0,1)).execute(gameContext));
         Map<ResourceSingle, Integer> expectedBasket = new HashMap<>(){{
@@ -60,6 +61,7 @@ public class SelectConversionsActionTest {
 
     @Test
     public void pickBaseConversions(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Paolo"));
         assertDoesNotThrow(()->new BuyFromMarketAction("Paolo", false, 3).execute(gameContext));
         assertDoesNotThrow(()->new SelectConversionsAction("Paolo", Arrays.asList(0,0,0)).execute(gameContext));
         Map<ResourceSingle, Integer> expectedBasket = new HashMap<>(){{
@@ -74,29 +76,34 @@ public class SelectConversionsActionTest {
 
     @Test
     public void pickNonValidConversions(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Paolo"));
         assertDoesNotThrow(()->new BuyFromMarketAction("Paolo", false, 3).execute(gameContext));
         assertThrows(IllegalActionException.class, ()->new SelectConversionsAction("Paolo", Arrays.asList(0,1,0)).execute(gameContext));
     }
 
     @Test
     public void noSuchPlayerPickConversion(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Paolo"));
         assertThrows(IllegalActionException.class, ()->new SelectConversionsAction("Boh", Arrays.asList(0,1,0)).execute(gameContext));
     }
 
     @Test
     public void negativePickConversion(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Paolo"));
         assertDoesNotThrow(()->new BuyFromMarketAction("Paolo", false, 3).execute(gameContext));
         assertThrows(IllegalArgumentException.class, ()->new SelectConversionsAction("Paolo", Arrays.asList(0,-1,0)).execute(gameContext));
     }
 
     @Test
     public void wrongSizeOfConversionChoices(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Genoveffa"));
         assertDoesNotThrow(()->new BuyFromMarketAction("Genoveffa", false, 3).execute(gameContext));
         assertThrows(IllegalActionException.class, ()->new SelectConversionsAction("Genoveffa", Arrays.asList(0,0)).execute(gameContext));
     }
 
     @Test
     public void tooHighConversionChoice(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Genoveffa"));
         assertDoesNotThrow(()->new BuyFromMarketAction("Genoveffa", false, 3).execute(gameContext));
         assertThrows(IllegalActionException.class, ()->new SelectConversionsAction("Genoveffa", Arrays.asList(0,2,0)).execute(gameContext));
     }

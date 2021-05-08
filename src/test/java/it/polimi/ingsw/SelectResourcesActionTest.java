@@ -45,6 +45,7 @@ public class SelectResourcesActionTest {
 
     @Test
     public void validSelection(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Paolo"));
         Cupboard cupboard = player1.getBoard().getStorage().getCupboard();
         Shelf bottomShelf = cupboard.getShelfById("BottomShelf");
         assertDoesNotThrow(()->bottomShelf.addResources(servant, 2));
@@ -90,16 +91,19 @@ public class SelectResourcesActionTest {
 
     @Test
     public void noSuchPlayer(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Paolo"));
         assertThrows(IllegalActionException.class, ()->new SelectResourcesAction("Pippo", "BottomShelf", gold, 3).execute(gameContext));
     }
 
     @Test
     public void noSuchContainer(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Paolo"));
         assertThrows(IllegalActionException.class, ()->new SelectResourcesAction("Paolo", "Hand", gold, 3).execute(gameContext));
     }
 
     @Test
     public void wrongSelection(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Paolo"));
         Cupboard cupboard = player1.getBoard().getStorage().getCupboard();
         Shelf bottomShelf = cupboard.getShelfById("BottomShelf");
         assertDoesNotThrow(()->bottomShelf.addResources(servant, 2));

@@ -63,11 +63,10 @@ public class SelectCraftingAction implements Action {
         Player currentPlayer;
         List<PayloadComponent> payload = new ArrayList<>();
 
-        try {
-            currentPlayer = model.getPlayerById(player);
-        } catch(NoSuchElementException e) {
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
 
         Production production = currentPlayer.getBoard().getProduction();
 

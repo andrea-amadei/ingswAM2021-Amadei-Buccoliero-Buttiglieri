@@ -64,11 +64,13 @@ public class BuyFromMarketActionTest {
 
     @Test
     public void tooBigColumnException(){
-        assertThrows(IllegalActionException.class, ()->new BuyFromMarketAction("test", false, 14).execute(gameContext));
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Paolo"));
+        assertThrows(IllegalActionException.class, ()->new BuyFromMarketAction("Paolo", false, 14).execute(gameContext));
     }
 
     @Test
     public void pickRowWithoutConversionPower(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Paolo"));
         BuyFromMarketAction action = new BuyFromMarketAction("Paolo", false, 2);
         List<Marble> expectedMarbles = new ArrayList<>();
 
@@ -87,7 +89,7 @@ public class BuyFromMarketActionTest {
 
     @Test
     public void pickRowWithWhiteConversionPower(){
-
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Genoveffa"));
         BuyFromMarketAction action = new BuyFromMarketAction("Genoveffa", false, 2);
         List<Marble> expectedMarbles = new ArrayList<>();
 
@@ -106,6 +108,7 @@ public class BuyFromMarketActionTest {
 
     @Test
     public void pickColWithWhiteConversionPower(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Genoveffa"));
         BuyFromMarketAction action = new BuyFromMarketAction("Genoveffa", true, 2);
         List<Marble> expectedMarbles = new ArrayList<>();
 
@@ -124,6 +127,7 @@ public class BuyFromMarketActionTest {
 
     @Test
     public void noSuchPlayer(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Paolo"));
         BuyFromMarketAction action = new BuyFromMarketAction("John", false, 2);
         assertThrows(IllegalActionException.class, ()->action.execute(gameContext));
     }

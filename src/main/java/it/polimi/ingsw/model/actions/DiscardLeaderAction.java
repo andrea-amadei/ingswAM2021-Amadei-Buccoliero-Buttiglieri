@@ -64,11 +64,10 @@ public class DiscardLeaderAction implements Action{
         Player currentPlayer;
         LeaderCard leaderCard;
 
-        try {
-            currentPlayer = model.getPlayerById(player);
-        }catch(NoSuchElementException e){
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
 
         try {
             leaderCard = currentPlayer.getBoard().getLeaderCardByID(leaderID);

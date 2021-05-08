@@ -75,12 +75,10 @@ public class BuyFromMarketAction implements Action{
         Market market = model.getMarket();
         Player currentPlayer;
 
-        //try to retrieve the player
-        try{
-            currentPlayer = model.getPlayerById(player);
-        }catch(NoSuchElementException e){
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
 
         //try to execute the action
         try{

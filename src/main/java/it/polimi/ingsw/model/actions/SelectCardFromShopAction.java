@@ -79,11 +79,10 @@ public class SelectCardFromShopAction implements Action{
         Player currentPlayer;
 
         //try to retrieve the current player
-        try{
-            currentPlayer = model.getPlayerById(player);
-        }catch(NoSuchElementException e){
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
 
         Production production = currentPlayer.getBoard().getProduction();
         CraftingCard card;

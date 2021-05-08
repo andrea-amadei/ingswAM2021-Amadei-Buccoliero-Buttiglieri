@@ -57,13 +57,11 @@ public class BackAction implements Action {
             throw new NullPointerException();
 
         Player currentPlayer;
-        GameModel model = gameContext.getGameModel();
 
-        try{
-            currentPlayer = model.getPlayerById(player);
-        }catch(NoSuchElementException e){
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
 
         if(!currentPlayer.equals(gameContext.getCurrentPlayer()))
             throw new IllegalActionException("The current player doesn't match the executor player");
