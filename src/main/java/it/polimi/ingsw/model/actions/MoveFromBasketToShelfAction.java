@@ -122,4 +122,14 @@ public class MoveFromBasketToShelfAction implements Action{
 
         return Collections.singletonList(new Message(destinations, payload));
     }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
 }

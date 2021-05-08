@@ -154,4 +154,14 @@ public class BuyFromShopAction implements Action{
         PayloadComponent updates = new InfoPayloadComponent(player + " has bought a card from market");
         return Collections.singletonList(new Message(Collections.singletonList(player), Collections.singletonList(updates)));
     }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
 }

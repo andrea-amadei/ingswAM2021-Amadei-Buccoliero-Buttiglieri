@@ -129,4 +129,14 @@ public class BuyFromMarketAction implements Action{
 
         return messages;
     }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
 }

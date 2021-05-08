@@ -87,6 +87,16 @@ public class SelectPlayAction implements Action {
         return new ArrayList<>();
     }
 
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
+
     public Play getPlay() {
         return play;
     }

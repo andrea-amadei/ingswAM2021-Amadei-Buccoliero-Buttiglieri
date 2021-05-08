@@ -32,4 +32,10 @@ public interface Action {
      * @throws NullPointerException if gameContext is null
      */
     List<Message> execute(GameContext gameContext) throws IllegalActionException;
+
+    /**
+     * Returns the sender of this action
+     * @return the sender of this action
+     */
+    String getSender();
 }

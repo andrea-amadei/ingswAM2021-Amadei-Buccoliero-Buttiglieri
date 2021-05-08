@@ -111,4 +111,14 @@ public class PopeCheckAction implements Action{
         List<String> destinations = gameContext.getGameModel().getPlayerNames();
         return Collections.singletonList(new Message(destinations, payloadComponents));
     }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return "AI";
+    }
 }

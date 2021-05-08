@@ -106,4 +106,14 @@ public class DiscardLeaderAction implements Action{
                 new Message(Collections.singletonList(currentPlayer.getUsername()), Collections.singletonList(dropCardUpdate))
         );
     }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
 }

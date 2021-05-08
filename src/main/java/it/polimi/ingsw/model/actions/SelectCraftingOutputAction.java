@@ -77,4 +77,14 @@ public class SelectCraftingOutputAction implements Action {
         //TODO: we need to create a payload to communicate the selected output to the player.
         return new ArrayList<>();
     }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
 }

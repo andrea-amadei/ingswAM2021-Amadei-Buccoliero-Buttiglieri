@@ -124,4 +124,14 @@ public class MoveFromShelfToShelfAction implements Action{
 
         return Collections.singletonList(new Message(destinations, Collections.singletonList(payload)));
     }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
 }

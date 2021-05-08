@@ -39,4 +39,14 @@ public class EndGameAction implements Action{
             throw new NullPointerException();
         return new ArrayList<>();
     }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return "AI";
+    }
 }

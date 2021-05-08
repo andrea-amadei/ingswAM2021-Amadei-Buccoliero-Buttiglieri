@@ -173,4 +173,14 @@ public class ResourcesMoveAction implements Action{
 
 
     }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
 }

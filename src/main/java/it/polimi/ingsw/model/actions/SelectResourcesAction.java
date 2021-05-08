@@ -109,4 +109,14 @@ public class SelectResourcesAction implements Action{
         Message message = new Message(targets, payload);
         return Collections.singletonList(message);
     }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
 }
