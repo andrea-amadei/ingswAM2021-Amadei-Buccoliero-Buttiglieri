@@ -136,7 +136,7 @@ public class BasketCollectState extends State {
                         }}
                 ))));
 
-        return new ArrayList<>();
+        return messages;
     }
 
     /**
