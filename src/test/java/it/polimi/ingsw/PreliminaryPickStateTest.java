@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PreliminaryPickStateTest {
-
     private GameContext gameContext;
     private State currentState;
 
@@ -85,7 +84,7 @@ public class PreliminaryPickStateTest {
             currentState.handleAction(new PreliminaryPickAction("Ernestino", leaderToDiscard,
                     resources));
         }catch(FSMTransitionFailedException e){
-            throw new RuntimeException();
+            throw new RuntimeException(e.getMessage());
         }
 
         assertTrue(currentState.getNextState() instanceof PreliminaryTidyState);
@@ -111,7 +110,7 @@ public class PreliminaryPickStateTest {
             currentState.handleAction(new PreliminaryPickAction("Bartolomeo", leaderToDiscard,
                     resources));
         }catch(FSMTransitionFailedException e){
-            throw new RuntimeException();
+            throw new RuntimeException(e.getMessage());
         }
 
         assertTrue(currentState.getNextState() instanceof PreliminaryTidyState);
@@ -137,7 +136,7 @@ public class PreliminaryPickStateTest {
             currentState.handleAction(new PreliminaryPickAction("Teofila", leaderToDiscard,
                     resources));
         }catch(FSMTransitionFailedException e){
-            throw new RuntimeException();
+            throw new RuntimeException(e.getMessage());
         }
 
         assertTrue(currentState.getNextState() instanceof PreliminaryTidyState);
@@ -164,7 +163,7 @@ public class PreliminaryPickStateTest {
             currentState.handleAction(new PreliminaryPickAction("Ottone", leaderToDiscard,
                     resources));
         }catch(FSMTransitionFailedException e){
-            throw new RuntimeException();
+            throw new RuntimeException(e.getMessage());
         }
 
         assertTrue(currentState.getNextState() instanceof PreliminaryTidyState);
