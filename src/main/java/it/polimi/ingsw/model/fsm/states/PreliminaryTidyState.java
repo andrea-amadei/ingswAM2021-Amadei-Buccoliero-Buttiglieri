@@ -82,8 +82,10 @@ public class PreliminaryTidyState extends State {
         Player nextPlayer = null;
         int index = getGameContext().getGameModel().getPlayers().indexOf(getGameContext().getCurrentPlayer());
         for(int i = index + 1; i < getGameContext().getGameModel().getPlayers().size(); i++){
-            if(getGameContext().getGameModel().getPlayers().get(i).isConnected())
+            if(getGameContext().getGameModel().getPlayers().get(i).isConnected()) {
                 nextPlayer = getGameContext().getGameModel().getPlayers().get(i);
+                break;
+            }
         }
 
         //current player is not last player of the list, another player goes to preliminary pick state
