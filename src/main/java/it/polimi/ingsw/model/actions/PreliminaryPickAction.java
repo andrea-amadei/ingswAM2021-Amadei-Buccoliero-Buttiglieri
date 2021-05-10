@@ -76,6 +76,15 @@ public class PreliminaryPickAction implements Action{
         if(leadersToDiscard.size()!= GameParameters.AMOUNT_OF_LEADERS_TO_DISCARD)
             throw new IllegalActionException("Must discard correct amount of leaders");
 
+        //assessing the player is not discarding the same leader twice
+        Set<Integer> checkUniqueSet = new HashSet<>();
+        boolean canContinue = true;
+        for(Integer i : leadersToDiscard){
+            canContinue = checkUniqueSet.add(i);
+        }
+        if(!canContinue)
+            throw new IllegalActionException("Cannot discard the same leader twice");
+
         //get the list of leader id to discard (useful for conformity with the PayloadComponent)
         List<Integer> leaderIdToDiscard;
         try {
@@ -194,6 +203,7 @@ public class PreliminaryPickAction implements Action{
         for(Integer i : leadersToDiscard)
             if(i<0)
                 throw new IllegalArgumentException("IDs of leaders to discard must be between 0 and total amount of leaders");
+
         for(Map.Entry<ResourceSingle, Integer> entry : chosenResources.entrySet())
             if(entry.getValue()<0)
                 throw new IllegalArgumentException("Amount of chosen resources cannot be negative");
