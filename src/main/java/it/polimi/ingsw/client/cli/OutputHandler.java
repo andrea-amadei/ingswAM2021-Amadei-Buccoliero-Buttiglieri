@@ -4,10 +4,13 @@ import it.polimi.ingsw.utils.BackgroundColor;
 import it.polimi.ingsw.utils.ForegroundColor;
 
 public class OutputHandler {
-    private static final int STANDARD_WIDTH = 180;
-    private static final int STANDARD_HEIGHT = 48;
+    private static final int DEFAULT_WIDTH = 180;
+    private static final int DEFAULT_HEIGHT = 48;
 
     private static final char BLANK = ' ';
+
+    private static final ForegroundColor DEFAULT_FOREGROUND_COLOR = ForegroundColor.WHITE_BRIGHT;
+    private static final BackgroundColor DEFAULT_BACKGROUND_COLOR = BackgroundColor.BLACK;
 
     private final int width;
     private final int height;
@@ -19,8 +22,8 @@ public class OutputHandler {
     private final BackgroundColor[][] background;
 
     public OutputHandler(boolean printColors) {
-        width = STANDARD_WIDTH;
-        height = STANDARD_HEIGHT;
+        width = DEFAULT_WIDTH;
+        height = DEFAULT_HEIGHT;
 
         this.printColors = printColors;
 
@@ -68,12 +71,20 @@ public class OutputHandler {
         System.out.print(str);
     }
 
-    public static int getStandardWidth() {
-        return STANDARD_WIDTH;
+    public static int getDefaultWidth() {
+        return DEFAULT_WIDTH;
     }
 
-    public static int getStandardHeight() {
-        return STANDARD_HEIGHT;
+    public static int getDefaultHeight() {
+        return DEFAULT_HEIGHT;
+    }
+
+    public static ForegroundColor getDefaultForegroundColor() {
+        return DEFAULT_FOREGROUND_COLOR;
+    }
+
+    public static BackgroundColor getDefaultBackgroundColor() {
+        return DEFAULT_BACKGROUND_COLOR;
     }
 
     public char getBlank() {
@@ -127,13 +138,13 @@ public class OutputHandler {
     public void resetForegroundColors() {
         for(int i = 0; i < height; i++)
             for(int j = 0; j < width; j++)
-                foreground[i][j] = ForegroundColor.RESET;
+                foreground[i][j] = DEFAULT_FOREGROUND_COLOR;
     }
 
     public void resetBackgroundColors() {
         for(int i = 0; i < height; i++)
             for(int j = 0; j < width; j++)
-                background[i][j] = BackgroundColor.RESET;
+                background[i][j] = DEFAULT_BACKGROUND_COLOR;
     }
 
     public void resetAll() {
@@ -308,6 +319,4 @@ public class OutputHandler {
             for(int j = startingColumn; j <= endingColumn; j++)
                 background[i][j] = newBackgroundColor;
     }
-
-
 }
