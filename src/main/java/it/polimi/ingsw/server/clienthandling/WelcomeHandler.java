@@ -22,7 +22,6 @@ public class WelcomeHandler {
 
     }
 
-    @SuppressWarnings("InfiniteLoopStatement")
     public void startServer() {
         while (true) {
             Socket clientSocket;
@@ -32,6 +31,7 @@ public class WelcomeHandler {
                 new Thread(new ClientHandler(clientSocket, matchesManager)).start();
             } catch (IOException e) {
                 e.printStackTrace();
+                break;
             }
 
             Logger.log("A new socket has been accepted");
