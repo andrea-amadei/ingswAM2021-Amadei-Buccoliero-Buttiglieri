@@ -31,14 +31,14 @@ public class ClientHub {
      * @param username the username of the new player
      * @param socket the socket associated with that player
      * @throws NullPointerException if username or socket are null
-     * @throws DuplicateUsernameException if there exists another player with the same username in the hub
+     * @throws IllegalArgumentException if there exists another player with the same username in the hub
      */
-    public void addClient(String username, Socket socket) throws DuplicateUsernameException{
+    public void addClient(String username, Socket socket){
         if(username == null || socket == null)
             throw new NullPointerException();
 
         if(usernames.contains(username))
-            throw new DuplicateUsernameException("Another player chose the same username \"" + username +"\"");
+            throw new IllegalArgumentException("Another player chose the same username \"" + username +"\"");
 
         usernames.add(username);
         clientSockets.add(socket);
@@ -106,6 +106,14 @@ public class ClientHub {
             throw new NoSuchElementException();
 
         return new Pair<>(username, clientSockets.get(usernames.indexOf(username)));
+    }
+
+    /**
+     * Return the list of usernames sorted by arrival order
+     * @return the list of usernames sorted by arrival order
+     */
+    public List<String> getUsernames(){
+        return usernames;
     }
 
     /**

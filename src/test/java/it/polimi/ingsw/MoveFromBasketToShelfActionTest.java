@@ -46,6 +46,7 @@ public class MoveFromBasketToShelfActionTest {
 
     @Test
     public void executeTest(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new MoveFromBasketToShelfAction("Ernestino", servant, 1, "BottomShelf");
         List<Message> messages;
 
@@ -90,12 +91,14 @@ public class MoveFromBasketToShelfActionTest {
 
     @Test
     public void invalidPlayer(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new MoveFromBasketToShelfAction("Ernestina", gold, 1, "MiddleShelf");
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
     }
 
     @Test
     public void invalidShelf(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new MoveFromBasketToShelfAction("Ernestino", gold, 1, "Ehilà");
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
     }
@@ -108,18 +111,21 @@ public class MoveFromBasketToShelfActionTest {
 
     @Test
     public void movingAResourceToAFullShelf(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Pollo"));
         Action action = new MoveFromBasketToShelfAction("Pollo", gold, 1, "BottomShelf");
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
     }
 
     @Test
     public void movingAResourceToAnInvalidShelf(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Pollo"));
         Action action = new MoveFromBasketToShelfAction("Pollo", gold, 1, "MiddleShelf");
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
     }
 
     @Test
     public void movingAResourceNotPresent(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Pollo"));
         Action action = new MoveFromBasketToShelfAction("Pollo", servant, 1, "MiddleShelf");
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
     }

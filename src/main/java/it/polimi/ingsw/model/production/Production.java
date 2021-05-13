@@ -2,11 +2,13 @@ package it.polimi.ingsw.model.production;
 
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.exceptions.NotReadyToCraftException;
+import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.FaithPath;
 import it.polimi.ingsw.model.GameParameters;
 import it.polimi.ingsw.model.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -45,6 +47,11 @@ public class Production {
         for(int i=0; i < GameParameters.UPGRADABLE_CRAFTING_NUMBER; i++)
             upgradableCrafting.add(null);
 
+        baseCrafting.add(new Crafting(new HashMap<>(){{
+            put(ResourceTypeSingleton.getInstance().getAnyResource(), 2);
+        }}, new HashMap<>(){{
+            put(ResourceTypeSingleton.getInstance().getAnyResource(), 1);
+        }}, 0));
         selectedIndex = null;
         selectedType = null;
     }
@@ -264,17 +271,17 @@ public class Production {
         boolean ready = false;
 
         for(Crafting i : baseCrafting)
-            if(i.readyToCraft()) {
+            if(i != null && i.readyToCraft()) {
                 ready = true;
             }
 
         for(Crafting i : upgradableCrafting)
-            if(i.readyToCraft()) {
+            if(i != null && i.readyToCraft()) {
                 ready = true;
             }
 
         for(Crafting i : leaderCrafting)
-            if(i.readyToCraft()) {
+            if(i != null && i.readyToCraft()) {
                 ready = true;
             }
 

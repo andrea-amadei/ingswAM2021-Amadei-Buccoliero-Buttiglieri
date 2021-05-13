@@ -16,7 +16,7 @@ public class ActionQueueTest {
     }
 
     @Test
-    public void correctOrderWithDifferentPriorities(){
+    public void correctOrderWithDifferentPriorities() throws InterruptedException {
         ActionQueue actionQueue = new ActionQueue();
         Action action1 = new BackAction("A");
         Action action2 = new BackAction("B");
@@ -32,7 +32,7 @@ public class ActionQueueTest {
     }
 
     @Test
-    public void correctOrderWithSamePriorities(){
+    public void correctOrderWithSamePriorities() throws InterruptedException {
         ActionQueue actionQueue = new ActionQueue();
         Action action1 = new BackAction("A");
         Action action2 = new BackAction("B");

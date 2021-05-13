@@ -43,16 +43,12 @@ public class ResourcesMoveAction implements Action{
      * @throws IllegalArgumentException iff amount of resources to move is negative or zero
      */
     public ResourcesMoveAction (String player, String origin, String destination, ResourceSingle resourceToMove, int amount){
-        if(player == null ||origin == null || destination == null || resourceToMove == null)
-            throw new NullPointerException();
-        if(amount<=0)
-            throw new IllegalArgumentException("Amount of resources to move cannot be negative or zero");
-
         this.player = player;
         this.origin = origin;
         this.destination = destination;
         this.resourceToMove = resourceToMove;
         this.amount = amount;
+        checkFormat();
     }
 
     /**
@@ -87,11 +83,12 @@ public class ResourcesMoveAction implements Action{
         Player currentPlayer;
         Storage storage;
 
-        try {
-            currentPlayer = model.getPlayerById(player);
-        }catch(NoSuchElementException e){
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
+
+
         storage = currentPlayer.getBoard().getStorage();
 
 
@@ -172,5 +169,28 @@ public class ResourcesMoveAction implements Action{
         return Collections.singletonList(message);
 
 
+    }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null ||origin == null || destination == null || resourceToMove == null)
+            throw new NullPointerException();
+        if(amount<=0)
+            throw new IllegalArgumentException("Amount of resources to move cannot be negative or zero");
     }
 }

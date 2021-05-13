@@ -39,15 +39,11 @@ public class MoveFromHandToShelfAction implements Action{
      * @throws IllegalArgumentException if the amount of resources to move is negative
      */
     public MoveFromHandToShelfAction(String player, ResourceSingle resourceToMove, int amount, String shelfId){
-        if(player == null || resourceToMove == null || shelfId == null)
-            throw new NullPointerException();
-        if(amount <= 0)
-            throw new IllegalArgumentException("Amount can't be negative");
-
         this.player = player;
         this.resourceToMove = resourceToMove;
         this.amount = amount;
         this.shelfId = shelfId;
+        checkFormat();
     }
 
     /**
@@ -111,5 +107,28 @@ public class MoveFromHandToShelfAction implements Action{
                                                   + shelf.getId());
 
         return Collections.singletonList(new Message(destinations, Collections.singletonList(payload)));
+    }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null || resourceToMove == null || shelfId == null)
+            throw new NullPointerException();
+        if(amount <= 0)
+            throw new IllegalArgumentException("Amount can't be negative");
     }
 }

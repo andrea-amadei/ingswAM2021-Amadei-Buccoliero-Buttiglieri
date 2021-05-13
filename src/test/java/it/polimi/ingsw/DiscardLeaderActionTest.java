@@ -66,6 +66,7 @@ public class DiscardLeaderActionTest {
 
     @Test
     public void correctExecutionOfExecuteMethod(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new DiscardLeaderAction("Ernestino", 1);
         List<Message> messages;
 
@@ -94,12 +95,14 @@ public class DiscardLeaderActionTest {
 
     @Test
     public void invalidPlayer(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new DiscardLeaderAction("FakePlayer", 1);
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
     }
 
     @Test
     public void discardingNonOwnedLeader(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Pollo"));
         Action action = new DiscardLeaderAction("Pollo", 1);
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
     }

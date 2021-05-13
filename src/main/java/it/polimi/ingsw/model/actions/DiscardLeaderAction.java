@@ -27,13 +27,9 @@ public class DiscardLeaderAction implements Action{
      * @throws IllegalArgumentException iff leader ID is negative or zero
      */
     public DiscardLeaderAction(String player, int leaderID){
-        if(player == null)
-            throw new NullPointerException();
-        if( leaderID <= 0)
-            throw new IllegalArgumentException("Leader ID cannot be negative or zero");
-
         this.player = player;
         this.leaderID = leaderID;
+        checkFormat();
     }
 
     /**
@@ -68,11 +64,10 @@ public class DiscardLeaderAction implements Action{
         Player currentPlayer;
         LeaderCard leaderCard;
 
-        try {
-            currentPlayer = model.getPlayerById(player);
-        }catch(NoSuchElementException e){
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
 
         try {
             leaderCard = currentPlayer.getBoard().getLeaderCardByID(leaderID);
@@ -105,5 +100,28 @@ public class DiscardLeaderAction implements Action{
                 new Message(otherPlayersDestination, Collections.singletonList(coveredCardUpdate)),
                 new Message(Collections.singletonList(currentPlayer.getUsername()), Collections.singletonList(dropCardUpdate))
         );
+    }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null)
+            throw new NullPointerException();
+        if( leaderID <= 0)
+            throw new IllegalArgumentException("Leader ID cannot be negative or zero");
     }
 }

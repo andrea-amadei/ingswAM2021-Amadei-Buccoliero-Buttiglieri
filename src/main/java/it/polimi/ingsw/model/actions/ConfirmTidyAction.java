@@ -23,9 +23,8 @@ public class ConfirmTidyAction implements Action{
      * @throws NullPointerException if player is null
      */
     public ConfirmTidyAction(String player){
-        if(player == null)
-            throw new NullPointerException();
         this.player = player;
+        checkFormat();
     }
 
     /**
@@ -58,17 +57,36 @@ public class ConfirmTidyAction implements Action{
         if(gameContext == null)
             throw new NullPointerException();
         Player currentPlayer;
-        GameModel model = gameContext.getGameModel();
 
-        try {
-            currentPlayer = model.getPlayerById(player);
-        }catch(NoSuchElementException e){
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
 
         if(currentPlayer.getBoard().getStorage().getHand().totalAmountOfResources() > 0)
             throw new IllegalActionException("Trying to confirm tidy, but hand is not empty");
 
         return new ArrayList<>();
+    }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null)
+            throw new NullPointerException();
     }
 }

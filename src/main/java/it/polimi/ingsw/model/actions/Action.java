@@ -32,4 +32,17 @@ public interface Action {
      * @throws NullPointerException if gameContext is null
      */
     List<Message> execute(GameContext gameContext) throws IllegalActionException;
+
+    /**
+     * Returns the sender of this action
+     * @return the sender of this action
+     */
+    String getSender();
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    void checkFormat();
 }

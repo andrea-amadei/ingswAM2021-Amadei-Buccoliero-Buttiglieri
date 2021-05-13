@@ -102,6 +102,8 @@ public class CraftingResourceSelectionState extends State {
             throw new FSMTransitionFailedException(e.getMessage());
         }
 
+        setNextState(this);
+
         return messages;
     }
 
@@ -180,6 +182,7 @@ public class CraftingResourceSelectionState extends State {
         // check if the storage is full
         if(!checkStorage.isFull()) {
             errorMessage = "Too few resources are selected";
+            isSelectionCorrect = false;
         }
 
         if(!isSelectionCorrect){
@@ -194,8 +197,8 @@ public class CraftingResourceSelectionState extends State {
             Map<String, Integer> resourcesToRemove = new HashMap<>();
             for (ResourceSingle res : container.getAllResources().keySet()) {
                 try {
-                    container.removeResources(res, container.getAllResources().get(res));
-                    resourcesToRemove.put(res.getId().toLowerCase(), -container.getAllResources().get(res));
+                    resourcesToRemove.put(res.getId().toLowerCase(), -selectedResources.get(container).get(res));
+                    container.removeResources(res, selectedResources.get(container).get(res));
                 } catch (IllegalResourceTransferException e) {
                     Logger.log("Somehow a resource transfer failed and an exception wasn't thrown before!",
                             Logger.Severity.ERROR, ForegroundColor.RED);
@@ -213,8 +216,14 @@ public class CraftingResourceSelectionState extends State {
 
         production.resetCraftingSelection();
         payload.add(PayloadFactory.unselect(getGameContext().getCurrentPlayer().getUsername(), "production"));
+        storage.resetSelection();
+        payload.add(PayloadFactory.unselect(getGameContext().getCurrentPlayer().getUsername(), "storage"));
+
 
         messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), payload));
+
+        getGameContext().setPlayerMoved(true);
+        setNextState(new CraftingState(getGameContext()));
 
         return messages;
     }

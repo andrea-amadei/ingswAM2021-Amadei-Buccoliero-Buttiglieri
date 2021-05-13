@@ -56,6 +56,7 @@ public class BuyFromShopActionTest {
 
         gameContext.getGameModel().getShop().addCard(craftingCard1);
 
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new SelectCardFromShopAction("Ernestino", 0, 3, 1);
         assertDoesNotThrow(()-> action.execute(gameContext));
         Action action1 = new SelectResourcesAction("Ernestino", "BottomShelf", gold, 2);
@@ -67,6 +68,7 @@ public class BuyFromShopActionTest {
 
     @Test
     public void executeMethodRemovesCardFromShop(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new BuyFromShopAction("Ernestino");
         assertDoesNotThrow(()->action.execute(gameContext));
 
@@ -76,6 +78,7 @@ public class BuyFromShopActionTest {
 
     @Test
     public void executeMethodPutsCardInCorrectProductionSlot(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new BuyFromShopAction("Ernestino");
         assertDoesNotThrow(()->action.execute(gameContext));
 
@@ -86,6 +89,7 @@ public class BuyFromShopActionTest {
 
     @Test
     public void executeMethodAddsFlagToFlagHolder(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new BuyFromShopAction("Ernestino");
         assertDoesNotThrow(()->action.execute(gameContext));
 
@@ -95,6 +99,7 @@ public class BuyFromShopActionTest {
 
     @Test
     public void executeMethodAddsVictoryPointsToPlayer(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new BuyFromShopAction("Ernestino");
         assertDoesNotThrow(()->action.execute(gameContext));
 
@@ -103,6 +108,7 @@ public class BuyFromShopActionTest {
 
     @Test
     public void resetResourcesSelection(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new BuyFromShopAction("Ernestino");
         assertDoesNotThrow(()->action.execute(gameContext));
 
@@ -111,6 +117,7 @@ public class BuyFromShopActionTest {
 
     @Test
     public void resetCardSelection(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new BuyFromShopAction("Ernestino");
         assertDoesNotThrow(()->action.execute(gameContext));
 
@@ -119,18 +126,21 @@ public class BuyFromShopActionTest {
 
     @Test
     public void nullGameContext(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new BuyFromShopAction("Ernestino");
         assertThrows(NullPointerException.class, ()-> action.execute(null));
     }
 
     @Test
     public void invalidPlayer(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new BuyFromShopAction("Ermenegilda");
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
     }
 
     @Test
     public void buyingCardWithoutSelectingResources() throws IllegalActionException {
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ottone"));
         Action action = new SelectCardFromShopAction("Ottone", 0, 0, 1);
         action.execute(gameContext);
         Action action1 = new BuyFromShopAction("Ottone");
@@ -139,6 +149,7 @@ public class BuyFromShopActionTest {
 
     @Test
     public void buyingCardWithoutSelectingCard() throws IllegalActionException {
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ottone"));
         Action action = new SelectResourcesAction("Ottone", "Chest", shield, 1);
         action.execute(gameContext);
         Action action1 = new BuyFromShopAction("Ottone");
@@ -148,6 +159,7 @@ public class BuyFromShopActionTest {
 
     @Test
     public void buyingCardWithNotEnoughResources() throws IllegalActionException {
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ottone"));
         Action action = new SelectResourcesAction("Ottone", "Chest", shield, 1);
         action.execute(gameContext);
         Action action1 = new SelectCardFromShopAction("Ottone", 0, 3, 1);

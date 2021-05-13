@@ -41,11 +41,13 @@ public class ConfirmTidyActionTest {
 
     @Test
     public void validEmptyHand(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Paolo"));
         assertDoesNotThrow(()->new ConfirmTidyAction("Paolo").execute(gameContext));
     }
 
     @Test
     public void invalidHandNotEmpty(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Paolo"));
         Player paolo = gameContext.getGameModel().getPlayerById("Paolo");
         assertDoesNotThrow(()->paolo.getBoard().getStorage().getHand().addResources(gold, 1));
         assertThrows(IllegalActionException.class, ()->new ConfirmTidyAction("Paolo").execute(gameContext));
@@ -58,6 +60,7 @@ public class ConfirmTidyActionTest {
 
     @Test
     public void noSuchPlayer(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Paolo"));
         assertThrows(IllegalActionException.class, ()->new ConfirmTidyAction("test").execute(gameContext));
     }
 }

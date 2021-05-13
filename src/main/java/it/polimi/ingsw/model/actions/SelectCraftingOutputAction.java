@@ -21,11 +21,9 @@ public class SelectCraftingOutputAction implements Action {
     private final Map<ResourceSingle, Integer> conversion;
 
     public SelectCraftingOutputAction(String player, Map<ResourceSingle, Integer> conversion) {
-        if(player == null || conversion == null)
-            throw new NullPointerException();
-
         this.player = player;
         this.conversion = conversion;
+        checkFormat();
     }
 
     /**
@@ -52,11 +50,10 @@ public class SelectCraftingOutputAction implements Action {
         Player currentPlayer;
         Crafting crafting;
 
-        try {
-            currentPlayer = model.getPlayerById(player);
-        } catch(NoSuchElementException e) {
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
 
         try {
             crafting = currentPlayer.getBoard().getProduction().getSelectedCrafting();
@@ -77,5 +74,26 @@ public class SelectCraftingOutputAction implements Action {
 
         //TODO: we need to create a payload to communicate the selected output to the player.
         return new ArrayList<>();
+    }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null || conversion == null)
+            throw new NullPointerException();
     }
 }

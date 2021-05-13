@@ -36,11 +36,9 @@ public class SelectPlayAction implements Action {
      * @throws NullPointerException if player is null
      */
     public SelectPlayAction(String player, Play play) {
-        if(player == null || play == null)
-            throw new NullPointerException();
-
         this.play = play;
         this.player = player;
+        checkFormat();
     }
 
     /**
@@ -72,19 +70,39 @@ public class SelectPlayAction implements Action {
             throw new NullPointerException();
 
         Player currentPlayer;
-        GameModel model = gameContext.getGameModel();
 
-        try{
-            currentPlayer = model.getPlayerById(player);
-        }catch(NoSuchElementException e){
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
 
         if(!currentPlayer.equals(gameContext.getCurrentPlayer()))
             throw new IllegalActionException("The current player doesn't match the executor player");
 
         //TODO: choose how to communicate the selected play
         return new ArrayList<>();
+    }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null || play == null)
+            throw new NullPointerException();
+
     }
 
     public Play getPlay() {

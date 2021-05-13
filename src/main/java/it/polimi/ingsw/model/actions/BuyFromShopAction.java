@@ -33,9 +33,8 @@ public class BuyFromShopAction implements Action{
      * @throws NullPointerException if player is null
      */
     public BuyFromShopAction(String player){
-        if(player == null)
-            throw new NullPointerException();
         this.player = player;
+        checkFormat();
     }
 
     /**
@@ -77,11 +76,12 @@ public class BuyFromShopAction implements Action{
 
         Player currentPlayer;
 
-        try{
-            currentPlayer = model.getPlayerById(player);
-        }catch(NoSuchElementException e){
-            throw new IllegalActionException(e.getMessage());
-        }
+
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
+
 
         Storage storage = currentPlayer.getBoard().getStorage();
         Production production = currentPlayer.getBoard().getProduction();
@@ -153,5 +153,26 @@ public class BuyFromShopAction implements Action{
         //write the messages
         PayloadComponent updates = new InfoPayloadComponent(player + " has bought a card from market");
         return Collections.singletonList(new Message(Collections.singletonList(player), Collections.singletonList(updates)));
+    }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null)
+            throw new NullPointerException();
     }
 }

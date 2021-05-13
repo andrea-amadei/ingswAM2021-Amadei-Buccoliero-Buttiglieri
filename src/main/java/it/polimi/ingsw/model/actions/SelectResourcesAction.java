@@ -36,15 +36,11 @@ public class SelectResourcesAction implements Action{
      * @throws IllegalArgumentException if amount <= 0
      */
     public SelectResourcesAction(String player, String containerId, ResourceSingle resource, int amount){
-        if(player == null || containerId == null || resource == null)
-            throw new NullPointerException();
-        if(amount <= 0)
-            throw new IllegalArgumentException("Amount must be positive");
-
         this.player = player;
         this.containerId = containerId;
         this.resource = resource;
         this.amount = amount;
+        checkFormat();
     }
 
     /**
@@ -77,13 +73,11 @@ public class SelectResourcesAction implements Action{
             throw new NullPointerException();
 
         Player currentPlayer;
-        GameModel model = gameContext.getGameModel();
 
-        try{
-            currentPlayer = model.getPlayerById(player);
-        }catch(NoSuchElementException e ){
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
 
         Storage storage = currentPlayer.getBoard().getStorage();
 
@@ -108,5 +102,28 @@ public class SelectResourcesAction implements Action{
 
         Message message = new Message(targets, payload);
         return Collections.singletonList(message);
+    }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null || containerId == null || resource == null)
+            throw new NullPointerException();
+        if(amount <= 0)
+            throw new IllegalArgumentException("Amount must be positive");
     }
 }

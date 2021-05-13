@@ -39,7 +39,7 @@ public class Storage {
                                       GameParameters.BASE_CUPBOARD_SHELF_SIZES.get(i)));
         }
         cupboard = new BaseCupboard(baseShelves);
-        selectedResources = new HashMap<>();
+        selectedResources = null;
 
     }
 
@@ -56,7 +56,7 @@ public class Storage {
         this.hand = hand;
         this.marketBasket = marketBasket;
         this.cupboard = new BaseCupboard(baseShelves);
-        selectedResources = new HashMap<>();
+        selectedResources = null;
     }
 
 
@@ -148,15 +148,20 @@ public class Storage {
         if(amount <= 0)
             throw new IllegalArgumentException("The selected amount must be positive");
 
-        int preInsertionValue = Optional.ofNullable(selectedResources.get(from))
+        //the amount of resources of type res in the selection before adding resources to it
+        int preInsertionValue = Optional.ofNullable(selectedResources)
+                                        .map(selection -> selection.get(from))
                                         .flatMap(x->Optional.ofNullable(x.get(res)))
                                         .orElse(0);
 
+        //if the amount of resources of type res in the container is less then the precious selected + the new amount
         if(Optional.ofNullable(from.getAllResources().get(res)).orElse(0) < preInsertionValue + amount)
             throw new IllegalSelectionException("Too much resources selected for the container");
 
-        int currentValue = selectedResources.computeIfAbsent(from, (k)->new HashMap<>())
-                         .computeIfAbsent(res, (k)->0);
+        //add resources to the selection
+        selectedResources = Optional.ofNullable(selectedResources).orElse(new HashMap<>());
+        int currentValue = selectedResources.computeIfAbsent(from, (k) -> new HashMap<>())
+                                            .computeIfAbsent(res, (k)->0);
         selectedResources.get(from).put(res, currentValue + amount);
     }
 

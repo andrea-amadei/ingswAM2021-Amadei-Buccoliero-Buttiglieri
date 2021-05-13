@@ -37,6 +37,7 @@ public class SelectCardFromShopActionTest {
 
     @Test
     public void selectLevel1CardAndEmptyCraftingSlot(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         assertDoesNotThrow(()->new SelectCardFromShopAction("Ernestino", 0, 0, 2).execute(gameContext));
         Shop shop = gameContext.getGameModel().getShop();
 
@@ -46,6 +47,7 @@ public class SelectCardFromShopActionTest {
 
     @Test
     public void selectLevel2CardAndEmptyCraftingSlot(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         assertThrows(IllegalActionException.class,
                 ()->new SelectCardFromShopAction("Ernestino", 1, 1, 2).execute(gameContext));
         assertNull(gameContext.getGameModel().getShop().getSelectedCard());
@@ -54,6 +56,7 @@ public class SelectCardFromShopActionTest {
 
     @Test
     public void selectLevel3CardAndLevel2CraftingSlot(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Production production = player1.getBoard().getProduction();
         Shop shop = gameContext.getGameModel().getShop();
         production.setUpgradableCrafting(2, new UpgradableCrafting(
@@ -68,6 +71,7 @@ public class SelectCardFromShopActionTest {
 
     @Test
     public void selectLevel3CardAndLevel1CraftingSlot(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Production production = player1.getBoard().getProduction();
         Shop shop = gameContext.getGameModel().getShop();
         production.setUpgradableCrafting(2, new UpgradableCrafting(
@@ -82,16 +86,19 @@ public class SelectCardFromShopActionTest {
 
     @Test
     public void outOfBoundShopCardSelection(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         assertThrows(IllegalActionException.class, ()->new SelectCardFromShopAction("Ernestino", 3, 0, 2).execute(gameContext));
     }
 
     @Test
     public void outOfBoundCraftingSlotSelection(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         assertThrows(IllegalActionException.class, ()->new SelectCardFromShopAction("Ernestino", 2, 0, 3).execute(gameContext));
     }
 
     @Test
     public void noSuchPlayer(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         assertThrows(IllegalActionException.class, ()->new SelectCardFromShopAction("Ernestina", 2, 0, 2).execute(gameContext));
     }
 

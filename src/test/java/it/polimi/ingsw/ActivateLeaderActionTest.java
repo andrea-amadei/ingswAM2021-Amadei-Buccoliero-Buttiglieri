@@ -67,6 +67,7 @@ public class ActivateLeaderActionTest {
 
     @Test
     public void correctExecutionOfExecuteMethod(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new ActivateLeaderAction("Ernestino", 1);
         List<Message> messages;
 
@@ -92,24 +93,28 @@ public class ActivateLeaderActionTest {
 
     @Test
     public void invalidPlayer(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new ActivateLeaderAction("Teodolinda", 1);
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
     }
 
     @Test
     public void activatingNonExistentLeader(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ermenegildo"));
         Action action = new ActivateLeaderAction("Ermenegildo", 1);
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
     }
 
     @Test
     public void activatingLeaderWithoutSatisfyingRequirements(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ermenegildo"));
         Action action = new ActivateLeaderAction("Ermenegildo", 2);
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
     }
 
     @Test
     public void activatingAnAlreadyActiveLeaderCard() throws IllegalActionException {
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ermenegildo"));
         Action action = new ActivateLeaderAction("Ermenegildo", 3);
         action.execute(gameContext);
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));

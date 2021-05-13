@@ -24,15 +24,10 @@ public class SelectCraftingAction implements Action {
     private final int index;
 
     public SelectCraftingAction(String player, Production.CraftingType craftingType, int index) {
-        if(player == null || craftingType == null)
-            throw new NullPointerException();
-
-        if(index < 0)
-            throw new IllegalArgumentException("Index must be positive");
-
         this.player = player;
         this.craftingType = craftingType;
         this.index = index;
+        checkFormat();
     }
 
     /**
@@ -68,11 +63,10 @@ public class SelectCraftingAction implements Action {
         Player currentPlayer;
         List<PayloadComponent> payload = new ArrayList<>();
 
-        try {
-            currentPlayer = model.getPlayerById(player);
-        } catch(NoSuchElementException e) {
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
 
         Production production = currentPlayer.getBoard().getProduction();
 
@@ -98,5 +92,29 @@ public class SelectCraftingAction implements Action {
         Message message = new Message(targets, payload);
 
         return Collections.singletonList(message);
+    }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null || craftingType == null)
+            throw new NullPointerException();
+
+        if(index < 0)
+            throw new IllegalArgumentException("Index must be positive");
     }
 }

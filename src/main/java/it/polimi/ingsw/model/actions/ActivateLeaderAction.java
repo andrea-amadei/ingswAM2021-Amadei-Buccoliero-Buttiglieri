@@ -31,14 +31,9 @@ public class ActivateLeaderAction implements Action{
      * @throws IllegalArgumentException iff leader ID is negative or zero
      */
     public ActivateLeaderAction(String player, int leaderID){
-
-        if(player == null)
-            throw new NullPointerException();
-        if(leaderID <= 0)
-            throw new IllegalArgumentException("Leader ID cannot be negative or zero");
-
         this.player = player;
         this.leaderID = leaderID;
+        checkFormat();
     }
 
 
@@ -75,11 +70,10 @@ public class ActivateLeaderAction implements Action{
         LeaderCard leaderCard;
         List<PayloadComponent> payload;
 
-        try {
-            currentPlayer = model.getPlayerById(player);
-        }catch(NoSuchElementException e){
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
 
         try {
             leaderCard = currentPlayer.getBoard().getLeaderCardByID(leaderID);
@@ -99,5 +93,23 @@ public class ActivateLeaderAction implements Action{
                 .collect(Collectors.toList());
 
         return Collections.singletonList(new Message(destinations, payload));
+    }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
+
+    @Override
+    public void checkFormat() {
+        if(player == null)
+            throw new NullPointerException();
+        if(leaderID <= 0)
+            throw new IllegalArgumentException("Leader ID cannot be negative or zero");
     }
 }

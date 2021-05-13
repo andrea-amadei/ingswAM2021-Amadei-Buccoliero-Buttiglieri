@@ -36,14 +36,10 @@ public class BuyFromMarketAction implements Action{
      * @throws IndexOutOfBoundsException if index is negative
      */
     public BuyFromMarketAction(String player, boolean isRow, int index){
-        if(player == null)
-            throw new NullPointerException();
-        if(index < 0)
-            throw new IndexOutOfBoundsException();
-
         this.player = player;
         this.isRow = isRow;
         this.index = index;
+        checkFormat();
     }
 
 
@@ -79,12 +75,10 @@ public class BuyFromMarketAction implements Action{
         Market market = model.getMarket();
         Player currentPlayer;
 
-        //try to retrieve the player
-        try{
-            currentPlayer = model.getPlayerById(player);
-        }catch(NoSuchElementException e){
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
 
         //try to execute the action
         try{
@@ -118,7 +112,7 @@ public class BuyFromMarketAction implements Action{
         PayloadComponent update = PayloadFactory.changeMarket(market.toRaw());
 
         //Create the payload with the possible conversions
-        payload.add(PayloadFactory.changePossibleConversions(currentPlayer.getUsername(), possibleConversions));
+        payload.add(PayloadFactory.changePossibleConversions(currentPlayer.getUsername(), selectedMarbles, possibleConversions));
 
         //Create the message to be sent to everyone
         List<String> to = model.getPlayers().stream().map(Player::getUsername).collect(Collectors.toList());
@@ -128,5 +122,28 @@ public class BuyFromMarketAction implements Action{
         messages.add(new Message(Collections.singletonList(player), payload));
 
         return messages;
+    }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null)
+            throw new NullPointerException();
+        if(index < 0)
+            throw new IndexOutOfBoundsException();
     }
 }

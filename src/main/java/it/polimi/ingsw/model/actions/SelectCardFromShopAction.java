@@ -37,16 +37,11 @@ public class SelectCardFromShopAction implements Action{
      * @throws IllegalArgumentException if row, col and upgradableCraftingId are not non negative
      */
     public SelectCardFromShopAction(String player, int row, int col, int upgradableCraftingId){
-        if(player == null)
-            throw new NullPointerException();
-
-        if(row < 0 || col < 0 || upgradableCraftingId < 0)
-            throw new IllegalArgumentException("row, col and upgradableCraftingId can't be negative");
-
         this.player = player;
         this.row = row;
         this.col = col;
         this.upgradableCraftingId = upgradableCraftingId;
+        checkFormat();
     }
 
     /**
@@ -84,11 +79,10 @@ public class SelectCardFromShopAction implements Action{
         Player currentPlayer;
 
         //try to retrieve the current player
-        try{
-            currentPlayer = model.getPlayerById(player);
-        }catch(NoSuchElementException e){
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
 
         Production production = currentPlayer.getBoard().getProduction();
         CraftingCard card;
@@ -140,5 +134,30 @@ public class SelectCardFromShopAction implements Action{
         Message message = new Message(targets, payload);
 
         return Collections.singletonList(message);
+    }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null)
+            throw new NullPointerException();
+
+        if(row < 0 || col < 0 || upgradableCraftingId < 0)
+            throw new IllegalArgumentException("row, col and upgradableCraftingId can't be negative");
+
     }
 }

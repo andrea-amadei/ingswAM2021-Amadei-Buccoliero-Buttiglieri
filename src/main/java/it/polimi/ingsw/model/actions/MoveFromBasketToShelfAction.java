@@ -38,17 +38,11 @@ public class MoveFromBasketToShelfAction implements Action{
      * @throws IllegalArgumentException iff amount of resources to move is negative or zero
      */
     public MoveFromBasketToShelfAction(String player, ResourceSingle resourceToMove, int amount, String shelfID){
-
-        if(player == null || resourceToMove == null || shelfID == null)
-            throw new NullPointerException();
-
-        if(amount <= 0)
-            throw new IllegalArgumentException("Amount cannot be negative or zero");
-
         this.player = player;
         this.resourceToMove = resourceToMove;
         this.amount = amount;
         this.shelfID = shelfID;
+        checkFormat();
     }
 
     /**
@@ -83,11 +77,10 @@ public class MoveFromBasketToShelfAction implements Action{
         Player currentPlayer;
         Shelf shelf;
 
-        try {
-            currentPlayer = model.getPlayerById(player);
-        }catch(NoSuchElementException e){
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
 
         try {
             shelf = currentPlayer.getBoard().getStorage().getCupboard().getShelfById(shelfID);
@@ -121,5 +114,29 @@ public class MoveFromBasketToShelfAction implements Action{
                 ));
 
         return Collections.singletonList(new Message(destinations, payload));
+    }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null || resourceToMove == null || shelfID == null)
+            throw new NullPointerException();
+
+        if(amount <= 0)
+            throw new IllegalArgumentException("Amount cannot be negative or zero");
     }
 }

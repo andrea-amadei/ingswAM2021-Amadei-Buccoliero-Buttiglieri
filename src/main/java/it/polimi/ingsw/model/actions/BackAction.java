@@ -22,10 +22,8 @@ public class BackAction implements Action {
      * @throws NullPointerException if player is null
      */
     public BackAction(String player){
-        if(player == null)
-            throw new NullPointerException();
-
         this.player = player;
+        checkFormat();
     }
 
     /**
@@ -59,17 +57,36 @@ public class BackAction implements Action {
             throw new NullPointerException();
 
         Player currentPlayer;
-        GameModel model = gameContext.getGameModel();
 
-        try{
-            currentPlayer = model.getPlayerById(player);
-        }catch(NoSuchElementException e){
-            throw new IllegalActionException(e.getMessage());
-        }
+        if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
+            throw new IllegalActionException("It is not your turn");
+
+        currentPlayer = gameContext.getCurrentPlayer();
 
         if(!currentPlayer.equals(gameContext.getCurrentPlayer()))
             throw new IllegalActionException("The current player doesn't match the executor player");
 
         return new ArrayList<>();
+    }
+
+    /**
+     * Returns the sender of this action
+     *
+     * @return the sender of this action
+     */
+    @Override
+    public String getSender() {
+        return player;
+    }
+
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     * It needs to be used since this class can be created by deserialization
+     */
+    @Override
+    public void checkFormat() {
+        if(player == null)
+            throw new NullPointerException();
     }
 }

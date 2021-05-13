@@ -48,7 +48,7 @@ public class StateTest {
         FaithPath fp = gameContext.getGameModel().getFaithPath();
         fp.executeMovement(100, player1);
         assertFalse(actionQueue.isEmpty());
-        stateMachine.executeAction(actionQueue.pop());
+        assertDoesNotThrow(()->stateMachine.executeAction(actionQueue.pop()));
 
         assertEquals(FaithHolder.CheckpointStatus.ACTIVE, player1.getBoard().getFaithHolder().getPopeCardStatus(0));
         assertEquals(FaithHolder.CheckpointStatus.ACTIVE, player1.getBoard().getFaithHolder().getPopeCardStatus(1));
