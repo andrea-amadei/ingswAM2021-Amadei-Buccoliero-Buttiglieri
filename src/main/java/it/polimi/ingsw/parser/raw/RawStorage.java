@@ -3,13 +3,10 @@ package it.polimi.ingsw.parser.raw;
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
-import it.polimi.ingsw.gamematerials.ResourceType;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.storage.BaseStorage;
 import it.polimi.ingsw.model.storage.ResourceContainer;
-import it.polimi.ingsw.model.storage.Shelf;
 import it.polimi.ingsw.parser.JSONSerializer;
-import it.polimi.ingsw.parser.RawObject;
 import it.polimi.ingsw.parser.UniqueRawObject;
 
 import java.util.HashMap;
@@ -42,6 +39,32 @@ public class RawStorage implements UniqueRawObject<ResourceContainer> {
     public RawStorage(String id, Map<String, Integer> resources) {
         this.resources = resources;
         this.id = id;
+    }
+
+    //TODO: CHECK FOR CONSISTENCY IN RESOURCE NAME
+    /**
+     * Returns a new RawStorage with the same id of this RawStorage, but with the
+     * results updated by delta
+     * @param delta the map describing the update in resources
+     * @return a new RawStorage with the same id of this RawStorage, but with the
+     *         results updated by delta
+     */
+    public RawStorage applyChange(RawStorage delta){
+        if(delta == null)
+            throw new NullPointerException();
+
+        Map<String, Integer> deltaResources = new HashMap<>(delta.getResources());
+
+        deltaResources = deltaResources.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().toUpperCase(), Map.Entry::getValue));
+
+        Map<String, Integer> result = new HashMap<>(resources);
+
+        for(Map.Entry<String, Integer> entry : deltaResources.entrySet()){
+            result.putIfAbsent(entry.getKey(), 0);
+            result.put(entry.getKey(), result.get(entry.getKey()) + entry.getValue());
+        }
+
+        return new RawStorage(id, result);
     }
 
     public String getId() {
