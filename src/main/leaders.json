@@ -110,6 +110,7 @@
       "special_abilities": [
         {
           "type": "storage",
+          "storage_name": "leader_5",
           "accepted_types": "STONE",
           "amount": 2
         }
@@ -129,6 +130,7 @@
       "special_abilities": [
         {
           "type": "storage",
+          "storage_name": "leader_6",
           "accepted_types": "SERVANT",
           "amount": 2
         }
@@ -148,6 +150,7 @@
       "special_abilities": [
         {
           "type": "storage",
+          "storage_name": "leader_7",
           "accepted_types": "SHIELD",
           "amount": 2
         }
@@ -167,6 +170,7 @@
       "special_abilities": [
         {
           "type": "storage",
+          "storage_name": "leader_8",
           "accepted_types": "GOLD",
           "amount": 2
         }
