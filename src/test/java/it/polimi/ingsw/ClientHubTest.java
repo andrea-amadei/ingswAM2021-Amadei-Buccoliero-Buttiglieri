@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.server.MatchesManager;
+import it.polimi.ingsw.server.clienthandling.ClientHandler;
 import it.polimi.ingsw.server.clienthandling.ClientHub;
 import org.junit.jupiter.api.Test;
 
@@ -20,9 +22,9 @@ public class ClientHubTest {
     public void validAddClient(){
         ClientHub hub = new ClientHub();
         String username = "pippo";
-        Socket socket = new Socket();
+        ClientHandler clientHandler = new ClientHandler(new Socket(), new MatchesManager());
 
-        assertDoesNotThrow(()->hub.addClient(username, socket));
+        assertDoesNotThrow(()->hub.addClient(username, clientHandler));
         assertTrue(hub.contains(username));
         assertNotNull(hub.getClientByName("pippo").getSecond());
     }
@@ -30,7 +32,7 @@ public class ClientHubTest {
     @Test
     public void disconnectClient(){
         ClientHub hub = new ClientHub();
-        assertDoesNotThrow(()->hub.addClient("pippo", new Socket()));
+        assertDoesNotThrow(()->hub.addClient("pippo", new ClientHandler(new Socket(), new MatchesManager())));
         hub.disconnectClient("pippo");
         assertNull(hub.getClientByName("pippo").getSecond());
     }

@@ -37,7 +37,7 @@ public class Match {
 
 
 
-    public Match(String gameName, Pair<String, Socket> host, int matchSize, boolean isSinglePlayer){
+    public Match(String gameName, Pair<String, ClientHandler> host, int matchSize, boolean isSinglePlayer){
 
         //TODO: add checks for gameName etc...
 
@@ -54,7 +54,7 @@ public class Match {
 
     }
 
-    public void addPlayer(Pair<String, Socket> client) throws DuplicateUsernameException, GameNotInLobbyException {
+    public void addPlayer(Pair<String, ClientHandler> client) throws DuplicateUsernameException, GameNotInLobbyException {
         if(client == null)
             throw new NullPointerException();
 
@@ -76,7 +76,7 @@ public class Match {
         currentState = MatchState.PLAYING;
 
         //TODO: use the real builder to build the state machine (it automatically creates the game model and game
-        //      context. Launch a new thread that will handle the queue consumption
+        //      context.
         this.stateMachine = DummyBuilder.buildController(clientHub.getUsernames(), new Random(), isSinglePlayer, actionQueue);
         new Controller(stateMachine, actionQueue, clientHub).start();
     }

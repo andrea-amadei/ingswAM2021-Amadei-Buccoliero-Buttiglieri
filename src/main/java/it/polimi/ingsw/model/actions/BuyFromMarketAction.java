@@ -87,7 +87,7 @@ public class BuyFromMarketAction implements Action{
             else
                 market.pickCol(index);
         }catch(IndexOutOfBoundsException e){
-            throw new IllegalActionException(e.getMessage());
+            throw new IllegalActionException("The selected " + ((isRow) ? "row" : "col") + " index is out of bound.\nSelect another index");
         }
 
         //get the actuators to send to the currentPlayer

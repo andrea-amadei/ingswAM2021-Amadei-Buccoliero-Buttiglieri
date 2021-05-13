@@ -1,6 +1,7 @@
 package it.polimi.ingsw.parser;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.InvalidFaithPathException;
@@ -11,9 +12,13 @@ import it.polimi.ingsw.model.FaithPathTile;
 import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.CraftingCard;
+import it.polimi.ingsw.parser.adapters.ClientNetworkObjectAdapter;
+import it.polimi.ingsw.parser.adapters.SetupActionAdapter;
 import it.polimi.ingsw.parser.raw.list.*;
 import it.polimi.ingsw.server.Logger;
 import it.polimi.ingsw.utils.ForegroundColor;
+import it.polimi.ingsw.server.clienthandling.ClientNetworkObject;
+import it.polimi.ingsw.server.clienthandling.setupactions.SetupAction;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -250,5 +255,14 @@ public final class JSONParser {
         } catch (IllegalArgumentException | InvalidFaithPathException e) {
             throw new ParserException("Faith Path: " + e.getMessage());
         }
+    }
+
+    public static ClientNetworkObject getClientNetworkObject(String json){
+        Gson clientNetworkObjGson = new GsonBuilder()
+                .registerTypeAdapter(ClientNetworkObject.class, new ClientNetworkObjectAdapter())
+                .registerTypeAdapter(SetupAction.class, new SetupActionAdapter())
+                .create();
+
+        return clientNetworkObjGson.fromJson(json, ClientNetworkObject.class);
     }
 }

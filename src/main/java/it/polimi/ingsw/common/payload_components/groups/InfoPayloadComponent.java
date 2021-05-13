@@ -3,12 +3,14 @@ package it.polimi.ingsw.common.payload_components.groups;
 
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.annotations.SerializedGroup;
+import it.polimi.ingsw.annotations.SerializedType;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 
 /**
  * An information the server suggests to show to the clients.
  */
 @SerializedGroup("info")
+@SerializedType("info")
 public class InfoPayloadComponent implements PayloadComponent {
 
     @SerializedName("message")

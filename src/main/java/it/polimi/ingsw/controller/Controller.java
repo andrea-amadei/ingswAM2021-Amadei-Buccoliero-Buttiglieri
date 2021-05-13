@@ -62,7 +62,7 @@ public class Controller extends Thread{
         }
         //TODO: for each entry send the payload to the socket
         for(Map.Entry<String, List<PayloadComponent>> entry : messageDictionary.entrySet()){
-            if (clientHub.getClientByName(entry.getKey()).getSecond() != null) {
+            if (clientHub.getClientByName(entry.getKey()).getSecond() != null && entry.getValue().size() > 0) {
                 System.out.println("-----------------------------------------------------------");
                 System.out.println("payloads for: " + entry.getKey());
                 for (PayloadComponent component : entry.getValue()) {
