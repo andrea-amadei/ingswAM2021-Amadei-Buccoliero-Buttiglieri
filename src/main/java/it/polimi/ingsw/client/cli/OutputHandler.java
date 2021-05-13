@@ -319,4 +319,139 @@ public class OutputHandler {
             for(int j = startingColumn; j <= endingColumn; j++)
                 background[i][j] = newBackgroundColor;
     }
+
+    public void setCharBox(int startingRow, int startingColumn, int endingRow, int endingColumn, char newChar) {
+        if(startingRow < 0 || startingRow >= height)
+            throw new IndexOutOfBoundsException("Invalid starting row");
+
+        if(startingColumn < 0 || startingColumn >= width)
+            throw new IndexOutOfBoundsException("Invalid starting width");
+
+        if(endingRow < 0 || endingRow >= height)
+            throw new IndexOutOfBoundsException("Invalid ending row");
+
+        if(endingColumn < 0 || endingColumn >= width)
+            throw new IndexOutOfBoundsException("Invalid ending width");
+
+        if(startingRow > endingRow)
+            throw new IllegalArgumentException("Starting row is bigger than ending row");
+
+        if(startingColumn > endingColumn)
+            throw new IllegalArgumentException("Starting column is bigger than ending row");
+
+        setCharRectangle(startingRow, startingColumn, endingRow - 1, startingColumn, newChar);
+        setCharRectangle(startingRow, startingColumn, startingRow, endingColumn - 1, newChar);
+        setCharRectangle(endingRow - 1, startingColumn, endingRow - 1, endingColumn - 1, newChar);
+        setCharRectangle(startingRow, endingColumn - 1, endingRow - 1, endingColumn - 1, newChar);
+    }
+
+    public void setForegroundColorBox(int startingRow, int startingColumn, int endingRow, int endingColumn, ForegroundColor newForegroundColor) {
+        if(startingRow < 0 || startingRow >= height)
+            throw new IndexOutOfBoundsException("Invalid starting row");
+
+        if(startingColumn < 0 || startingColumn >= width)
+            throw new IndexOutOfBoundsException("Invalid starting width");
+
+        if(endingRow < 0 || endingRow >= height)
+            throw new IndexOutOfBoundsException("Invalid ending row");
+
+        if(endingColumn < 0 || endingColumn >= width)
+            throw new IndexOutOfBoundsException("Invalid ending width");
+
+        if(startingRow > endingRow)
+            throw new IllegalArgumentException("Starting row is bigger than ending row");
+
+        if(startingColumn > endingColumn)
+            throw new IllegalArgumentException("Starting column is bigger than ending row");
+
+        setForegroundColorRectangle(startingRow, startingColumn, endingRow - 1, startingColumn, newForegroundColor);
+        setForegroundColorRectangle(startingRow, startingColumn, startingRow, endingColumn - 1, newForegroundColor);
+        setForegroundColorRectangle(endingRow - 1, startingColumn, endingRow - 1, endingColumn - 1, newForegroundColor);
+        setForegroundColorRectangle(startingRow, endingColumn - 1, endingRow - 1, endingColumn - 1, newForegroundColor);
+    }
+
+    public void setBackgroundColorBox(int startingRow, int startingColumn, int endingRow, int endingColumn, BackgroundColor newBackgroundColor) {
+        if(startingRow < 0 || startingRow >= height)
+            throw new IndexOutOfBoundsException("Invalid starting row");
+
+        if(startingColumn < 0 || startingColumn >= width)
+            throw new IndexOutOfBoundsException("Invalid starting width");
+
+        if(endingRow < 0 || endingRow >= height)
+            throw new IndexOutOfBoundsException("Invalid ending row");
+
+        if(endingColumn < 0 || endingColumn >= width)
+            throw new IndexOutOfBoundsException("Invalid ending width");
+
+        if(startingRow > endingRow)
+            throw new IllegalArgumentException("Starting row is bigger than ending row");
+
+        if(startingColumn > endingColumn)
+            throw new IllegalArgumentException("Starting column is bigger than ending row");
+
+        setBackgroundColorRectangle(startingRow, startingColumn, endingRow - 1, startingColumn, newBackgroundColor);
+        setBackgroundColorRectangle(startingRow, startingColumn, startingRow, endingColumn - 1, newBackgroundColor);
+        setBackgroundColorRectangle(endingRow - 1, startingColumn, endingRow - 1, endingColumn - 1, newBackgroundColor);
+        setBackgroundColorRectangle(startingRow, endingColumn - 1, endingRow - 1, endingColumn - 1, newBackgroundColor);
+    }
+
+    public void setSingleFancyBox(int startingRow, int startingColumn, int endingRow, int endingColumn) {
+        if(startingRow < 0 || startingRow >= height)
+            throw new IndexOutOfBoundsException("Invalid starting row");
+
+        if(startingColumn < 0 || startingColumn >= width)
+            throw new IndexOutOfBoundsException("Invalid starting width");
+
+        if(endingRow < 0 || endingRow >= height)
+            throw new IndexOutOfBoundsException("Invalid ending row");
+
+        if(endingColumn < 0 || endingColumn >= width)
+            throw new IndexOutOfBoundsException("Invalid ending width");
+
+        if(startingRow > endingRow)
+            throw new IllegalArgumentException("Starting row is bigger than ending row");
+
+        if(startingColumn > endingColumn)
+            throw new IllegalArgumentException("Starting column is bigger than ending row");
+
+        setCharRectangle(startingRow, startingColumn, endingRow, startingColumn, '│');
+        setCharRectangle(startingRow, startingColumn, startingRow, endingColumn, '─');
+        setCharRectangle(endingRow, startingColumn, endingRow, endingColumn, '─');
+        setCharRectangle(startingRow, endingColumn, endingRow, endingColumn, '│');
+
+        setChar(startingRow, startingColumn, '┌');
+        setChar(startingRow, endingColumn, '┐');
+        setChar(endingRow, startingColumn, '└');
+        setChar(endingRow, endingColumn, '┘');
+    }
+
+    public void setDoubleFancyBox(int startingRow, int startingColumn, int endingRow, int endingColumn) {
+        if(startingRow < 0 || startingRow >= height)
+            throw new IndexOutOfBoundsException("Invalid starting row");
+
+        if(startingColumn < 0 || startingColumn >= width)
+            throw new IndexOutOfBoundsException("Invalid starting width");
+
+        if(endingRow < 0 || endingRow >= height)
+            throw new IndexOutOfBoundsException("Invalid ending row");
+
+        if(endingColumn < 0 || endingColumn >= width)
+            throw new IndexOutOfBoundsException("Invalid ending width");
+
+        if(startingRow > endingRow)
+            throw new IllegalArgumentException("Starting row is bigger than ending row");
+
+        if(startingColumn > endingColumn)
+            throw new IllegalArgumentException("Starting column is bigger than ending row");
+
+        setCharRectangle(startingRow, startingColumn, endingRow, startingColumn, '║');
+        setCharRectangle(startingRow, startingColumn, startingRow, endingColumn, '═');
+        setCharRectangle(endingRow, startingColumn, endingRow, endingColumn, '═');
+        setCharRectangle(startingRow, endingColumn, endingRow, endingColumn, '║');
+
+        setChar(startingRow, startingColumn, '╔');
+        setChar(startingRow, endingColumn, '╗');
+        setChar(endingRow, startingColumn, '╚');
+        setChar(endingRow, endingColumn, '╝');
+    }
 }
