@@ -77,8 +77,7 @@ public class Group implements MutableElementGroup {
             throw new NullPointerException();
 
         if(elements.containsKey(element.getName()))
-            //TODO Change to a more appropriate exception
-            throw new RuntimeException();
+            throw new IllegalArgumentException("An element with the same name already exists");
 
         elements.put(element.getName(), element);
     }

@@ -49,8 +49,7 @@ public class CliFramework {
             throw new NullPointerException();
 
         if(frames.containsKey(frame.getName()))
-            //TODO Change to a more appropriate exception
-            throw new RuntimeException();
+            throw new IllegalArgumentException("A frame with the same name already exists");
 
         frames.put(frame.getName(), frame);
     }
