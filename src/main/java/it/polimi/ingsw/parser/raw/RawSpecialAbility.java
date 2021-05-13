@@ -27,8 +27,11 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
     @SerializedName("to")
     private List<String> to;
 
-    @SerializedName(value = "acceptedTypes", alternate = "accepted_types")
+    @SerializedName(value = "accepted_types", alternate = "acceptedTypes")
     private String acceptedTypes;
+
+    @SerializedName(value = "storage_name", alternate = {"storageName", "storage"})
+    private String storageName;
 
     @SerializedName("crafting")
     private RawCrafting crafting;
@@ -67,6 +70,7 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
 
         acceptedTypes = storageAbility.getShelf().getAcceptedTypes().getId();
         amount = storageAbility.getShelf().getMaxAmount();
+        storageName = storageAbility.getShelf().getId();
     }
 
     public RawSpecialAbility(SpecialAbility specialAbility) {
@@ -101,6 +105,7 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
 
             acceptedTypes = storageAbility.getShelf().getAcceptedTypes().getId();
             amount = storageAbility.getShelf().getMaxAmount();
+            storageName = storageAbility.getShelf().getId();
         }
         else
             throw new IllegalArgumentException("Unsupported special ability!");
@@ -126,6 +131,10 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
         return acceptedTypes;
     }
 
+    public String getStorageName() {
+        return storageName;
+    }
+
     public RawCrafting getCrafting() {
         return crafting;
     }
@@ -142,7 +151,6 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
         List<ResourceSingle> sList = new ArrayList<>();
         ResourceSingle s;
         ResourceType t;
-
 
         if(type == null)
             throw new IllegalRawConversionException("Missing field \"type\" for special ability");
@@ -209,6 +217,9 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
                 if(amount == null)
                     throw new IllegalRawConversionException("Missing field \"amount\" for a \"" + type + "\" special ability");
 
+                if(storageName == null)
+                    throw new IllegalRawConversionException("Missing field \"storage_name\" for a \"" + type + "\" special ability");
+
                 try {
                     t = ResourceTypeSingleton.getInstance().getResourceTypeByName(acceptedTypes);
                 } catch (NoSuchElementException e) {
@@ -217,7 +228,7 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
 
                 try {
                     //TODO: choose a meaningful name
-                    return new StorageAbility(new Shelf("Leader_", t, amount));
+                    return new StorageAbility(new Shelf(storageName, t, amount));
                 } catch (IllegalArgumentException e) {
                     throw new IllegalRawConversionException(e.getMessage());
                 }
