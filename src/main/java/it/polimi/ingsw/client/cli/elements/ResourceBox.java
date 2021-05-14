@@ -30,7 +30,7 @@ public class ResourceBox implements MutablePositionedElement {
     };
 
     private static final BackgroundColor[] RESOURCE_BACKGROUND_COLOR = {
-            BackgroundColor.YELLOW_BRIGHT,
+            BackgroundColor.YELLOW,
             BackgroundColor.BLACK_BRIGHT,
             BackgroundColor.BLUE_BRIGHT,
             BackgroundColor.PURPLE,
