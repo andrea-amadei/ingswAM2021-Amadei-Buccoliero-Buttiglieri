@@ -11,11 +11,11 @@ import java.util.NoSuchElementException;
 public class ResourceTypeSingleton {
     private static final ResourceTypeSingleton instance = new ResourceTypeSingleton();
 
-    final ResourceSingle GOLD = new ResourceSingle("Gold");
-    final ResourceSingle SERVANT = new ResourceSingle("Servant");
-    final ResourceSingle SHIELD = new ResourceSingle("Shield");
-    final ResourceSingle STONE = new ResourceSingle("Stone");
-    final ResourceGroup ANY = new ResourceGroup("Any", new HashSet<>(Arrays.asList(GOLD, SERVANT, SHIELD, STONE)));
+    final ResourceSingle GOLD = new ResourceSingle("gold");
+    final ResourceSingle SERVANT = new ResourceSingle("servant");
+    final ResourceSingle SHIELD = new ResourceSingle("shield");
+    final ResourceSingle STONE = new ResourceSingle("stone");
+    final ResourceGroup ANY = new ResourceGroup("any", new HashSet<>(Arrays.asList(GOLD, SERVANT, SHIELD, STONE)));
 
     private ResourceTypeSingleton() {}
 

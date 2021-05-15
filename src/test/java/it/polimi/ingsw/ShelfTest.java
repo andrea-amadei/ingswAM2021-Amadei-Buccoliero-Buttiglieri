@@ -20,7 +20,7 @@ public class ShelfTest {
     public void baseShelfConstruction(){
         Shelf s1 = new Shelf("Shelf 1", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
         assertEquals(s1.getId(), "Shelf 1");
-        assertEquals(s1.toString(), "Shelf 1{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=3}");
+        assertEquals(s1.toString(), "Shelf 1{acceptedTypes=any {gold, servant, shield, stone}, amount=3}");
         assertEquals(s1.getAmount(), 0);
         assertNull(s1.getCurrentType());
     }
@@ -29,7 +29,7 @@ public class ShelfTest {
     public void leaderShelfConstruction(){
         Shelf leaderShelf = new Shelf("LeaderShelf 1", ResourceTypeSingleton.getInstance().getGoldResource(), 2);
         assertEquals(leaderShelf.getId(), "LeaderShelf 1");
-        assertEquals(leaderShelf.toString(), "LeaderShelf 1{acceptedTypes=Gold, amount=2}");
+        assertEquals(leaderShelf.toString(), "LeaderShelf 1{acceptedTypes=gold, amount=2}");
         assertEquals(leaderShelf.getAmount(), 0);
         assertNull(leaderShelf.getCurrentType());
     }

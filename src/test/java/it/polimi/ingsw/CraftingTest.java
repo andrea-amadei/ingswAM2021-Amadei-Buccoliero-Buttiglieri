@@ -191,6 +191,6 @@ public class CraftingTest {
 
         Crafting crafting = new Crafting(input, output, 1);
 
-        assertEquals("Crafting{Shield: 2 Servant: 1 -> Stone: 1 Gold: 2 + Faith: 1}", crafting.toString());
+        assertEquals("Crafting{shield: 2 servant: 1 -> stone: 1 gold: 2 + Faith: 1}", crafting.toString());
     }
 }
