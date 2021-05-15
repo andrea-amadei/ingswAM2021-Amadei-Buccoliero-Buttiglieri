@@ -162,7 +162,7 @@ public class PreliminaryPickAction implements Action{
                 .stream()
                 .collect(Collectors.toMap(e -> e.getKey().toString().toLowerCase(), Map.Entry::getValue));
         if(chosenResourcesRaw.size() > 0)
-            globalChanges.add(PayloadFactory.changeResources(currentPlayer.getUsername(), new RawStorage("Hand", chosenResourcesRaw)));
+            globalChanges.add(PayloadFactory.changeResources(currentPlayer.getUsername(), new RawStorage(currentPlayer.getBoard().getStorage().getHand().getId(), chosenResourcesRaw)));
 
         //adding the payload for the discarded leader card (the secret one)
         for(Integer i : leaderIdToDiscard){
