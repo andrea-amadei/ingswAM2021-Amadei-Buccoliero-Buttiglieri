@@ -27,7 +27,7 @@ public class BaseCupboardTest {
         assertTrue(c.contains(middle));
         assertTrue(c.contains(top));
         assertEquals(new HashSet<>(Arrays.asList(bottom, middle, top)), c.getShelves());
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=3}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=3}, MiddleShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=2}, TopShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=1}}");
     }
 
     @Test
@@ -75,7 +75,7 @@ public class BaseCupboardTest {
         assertEquals(bottom, c.getShelfById("BottomShelf"));
         assertEquals(middle, c.getShelfById("MiddleShelf"));
         assertEquals(top, c.getShelfById("TopShelf"));
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=3}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=3}, MiddleShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=2}, TopShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=1}}");
     }
 
     @Test
@@ -85,7 +85,7 @@ public class BaseCupboardTest {
         Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
         Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
         assertThrows(NullPointerException.class, () -> c.getShelfById(null));
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=3}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=3}, MiddleShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=2}, TopShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=1}}");
     }
 
     @Test
@@ -95,7 +95,7 @@ public class BaseCupboardTest {
         Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
         Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
         assertThrows(NoSuchElementException.class, () -> c.getShelfById("hmm"));
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=3}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=3}, MiddleShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=2}, TopShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=1}}");
     }
 
     @Test
@@ -113,7 +113,7 @@ public class BaseCupboardTest {
         assertDoesNotThrow(()->c.addResource(bottom, stone, 3));
         assertDoesNotThrow(()->c.addResource(middle, gold, 1));
         assertDoesNotThrow(()->c.addResource(top, servant, 1));
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{Stone: 3}, MiddleShelf{Gold: 1}, TopShelf{Servant: 1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{stone: 3}, MiddleShelf{gold: 1}, TopShelf{servant: 1}}");
     }
 
     @Test
@@ -131,7 +131,7 @@ public class BaseCupboardTest {
         assertThrows(IllegalArgumentException.class, () -> c.addResource(bottom, shield, -1));
         assertThrows(IllegalArgumentException.class, () -> c.addResource(bottom, shield, 0));
 
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=3}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=3}, MiddleShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=2}, TopShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=1}}");
     }
 
     @Test
@@ -148,7 +148,7 @@ public class BaseCupboardTest {
         assertDoesNotThrow(()->c.addResource(bottom, stone, 1));
         assertThrows(IllegalCupboardException.class, ()->c.addResource(bottom, servant, 1));
 
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{Stone: 1}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{stone: 1}, MiddleShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=2}, TopShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=1}}");
     }
 
     @Test
@@ -163,7 +163,7 @@ public class BaseCupboardTest {
 
         assertDoesNotThrow(() -> c.addResource(bottom, stone, 2));
         assertThrows(IllegalCupboardException.class, ()->c.addResource(top, stone, 1));
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{Stone: 2}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{stone: 2}, MiddleShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=2}, TopShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=1}}");
     }
 
     @Test
@@ -178,7 +178,7 @@ public class BaseCupboardTest {
         Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
 
         assertThrows(NoSuchElementException.class, ()->c.addResource(new Shelf("fakeID", gold, 2), stone, 1));
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=3}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=3}, MiddleShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=2}, TopShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=1}}");
     }
 
     @Test
@@ -196,7 +196,7 @@ public class BaseCupboardTest {
         assertThrows(IllegalArgumentException.class, () -> c.moveBetweenShelves(top, bottom, -1));
         assertThrows(NoSuchElementException.class, () -> c.moveBetweenShelves(bottom, new Shelf("a", gold, 3), 3));
 
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=3}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=3}, MiddleShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=2}, TopShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=1}}");
     }
 
     @Test
@@ -209,7 +209,7 @@ public class BaseCupboardTest {
         Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
 
         assertThrows(IllegalCupboardException.class, () -> c.moveBetweenShelves(top, bottom,1));
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=3}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=3}, MiddleShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=2}, TopShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=1}}");
     }
 
     @Test
@@ -227,10 +227,10 @@ public class BaseCupboardTest {
         assertDoesNotThrow(()->c.addResource(bottom, stone, 3));
         assertDoesNotThrow(()->c.addResource(middle, gold, 1));
         assertDoesNotThrow(()->c.addResource(top, servant, 1));
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{Stone: 3}, MiddleShelf{Gold: 1}, TopShelf{Servant: 1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{stone: 3}, MiddleShelf{gold: 1}, TopShelf{servant: 1}}");
 
         assertThrows(IllegalCupboardException.class, ()->c.moveBetweenShelves(top, bottom, 1));
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{Stone: 3}, MiddleShelf{Gold: 1}, TopShelf{Servant: 1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{stone: 3}, MiddleShelf{gold: 1}, TopShelf{servant: 1}}");
     }
 
     @Test
@@ -248,7 +248,7 @@ public class BaseCupboardTest {
         assertDoesNotThrow(()->c.addResource(middle, gold, 2));
 
         assertThrows(IllegalCupboardException.class, ()->c.moveBetweenShelves(middle, top, 1));
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{Stone: 3}, MiddleShelf{Gold: 2}, TopShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{stone: 3}, MiddleShelf{gold: 2}, TopShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=1}}");
 
     }
 
@@ -267,7 +267,7 @@ public class BaseCupboardTest {
         assertDoesNotThrow(()->c.addResource(top, gold, 1));
         assertDoesNotThrow(()->c.moveBetweenShelves(bottom, middle, 2));
 
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=3}, MiddleShelf{Stone: 2}, TopShelf{Gold: 1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=3}, MiddleShelf{stone: 2}, TopShelf{gold: 1}}");
     }
 
     @Test
@@ -286,7 +286,7 @@ public class BaseCupboardTest {
         assertThrows(IllegalArgumentException.class, ()->c.removeResource(top, -1));
         assertThrows(NoSuchElementException.class, ()->c.removeResource(new Shelf("BottomShelf", gold, 3), 3));
 
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=3}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=3}, MiddleShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=2}, TopShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=1}}");
     }
 
     @Test
@@ -304,7 +304,7 @@ public class BaseCupboardTest {
         assertDoesNotThrow(()->c.addResource(top, servant, 1));
         assertDoesNotThrow(()->c.removeResource(top, 1));
 
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{Gold: 2}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{gold: 2}, MiddleShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=2}, TopShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=1}}");
     }
 
     @Test
@@ -323,7 +323,7 @@ public class BaseCupboardTest {
         assertDoesNotThrow(()->c.addResource(top, servant, 1));
         assertThrows(IllegalCupboardException.class,()->c.removeResource(top, 3));
 
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{Gold: 2}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{Servant: 1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{gold: 2}, MiddleShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=2}, TopShelf{servant: 1}}");
     }
 
     @Test
@@ -342,7 +342,7 @@ public class BaseCupboardTest {
 
         assertDoesNotThrow(()->c.addResourceFromContainer(container, bottom, gold, 2));
 
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{Gold: 2}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{gold: 2}, MiddleShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=2}, TopShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=1}}");
     }
 
     @Test
@@ -435,7 +435,7 @@ public class BaseCupboardTest {
 
         assertDoesNotThrow(()->c.moveResourceToContainer(container, top, gold, 1));
 
-        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=3}, MiddleShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=2}, TopShelf{acceptedTypes=Any {Gold, Servant, Shield, Stone}, amount=1}}");
+        assertEquals(c.toString(), "BaseCupboard {BottomShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=3}, MiddleShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=2}, TopShelf{acceptedTypes=any {gold, servant, shield, stone}, amount=1}}");
     }
 }
 

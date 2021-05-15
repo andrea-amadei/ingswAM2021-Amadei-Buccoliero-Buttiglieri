@@ -41,21 +41,20 @@ public class RawStorage implements UniqueRawObject<ResourceContainer> {
         this.id = id;
     }
 
-    //TODO: CHECK FOR CONSISTENCY IN RESOURCE NAME
     /**
      * Returns a new RawStorage with the same id of this RawStorage, but with the
-     * results updated by delta
+     * resource map updated by delta
      * @param delta the map describing the update in resources
      * @return a new RawStorage with the same id of this RawStorage, but with the
      *         results updated by delta
      */
-    public RawStorage applyChange(RawStorage delta){
+    public RawStorage sum(RawStorage delta){
         if(delta == null)
             throw new NullPointerException();
 
         Map<String, Integer> deltaResources = new HashMap<>(delta.getResources());
 
-        deltaResources = deltaResources.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().toUpperCase(), Map.Entry::getValue));
+        deltaResources = deltaResources.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().toLowerCase(), Map.Entry::getValue));
 
         Map<String, Integer> result = new HashMap<>(resources);
 

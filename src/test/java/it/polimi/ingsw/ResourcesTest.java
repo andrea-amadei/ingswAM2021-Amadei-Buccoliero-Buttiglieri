@@ -60,14 +60,14 @@ public class ResourcesTest {
     @DisplayName("Resource Single representation")
     public void resourceSingleRepresentation(){
         ResourceType gold = ResourceTypeSingleton.getInstance().getGoldResource();
-        assertEquals(gold.toString(), "Gold");
+        assertEquals(gold.toString(), "gold");
     }
 
     @Test
     @DisplayName("Resource Group representation")
     public void resourceGroupRepresentation(){
         ResourceType any = ResourceTypeSingleton.getInstance().getAnyResource();
-        assertEquals(any.toString(), "Any {Gold, Servant, Shield, Stone}");
+        assertEquals(any.toString(), "any {gold, servant, shield, stone}");
     }
 
     @Test

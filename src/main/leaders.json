@@ -19,7 +19,7 @@
       "special_abilities": [
         {
           "type": "discount",
-          "resource": "SERVANT",
+          "resource": "servant",
           "amount": 1
         }
       ]
@@ -43,7 +43,7 @@
       "special_abilities": [
         {
           "type": "discount",
-          "resource": "SHIELD",
+          "resource": "shield",
           "amount": 1
         }
       ]
@@ -67,7 +67,7 @@
       "special_abilities": [
         {
           "type": "discount",
-          "resource": "STONE",
+          "resource": "stone",
           "amount": 1
         }
       ]
@@ -91,7 +91,7 @@
       "special_abilities": [
         {
           "type": "discount",
-          "resource": "GOLD",
+          "resource": "gold",
           "amount": 1
         }
       ]
@@ -103,7 +103,7 @@
       "requirements": [
         {
           "type": "resource",
-          "resource": "GOLD",
+          "resource": "gold",
           "amount": 5
         }
       ],
@@ -111,7 +111,7 @@
         {
           "type": "storage",
           "storage_name": "leader_5",
-          "accepted_types": "STONE",
+          "accepted_types": "stone",
           "amount": 2
         }
       ]
@@ -123,7 +123,7 @@
       "requirements": [
         {
           "type": "resource",
-          "resource": "STONE",
+          "resource": "stone",
           "amount": 5
         }
       ],
@@ -131,7 +131,7 @@
         {
           "type": "storage",
           "storage_name": "leader_6",
-          "accepted_types": "SERVANT",
+          "accepted_types": "servant",
           "amount": 2
         }
       ]
@@ -143,7 +143,7 @@
       "requirements": [
         {
           "type": "resource",
-          "resource": "SERVANT",
+          "resource": "servant",
           "amount": 5
         }
       ],
@@ -151,7 +151,7 @@
         {
           "type": "storage",
           "storage_name": "leader_7",
-          "accepted_types": "SHIELD",
+          "accepted_types": "shield",
           "amount": 2
         }
       ]
@@ -163,7 +163,7 @@
       "requirements": [
         {
           "type": "resource",
-          "resource": "SHIELD",
+          "resource": "shield",
           "amount": 5
         }
       ],
@@ -171,7 +171,7 @@
         {
           "type": "storage",
           "storage_name": "leader_8",
-          "accepted_types": "GOLD",
+          "accepted_types": "gold",
           "amount": 2
         }
       ]
@@ -196,7 +196,7 @@
         {
           "type": "conversion",
           "from": "WHITE",
-          "to": ["SERVANT"],
+          "to": ["servant"],
           "faith_output": 0
         }
       ]
@@ -221,7 +221,7 @@
         {
           "type": "conversion",
           "from": "WHITE",
-          "to": ["SHIELD"],
+          "to": ["shield"],
           "faith_output": 0
         }
       ]
@@ -246,7 +246,7 @@
         {
           "type": "conversion",
           "from": "WHITE",
-          "to": ["STONE"],
+          "to": ["stone"],
           "faith_output": 0
         }
       ]
@@ -271,7 +271,7 @@
         {
           "type": "conversion",
           "from": "WHITE",
-          "to": ["GOLD"],
+          "to": ["gold"],
           "faith_output": 0
         }
       ]
@@ -293,10 +293,10 @@
           "type": "crafting",
           "crafting": {
             "input": {
-              "SHIELD": 1
+              "shield": 1
             },
             "output": {
-              "ANY": 1
+              "any": 1
             },
             "faith_output": 1
           }
@@ -320,10 +320,10 @@
           "type": "crafting",
           "crafting": {
             "input": {
-              "SERVANT": 1
+              "servant": 1
             },
             "output": {
-              "ANY": 1
+              "any": 1
             },
             "faith_output": 1
           }
@@ -347,10 +347,10 @@
           "type": "crafting",
           "crafting": {
             "input": {
-              "STONE": 1
+              "stone": 1
             },
             "output": {
-              "ANY": 1
+              "any": 1
             },
             "faith_output": 1
           }
@@ -374,10 +374,10 @@
           "type": "crafting",
           "crafting": {
             "input": {
-              "GOLD": 1
+              "gold": 1
             },
             "output": {
-              "ANY": 1
+              "any": 1
             },
             "faith_output": 1
           }
