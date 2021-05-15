@@ -61,6 +61,9 @@ public class RawStorage implements UniqueRawObject<ResourceContainer> {
         for(Map.Entry<String, Integer> entry : deltaResources.entrySet()){
             result.putIfAbsent(entry.getKey(), 0);
             result.put(entry.getKey(), result.get(entry.getKey()) + entry.getValue());
+            if(result.get(entry.getKey()) == 0)
+                result.remove(entry.getKey());
+
         }
 
         return new RawStorage(id, result);
