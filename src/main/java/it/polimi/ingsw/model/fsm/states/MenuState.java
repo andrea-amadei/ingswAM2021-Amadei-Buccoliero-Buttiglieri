@@ -68,16 +68,20 @@ public class MenuState extends State {
         if(confirmAction == null)
             throw new NullPointerException();
 
+        //check if player has moved
+        if(!getGameContext().hasPlayerMoved())
+            throw new FSMTransitionFailedException("Cannot end turn if player has not moved.");
+
+        //check if player has emptied their hand
+        if(isHandNotEmpty())
+            throw new FSMTransitionFailedException("Cannot end turn if player has not emptied their hand");
+
         List<Message> messages;
         try{
             messages = new ArrayList<>(confirmAction.execute(getGameContext()));
         }catch(IllegalActionException e){
             throw new FSMTransitionFailedException(e.getMessage());
         }
-
-        //check if the current player has already moved
-        if(!getGameContext().hasPlayerMoved() && isHandNotEmpty())
-            throw new FSMTransitionFailedException("Cannot end turn without having done a move or with a non-empty hand");
 
         setNextState(new EndTurnState(getGameContext()));
 
