@@ -41,10 +41,10 @@ public class ClientProduction implements Observable<ClientProduction> {
 
         this.leaderCraftings = new ArrayList<>();
 
-        this.listeners = new ArrayList<>();
-
         this.selectedCraftingIndex = null;
         this.selectedType = null;
+
+        this.listeners = new ArrayList<>();
     }
 
     /**
