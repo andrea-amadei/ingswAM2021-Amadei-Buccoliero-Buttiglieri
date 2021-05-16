@@ -2,31 +2,26 @@ package it.polimi.ingsw.clientproto.model;
 
 import it.polimi.ingsw.clientproto.observables.Listener;
 import it.polimi.ingsw.clientproto.observables.Observable;
-import it.polimi.ingsw.gamematerials.FlagColor;
+import it.polimi.ingsw.parser.raw.RawLevelFlag;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ClientFlagHolder implements Observable<ClientFlagHolder> {
 
     private final List<Listener<ClientFlagHolder>> listeners;
-    private final Map<FlagColor, Map<Integer, Integer>> flags;
+    private final Set<RawLevelFlag> flags;
 
     public ClientFlagHolder(){
-        flags = new HashMap<>();
+        flags = new HashSet<>();
         listeners = new ArrayList<>();
     }
 
-    public Map<FlagColor, Map<Integer, Integer>> getFlags() {
+    public Set<RawLevelFlag> getFlags() {
         return flags;
     }
 
-    public void addFlag(FlagColor color, Integer level){
-        flags.putIfAbsent(color, new HashMap<>());
-        flags.get(color).putIfAbsent(level, 0);
-        flags.get(color).put(level, flags.get(color).get(level) + 1);
+    public void addFlag(RawLevelFlag flag){
+        flags.add(flag);
         update();
     }
 

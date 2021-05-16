@@ -1,12 +1,12 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.clientproto.model.ClientDiscountHolder;
 import it.polimi.ingsw.clientproto.model.ClientFlagHolder;
 import it.polimi.ingsw.gamematerials.FlagColor;
+import it.polimi.ingsw.gamematerials.LevelFlag;
+import it.polimi.ingsw.parser.raw.RawLevelFlag;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,20 +22,20 @@ public class ClientFlagHolderTest {
     public void addFlag(){
         ClientFlagHolder flagHolder = new ClientFlagHolder();
 
-        flagHolder.addFlag(FlagColor.PURPLE, 1);
-        flagHolder.addFlag(FlagColor.PURPLE, 2);
-        flagHolder.addFlag(FlagColor.YELLOW, 3);
-        flagHolder.addFlag(FlagColor.PURPLE, 2);
+        RawLevelFlag flag1 = new LevelFlag(FlagColor.PURPLE, 1).toRaw();
+        RawLevelFlag flag2 = new LevelFlag(FlagColor.PURPLE, 2).toRaw();
+        RawLevelFlag flag3 = new LevelFlag(FlagColor.YELLOW, 3).toRaw();
+        RawLevelFlag flag4 = new LevelFlag(FlagColor.PURPLE, 2).toRaw();
+        flagHolder.addFlag(flag1);
+        flagHolder.addFlag(flag2);
+        flagHolder.addFlag(flag3);
+        flagHolder.addFlag(flag4);
 
-        assertEquals(new HashMap<FlagColor, Map<Integer, Integer>>(){{
-            put(FlagColor.PURPLE, new HashMap<>(){{
-                put(2, 2);
-                put(1, 1);
-            }});
-            put(FlagColor.YELLOW, new HashMap<>(){{
-                put(3, 1);
-            }});
-
+        assertEquals(new HashSet<RawLevelFlag>(){{
+            add(flag1);
+            add(flag2);
+            add(flag3);
+            add(flag4);
         }}, flagHolder.getFlags());
     }
 }
