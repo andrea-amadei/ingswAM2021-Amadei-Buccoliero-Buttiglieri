@@ -31,7 +31,7 @@ public class RawStorage implements UniqueRawObject<ResourceContainer> {
         resources = resourceContainer.getAllResources()
                         .entrySet()
                         .stream()
-                        .collect(Collectors.toMap(e -> e.getKey().getId().toUpperCase(), Map.Entry::getValue));
+                        .collect(Collectors.toMap(e -> e.getKey().getId().toLowerCase(), Map.Entry::getValue));
 
         this.id = resourceContainer.getId();
     }

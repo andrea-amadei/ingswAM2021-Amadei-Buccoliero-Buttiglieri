@@ -46,7 +46,7 @@ public class RawCraftingCard implements UniqueRawObject<CraftingCard> {
         cost = craftingCard.getCost()
                 .entrySet()
                 .stream()
-                .collect(Collectors.toMap(e -> e.getKey().getId().toUpperCase(), Map.Entry::getValue));
+                .collect(Collectors.toMap(e -> e.getKey().getId().toLowerCase(), Map.Entry::getValue));
 
         crafting = new RawCrafting(craftingCard.getCrafting());
 

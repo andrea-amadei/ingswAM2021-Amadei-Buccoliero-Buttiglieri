@@ -10,6 +10,7 @@ import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.parser.RawObject;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -33,12 +34,12 @@ public class RawCrafting implements RawObject<Crafting> {
         input = crafting.getInput()
                         .entrySet()
                         .stream()
-                        .collect(Collectors.toMap(e -> e.getKey().getId().toUpperCase(), Map.Entry::getValue));
+                        .collect(Collectors.toMap(e -> e.getKey().getId().toLowerCase(), Map.Entry::getValue));
 
         output = crafting   .getOutput()
                             .entrySet()
                             .stream()
-                            .collect(Collectors.toMap(e -> e.getKey().getId().toUpperCase(), Map.Entry::getValue));
+                            .collect(Collectors.toMap(e -> e.getKey().getId().toLowerCase(), Map.Entry::getValue));
 
         faithOutput = crafting.getFaithOutput();
     }
