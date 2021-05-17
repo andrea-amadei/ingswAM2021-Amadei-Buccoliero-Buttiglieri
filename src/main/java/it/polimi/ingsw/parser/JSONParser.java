@@ -7,6 +7,7 @@ import it.polimi.ingsw.client.network.ServerNetworkObject;
 import it.polimi.ingsw.gamematerials.ResourceGroup;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceType;
+import it.polimi.ingsw.model.actions.Action;
 import it.polimi.ingsw.parser.adapters.*;
 import it.polimi.ingsw.client.updates.Update;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
@@ -265,6 +266,7 @@ public final class JSONParser {
         Gson clientNetworkObjGson = new GsonBuilder()
                 .registerTypeAdapter(ClientNetworkObject.class, new ClientNetworkObjectAdapter())
                 .registerTypeAdapter(SetupAction.class, new SetupActionAdapter())
+                .registerTypeAdapter(Action.class, new ActionAdapter())
                 .registerTypeAdapter(ResourceSingle.class, new ResourceSingleAdapter())
                 .registerTypeAdapter(ResourceGroup.class, new ResourceGroupAdapter())
                 .registerTypeAdapter(ResourceType.class, new ResourceTypeDeserializer())
