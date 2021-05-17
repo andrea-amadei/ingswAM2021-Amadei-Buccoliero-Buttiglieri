@@ -173,14 +173,14 @@ public class OutputHandler {
         foreground[row][column] = newForegroundColor;
     }
 
-    public void setForegroundBackground(int row, int column, ForegroundColor newForegroundColor) {
+    public void setBackgroundColor(int row, int column, BackgroundColor newBackgroundColor) {
         if(row < 0 || row >= height)
             throw new IndexOutOfBoundsException("Invalid row");
 
         if(column < 0 || column >= width)
             throw new IndexOutOfBoundsException("Invalid column");
 
-        foreground[row][column] = newForegroundColor;
+        background[row][column] = newBackgroundColor;
     }
 
     public void setString(int startingRow, int startingColumn, String newString) {
