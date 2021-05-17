@@ -5,7 +5,7 @@ import it.polimi.ingsw.exceptions.UnableToDrawElementException;
 import it.polimi.ingsw.utils.BackgroundColor;
 import it.polimi.ingsw.utils.ForegroundColor;
 
-public class ResourceBoxWithAmount extends ResourceBox {
+public class FlagBoxWithAmount extends FlagBox {
     private int amount;
 
     private boolean showX;
@@ -14,8 +14,8 @@ public class ResourceBoxWithAmount extends ResourceBox {
     private boolean foregroundColorVisible;
     private boolean backgroundColorVisible;
 
-    public ResourceBoxWithAmount(String name, int row, int column, String resource, int amount) {
-        super(name, row, column, resource);
+    public FlagBoxWithAmount(String name, int row, int column, int level, String color, int amount) {
+        super(name, row, column, level, color);
 
         setAmount(amount);
         setShowX(true);
@@ -27,8 +27,8 @@ public class ResourceBoxWithAmount extends ResourceBox {
         setBackgroundColor(OutputHandler.getDefaultBackgroundColor());
     }
 
-    public ResourceBoxWithAmount(String name, int row, int column, String resource, int amount, ForegroundColor foregroundColor, BackgroundColor backgroundColor) {
-        super(name, row, column, resource);
+    public FlagBoxWithAmount(String name, int row, int column, int level, String color, int amount, ForegroundColor foregroundColor, BackgroundColor backgroundColor) {
+        super(name, row, column, level, color);
 
         setAmount(amount);
         setShowX(true);
@@ -107,7 +107,7 @@ public class ResourceBoxWithAmount extends ResourceBox {
         if(isShowX())
             str.insert(0, "x ");
 
-        TextBox temp = new TextBox("temp", getStartingRow(), getStartingColumn() + 3, str.toString(), getForegroundColor(), getBackgroundColor());
+        TextBox temp = new TextBox("temp", getStartingRow() + 1, getStartingColumn() + 4, str.toString(), getForegroundColor(), getBackgroundColor());
         temp.setForegroundColorVisible(isForegroundColorVisible());
         temp.setBackgroundColorVisible(isBackgroundColorVisible());
 
