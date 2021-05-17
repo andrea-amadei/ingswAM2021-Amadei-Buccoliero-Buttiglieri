@@ -3,6 +3,10 @@ package it.polimi.ingsw.parser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import it.polimi.ingsw.client.network.ServerNetworkObject;
+import it.polimi.ingsw.parser.adapters.ServerNetworkObjectAdapter;
+import it.polimi.ingsw.parser.adapters.UpdateAdapter;
+import it.polimi.ingsw.client.updates.Update;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.InvalidFaithPathException;
 import it.polimi.ingsw.exceptions.ParserException;
@@ -264,5 +268,14 @@ public final class JSONParser {
                 .create();
 
         return clientNetworkObjGson.fromJson(json, ClientNetworkObject.class);
+    }
+
+    public static ServerNetworkObject getServerNetworkObject(String json){
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(ServerNetworkObject.class, new ServerNetworkObjectAdapter())
+                .registerTypeAdapter(Update.class, new UpdateAdapter())
+                .create();
+
+        return gson.fromJson(json, ServerNetworkObject.class);
     }
 }

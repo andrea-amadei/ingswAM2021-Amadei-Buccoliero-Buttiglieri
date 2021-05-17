@@ -1,8 +1,8 @@
 package it.polimi.ingsw.payloads;
 import it.polimi.ingsw.client.network.ServerNetworkObject;
-import it.polimi.ingsw.client.parser.ClientDeserializer;
 import it.polimi.ingsw.client.updates.ChangeResourcesUpdate;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.parser.raw.RawStorage;
 import it.polimi.ingsw.utils.PayloadFactory;
@@ -41,7 +41,7 @@ public class ChangeResourcesUpdatePayloadComponentTest {
     public void correctlyDeserialized(){
         String serialized = "{\"type\":\"change_resources\",\"group\":\"update\",\"delta\":{\"id\":\"id\"," +
                 "\"resources\":{\"gold\":2,\"servant\":1}},\"player\":\"Ernestino\"}";
-        ServerNetworkObject serverNetworkObject = ClientDeserializer.getServerNetworkObject(serialized);
+        ServerNetworkObject serverNetworkObject = JSONParser.getServerNetworkObject(serialized);
 
         assertTrue(serverNetworkObject instanceof ChangeResourcesUpdate);
 
