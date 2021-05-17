@@ -1,4 +1,7 @@
 package it.polimi.ingsw.payloads;
+import it.polimi.ingsw.clientproto.network.ServerNetworkObject;
+import it.polimi.ingsw.clientproto.parser.ClientDeserializer;
+import it.polimi.ingsw.clientproto.updates.AddUpgradableCraftingUpdate;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.utils.PayloadFactory;
@@ -17,6 +20,22 @@ public class AddUpgradableCraftingUpdatePayloadComponentTest {
 
         assertEquals("{\"type\":\"add_upgradable_crafting\",\"group\":\"update\",\"id\":7,\"index\":0,\"player\":\"Ernestino\"}",
                 serialized);
+    }
+
+    @Test
+    public void correctlyDeserialized(){
+        String serialized = "{\"type\":\"add_upgradable_crafting\",\"group\":\"update\",\"id\":7,\"index\":0,\"player\"" +
+                ":\"Ernestino\"}";
+        ServerNetworkObject serverNetworkObject = ClientDeserializer.getServerNetworkObject(serialized);
+
+        assertTrue(serverNetworkObject instanceof AddUpgradableCraftingUpdate);
+
+        AddUpgradableCraftingUpdate update = ((AddUpgradableCraftingUpdate)serverNetworkObject);
+        update.checkFormat();
+
+        assertEquals("Ernestino", update.getPlayer());
+        assertEquals(7, update.getId());
+        assertEquals(0, update.getIndex());
     }
 
 }
