@@ -4,8 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import it.polimi.ingsw.client.network.ServerNetworkObject;
-import it.polimi.ingsw.parser.adapters.ServerNetworkObjectAdapter;
-import it.polimi.ingsw.parser.adapters.UpdateAdapter;
+import it.polimi.ingsw.gamematerials.ResourceGroup;
+import it.polimi.ingsw.gamematerials.ResourceSingle;
+import it.polimi.ingsw.gamematerials.ResourceType;
+import it.polimi.ingsw.parser.adapters.*;
 import it.polimi.ingsw.client.updates.Update;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.InvalidFaithPathException;
@@ -16,8 +18,6 @@ import it.polimi.ingsw.model.FaithPathTile;
 import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.CraftingCard;
-import it.polimi.ingsw.parser.adapters.ClientNetworkObjectAdapter;
-import it.polimi.ingsw.parser.adapters.SetupActionAdapter;
 import it.polimi.ingsw.parser.raw.list.*;
 import it.polimi.ingsw.server.Logger;
 import it.polimi.ingsw.utils.ForegroundColor;
@@ -265,6 +265,9 @@ public final class JSONParser {
         Gson clientNetworkObjGson = new GsonBuilder()
                 .registerTypeAdapter(ClientNetworkObject.class, new ClientNetworkObjectAdapter())
                 .registerTypeAdapter(SetupAction.class, new SetupActionAdapter())
+                .registerTypeAdapter(ResourceSingle.class, new ResourceSingleAdapter())
+                .registerTypeAdapter(ResourceGroup.class, new ResourceGroupAdapter())
+                .registerTypeAdapter(ResourceType.class, new ResourceTypeDeserializer())
                 .create();
 
         return clientNetworkObjGson.fromJson(json, ClientNetworkObject.class);
@@ -274,6 +277,9 @@ public final class JSONParser {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(ServerNetworkObject.class, new ServerNetworkObjectAdapter())
                 .registerTypeAdapter(Update.class, new UpdateAdapter())
+                .registerTypeAdapter(ResourceSingle.class, new ResourceSingleAdapter())
+                .registerTypeAdapter(ResourceGroup.class, new ResourceGroupAdapter())
+                .registerTypeAdapter(ResourceType.class, new ResourceTypeDeserializer())
                 .create();
 
         return gson.fromJson(json, ServerNetworkObject.class);

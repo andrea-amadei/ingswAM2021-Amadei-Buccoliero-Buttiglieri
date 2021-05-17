@@ -6,8 +6,8 @@ import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.gamematerials.ResourceGroup;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.parser.adapters.PayloadComponentAdapter;
-import it.polimi.ingsw.parser.adapters.ResourceGroupSerializer;
-import it.polimi.ingsw.parser.adapters.ResourceSingleSerializer;
+import it.polimi.ingsw.parser.adapters.ResourceGroupAdapter;
+import it.polimi.ingsw.parser.adapters.ResourceSingleAdapter;
 
 import java.util.Collection;
 
@@ -23,8 +23,8 @@ public final class JSONSerializer {
     public static String toJson(PayloadComponent payloadComponent) {
         Gson myGson = new GsonBuilder()
                                 .registerTypeAdapter(PayloadComponent.class, new PayloadComponentAdapter())
-                                .registerTypeAdapter(ResourceSingle.class, new ResourceSingleSerializer())
-                                .registerTypeAdapter(ResourceGroup.class, new ResourceGroupSerializer())
+                                .registerTypeAdapter(ResourceSingle.class, new ResourceSingleAdapter())
+                                .registerTypeAdapter(ResourceGroup.class, new ResourceGroupAdapter())
                                 .create();
         return myGson.toJson(payloadComponent, PayloadComponent.class);
     }
