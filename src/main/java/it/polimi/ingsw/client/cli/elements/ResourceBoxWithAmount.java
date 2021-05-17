@@ -8,7 +8,7 @@ import it.polimi.ingsw.utils.ForegroundColor;
 public class ResourceBoxWithAmount extends ResourceBox {
     private int amount;
 
-    private boolean showX;
+    private boolean showXEnabled;
     private ForegroundColor foregroundColor;
     private BackgroundColor backgroundColor;
     private boolean foregroundColorVisible;
@@ -18,7 +18,7 @@ public class ResourceBoxWithAmount extends ResourceBox {
         super(name, row, column, resource);
 
         setAmount(amount);
-        setShowX(true);
+        setShowXEnabled(true);
 
         setForegroundColorVisible(true);
         setBackgroundColorVisible(true);
@@ -31,7 +31,7 @@ public class ResourceBoxWithAmount extends ResourceBox {
         super(name, row, column, resource);
 
         setAmount(amount);
-        setShowX(true);
+        setShowXEnabled(true);
 
         setForegroundColorVisible(true);
         setBackgroundColorVisible(true);
@@ -48,12 +48,12 @@ public class ResourceBoxWithAmount extends ResourceBox {
         this.amount = amount;
     }
 
-    public boolean isShowX() {
-        return showX;
+    public boolean isShowXEnabled() {
+        return showXEnabled;
     }
 
-    public void setShowX(boolean showX) {
-        this.showX = showX;
+    public void setShowXEnabled(boolean showXEnabled) {
+        this.showXEnabled = showXEnabled;
     }
 
 
@@ -104,7 +104,7 @@ public class ResourceBoxWithAmount extends ResourceBox {
 
         StringBuilder str = new StringBuilder(Integer.toString(getAmount()));
 
-        if(isShowX())
+        if(isShowXEnabled())
             str.insert(0, "x ");
 
         TextBox temp = new TextBox("temp", getStartingRow(), getStartingColumn() + 3, str.toString(), getForegroundColor(), getBackgroundColor());
