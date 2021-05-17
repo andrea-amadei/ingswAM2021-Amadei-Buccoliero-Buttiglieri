@@ -1,4 +1,7 @@
 package it.polimi.ingsw.payloads;
+import it.polimi.ingsw.clientproto.network.ServerNetworkObject;
+import it.polimi.ingsw.clientproto.parser.ClientDeserializer;
+import it.polimi.ingsw.clientproto.updates.AddPointsUpdate;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.utils.PayloadFactory;
@@ -17,6 +20,20 @@ public class AddPointsUpdatePayloadComponentTest {
 
         assertEquals("{\"type\":\"add_points\",\"group\":\"update\",\"amount\":5,\"player\":\"Ernestino\"}",
                 serialized);
+    }
+
+    @Test
+    public void correctlyDeserialized(){
+        String serialized = "{\"type\":\"add_points\",\"group\":\"update\",\"amount\":5,\"player\":\"Ernestino\"}";
+        ServerNetworkObject serverNetworkObject = ClientDeserializer.getServerNetworkObject(serialized);
+
+        assertTrue(serverNetworkObject instanceof AddPointsUpdate);
+
+        AddPointsUpdate update = ((AddPointsUpdate)serverNetworkObject);
+        update.checkFormat();
+
+        assertEquals(5, update.getAmount());
+        assertEquals("Ernestino", update.getPlayer());
     }
 
 }

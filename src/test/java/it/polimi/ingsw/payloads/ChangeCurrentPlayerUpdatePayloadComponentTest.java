@@ -1,7 +1,7 @@
 package it.polimi.ingsw.payloads;
 import it.polimi.ingsw.clientproto.network.ServerNetworkObject;
 import it.polimi.ingsw.clientproto.parser.ClientDeserializer;
-import it.polimi.ingsw.clientproto.updates.AddUpgradableCraftingUpdate;
+import it.polimi.ingsw.clientproto.updates.ChangeCurrentPlayerUpdate;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.utils.PayloadFactory;
@@ -11,31 +11,28 @@ import org.junit.jupiter.api.TestInstance;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class AddUpgradableCraftingUpdatePayloadComponentTest {
+public class ChangeCurrentPlayerUpdatePayloadComponentTest {
 
     @Test
     public void correctlySerialized(){
-        PayloadComponent payload = PayloadFactory.addUpgradableCrafting("Ernestino", 7, 0);
+        PayloadComponent payload = PayloadFactory.changeCurrentPlayer("Genoveffa");
         String serialized = JSONSerializer.toJson(payload);
 
-        assertEquals("{\"type\":\"add_upgradable_crafting\",\"group\":\"update\",\"id\":7,\"index\":0,\"player\":\"Ernestino\"}",
+        assertEquals("{\"type\":\"change_current_player\",\"group\":\"update\",\"newPlayer\":\"Genoveffa\"}",
                 serialized);
     }
 
     @Test
     public void correctlyDeserialized(){
-        String serialized = "{\"type\":\"add_upgradable_crafting\",\"group\":\"update\",\"id\":7,\"index\":0,\"player\"" +
-                ":\"Ernestino\"}";
+        String serialized = "{\"type\":\"change_current_player\",\"group\":\"update\",\"newPlayer\":\"Genoveffa\"}";
         ServerNetworkObject serverNetworkObject = ClientDeserializer.getServerNetworkObject(serialized);
 
-        assertTrue(serverNetworkObject instanceof AddUpgradableCraftingUpdate);
+        assertTrue(serverNetworkObject instanceof ChangeCurrentPlayerUpdate);
 
-        AddUpgradableCraftingUpdate update = ((AddUpgradableCraftingUpdate)serverNetworkObject);
+        ChangeCurrentPlayerUpdate update = ((ChangeCurrentPlayerUpdate)serverNetworkObject);
         update.checkFormat();
 
-        assertEquals("Ernestino", update.getPlayer());
-        assertEquals(7, update.getId());
-        assertEquals(0, update.getIndex());
+        assertEquals("Genoveffa", update.getNewPlayer());
     }
 
 }

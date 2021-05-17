@@ -1,4 +1,7 @@
 package it.polimi.ingsw.payloads;
+import it.polimi.ingsw.clientproto.network.ServerNetworkObject;
+import it.polimi.ingsw.clientproto.parser.ClientDeserializer;
+import it.polimi.ingsw.clientproto.updates.UnselectUpdate;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.utils.PayloadFactory;
@@ -19,4 +22,18 @@ public class UnselectUpdatePayloadComponentTest {
                 "\"Ernestino\"}", serialized);
     }
 
+    @Test
+    public void correctlyDeserialized() {
+        String serialized = "{\"type\":\"unselect\",\"group\":\"update\",\"section\":\"market\",\"player\":" +
+                "\"Ernestino\"}";
+        ServerNetworkObject serverNetworkObject = ClientDeserializer.getServerNetworkObject(serialized);
+
+        assertTrue(serverNetworkObject instanceof UnselectUpdate);
+
+        UnselectUpdate update = ((UnselectUpdate)serverNetworkObject);
+        update.checkFormat();
+
+        assertEquals("Ernestino", update.getPlayer());
+        assertEquals("market", update.getSection());
+    }
 }

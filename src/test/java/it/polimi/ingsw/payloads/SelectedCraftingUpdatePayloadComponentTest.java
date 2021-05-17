@@ -1,4 +1,8 @@
 package it.polimi.ingsw.payloads;
+import it.polimi.ingsw.clientproto.network.ServerNetworkObject;
+import it.polimi.ingsw.clientproto.parser.ClientDeserializer;
+import it.polimi.ingsw.clientproto.updates.SelectedCraftingUpdate;
+import it.polimi.ingsw.clientproto.updates.SelectedShopCardUpdate;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.parser.JSONSerializer;
@@ -18,6 +22,22 @@ public class SelectedCraftingUpdatePayloadComponentTest {
 
         assertEquals("{\"type\":\"selected_crafting\",\"group\":\"update\",\"crafting_type\":\"BASE\",\"index\"" +
                 ":0,\"player\":\"Ernestino\"}", serialized);
+    }
+
+    @Test
+    public void correctlyDeserialized(){
+        String serialized = "{\"type\":\"selected_crafting\",\"group\":\"update\",\"crafting_type\":\"BASE\",\"index\"" +
+                ":0,\"player\":\"Ernestino\"}";
+        ServerNetworkObject serverNetworkObject = ClientDeserializer.getServerNetworkObject(serialized);
+
+        assertTrue(serverNetworkObject instanceof SelectedCraftingUpdate);
+
+        SelectedCraftingUpdate update = ((SelectedCraftingUpdate)serverNetworkObject);
+        update.checkFormat();
+
+        assertEquals("Ernestino", update.getPlayer());
+        assertEquals(Production.CraftingType.BASE, update.getCraftingType());
+        assertEquals(0, update.getIndex());
     }
 
 }

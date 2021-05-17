@@ -1,4 +1,7 @@
 package it.polimi.ingsw.payloads;
+import it.polimi.ingsw.clientproto.network.ServerNetworkObject;
+import it.polimi.ingsw.clientproto.parser.ClientDeserializer;
+import it.polimi.ingsw.clientproto.updates.DiscardLeaderCardUpdate;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.utils.PayloadFactory;
@@ -18,6 +21,20 @@ public class DiscardLeaderCardUpdatePayloadComponentTest {
 
         assertEquals("{\"type\":\"discard_leader_card\",\"group\":\"update\",\"id\":0,\"player\":\"Ernestino\"}",
                 serialized);
+    }
+
+    @Test
+    public void correctlyDeserialized(){
+        String serialized = "{\"type\":\"discard_leader_card\",\"group\":\"update\",\"id\":0,\"player\":\"Ernestino\"}";
+        ServerNetworkObject serverNetworkObject = ClientDeserializer.getServerNetworkObject(serialized);
+
+        assertTrue(serverNetworkObject instanceof DiscardLeaderCardUpdate);
+
+        DiscardLeaderCardUpdate update = ((DiscardLeaderCardUpdate)serverNetworkObject);
+        update.checkFormat();
+
+        assertEquals("Ernestino", update.getPlayer());
+        assertEquals(0, update.getId());
     }
 
 }
