@@ -1,4 +1,8 @@
 package it.polimi.ingsw.payloads;
+import it.polimi.ingsw.clientproto.network.ServerNetworkObject;
+import it.polimi.ingsw.clientproto.parser.ClientDeserializer;
+import it.polimi.ingsw.clientproto.updates.ChangeCoveredLeaderCardUpdate;
+import it.polimi.ingsw.clientproto.updates.ChangeShopUpdate;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.utils.PayloadFactory;
@@ -17,6 +21,21 @@ public class ChangeCoveredLeaderCardUpdatePayloadComponentTest {
 
         assertEquals("{\"type\":\"change_covered_leader_card\",\"group\":\"update\",\"delta\":2,\"player\":\"Ernestino\"}",
                 serialized);
+    }
+
+    @Test
+    public void correctlyDeserialized(){
+        String serialized = "{\"type\":\"change_covered_leader_card\",\"group\":\"update\",\"delta\":2,\"player\":" +
+                "\"Ernestino\"}";
+        ServerNetworkObject serverNetworkObject = ClientDeserializer.getServerNetworkObject(serialized);
+
+        assertTrue(serverNetworkObject instanceof ChangeCoveredLeaderCardUpdate);
+
+        ChangeCoveredLeaderCardUpdate update = ((ChangeCoveredLeaderCardUpdate)serverNetworkObject);
+        update.checkFormat();
+
+        assertEquals(2, update.getDelta());
+        assertEquals("Ernestino", update.getPlayer());
     }
 
 }
