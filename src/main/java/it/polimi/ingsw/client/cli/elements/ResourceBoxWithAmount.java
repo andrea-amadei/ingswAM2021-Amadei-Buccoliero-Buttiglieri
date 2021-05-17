@@ -95,8 +95,6 @@ public class ResourceBoxWithAmount extends ResourceBox {
         this.backgroundColorVisible = backgroundColorVisible;
     }
 
-
-
     @Override
     public void draw(OutputHandler outputHandler) throws UnableToDrawElementException {
         if(!isVisible())
