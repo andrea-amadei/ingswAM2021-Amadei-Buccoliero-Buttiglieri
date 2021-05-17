@@ -128,6 +128,9 @@ public class ResourceBox implements MutablePositionedElement {
 
     @Override
     public void draw(OutputHandler outputHandler) throws UnableToDrawElementException {
+        if(!isVisible())
+            return;
+
         int index = Arrays.asList(ACCEPTED_RESOURCES).indexOf(getResource());
 
         try {
