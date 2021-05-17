@@ -13,7 +13,8 @@ public class FlagBox implements MutablePositionedElement {
     private enum FlagShape {
         RECTANGLE,
         TRIANGLE,
-        SWALLOWTAIL
+        SWALLOWTAIL,
+        CIRCLE
     }
 
     private final String name;
@@ -24,6 +25,7 @@ public class FlagBox implements MutablePositionedElement {
 
     private int level;
     private String color;
+    private boolean blockCharactersEnabled;
 
     private static final String[] LEVELS = {"   ", " I ", "II ", "III"};
 
@@ -33,7 +35,7 @@ public class FlagBox implements MutablePositionedElement {
             FlagShape.TRIANGLE,
             FlagShape.RECTANGLE,
             FlagShape.SWALLOWTAIL,
-            FlagShape.RECTANGLE
+            FlagShape.CIRCLE
     };
 
     private static final ForegroundColor[] FLAG_FOREGROUND_COLOR = {
@@ -66,6 +68,7 @@ public class FlagBox implements MutablePositionedElement {
 
         setVisible(true);
         setZIndex(1);
+        setBlockCharactersEnabled(true);
     }
 
     @Override
@@ -147,6 +150,14 @@ public class FlagBox implements MutablePositionedElement {
         this.color = color.toLowerCase();
     }
 
+    public boolean isBlockCharactersEnabled() {
+        return blockCharactersEnabled;
+    }
+
+    public void setBlockCharactersEnabled(boolean blockCharactersEnabled) {
+        this.blockCharactersEnabled = blockCharactersEnabled;
+    }
+
     @Override
     public void draw(OutputHandler outputHandler) throws UnableToDrawElementException {
         if(!isVisible())
@@ -193,14 +204,29 @@ public class FlagBox implements MutablePositionedElement {
 
             switch(FLAG_SHAPE[index]) {
                 case TRIANGLE:
-                    outputHandler.setBackgroundColor(getStartingRow() + 2, getStartingColumn(), OutputHandler.getDefaultBackgroundColor());
-                    outputHandler.setBackgroundColor(getStartingRow() + 2, getStartingColumn() + 2, OutputHandler.getDefaultBackgroundColor());
+                case CIRCLE:
+                    if (isBlockCharactersEnabled()) {
+                        outputHandler.setForegroundColor(getStartingRow() + 2, getStartingColumn(), ForegroundColor.BLACK);
+                        outputHandler.setChar(getStartingRow() + 2, getStartingColumn(), '▄');
+
+                        outputHandler.setForegroundColor(getStartingRow() + 2, getStartingColumn() + 2, ForegroundColor.BLACK);
+                        outputHandler.setChar(getStartingRow() + 2, getStartingColumn() + 2, '▄');
+                    } else {
+                        outputHandler.setBackgroundColor(getStartingRow() + 2, getStartingColumn(), OutputHandler.getDefaultBackgroundColor());
+                        outputHandler.setBackgroundColor(getStartingRow() + 2, getStartingColumn() + 2, OutputHandler.getDefaultBackgroundColor());
+                    }
+
                     break;
 
                 case SWALLOWTAIL:
-                    outputHandler.setBackgroundColor(getStartingRow() + 2, getStartingColumn() + 1, OutputHandler.getDefaultBackgroundColor());
-            }
+                    if (isBlockCharactersEnabled()) {
+                        outputHandler.setForegroundColor(getStartingRow() + 2, getStartingColumn() + 1, ForegroundColor.BLACK);
+                        outputHandler.setChar(getStartingRow() + 2, getStartingColumn() + 1, '▄');
+                    } else
+                        outputHandler.setBackgroundColor(getStartingRow() + 2, getStartingColumn() + 1, OutputHandler.getDefaultBackgroundColor());
 
+                    break;
+            }
         } catch (IndexOutOfBoundsException e) {
             throw new UnableToDrawElementException(e.getMessage());
         }
