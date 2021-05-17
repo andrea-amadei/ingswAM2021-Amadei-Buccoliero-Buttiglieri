@@ -13,6 +13,7 @@ public class AddShelfUpdatePayloadComponent extends SpecificUpdatePayloadCompone
     @SerializedName(value = "resource", alternate = {"resource_type", "resourceType"})
     private String resource;
 
+    //TODO: it is not the index, it is the size
     @SerializedName("index")
     private int index;
 

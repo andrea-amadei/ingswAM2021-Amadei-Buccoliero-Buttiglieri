@@ -59,7 +59,7 @@ public class MoveFromShelfToShelfActionTest {
                         .getShelfById("TopShelf").getAllResources());
         assertEquals(0, gameContext.getGameModel().getPlayerById("Teodolinda").getBoard().getStorage().getCupboard()
                 .getShelfById("BottomShelf").getAmount());
-        assertEquals("INFO: 1 of Gold have been moved from Teodolinda's BottomShelf to their TopShelf", messages.get(0).toString());
+        assertEquals("INFO: 1 of gold have been moved from Teodolinda's BottomShelf to their TopShelf", messages.get(0).toString());
     }
 
     @Test

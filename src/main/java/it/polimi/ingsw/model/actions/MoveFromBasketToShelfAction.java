@@ -103,7 +103,7 @@ public class MoveFromBasketToShelfAction implements Action{
         List<PayloadComponent> payload = new ArrayList<>();
 
         payload.add(PayloadFactory.changeResources(currentPlayer.getUsername(),
-                new RawStorage("MarketBasket", new HashMap<>(){{
+                new RawStorage(currentPlayer.getBoard().getStorage().getMarketBasket().getId(), new HashMap<>(){{
                     put(resourceToMove.toString().toLowerCase(), -amount);
                 }})
                 ));
