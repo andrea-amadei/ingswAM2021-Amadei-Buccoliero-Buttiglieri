@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.clientproto.model.ClientDiscountHolder;
-import it.polimi.ingsw.clientproto.model.ClientFaithPath;
+import it.polimi.ingsw.client.model.ClientFaithPath;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.model.FaithPathGroup;
 import it.polimi.ingsw.model.FaithPathTile;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 

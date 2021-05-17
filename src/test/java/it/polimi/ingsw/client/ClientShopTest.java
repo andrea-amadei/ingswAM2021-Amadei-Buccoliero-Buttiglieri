@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.clientproto.model.ClientShop;
+import it.polimi.ingsw.client.model.ClientShop;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.model.production.CraftingCard;
 import it.polimi.ingsw.parser.JSONParser;

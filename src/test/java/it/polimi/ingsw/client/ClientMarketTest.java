@@ -1,21 +1,12 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.clientproto.model.ClientLeaderCards;
-import it.polimi.ingsw.clientproto.model.ClientMarket;
-import it.polimi.ingsw.exceptions.ParserException;
-import it.polimi.ingsw.model.leader.LeaderCard;
+import it.polimi.ingsw.client.model.ClientMarket;
 import it.polimi.ingsw.model.market.Market;
-import it.polimi.ingsw.parser.JSONParser;
-import it.polimi.ingsw.parser.raw.RawLeaderCard;
 import it.polimi.ingsw.parser.raw.RawMarket;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 

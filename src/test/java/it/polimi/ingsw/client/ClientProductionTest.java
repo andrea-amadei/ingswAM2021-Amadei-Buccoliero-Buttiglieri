@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.clientproto.model.ClientProduction;
+import it.polimi.ingsw.client.model.ClientProduction;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.Production;

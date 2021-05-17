@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.clientproto.model.ClientBaseStorage;
-import it.polimi.ingsw.clientproto.model.ClientShelf;
+import it.polimi.ingsw.client.model.ClientShelf;
 import it.polimi.ingsw.parser.raw.RawStorage;
 import org.junit.jupiter.api.Test;
 

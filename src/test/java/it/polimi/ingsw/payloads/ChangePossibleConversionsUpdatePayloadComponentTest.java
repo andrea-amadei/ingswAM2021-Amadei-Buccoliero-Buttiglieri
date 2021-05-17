@@ -1,7 +1,4 @@
 package it.polimi.ingsw.payloads;
-import it.polimi.ingsw.clientproto.network.ServerNetworkObject;
-import it.polimi.ingsw.clientproto.parser.ClientDeserializer;
-import it.polimi.ingsw.clientproto.updates.ChangePossibleConversionsUpdate;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.gamematerials.MarbleColor;
 import it.polimi.ingsw.gamematerials.ResourceSingle;

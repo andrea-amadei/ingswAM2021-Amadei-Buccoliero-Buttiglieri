@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.clientproto.model.ClientLeaderCards;
+import it.polimi.ingsw.client.model.ClientLeaderCards;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.parser.JSONParser;

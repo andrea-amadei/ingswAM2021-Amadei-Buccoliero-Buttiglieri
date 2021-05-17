@@ -1,9 +1,8 @@
 package it.polimi.ingsw.payloads;
-import it.polimi.ingsw.clientproto.network.ServerNetworkObject;
-import it.polimi.ingsw.clientproto.parser.ClientDeserializer;
-import it.polimi.ingsw.clientproto.updates.ChangeResourcesUpdate;
+import it.polimi.ingsw.client.network.ServerNetworkObject;
+import it.polimi.ingsw.client.parser.ClientDeserializer;
+import it.polimi.ingsw.client.updates.ChangeResourcesUpdate;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
-import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.parser.raw.RawStorage;
 import it.polimi.ingsw.utils.PayloadFactory;

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.clientproto.model.ClientFlagHolder;
+import it.polimi.ingsw.client.model.ClientFlagHolder;
 import it.polimi.ingsw.gamematerials.FlagColor;
 import it.polimi.ingsw.gamematerials.LevelFlag;
 import it.polimi.ingsw.parser.raw.RawLevelFlag;

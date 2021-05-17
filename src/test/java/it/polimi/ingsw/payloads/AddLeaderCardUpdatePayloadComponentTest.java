@@ -1,7 +1,7 @@
 package it.polimi.ingsw.payloads;
-import it.polimi.ingsw.clientproto.network.ServerNetworkObject;
-import it.polimi.ingsw.clientproto.parser.ClientDeserializer;
-import it.polimi.ingsw.clientproto.updates.AddLeaderCardUpdate;
+import it.polimi.ingsw.client.network.ServerNetworkObject;
+import it.polimi.ingsw.client.parser.ClientDeserializer;
+import it.polimi.ingsw.client.updates.AddLeaderCardUpdate;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.utils.PayloadFactory;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.clientproto.cliproto;
 
-import it.polimi.ingsw.clientproto.model.PersonalData;
-import it.polimi.ingsw.clientproto.observables.Listener;
+import it.polimi.ingsw.client.model.PersonalData;
+import it.polimi.ingsw.client.observables.Listener;
 
 import java.util.List;
 
