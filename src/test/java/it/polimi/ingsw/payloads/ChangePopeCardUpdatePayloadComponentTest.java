@@ -1,4 +1,7 @@
 package it.polimi.ingsw.payloads;
+import it.polimi.ingsw.clientproto.network.ServerNetworkObject;
+import it.polimi.ingsw.clientproto.parser.ClientDeserializer;
+import it.polimi.ingsw.clientproto.updates.ChangePopeCardUpdate;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.model.holder.FaithHolder;
 import it.polimi.ingsw.parser.JSONSerializer;
@@ -19,6 +22,22 @@ public class ChangePopeCardUpdatePayloadComponentTest {
 
         assertEquals("{\"type\":\"change_pope_card\",\"group\":\"update\",\"status\":\"ACTIVE\"," +
                 "\"index\":1,\"player\":\"Ernestino\"}", serialized);
+    }
+
+    @Test
+    public void correctlyDeserialized(){
+        String serialized = "{\"type\":\"change_pope_card\",\"group\":\"update\",\"status\":\"ACTIVE\"," +
+                "\"index\":1,\"player\":\"Ernestino\"}";
+        ServerNetworkObject serverNetworkObject = ClientDeserializer.getServerNetworkObject(serialized);
+
+        assertTrue(serverNetworkObject instanceof ChangePopeCardUpdate);
+
+        ChangePopeCardUpdate update = ((ChangePopeCardUpdate)serverNetworkObject);
+        update.checkFormat();
+
+        assertEquals("Ernestino", update.getPlayer());
+        assertEquals(FaithHolder.CheckpointStatus.ACTIVE, update.getStatus());
+        assertEquals(1, update.getIndex());
     }
 
 }
