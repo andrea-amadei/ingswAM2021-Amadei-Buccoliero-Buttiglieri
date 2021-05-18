@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.cli;
+package it.polimi.ingsw.client.cli.framework;
 
 public interface ResizableRectangularElement extends RectangularElement {
     void setEndingRow(int row);

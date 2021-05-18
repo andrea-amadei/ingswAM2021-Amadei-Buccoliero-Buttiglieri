@@ -1,6 +1,9 @@
-package it.polimi.ingsw.client.cli.elements;
+package it.polimi.ingsw.client.cli.framework.elements;
 
-import it.polimi.ingsw.client.cli.*;
+import it.polimi.ingsw.client.cli.framework.CliRenderer;
+import it.polimi.ingsw.client.cli.framework.MutableElementGroup;
+import it.polimi.ingsw.client.cli.framework.OutputHandler;
+import it.polimi.ingsw.client.cli.framework.VisibleElement;
 import it.polimi.ingsw.exceptions.UnableToDrawElementException;
 
 import java.util.Comparator;

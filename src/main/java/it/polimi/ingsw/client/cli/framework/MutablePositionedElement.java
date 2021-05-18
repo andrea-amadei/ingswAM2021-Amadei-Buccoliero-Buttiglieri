@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.cli;
+package it.polimi.ingsw.client.cli.framework;
 
 public interface MutablePositionedElement extends PositionedElement {
     void setStartingRow(int row);

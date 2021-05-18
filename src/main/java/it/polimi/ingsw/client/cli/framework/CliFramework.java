@@ -1,10 +1,9 @@
-package it.polimi.ingsw.client.cli;
+package it.polimi.ingsw.client.cli.framework;
 
-import it.polimi.ingsw.client.cli.elements.Frame;
+import it.polimi.ingsw.client.cli.framework.elements.Frame;
 import it.polimi.ingsw.exceptions.UnableToDrawElementException;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class CliFramework {
     private final OutputHandler outputHandler;

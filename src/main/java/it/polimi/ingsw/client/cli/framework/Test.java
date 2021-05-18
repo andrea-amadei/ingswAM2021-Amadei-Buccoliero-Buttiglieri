@@ -1,9 +1,9 @@
-package it.polimi.ingsw.client.cli;
+package it.polimi.ingsw.client.cli.framework;
 
-import it.polimi.ingsw.client.cli.elements.FixedTextBox;
-import it.polimi.ingsw.client.cli.elements.Frame;
-import it.polimi.ingsw.client.cli.elements.GroupBox;
-import it.polimi.ingsw.client.cli.elements.ResourceBox;
+import it.polimi.ingsw.client.cli.framework.elements.FixedTextBox;
+import it.polimi.ingsw.client.cli.framework.elements.Frame;
+import it.polimi.ingsw.client.cli.framework.elements.GroupBox;
+import it.polimi.ingsw.client.cli.framework.elements.ResourceBox;
 import it.polimi.ingsw.exceptions.UnableToDrawElementException;
 import it.polimi.ingsw.utils.BackgroundColor;
 import it.polimi.ingsw.utils.ForegroundColor;

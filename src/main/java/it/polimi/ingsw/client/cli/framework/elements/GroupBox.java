@@ -1,9 +1,9 @@
-package it.polimi.ingsw.client.cli.elements;
+package it.polimi.ingsw.client.cli.framework.elements;
 
-import it.polimi.ingsw.client.cli.MutableResizableRectangularElement;
-import it.polimi.ingsw.client.cli.OutputHandler;
-import it.polimi.ingsw.client.cli.TextElement;
-import it.polimi.ingsw.client.cli.VisibleElement;
+import it.polimi.ingsw.client.cli.framework.MutableResizableRectangularElement;
+import it.polimi.ingsw.client.cli.framework.OutputHandler;
+import it.polimi.ingsw.client.cli.framework.TextElement;
+import it.polimi.ingsw.client.cli.framework.VisibleElement;
 import it.polimi.ingsw.exceptions.UnableToDrawElementException;
 import it.polimi.ingsw.utils.BackgroundColor;
 import it.polimi.ingsw.utils.ForegroundColor;

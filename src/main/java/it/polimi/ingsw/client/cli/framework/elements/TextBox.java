@@ -1,15 +1,17 @@
-package it.polimi.ingsw.client.cli.elements;
+package it.polimi.ingsw.client.cli.framework.elements;
 
-import it.polimi.ingsw.client.cli.*;
+import it.polimi.ingsw.client.cli.framework.MutablePositionedElement;
+import it.polimi.ingsw.client.cli.framework.OutputHandler;
+import it.polimi.ingsw.client.cli.framework.TextElement;
 import it.polimi.ingsw.exceptions.UnableToDrawElementException;
 import it.polimi.ingsw.utils.BackgroundColor;
 import it.polimi.ingsw.utils.ForegroundColor;
 
-public class FixedTextBox implements TextElement, MutableRectangularElement {
+public class TextBox implements TextElement, MutablePositionedElement {
     private final String name;
     private boolean visible;
-    private int startingRow;
-    private int startingColumn;
+    private int row;
+    private int column;
     private int zIndex;
     private String text;
     private ForegroundColor foregroundColor;
@@ -17,10 +19,7 @@ public class FixedTextBox implements TextElement, MutableRectangularElement {
     private boolean foregroundColorVisible;
     private boolean backgroundColorVisible;
 
-    private final int size;
-    private boolean alignLeft;
-
-    public FixedTextBox(String name, int startingRow, int startingColumn, int size, String text, ForegroundColor foregroundColor, BackgroundColor backgroundColor) {
+    public TextBox(String name, int row, int column, String text, ForegroundColor foregroundColor, BackgroundColor backgroundColor) {
         if(name == null)
             throw new NullPointerException();
 
@@ -29,13 +28,8 @@ public class FixedTextBox implements TextElement, MutableRectangularElement {
 
         this.name = name;
 
-        if(size <= 0)
-            throw new IllegalArgumentException("Size must be positive");
-
-        this.size = size;
-
-        setStartingRow(startingRow);
-        setStartingColumn(startingColumn);
+        setStartingRow(row);
+        setStartingColumn(column);
         setText(text);
         setForegroundColor(foregroundColor);
         setBackgroundColor(backgroundColor);
@@ -44,8 +38,6 @@ public class FixedTextBox implements TextElement, MutableRectangularElement {
         setBackgroundColorVisible(true);
         setForegroundColorVisible(true);
         setZIndex(1);
-
-        setAlignLeft(true);
     }
 
     @Override
@@ -65,22 +57,12 @@ public class FixedTextBox implements TextElement, MutableRectangularElement {
 
     @Override
     public int getStartingRow() {
-        return startingRow;
+        return row;
     }
 
     @Override
     public int getStartingColumn() {
-        return startingColumn;
-    }
-
-    @Override
-    public int getEndingRow() {
-        return startingRow;
-    }
-
-    @Override
-    public int getEndingColumn() {
-        return startingColumn + size - 1;
+        return column;
     }
 
     @Override
@@ -88,7 +70,7 @@ public class FixedTextBox implements TextElement, MutableRectangularElement {
         if(row < 0)
             throw new IllegalArgumentException("Row must cannot be negative");
 
-        this.startingRow = row;
+        this.row = row;
     }
 
     @Override
@@ -96,7 +78,7 @@ public class FixedTextBox implements TextElement, MutableRectangularElement {
         if(column < 0)
             throw new IllegalArgumentException("Row must cannot be negative");
 
-        this.startingColumn = column;
+        this.column = column;
     }
 
     @Override
@@ -127,9 +109,6 @@ public class FixedTextBox implements TextElement, MutableRectangularElement {
 
         if(text.length() == 0)
             throw new IllegalArgumentException("Text cannot be empty");
-
-        if(text.length() > size)
-            throw new IllegalArgumentException("Text length cannot be bigger than the size of the text box");
 
         this.text = text;
     }
@@ -180,60 +159,25 @@ public class FixedTextBox implements TextElement, MutableRectangularElement {
         this.backgroundColorVisible = backgroundColorVisible;
     }
 
-    public boolean isAlignLeft() {
-        return alignLeft;
-    }
-
-    public void setAlignLeft(boolean alignLeft) {
-        this.alignLeft = alignLeft;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
     @Override
     public void draw(OutputHandler outputHandler) throws UnableToDrawElementException {
         if(!visible)
             return;
 
         try {
-            if(alignLeft) {
-                outputHandler.setString(
-                        getStartingRow(),
-                        getStartingColumn(),
-                        getText());
-
-                if(getSize() - getText().length() > 0)
-                    outputHandler.setString(
-                            getStartingRow(),
-                            getStartingColumn() + getText().length(),
-                            String.valueOf(outputHandler.getBlank()).repeat(getSize() - getText().length()));
-            }
-            else {
-                outputHandler.setString(
-                        getStartingRow(),
-                        getStartingColumn() + (getSize() - getText().length()),
-                        getText());
-
-                if(getSize() - getText().length() > 0)
-                    outputHandler.setString(
-                            getStartingRow(),
-                            getStartingColumn(),
-                            String.valueOf(outputHandler.getBlank()).repeat(getSize() - getText().length()));
-            }
+            outputHandler.setString(getStartingRow(), getStartingColumn(), getText());
         } catch(IllegalArgumentException e) {
             throw new UnableToDrawElementException("Unable to draw element " + getName() + ": " + e.getMessage());
         }
 
         if(foregroundColorVisible)
             outputHandler.setForegroundColorRectangle(  getStartingRow(), getStartingColumn(),
-                    getStartingRow(), getStartingColumn() + getSize() - 1,
-                    getForegroundColor());
+                                                        getStartingRow(), getStartingColumn() + getText().length() - 1,
+                                                        getForegroundColor());
 
         if(backgroundColorVisible)
             outputHandler.setBackgroundColorRectangle(  getStartingRow(), getStartingColumn(),
-                    getStartingRow(), getStartingColumn() + getSize() - 1,
-                    getBackgroundColor());
+                                                        getStartingRow(), getStartingColumn() + getText().length() - 1,
+                                                        getBackgroundColor());
     }
 }

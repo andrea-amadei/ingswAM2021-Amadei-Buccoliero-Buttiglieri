@@ -1,7 +1,7 @@
-package it.polimi.ingsw.client.cli.elements;
+package it.polimi.ingsw.client.cli.framework.elements;
 
-import it.polimi.ingsw.client.cli.MutablePositionedElement;
-import it.polimi.ingsw.client.cli.OutputHandler;
+import it.polimi.ingsw.client.cli.framework.MutablePositionedElement;
+import it.polimi.ingsw.client.cli.framework.OutputHandler;
 import it.polimi.ingsw.exceptions.UnableToDrawElementException;
 import it.polimi.ingsw.utils.BackgroundColor;
 import it.polimi.ingsw.utils.ForegroundColor;
