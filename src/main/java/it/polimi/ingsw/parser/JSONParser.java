@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import it.polimi.ingsw.client.network.ServerNetworkObject;
+import it.polimi.ingsw.common.GameConfig;
 import it.polimi.ingsw.gamematerials.ResourceGroup;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceType;
@@ -285,5 +286,19 @@ public final class JSONParser {
                 .create();
 
         return gson.fromJson(json, ServerNetworkObject.class);
+    }
+
+    public static GameConfig getGameConfig(String json){
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(ResourceSingle.class, new ResourceSingleAdapter())
+                .registerTypeAdapter(ResourceGroup.class, new ResourceGroupAdapter())
+                .registerTypeAdapter(ResourceType.class, new ResourceTypeDeserializer())
+                .create();
+
+        return gson.fromJson(json, GameConfig.class);
+    }
+
+    public static GameConfig getGameConfig(Path path) throws IOException {
+        return getGameConfig(Files.readString(path));
     }
 }
