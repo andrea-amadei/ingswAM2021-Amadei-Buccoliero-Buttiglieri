@@ -16,16 +16,18 @@ public class ClientShelf implements Observable<ClientShelf> {
     private RawStorage rawStorage;
     private final String acceptedType;
     private final Map<String, Integer> selectedResources;
+    private final int size;
 
-    public ClientShelf(String id, String acceptedType){
+    public ClientShelf(String id, String acceptedType, int size){
         this.listeners = new ArrayList<>();
         this.rawStorage = new RawStorage(id, new HashMap<>());
         this.acceptedType = acceptedType;
         this.selectedResources = new HashMap<>();
+        this.size = size;
     }
 
-    public ClientShelf(String id, String acceptedType, RawStorage rawStorage){
-        this(id, acceptedType);
+    public ClientShelf(String id, String acceptedType, int size, RawStorage rawStorage){
+        this(id, acceptedType, size);
         this.rawStorage = rawStorage;
     }
 
@@ -47,6 +49,10 @@ public class ClientShelf implements Observable<ClientShelf> {
 
     public String getAcceptedType() {
         return acceptedType;
+    }
+
+    public int getSize() {
+        return size;
     }
 
     public Map<String, Integer> getSelectedResources() {

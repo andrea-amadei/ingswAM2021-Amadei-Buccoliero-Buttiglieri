@@ -10,13 +10,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ClientShelfTest {
     @Test
     public void creation(){
-        ClientShelf clientShelf = new ClientShelf("BottomShelf", "any", new RawStorage("BottomShelf", new HashMap<>()));
+        ClientShelf clientShelf = new ClientShelf("BottomShelf", "any", 3, new RawStorage("BottomShelf", new HashMap<>()));
         assertEquals(0, clientShelf.getStorage().getResources().size());
     }
 
     @Test
     public void changeResources(){
-        ClientShelf clientShelf = new ClientShelf("BottomShelf", "any", new RawStorage("BottomShelf", new HashMap<>(){{
+        ClientShelf clientShelf = new ClientShelf("BottomShelf", "any", 3, new RawStorage("BottomShelf", new HashMap<>(){{
             put("gold", 2);
             put("servant", 1);
         }}));
@@ -39,7 +39,7 @@ public class ClientShelfTest {
 
     @Test
     public void selectResources(){
-        ClientShelf clientShelf = new ClientShelf("BottomShelf", "any", new RawStorage("BottomShelf", new HashMap<>(){{
+        ClientShelf clientShelf = new ClientShelf("BottomShelf", "any", 3, new RawStorage("BottomShelf", new HashMap<>(){{
             put("gold", 2);
             put("servant", 1);
         }}));

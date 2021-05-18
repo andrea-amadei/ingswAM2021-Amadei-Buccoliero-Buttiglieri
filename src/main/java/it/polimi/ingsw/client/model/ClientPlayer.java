@@ -27,10 +27,13 @@ public class ClientPlayer implements Observable<ClientPlayer> {
 
     private final ClientFaithPath faithPath;
 
-    public ClientPlayer(ClientBaseStorage chest, ClientBaseStorage hand, ClientBaseStorage marketBasket, List<ClientShelf> cupboard,
+    private final String username;
+
+    public ClientPlayer(String username, ClientBaseStorage chest, ClientBaseStorage hand, ClientBaseStorage marketBasket, List<ClientShelf> cupboard,
                         List<ClientShelf> leaderShelves, ClientProduction production, ClientFlagHolder flagHolder, ClientDiscountHolder discountHolder,
                         ClientLeaderCards leaderCards, ClientFaithPath faithPath){
 
+        this.username = username;
         this.chest = chest;
         this.hand = hand;
         this.marketBasket = marketBasket;
@@ -53,6 +56,10 @@ public class ClientPlayer implements Observable<ClientPlayer> {
     public void addLeaderShelf(ClientShelf shelf){
         leaderShelves.add(shelf);
         update();
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public List<Listener<ClientPlayer>> getListeners() {
