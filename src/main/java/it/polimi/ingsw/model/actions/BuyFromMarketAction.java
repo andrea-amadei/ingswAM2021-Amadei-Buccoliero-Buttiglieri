@@ -146,4 +146,10 @@ public class BuyFromMarketAction implements Action{
         if(index < 0)
             throw new IndexOutOfBoundsException();
     }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public boolean getIsRow(){return isRow;}
 }

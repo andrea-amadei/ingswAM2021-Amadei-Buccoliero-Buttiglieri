@@ -193,4 +193,20 @@ public class ResourcesMoveAction implements Action{
         if(amount<=0)
             throw new IllegalArgumentException("Amount of resources to move cannot be negative or zero");
     }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public ResourceSingle getResourceToMove() {
+        return resourceToMove;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
 }

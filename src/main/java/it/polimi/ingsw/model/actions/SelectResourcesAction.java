@@ -126,4 +126,16 @@ public class SelectResourcesAction implements Action{
         if(amount <= 0)
             throw new IllegalArgumentException("Amount must be positive");
     }
+
+    public String getContainerId() {
+        return containerId;
+    }
+
+    public ResourceSingle getResource() {
+        return resource;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
 }

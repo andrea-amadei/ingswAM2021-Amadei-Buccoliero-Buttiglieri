@@ -160,4 +160,16 @@ public class SelectCardFromShopAction implements Action{
             throw new IllegalArgumentException("row, col and upgradableCraftingId can't be negative");
 
     }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    public int getUpgradableCraftingId() {
+        return upgradableCraftingId;
+    }
 }
