@@ -208,4 +208,12 @@ public class PreliminaryPickAction implements Action{
             if(entry.getValue()<0)
                 throw new IllegalArgumentException("Amount of chosen resources cannot be negative");
     }
+
+    public List<Integer> getLeadersToDiscard() {
+        return leadersToDiscard;
+    }
+
+    public Map<ResourceSingle, Integer> getChosenResources() {
+        return chosenResources;
+    }
 }

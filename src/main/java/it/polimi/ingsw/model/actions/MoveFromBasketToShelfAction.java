@@ -139,4 +139,16 @@ public class MoveFromBasketToShelfAction implements Action{
         if(amount <= 0)
             throw new IllegalArgumentException("Amount cannot be negative or zero");
     }
+
+    public ResourceSingle getResourceToMove() {
+        return resourceToMove;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public String getShelfID() {
+        return shelfID;
+    }
 }
