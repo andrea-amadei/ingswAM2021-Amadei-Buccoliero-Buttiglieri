@@ -21,7 +21,7 @@ public class FaithPath implements InterruptLauncher {
     private final List<FaithPathTile> tiles;
     private final int nGroups;
     private InterruptListener listener;
-    private final boolean isSinglePlayer;
+    private boolean isSinglePlayer;
     private int lorenzoFaith;
 
     //The list of popeCheck tiles already triggered (indicated by their order)
@@ -143,6 +143,10 @@ public class FaithPath implements InterruptLauncher {
 
     public FaithPath(List<FaithPathGroup> faithGroupList, List<FaithPathTile> tiles) throws InvalidFaithPathException{
         this(faithGroupList, tiles, false);
+    }
+
+    public void setSinglePlayer(boolean isSinglePlayer){
+        this.isSinglePlayer = isSinglePlayer;
     }
 
     /**
@@ -306,5 +310,9 @@ public class FaithPath implements InterruptLauncher {
             throw new NullPointerException();
         if(this.listener != null)
             this.listener.launchInterrupt(interrupt, priority);
+    }
+
+    public boolean isSinglePlayer() {
+        return isSinglePlayer;
     }
 }

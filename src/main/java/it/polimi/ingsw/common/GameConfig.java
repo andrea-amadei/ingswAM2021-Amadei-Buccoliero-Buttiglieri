@@ -64,6 +64,15 @@ public class GameConfig {
     private List<Integer> baseCupboardShelfSizes;
 
 
+    @SerializedName("hand_id")
+    private String handId;
+
+    @SerializedName("basket_id")
+    private String basketId;
+
+    @SerializedName("chest_id")
+    private String chestId;
+
     @SerializedName("market_rows")
     private Integer marketRows;
 
@@ -144,6 +153,18 @@ public class GameConfig {
 
     public List<Integer> getBaseCupboardShelfSizes() {
         return baseCupboardShelfSizes;
+    }
+
+    public String getHandId() {
+        return handId;
+    }
+
+    public String getBasketId() {
+        return basketId;
+    }
+
+    public String getChestId() {
+        return chestId;
     }
 
     public Integer getMarketRows() {

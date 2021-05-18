@@ -21,6 +21,10 @@
   "base_cupboard_shelf_types" : ["any", "any", "any"],
   "base_cupboard_shelf_sizes" : [3, 2, 1],
 
+  "hand_id" : "Hand",
+  "basket_id" : "MarketBasket",
+  "chest_id" : "Chest",
+
   "market_rows" : 3,
   "market_columns" : 4,
 
