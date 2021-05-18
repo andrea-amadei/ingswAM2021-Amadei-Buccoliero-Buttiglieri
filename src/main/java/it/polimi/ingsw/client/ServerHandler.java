@@ -2,10 +2,10 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.model.ClientModel;
 import it.polimi.ingsw.client.network.ServerNetworkObject;
-import it.polimi.ingsw.client.parser.ClientDeserializer;
 import it.polimi.ingsw.client.updates.Update;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.SetUsernameSetupPayloadComponent;
+import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.JSONSerializer;
 
 import java.io.BufferedReader;
@@ -50,7 +50,7 @@ public class ServerHandler extends Thread{
         ServerNetworkObject readObject;
         while(true){
             try {
-                readObject = ClientDeserializer.getServerNetworkObject(in.readLine());
+                readObject = JSONParser.getServerNetworkObject(in.readLine());
 
                 if(readObject instanceof Update){
                     ((Update) readObject).apply(client);

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.payloads;
 import it.polimi.ingsw.client.network.ServerNetworkObject;
-import it.polimi.ingsw.client.parser.ClientDeserializer;
 import it.polimi.ingsw.client.updates.SelectedResourceUpdate;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.utils.PayloadFactory;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ public class SelectedResourceUpdatePayloadComponentTest {
     public void correctlyDeserialized(){
         String serialized = "{\"type\":\"selected_resource\",\"group\":\"update\",\"container_id\":\"Chest\",\"resource\"" +
                 ":\"gold\",\"amount\":2,\"player\":\"Ernestino\"}";
-        ServerNetworkObject serverNetworkObject = ClientDeserializer.getServerNetworkObject(serialized);
+        ServerNetworkObject serverNetworkObject = JSONParser.getServerNetworkObject(serialized);
 
         assertTrue(serverNetworkObject instanceof SelectedResourceUpdate);
 

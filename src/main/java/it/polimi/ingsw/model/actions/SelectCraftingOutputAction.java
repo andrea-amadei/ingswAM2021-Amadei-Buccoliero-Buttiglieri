@@ -96,4 +96,8 @@ public class SelectCraftingOutputAction implements Action {
         if(player == null || conversion == null)
             throw new NullPointerException();
     }
+
+    public Map<ResourceSingle, Integer> getConversion() {
+        return conversion;
+    }
 }

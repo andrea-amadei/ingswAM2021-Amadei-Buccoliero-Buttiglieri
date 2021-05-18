@@ -1,10 +1,10 @@
 package it.polimi.ingsw.payloads;
 import it.polimi.ingsw.client.network.ServerNetworkObject;
-import it.polimi.ingsw.client.parser.ClientDeserializer;
 import it.polimi.ingsw.client.updates.AddFlagUpdate;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.gamematerials.FlagColor;
 import it.polimi.ingsw.gamematerials.LevelFlag;
+import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.parser.raw.RawLevelFlag;
 import it.polimi.ingsw.utils.PayloadFactory;
@@ -39,7 +39,7 @@ public class AddFlagUpdatePayloadComponentTest {
     public void correctlyDeserialized(){
         String serialized = "{\"type\":\"add_flag\",\"group\":\"update\",\"flag\":{\"color\":\"PURPLE\",\"level\":1}," +
                 "\"player\":\"Ernestino\"}";
-        ServerNetworkObject serverNetworkObject = ClientDeserializer.getServerNetworkObject(serialized);
+        ServerNetworkObject serverNetworkObject = JSONParser.getServerNetworkObject(serialized);
 
         assertTrue(serverNetworkObject instanceof AddFlagUpdate);
 

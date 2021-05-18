@@ -5,6 +5,7 @@ import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
+import it.polimi.ingsw.server.clienthandling.ClientNetworkObject;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * on the provided game context. Each action will also return a message that contains information about
  * the change applied to the model
  */
-public interface Action {
+public interface Action extends ClientNetworkObject {
 
     /**
      * Calls the appropriate method of the handler

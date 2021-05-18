@@ -1,8 +1,8 @@
 package it.polimi.ingsw.payloads;
 import it.polimi.ingsw.client.network.ServerNetworkObject;
-import it.polimi.ingsw.client.parser.ClientDeserializer;
 import it.polimi.ingsw.client.updates.DiscardLeaderCardUpdate;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.utils.PayloadFactory;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ public class DiscardLeaderCardUpdatePayloadComponentTest {
     @Test
     public void correctlyDeserialized(){
         String serialized = "{\"type\":\"discard_leader_card\",\"group\":\"update\",\"id\":0,\"player\":\"Ernestino\"}";
-        ServerNetworkObject serverNetworkObject = ClientDeserializer.getServerNetworkObject(serialized);
+        ServerNetworkObject serverNetworkObject = JSONParser.getServerNetworkObject(serialized);
 
         assertTrue(serverNetworkObject instanceof DiscardLeaderCardUpdate);
 

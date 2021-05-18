@@ -156,4 +156,8 @@ public class SelectConversionsAction implements Action{
         if(actuatorsChoice.stream().anyMatch(x->x<0))
             throw new IllegalArgumentException("Actuator choices can't be negative");
     }
+
+    public List<Integer> getActuatorsChoice() {
+        return actuatorsChoice;
+    }
 }

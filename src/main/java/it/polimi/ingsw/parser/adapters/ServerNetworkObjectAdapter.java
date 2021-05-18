@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.parser.adapters;
+package it.polimi.ingsw.parser.adapters;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

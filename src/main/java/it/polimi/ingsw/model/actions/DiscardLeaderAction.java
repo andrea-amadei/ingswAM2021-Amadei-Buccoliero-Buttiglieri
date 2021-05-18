@@ -124,4 +124,8 @@ public class DiscardLeaderAction implements Action{
         if( leaderID <= 0)
             throw new IllegalArgumentException("Leader ID cannot be negative or zero");
     }
+
+    public int getLeaderID() {
+        return leaderID;
+    }
 }

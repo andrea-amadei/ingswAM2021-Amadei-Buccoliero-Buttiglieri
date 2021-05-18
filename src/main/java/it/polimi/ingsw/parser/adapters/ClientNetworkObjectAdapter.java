@@ -4,6 +4,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import it.polimi.ingsw.model.actions.Action;
 import it.polimi.ingsw.server.clienthandling.ClientNetworkObject;
 import it.polimi.ingsw.server.clienthandling.setupactions.SetupAction;
 
@@ -17,6 +18,8 @@ public class ClientNetworkObjectAdapter implements JsonDeserializer<ClientNetwor
         switch(group) {
             case "setup" :
                 return jsonDeserializationContext.deserialize(jsonElement, SetupAction.class);
+            case "action" :
+                return jsonDeserializationContext.deserialize(jsonElement, Action.class);
             default:
                 throw new JsonParseException("Unknown group \"" + group + "\"");
         }

@@ -117,4 +117,12 @@ public class SelectCraftingAction implements Action {
         if(index < 0)
             throw new IllegalArgumentException("Index must be positive");
     }
+
+    public Production.CraftingType getCraftingType() {
+        return craftingType;
+    }
+
+    public int getIndex() {
+        return index;
+    }
 }

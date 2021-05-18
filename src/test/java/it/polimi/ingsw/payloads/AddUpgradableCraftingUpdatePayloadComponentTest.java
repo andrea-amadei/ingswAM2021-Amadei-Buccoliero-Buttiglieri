@@ -1,8 +1,8 @@
 package it.polimi.ingsw.payloads;
 import it.polimi.ingsw.client.network.ServerNetworkObject;
-import it.polimi.ingsw.client.parser.ClientDeserializer;
 import it.polimi.ingsw.client.updates.AddUpgradableCraftingUpdate;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.utils.PayloadFactory;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ public class AddUpgradableCraftingUpdatePayloadComponentTest {
     public void correctlyDeserialized(){
         String serialized = "{\"type\":\"add_upgradable_crafting\",\"group\":\"update\",\"id\":7,\"index\":0,\"player\"" +
                 ":\"Ernestino\"}";
-        ServerNetworkObject serverNetworkObject = ClientDeserializer.getServerNetworkObject(serialized);
+        ServerNetworkObject serverNetworkObject = JSONParser.getServerNetworkObject(serialized);
 
         assertTrue(serverNetworkObject instanceof AddUpgradableCraftingUpdate);
 
