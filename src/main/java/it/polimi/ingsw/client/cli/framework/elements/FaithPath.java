@@ -182,7 +182,7 @@ public class FaithPath implements MutablePositionedElement {
             }
 
             if(i.getOrder() == getActiveTile()) {
-                fg = ForegroundColor.BLUE_BOLD_BRIGHT;
+                fg = ForegroundColor.BLUE_BRIGHT;
             }
 
             outputHandler.setBackgroundColorRectangle(
