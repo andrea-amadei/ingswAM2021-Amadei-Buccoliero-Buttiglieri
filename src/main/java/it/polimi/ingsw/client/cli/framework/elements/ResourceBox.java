@@ -16,9 +16,10 @@ public class ResourceBox implements MutablePositionedElement {
     private int zIndex;
 
     private String resource;
+    private boolean faded;
 
-    private static final String[] ACCEPTED_RESOURCES = {"gold", "stone", "shield", "servant", "faith", "any"};
-    private static final String[] RESOURCE_TEXT =      {"GO",   "ST",    "SH",     "SE",      "FA",    "??"};
+    private static final String[] ACCEPTED_RESOURCES = {"gold", "stone", "shield", "servant", "faith", "any", "none"};
+    private static final String[] RESOURCE_TEXT =      {"GO",   "ST",    "SH",     "SE",      "FA",    "??",  "  "};
 
     private static final ForegroundColor[] RESOURCE_FOREGROUND_COLOR = {
             ForegroundColor.WHITE_BRIGHT,
@@ -26,6 +27,7 @@ public class ResourceBox implements MutablePositionedElement {
             ForegroundColor.WHITE_BRIGHT,
             ForegroundColor.WHITE_BRIGHT,
             ForegroundColor.WHITE_BRIGHT,
+            ForegroundColor.BLACK,
             ForegroundColor.BLACK
     };
 
@@ -35,7 +37,8 @@ public class ResourceBox implements MutablePositionedElement {
             BackgroundColor.BLUE_BRIGHT,
             BackgroundColor.PURPLE,
             BackgroundColor.RED,
-            BackgroundColor.WHITE_BRIGHT
+            BackgroundColor.WHITE_BRIGHT,
+            BackgroundColor.BLACK
     };
 
     public ResourceBox(String name, int row, int column, String resource) {
@@ -126,6 +129,14 @@ public class ResourceBox implements MutablePositionedElement {
         return resource;
     }
 
+    public boolean isFaded() {
+        return faded;
+    }
+
+    public void setFaded(boolean faded) {
+        this.faded = faded;
+    }
+
     @Override
     public void draw(OutputHandler outputHandler) throws UnableToDrawElementException {
         if(!isVisible())
@@ -133,9 +144,15 @@ public class ResourceBox implements MutablePositionedElement {
 
         int index = Arrays.asList(ACCEPTED_RESOURCES).indexOf(getResource());
 
+        String text;
+        if(isFaded())
+            text = "  ";
+        else
+            text = RESOURCE_TEXT[index];
+
         try {
             outputHandler.setString(getStartingRow(), getStartingColumn(),
-                    RESOURCE_TEXT[index],
+                    text,
                     RESOURCE_FOREGROUND_COLOR[index],
                     RESOURCE_BACKGROUND_COLOR[index]);
         } catch (IllegalArgumentException | IndexOutOfBoundsException e) {
