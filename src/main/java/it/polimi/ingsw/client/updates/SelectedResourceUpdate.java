@@ -1,7 +1,12 @@
 package it.polimi.ingsw.client.updates;
 
 import com.google.gson.annotations.SerializedName;
+import it.polimi.ingsw.client.model.ClientBaseStorage;
 import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.model.ClientPlayer;
+import it.polimi.ingsw.client.model.ClientShelf;
+
+import java.util.NoSuchElementException;
 
 public class SelectedResourceUpdate implements Update{
 
@@ -21,7 +26,17 @@ public class SelectedResourceUpdate implements Update{
 
     @Override
     public void apply(ClientModel client) {
+        ClientPlayer clientPlayer = client.getPlayerByName(player);
 
+        ClientBaseStorage baseTarget;
+        try{
+            baseTarget = clientPlayer.getBaseStorageById(containerId);
+            baseTarget.selectResources(resource, amount);
+        }catch(NoSuchElementException e){
+            ClientShelf shelfTarget;
+            shelfTarget = clientPlayer.getClientShelfById(containerId);
+            shelfTarget.selectResources(resource, amount);
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.updates;
 
 import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.model.ClientPlayer;
 
 public class DiscardLeaderCardUpdate implements Update{
 
@@ -15,7 +16,8 @@ public class DiscardLeaderCardUpdate implements Update{
 
     @Override
     public void apply(ClientModel client) {
-
+        ClientPlayer clientPlayer = client.getPlayerByName(player);
+        clientPlayer.getLeaderCards().removeLeaderCardById(id);
     }
 
     @Override

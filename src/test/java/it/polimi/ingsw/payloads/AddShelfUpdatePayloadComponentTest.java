@@ -20,13 +20,13 @@ public class AddShelfUpdatePayloadComponentTest {
         String serialized = JSONSerializer.toJson(payload);
 
         assertEquals("{\"type\":\"add_shelf\",\"group\":\"update\",\"id\":\"LeaderShelfPaolo\",\"resource\":" +
-                        "\"gold\",\"index\":1,\"player\":\"Ernestino\"}", serialized);
+                        "\"gold\",\"size\":1,\"player\":\"Ernestino\"}", serialized);
     }
 
     @Test
     public void correctlyDeserialized(){
         String serialized = "{\"type\":\"add_shelf\",\"group\":\"update\",\"id\":\"LeaderShelfPaolo\",\"resource\":" +
-                "\"gold\",\"index\":1,\"player\":\"Ernestino\"}";
+                "\"gold\",\"size\":1,\"player\":\"Ernestino\"}";
         ServerNetworkObject serverNetworkObject = JSONParser.getServerNetworkObject(serialized);
 
         assertTrue(serverNetworkObject instanceof AddShelfUpdate);
@@ -37,7 +37,7 @@ public class AddShelfUpdatePayloadComponentTest {
         assertEquals("Ernestino", update.getPlayer());
         assertEquals("LeaderShelfPaolo", update.getId());
         assertEquals("gold", update.getResource());
-        assertEquals(1, update.getIndex());
+        assertEquals(1, update.getSize());
     }
 
 }

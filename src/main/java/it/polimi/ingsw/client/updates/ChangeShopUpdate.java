@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.updates;
 
 import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.model.ClientPlayer;
+import it.polimi.ingsw.parser.raw.RawCraftingCard;
 
 public class ChangeShopUpdate implements Update{
 
@@ -17,7 +19,12 @@ public class ChangeShopUpdate implements Update{
 
     @Override
     public void apply(ClientModel client) {
-
+        if(id == -1) {
+            client.getShop().removeCard(y, x);
+        }else{
+            RawCraftingCard topCard = client.getCraftingCardById(id);
+            client.getShop().changeCard(y, x, topCard);
+        }
     }
 
     @Override

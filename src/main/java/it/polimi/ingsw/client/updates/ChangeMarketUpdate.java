@@ -14,7 +14,7 @@ public class ChangeMarketUpdate implements Update{
 
     @Override
     public void apply(ClientModel client) {
-
+        client.getMarket().changeMarket(market);
     }
 
     @Override

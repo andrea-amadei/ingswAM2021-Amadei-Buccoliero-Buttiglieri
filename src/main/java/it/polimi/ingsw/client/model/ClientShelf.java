@@ -43,6 +43,11 @@ public class ClientShelf implements Observable<ClientShelf> {
         update();
     }
 
+    public void unselect(){
+        selectedResources.clear();
+        update();
+    }
+
     public RawStorage getStorage() {
         return rawStorage;
     }

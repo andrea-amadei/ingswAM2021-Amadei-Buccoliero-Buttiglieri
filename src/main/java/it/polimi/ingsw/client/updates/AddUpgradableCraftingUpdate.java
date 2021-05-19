@@ -1,6 +1,10 @@
 package it.polimi.ingsw.client.updates;
 
 import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.model.ClientPlayer;
+import it.polimi.ingsw.parser.raw.RawCrafting;
+import it.polimi.ingsw.parser.raw.RawCraftingCard;
+import it.polimi.ingsw.parser.raw.RawLeaderCard;
 
 public class AddUpgradableCraftingUpdate implements Update{
 
@@ -17,7 +21,12 @@ public class AddUpgradableCraftingUpdate implements Update{
 
     @Override
     public void apply(ClientModel client) {
+        ClientPlayer clientPlayer = client.getPlayerByName(player);
+        RawCraftingCard card = client.getCraftingCardById(id);
+        RawCrafting crafting = card.getCrafting();
+        int level = card.getLevel();
 
+        clientPlayer.getProduction().addUpgradableCrafting(crafting, level, index);
     }
 
     @Override

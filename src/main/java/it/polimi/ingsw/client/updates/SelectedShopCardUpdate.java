@@ -17,7 +17,7 @@ public class SelectedShopCardUpdate implements Update{
 
     @Override
     public void apply(ClientModel client) {
-
+        client.getShop().selectCard(y, x);
     }
 
     @Override

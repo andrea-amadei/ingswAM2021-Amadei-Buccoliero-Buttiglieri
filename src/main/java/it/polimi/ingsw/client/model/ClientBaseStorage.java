@@ -46,6 +46,11 @@ public class ClientBaseStorage implements Observable<ClientBaseStorage> {
         update();
     }
 
+    public void unselect(){
+        selectedResources.clear();
+        update();
+    }
+
     @Override
     public void addListener(Listener<ClientBaseStorage> listener) {
         listeners.add(listener);

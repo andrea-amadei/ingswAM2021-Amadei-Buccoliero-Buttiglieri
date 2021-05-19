@@ -4,7 +4,9 @@ import it.polimi.ingsw.client.observables.Listener;
 import it.polimi.ingsw.client.observables.Observable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class ClientPlayer implements Observable<ClientPlayer> {
 
@@ -29,11 +31,14 @@ public class ClientPlayer implements Observable<ClientPlayer> {
 
     private final String username;
 
+    private int victoryPoints;
+
     public ClientPlayer(String username, ClientBaseStorage chest, ClientBaseStorage hand, ClientBaseStorage marketBasket, List<ClientShelf> cupboard,
                         List<ClientShelf> leaderShelves, ClientProduction production, ClientFlagHolder flagHolder, ClientDiscountHolder discountHolder,
                         ClientLeaderCards leaderCards, ClientFaithPath faithPath){
 
         this.username = username;
+        this.victoryPoints = 0;
         this.chest = chest;
         this.hand = hand;
         this.marketBasket = marketBasket;
@@ -58,8 +63,17 @@ public class ClientPlayer implements Observable<ClientPlayer> {
         update();
     }
 
+    public void addVictoryPoints(int amount){
+        victoryPoints += amount;
+        update();
+    }
+
     public String getUsername() {
         return username;
+    }
+
+    public int getVictoryPoints() {
+        return victoryPoints;
     }
 
     public List<Listener<ClientPlayer>> getListeners() {
@@ -84,6 +98,32 @@ public class ClientPlayer implements Observable<ClientPlayer> {
 
     public List<ClientShelf> getLeaderShelves() {
         return leaderShelves;
+    }
+
+    public ClientBaseStorage getBaseStorageById(String id){
+        if(id == null)
+            throw new NullPointerException();
+
+        List<ClientBaseStorage> baseStorages = new ArrayList<>(Arrays.asList(chest, hand, marketBasket));
+
+        return baseStorages.stream()
+                           .filter(b -> b.getStorage().getId().equals(id))
+                           .findFirst()
+                           .orElseThrow(() -> new NoSuchElementException("There is no ClientBaseStorage with id \"" + id + "\""));
+    }
+
+    public ClientShelf getClientShelfById(String id){
+        if(id == null)
+            throw new NullPointerException();
+
+        List<ClientShelf> shelves = new ArrayList<>();
+        shelves.addAll(cupboard);
+        shelves.addAll(leaderShelves);
+
+        return shelves.stream()
+                .filter(s -> s.getStorage().getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("There is no ClientShelf with id \"" + id + "\""));
     }
 
     public ClientProduction getProduction() {
