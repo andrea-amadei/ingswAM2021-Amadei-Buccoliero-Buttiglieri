@@ -225,22 +225,22 @@ public class FaithPath implements MutablePositionedElement {
 
             outputHandler.setBackgroundColorRectangle(
                     getStartingRow() + (i.getGroup() - 1) * 3 + 1,
-                    getStartingColumn() + maxLength + 9,
+                    getStartingColumn() + maxLength + 8,
                     getStartingRow() + (i.getGroup() - 1) * 3 + 2,
-                    getStartingColumn() + maxLength + 9 + 24,
+                    getStartingColumn() + maxLength + 9 + 18,
                     bg
             );
 
             outputHandler.setString(
                     getStartingRow() + (i.getGroup() - 1) * 3 + 1,
-                    getStartingColumn() + maxLength + 10,
+                    getStartingColumn() + maxLength + 9,
                     "G" + i.getGroup() + ": Pope Group " + i.getGroup(),
                     ForegroundColor.WHITE_BRIGHT
             );
 
             outputHandler.setString(
                     getStartingRow() + (i.getGroup() - 1) * 3 + 2,
-                    getStartingColumn() + maxLength + 10,
+                    getStartingColumn() + maxLength + 9,
                     "+" + i.getPoints() + " points",
                     ForegroundColor.WHITE_BRIGHT
             );
