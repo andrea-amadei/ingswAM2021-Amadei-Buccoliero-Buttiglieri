@@ -1,6 +1,10 @@
 package it.polimi.ingsw.client.updates;
 
 import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.model.ClientPlayer;
+import it.polimi.ingsw.client.model.ClientShelf;
+
+import java.util.NoSuchElementException;
 
 public class UnselectUpdate implements Update{
 
@@ -15,7 +19,26 @@ public class UnselectUpdate implements Update{
 
     @Override
     public void apply(ClientModel client) {
+        ClientPlayer clientPlayer = client.getPlayerByName(player);
 
+        switch(section){
+            case "shop":
+                client.getShop().unselect();
+                break;
+            case "storage":
+                for(ClientShelf shelf : clientPlayer.getCupboard())
+                    shelf.unselect();
+                for(ClientShelf leaderShelf : clientPlayer.getLeaderShelves())
+                    leaderShelf.unselect();
+                clientPlayer.getChest().unselect();
+                break;
+            case "production":
+                clientPlayer.getProduction().unselect();
+                break;
+            default:
+                throw new NoSuchElementException("There is no section \"" + section + "\"");
+
+        }
     }
 
     @Override

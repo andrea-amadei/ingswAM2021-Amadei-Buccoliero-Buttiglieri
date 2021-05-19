@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.updates;
 
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.model.ClientPlayer;
 import it.polimi.ingsw.model.production.Production;
 
 public class SelectedCraftingUpdate implements Update{
@@ -20,7 +21,8 @@ public class SelectedCraftingUpdate implements Update{
 
     @Override
     public void apply(ClientModel client) {
-
+        ClientPlayer clientPlayer = client.getPlayerByName(player);
+        clientPlayer.getProduction().selectCrafting(craftingType, index);
     }
 
     @Override
