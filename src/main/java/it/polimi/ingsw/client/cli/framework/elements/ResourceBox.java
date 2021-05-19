@@ -56,6 +56,7 @@ public class ResourceBox implements MutablePositionedElement {
 
         setVisible(true);
         setZIndex(1);
+        setFaded(false);
     }
 
     @Override
