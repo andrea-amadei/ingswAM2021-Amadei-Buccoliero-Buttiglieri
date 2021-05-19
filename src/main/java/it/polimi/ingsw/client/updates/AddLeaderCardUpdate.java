@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.updates;
 
 import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.model.ClientPlayer;
+import it.polimi.ingsw.parser.raw.RawLeaderCard;
 
 public class AddLeaderCardUpdate implements Update{
 
@@ -15,7 +17,9 @@ public class AddLeaderCardUpdate implements Update{
 
     @Override
     public void apply(ClientModel client) {
-
+        ClientPlayer clientPlayer = client.getPlayerByName(player);
+        RawLeaderCard toBeAdded = client.getLeaderCardById(id);
+        clientPlayer.getLeaderCards().addLeaderCard(toBeAdded);
     }
 
     @Override

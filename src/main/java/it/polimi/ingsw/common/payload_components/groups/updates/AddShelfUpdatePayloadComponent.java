@@ -13,16 +13,15 @@ public class AddShelfUpdatePayloadComponent extends SpecificUpdatePayloadCompone
     @SerializedName(value = "resource", alternate = {"resource_type", "resourceType"})
     private String resource;
 
-    //TODO: it is not the index, it is the size
-    @SerializedName("index")
-    private int index;
+    @SerializedName("size")
+    private int size;
 
     /**
      * This constructor shall only be used to instance payloads through reflection
      */
     public AddShelfUpdatePayloadComponent() { }
 
-    public AddShelfUpdatePayloadComponent(String player, String id, String resource, int index) {
+    public AddShelfUpdatePayloadComponent(String player, String id, String resource, int size) {
         super(player);
 
         if(id == null || resource == null)
@@ -30,7 +29,7 @@ public class AddShelfUpdatePayloadComponent extends SpecificUpdatePayloadCompone
 
         this.id = id;
         this.resource = resource;
-        this.index = index;
+        this.size = size;
     }
 
     public String getId() {
@@ -41,7 +40,7 @@ public class AddShelfUpdatePayloadComponent extends SpecificUpdatePayloadCompone
         return resource;
     }
 
-    public int getIndex() {
-        return index;
+    public int getSize() {
+        return size;
     }
 }

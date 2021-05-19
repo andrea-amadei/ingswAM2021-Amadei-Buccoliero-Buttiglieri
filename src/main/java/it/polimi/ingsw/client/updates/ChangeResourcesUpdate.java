@@ -1,7 +1,12 @@
 package it.polimi.ingsw.client.updates;
 
+import it.polimi.ingsw.client.model.ClientBaseStorage;
 import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.model.ClientPlayer;
+import it.polimi.ingsw.client.model.ClientShelf;
 import it.polimi.ingsw.parser.raw.RawStorage;
+
+import java.util.NoSuchElementException;
 
 public class ChangeResourcesUpdate implements Update{
 
@@ -16,7 +21,17 @@ public class ChangeResourcesUpdate implements Update{
 
     @Override
     public void apply(ClientModel client) {
+        ClientPlayer clientPlayer = client.getPlayerByName(player);
 
+        ClientBaseStorage baseTarget;
+        try{
+            baseTarget = clientPlayer.getBaseStorageById(delta.getId());
+            baseTarget.changeResources(delta);
+        }catch(NoSuchElementException e){
+            ClientShelf shelfTarget;
+            shelfTarget = clientPlayer.getClientShelfById(delta.getId());
+            shelfTarget.changeResources(delta);
+        }
     }
 
     @Override

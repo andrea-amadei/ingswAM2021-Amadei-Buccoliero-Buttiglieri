@@ -2,6 +2,8 @@ package it.polimi.ingsw.client.updates;
 
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.model.ClientPlayer;
+import it.polimi.ingsw.client.model.ClientProduction;
 import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.parser.raw.RawCrafting;
 
@@ -23,7 +25,18 @@ public class AddCraftingUpdate implements Update{
 
     @Override
     public void apply(ClientModel client) {
-
+        ClientPlayer clientPlayer = client.getPlayerByName(player);
+        ClientProduction production = clientPlayer.getProduction();
+        switch(craftingType){
+            case BASE:
+                production.addBaseCrafting(crafting);
+                break;
+            case LEADER:
+                production.addLeaderCrafting(crafting);
+                break;
+            default:
+                throw new IllegalArgumentException("Add crafting update received upgradable");
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.updates;
 
 import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.model.ClientPlayer;
 
 public class ChangeCurrentPlayerUpdate implements Update{
 
@@ -13,7 +14,8 @@ public class ChangeCurrentPlayerUpdate implements Update{
 
     @Override
     public void apply(ClientModel client) {
-
+        ClientPlayer clientPlayer = client.getPlayerByName(newPlayer);
+        client.setCurrentPlayer(clientPlayer);
     }
 
     @Override
