@@ -75,6 +75,11 @@ public class Group implements MutableElementGroup {
     }
 
     @Override
+    public List<String> getAllElementNames() {
+        return List.copyOf(elements.keySet());
+    }
+
+    @Override
     public void addElement(VisibleElement element) {
         if(element == null)
             throw new NullPointerException();

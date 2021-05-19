@@ -5,4 +5,5 @@ import java.util.List;
 public interface ElementGroup extends VisibleElement {
     VisibleElement getElement(String name);
     List<VisibleElement> getAllElements();
+    List<String> getAllElementNames();
 }
