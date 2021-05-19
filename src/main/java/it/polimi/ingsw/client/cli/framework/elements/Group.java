@@ -91,7 +91,7 @@ public class Group implements MutableElementGroup {
             throw new NullPointerException();
 
         if(!elements.containsKey(name))
-            throw new NoSuchElementException("No element named \" + name + \" in this group");
+            throw new NoSuchElementException("No element named " + name + " in this group");
 
         elements.remove(name);
     }
