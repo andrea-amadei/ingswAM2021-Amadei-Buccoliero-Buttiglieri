@@ -54,7 +54,7 @@ public class Match {
 
     }
 
-    public void addPlayer(Pair<String, ClientHandler> client) throws DuplicateUsernameException, GameNotInLobbyException {
+    public synchronized void addPlayer(Pair<String, ClientHandler> client) throws DuplicateUsernameException, GameNotInLobbyException {
         if(client == null)
             throw new NullPointerException();
 
@@ -69,7 +69,7 @@ public class Match {
         }
     }
 
-    public void startGame() throws GameNotReadyException {
+    public synchronized void startGame() throws GameNotReadyException {
         if(!currentState.equals(MatchState.READY))
             throw new GameNotReadyException("The game is not ready");
 
@@ -81,37 +81,37 @@ public class Match {
         new Controller(stateMachine, actionQueue, clientHub).start();
     }
 
-    public void endGame() throws GameNotStartedException{
+    public synchronized void endGame() throws GameNotStartedException{
         if(!currentState.equals(MatchState.PLAYING))
             throw new GameNotStartedException("Can't terminate the game if it hasn't started");
 
         currentState = MatchState.ENDED;
     }
 
-    public String getGameName() {
+    public synchronized String getGameName() {
         return gameName;
     }
 
-    public StateMachine getStateMachine(){
+    public synchronized StateMachine getStateMachine(){
         return stateMachine;
     }
 
-    public ActionQueue getActionQueue(){
+    public synchronized ActionQueue getActionQueue(){
         return actionQueue;
     }
 
-    public List<String> getUsernames() {
+    public synchronized List<String> getUsernames() {
         return clientHub.getUsernames();
     }
-    public int getMatchSize() {
+    public synchronized int getMatchSize() {
         return matchSize;
     }
 
-    public boolean isSinglePlayer() {
+    public synchronized boolean isSinglePlayer() {
         return isSinglePlayer;
     }
 
-    public MatchState getCurrentState() {
+    public synchronized MatchState getCurrentState() {
         return currentState;
     }
 }

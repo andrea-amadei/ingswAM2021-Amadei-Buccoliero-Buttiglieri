@@ -1,13 +1,17 @@
 package it.polimi.ingsw.server.clienthandling;
 
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.setup.SetGameNameSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.SetUsernameSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.TextSetupPayloadComponent;
+import it.polimi.ingsw.exceptions.DuplicateUsernameException;
+import it.polimi.ingsw.exceptions.GameNotInLobbyException;
 import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.server.Logger;
 import it.polimi.ingsw.server.MatchesManager;
 import it.polimi.ingsw.server.clienthandling.setupactions.SetupAction;
+import it.polimi.ingsw.utils.Pair;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -87,6 +91,61 @@ public class ClientHandler implements Runnable{
 
         this.username = username;
         sendPayload(new SetUsernameSetupPayloadComponent(username));
-        //sendPayload(new TextSetupPayloadComponent("Your username is \"" + username + "\""));
+    }
+
+    public void createMatch(String matchName, int playerCount, boolean isSinglePlayer){
+        if(username == null){
+            sendPayload(new TextSetupPayloadComponent("Set your username first"));
+            return;
+        }
+        if(matchName == null){
+            sendPayload(new TextSetupPayloadComponent("Match name not valid. Choose a valid one"));
+            return;
+        }
+        if(playerCount <= 0 || playerCount > 4){
+            sendPayload(new TextSetupPayloadComponent("Number of players must be between 1 and 4"));
+            return;
+        }
+        if(isSinglePlayer && playerCount > 1){
+            sendPayload(new TextSetupPayloadComponent("In single player mode there must be only 1 player"));
+            return;
+        }
+
+        Match match = new Match(matchName, new Pair<>(username, this), playerCount, isSinglePlayer);
+
+        try {
+            matchesManager.addMatch(match);
+        }catch(IllegalArgumentException e){
+            sendPayload(new TextSetupPayloadComponent(e.getMessage()));
+        }
+
+        sendPayload(new SetGameNameSetupPayloadComponent(matchName));
+    }
+
+    public void joinMatch(String matchName){
+        if(username == null){
+            sendPayload(new TextSetupPayloadComponent("Set your username first"));
+            return;
+        }
+       if(matchName == null){
+           sendPayload(new TextSetupPayloadComponent("Match name not inserted"));
+           return;
+       }
+       if(!matchesManager.alreadyExistentGameName(matchName)){
+           sendPayload(new TextSetupPayloadComponent("Match \"" + matchName + "\" does not exist in the server"));
+           return;
+       }
+
+       Match match = matchesManager.getMatchByName(matchName);
+
+        try {
+            match.addPlayer(new Pair<>(username, this));
+        } catch (DuplicateUsernameException | GameNotInLobbyException e) {
+            e.printStackTrace();
+        }
+
+        sendPayload(new SetGameNameSetupPayloadComponent(matchName));
+
+
     }
 }

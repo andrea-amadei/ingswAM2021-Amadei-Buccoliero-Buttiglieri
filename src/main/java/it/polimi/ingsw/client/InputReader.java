@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.common.payload_components.groups.setup.CreateMatchSetupPayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.setup.JoinMatchSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.SetUsernameSetupPayloadComponent;
 
 import java.util.ArrayList;
@@ -30,6 +32,12 @@ public class InputReader extends Thread{
                 case "set_username" :
                     parseUsernameCommand(logicalInput);
                     break;
+                case "create_match":
+                    parseCreateMatchCommand(logicalInput);
+                    break;
+                case "join_match":
+                    parseJoinMatchCommand(logicalInput);
+                    break;
                 default:
                     break;
             }
@@ -40,5 +48,19 @@ public class InputReader extends Thread{
     public void parseUsernameCommand(List<String> logicalInput){
         //TODO: how do we handle invalid command?
         serverHandler.sendPayload(new SetUsernameSetupPayloadComponent(logicalInput.get(1)));
+    }
+
+    public void parseCreateMatchCommand(List<String> logicalInput){
+        String gameName = logicalInput.get(1);
+        Integer playerCount = Integer.parseInt(logicalInput.get(2));
+        Boolean isSinglePlayer = Boolean.parseBoolean(logicalInput.get(3));
+
+        serverHandler.sendPayload(new CreateMatchSetupPayloadComponent(gameName, playerCount, isSinglePlayer));
+    }
+
+    public void parseJoinMatchCommand(List<String> logicalInput){
+        String matchName = logicalInput.get(1);
+
+        serverHandler.sendPayload(new JoinMatchSetupPayloadComponent(matchName));
     }
 }

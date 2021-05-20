@@ -4,6 +4,8 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import it.polimi.ingsw.server.clienthandling.setupactions.CreateMatchSetupAction;
+import it.polimi.ingsw.server.clienthandling.setupactions.JoinMatchSetupAction;
 import it.polimi.ingsw.server.clienthandling.setupactions.SetUsernameSetupAction;
 import it.polimi.ingsw.server.clienthandling.setupactions.SetupAction;
 
@@ -18,6 +20,10 @@ public class SetupActionAdapter implements JsonDeserializer<SetupAction> {
         switch(serializedType){
             case "set_username":
                 return jsonDeserializationContext.deserialize(jsonElement, SetUsernameSetupAction.class);
+            case "create_match":
+                return jsonDeserializationContext.deserialize(jsonElement, CreateMatchSetupAction.class);
+            case "join_match":
+                return jsonDeserializationContext.deserialize(jsonElement, JoinMatchSetupAction.class);
             default:
                 throw new JsonParseException("Unknown type \"" + serializedType + "\"");
         }

@@ -2,10 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.server.clienthandling.Match;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * The manager of the games in the server. It handles the creation of new Matches and stores them
@@ -21,6 +18,13 @@ public class MatchesManager {
 
     public synchronized Set<Match> getMatches(){
         return new HashSet<>(matches);
+    }
+
+    public synchronized Match getMatchByName(String name){
+        return matches.stream()
+                .filter(m -> m.getGameName().equals(name))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Match \" " + name + "\" does not exist in the server"));
     }
 
     public synchronized boolean alreadyExistentUsername(String username){

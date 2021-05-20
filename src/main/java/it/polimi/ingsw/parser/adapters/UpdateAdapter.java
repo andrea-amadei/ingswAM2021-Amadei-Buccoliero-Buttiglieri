@@ -17,6 +17,8 @@ public class UpdateAdapter implements JsonDeserializer<Update> {
         switch(serializedType){
             case "set_username":
                 return jsonDeserializationContext.deserialize(jsonElement, SetUsernameUpdate.class);
+            case "set_game_name":
+                return jsonDeserializationContext.deserialize(jsonElement, SetGameNameUpdate.class);
             case "text":
                 return jsonDeserializationContext.deserialize(jsonElement, AddServerMessageUpdate.class);
             case "add_bought_card":

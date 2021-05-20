@@ -8,10 +8,11 @@ public class ClientMain {
 
     public static void main(String[] args){
         OutputHandler outputHandler = new OutputHandler();
-        ClientModel client = new ClientModel(outputHandler, new ArrayList<>());
-        outputHandler.setModel(client);
+        ClientModel client = new ClientModel(outputHandler);
 
+        outputHandler.setModel(client);
         outputHandler.update();
+
         ServerHandler serverHandler = new ServerHandler(6789, client);
         serverHandler.start();
 
