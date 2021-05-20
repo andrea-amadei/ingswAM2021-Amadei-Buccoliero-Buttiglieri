@@ -112,8 +112,6 @@ public class PlayerCliUpdater implements Listener<ClientPlayer> {
 
     @Override
     public void update(ClientPlayer player) {
-        List<ResourceBox> resourceBoxes = new ArrayList<>();
-
         for(String elem : cupboardBox.getAllElementNames())
             cupboardBox.removeElement(elem);
 
@@ -123,26 +121,24 @@ public class PlayerCliUpdater implements Listener<ClientPlayer> {
                 .collect(Collectors.toList());
 
         for(int i = 0; i < sortedList.size(); i++) {
-            resourceBoxes.clear();
-
             switch (sortedList.get(i).getSize()) {
                 case 1:
-                    resourceBoxes.add(getElem(false, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 15, sortedList.get(i)));
+                    cupboardBox.addElement(getElem(false, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 15, sortedList.get(i)));
 
                     break;
 
                 case 2:
-                    resourceBoxes.add(getElem(false, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 13, sortedList.get(i)));
-                    resourceBoxes.add(getElem(false, i, 2, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 17, sortedList.get(i)));
+                    cupboardBox.addElement(getElem(false, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 13, sortedList.get(i)));
+                    cupboardBox.addElement(getElem(false, i, 2, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 17, sortedList.get(i)));
 
                     cupboardBox.addElement(getDivider(false, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 15));
 
                     break;
 
                 case 3:
-                    resourceBoxes.add(getElem(false, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 11, sortedList.get(i)));
-                    resourceBoxes.add(getElem(false, i, 2, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 15, sortedList.get(i)));
-                    resourceBoxes.add(getElem(false, i, 3, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 19, sortedList.get(i)));
+                    cupboardBox.addElement(getElem(false, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 11, sortedList.get(i)));
+                    cupboardBox.addElement(getElem(false, i, 2, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 15, sortedList.get(i)));
+                    cupboardBox.addElement(getElem(false, i, 3, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 19, sortedList.get(i)));
 
                     cupboardBox.addElement(getDivider(false, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 13));
                     cupboardBox.addElement(getDivider(false, i, 2, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 17));
@@ -168,9 +164,6 @@ public class PlayerCliUpdater implements Listener<ClientPlayer> {
                     ForegroundColor.WHITE_BRIGHT,
                     BackgroundColor.BLACK
             ));
-
-            for(VisibleElement e : resourceBoxes)
-                cupboardBox.addElement(e);
         }
 
         sortedList = player.getLeaderShelves()
@@ -179,26 +172,24 @@ public class PlayerCliUpdater implements Listener<ClientPlayer> {
                 .collect(Collectors.toList());
 
         for(int i = 0; i < sortedList.size(); i++) {
-            resourceBoxes.clear();
-
             switch (sortedList.get(i).getSize()) {
                 case 1:
-                    resourceBoxes.add(getElem(true, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 45, sortedList.get(i)));
+                    cupboardBox.addElement(getElem(true, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 45, sortedList.get(i)));
 
                     break;
 
                 case 2:
-                    resourceBoxes.add(getElem(true, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 43, sortedList.get(i)));
-                    resourceBoxes.add(getElem(true, i, 2, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 47, sortedList.get(i)));
+                    cupboardBox.addElement(getElem(true, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 43, sortedList.get(i)));
+                    cupboardBox.addElement(getElem(true, i, 2, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 47, sortedList.get(i)));
 
                     cupboardBox.addElement(getDivider(true, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 45));
 
                     break;
 
                 case 3:
-                    resourceBoxes.add(getElem(true, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 41, sortedList.get(i)));
-                    resourceBoxes.add(getElem(true, i, 2, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 45, sortedList.get(i)));
-                    resourceBoxes.add(getElem(true, i, 3, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 49, sortedList.get(i)));
+                    cupboardBox.addElement(getElem(true, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 41, sortedList.get(i)));
+                    cupboardBox.addElement(getElem(true, i, 2, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 45, sortedList.get(i)));
+                    cupboardBox.addElement(getElem(true, i, 3, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 49, sortedList.get(i)));
 
                     cupboardBox.addElement(getDivider(true, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 43));
                     cupboardBox.addElement(getDivider(true, i, 2, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 47));
@@ -224,9 +215,6 @@ public class PlayerCliUpdater implements Listener<ClientPlayer> {
                     ForegroundColor.WHITE_BRIGHT,
                     BackgroundColor.BLACK
             ));
-
-            for(VisibleElement e : resourceBoxes)
-                cupboardBox.addElement(e);
         }
 
         if(player.getVictoryPoints() < 10)
