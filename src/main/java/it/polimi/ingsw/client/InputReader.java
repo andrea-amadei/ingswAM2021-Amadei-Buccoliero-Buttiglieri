@@ -71,86 +71,131 @@ public class InputReader extends Thread{
     }
 
     private void parseSelectPlayCommand(List<String> logicalInput) {
-        SelectPlayAction.Play play;
-        String playString = logicalInput.get(1).toUpperCase();
         try {
-            play = SelectPlayAction.Play.valueOf(playString);
-            serverHandler.sendPayload(new SelectPlayActionPayloadComponent(serverHandler.getUsername(), play));
-        }catch(IllegalArgumentException e){
-            System.out.println("There is no \"" + playString + "\" option");
+            SelectPlayAction.Play play;
+            String playString = logicalInput.get(1).toUpperCase();
+            try {
+                play = SelectPlayAction.Play.valueOf(playString);
+                serverHandler.sendPayload(new SelectPlayActionPayloadComponent(serverHandler.getUsername(), play));
+            } catch (IllegalArgumentException e) {
+                System.out.println("There is no \"" + playString + "\" option");
+            }
+        }catch(RuntimeException e){
+            System.out.println("Command not valid");
         }
     }
 
     public void parseUsernameCommand(List<String> logicalInput){
         //TODO: how do we handle invalid command?
-        serverHandler.sendPayload(new SetUsernameSetupPayloadComponent(logicalInput.get(1)));
+        try {
+            serverHandler.sendPayload(new SetUsernameSetupPayloadComponent(logicalInput.get(1)));
+        }catch(RuntimeException e){
+            System.out.println("Command not valid");
+        }
     }
 
     public void parseConfirmTidyCommand(List<String> logicalInput){
-        serverHandler.sendPayload(new ConfirmTidyActionPayloadComponent(serverHandler.getUsername()));
+        try {
+            serverHandler.sendPayload(new ConfirmTidyActionPayloadComponent(serverHandler.getUsername()));
+        }catch(RuntimeException e){
+            System.out.println("Command not valid");
+        }
     }
 
     public void parseConfirmCommand(List<String> logicalInput){
-        serverHandler.sendPayload(new ConfirmActionPayloadComponent(serverHandler.getUsername()));
+        try {
+            serverHandler.sendPayload(new ConfirmActionPayloadComponent(serverHandler.getUsername()));
+        }catch(RuntimeException e){
+            System.out.println("Command not valid");
+        }
     }
 
     public void parseResourcesMoveCommand(List<String> logicalInput){
-        String origin = logicalInput.get(1);
-        String destination = logicalInput.get(2);
-        int amount = Integer.parseInt(logicalInput.get(4));
+
         try {
-            String resourcesToMove = ResourceTypeSingleton.getInstance().getResourceSingleByName(logicalInput.get(3)
-                    .toLowerCase()).getId();
-            serverHandler.sendPayload(new ResourcesMoveActionPayloadComponent(serverHandler.getUsername(), origin, destination,
-                    resourcesToMove, amount));
-        }catch (NoSuchElementException e){
-            System.out.println(e.getMessage());
+            String origin = logicalInput.get(1);
+            String destination = logicalInput.get(2);
+            int amount = Integer.parseInt(logicalInput.get(4));
+            try {
+                String resourcesToMove = ResourceTypeSingleton.getInstance().getResourceSingleByName(logicalInput.get(3)
+                        .toLowerCase()).getId();
+                serverHandler.sendPayload(new ResourcesMoveActionPayloadComponent(serverHandler.getUsername(), origin, destination,
+                        resourcesToMove, amount));
+            } catch (NoSuchElementException e) {
+                System.out.println(e.getMessage());
+            }
+        }catch(RuntimeException e){
+            System.out.println("Command not valid");
         }
 
     }
 
     public void parseCollectFromBasketCommand(List<String> logicalInput){
-        int amount = Integer.parseInt(logicalInput.get(2));
-        String shelfID = logicalInput.get(3);
         try {
-            String resourceToMove = ResourceTypeSingleton.getInstance().getResourceSingleByName(logicalInput.get(1)
-                    .toLowerCase()).getId();
-            serverHandler.sendPayload(new MoveFromBasketToShelfActionPayloadComponent(serverHandler.getUsername(),
-                    resourceToMove, amount, shelfID));
-        }catch (NoSuchElementException e){
-            System.out.println(e.getMessage());
+            int amount = Integer.parseInt(logicalInput.get(2));
+            String shelfID = logicalInput.get(3);
+            try {
+                String resourceToMove = ResourceTypeSingleton.getInstance().getResourceSingleByName(logicalInput.get(1)
+                        .toLowerCase()).getId();
+                serverHandler.sendPayload(new MoveFromBasketToShelfActionPayloadComponent(serverHandler.getUsername(),
+                        resourceToMove, amount, shelfID));
+            } catch (NoSuchElementException e) {
+                System.out.println(e.getMessage());
+            }
+        }catch(RuntimeException e){
+            System.out.println("Command not valid");
         }
     }
 
     public void parseSelectConversionsCommand(List<String> logicalInput){
-        List<Integer> actuatorsChoice = new ArrayList<>();
-        for(int i = 1; i < logicalInput.size(); i++){
-            actuatorsChoice.add(Integer.parseInt(logicalInput.get(i)));
+        try {
+            List<Integer> actuatorsChoice = new ArrayList<>();
+            for (int i = 1; i < logicalInput.size(); i++) {
+                actuatorsChoice.add(Integer.parseInt(logicalInput.get(i)));
+            }
+            serverHandler.sendPayload(new SelectConversionsActionPayloadComponent(serverHandler.getUsername(), actuatorsChoice));
+        }catch(RuntimeException e){
+            System.out.println("Command not valid");
         }
-        serverHandler.sendPayload(new SelectConversionsActionPayloadComponent(serverHandler.getUsername(), actuatorsChoice));
     }
 
     public void parseBuyFromMarketCommand(List<String> logicalInput){
-        boolean isRow = Boolean.parseBoolean(logicalInput.get(1));
-        int index = Integer.parseInt(logicalInput.get(2));
-        serverHandler.sendPayload(new BuyFromMarketActionPayloadComponent(serverHandler.getUsername(), isRow, index));
+        try {
+            boolean isRow = Boolean.parseBoolean(logicalInput.get(1));
+            int index = Integer.parseInt(logicalInput.get(2));
+            serverHandler.sendPayload(new BuyFromMarketActionPayloadComponent(serverHandler.getUsername(), isRow, index));
+        }catch(RuntimeException e){
+            System.out.println("Command not valid");
+        }
     }
 
     public void parseBackCommand(List<String> logicalInput){
-        serverHandler.sendPayload(new BackActionPayloadComponent(serverHandler.getUsername()));
+        try {
+            serverHandler.sendPayload(new BackActionPayloadComponent(serverHandler.getUsername()));
+        }catch(RuntimeException e){
+            System.out.println("Command not valid");
+        }
     }
 
     public void parseCreateMatchCommand(List<String> logicalInput){
-        String gameName = logicalInput.get(1);
-        Integer playerCount = Integer.parseInt(logicalInput.get(2));
-        Boolean isSinglePlayer = Boolean.parseBoolean(logicalInput.get(3));
+        try {
+            String gameName = logicalInput.get(1);
+            Integer playerCount = Integer.parseInt(logicalInput.get(2));
+            Boolean isSinglePlayer = Boolean.parseBoolean(logicalInput.get(3));
 
-        serverHandler.sendPayload(new CreateMatchSetupPayloadComponent(gameName, playerCount, isSinglePlayer));
+            serverHandler.sendPayload(new CreateMatchSetupPayloadComponent(gameName, playerCount, isSinglePlayer));
+        }catch(RuntimeException e){
+            System.out.println("Command not valid");
+        }
     }
 
     public void parseJoinMatchCommand(List<String> logicalInput){
-        String matchName = logicalInput.get(1);
+        try {
+            String matchName = logicalInput.get(1);
 
-        serverHandler.sendPayload(new JoinMatchSetupPayloadComponent(matchName));
+            serverHandler.sendPayload(new JoinMatchSetupPayloadComponent(matchName));
+        }catch(RuntimeException e){
+            System.out.println("Command not valid");
+        }
     }
 }
