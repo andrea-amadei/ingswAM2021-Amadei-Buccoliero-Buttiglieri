@@ -17,6 +17,7 @@ public class ServerNetworkObjectAdapter implements JsonDeserializer<ServerNetwor
         switch(group) {
             case "update" :
             case "setup" :
+            case "possible_actions":
                 return jsonDeserializationContext.deserialize(jsonElement, Update.class);
             default:
                 throw new JsonParseException("Unknown group \"" + group + "\"");

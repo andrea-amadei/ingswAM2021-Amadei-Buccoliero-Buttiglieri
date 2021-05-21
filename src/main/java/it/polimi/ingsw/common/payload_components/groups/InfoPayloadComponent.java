@@ -9,7 +9,7 @@ import it.polimi.ingsw.common.payload_components.PayloadComponent;
 /**
  * An information the server suggests to show to the clients.
  */
-@SerializedGroup("info")
+@SerializedGroup("update")
 @SerializedType("info")
 public class InfoPayloadComponent implements PayloadComponent {
 

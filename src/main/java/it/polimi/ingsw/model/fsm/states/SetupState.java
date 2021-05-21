@@ -1,9 +1,12 @@
 package it.polimi.ingsw.model.fsm.states;
 
+import it.polimi.ingsw.common.ActionQueue;
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.updates.SetInitialConfigurationUpdatePayloadComponent;
+import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.model.Shop;
+import it.polimi.ingsw.model.actions.StartGameAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
 import it.polimi.ingsw.utils.PayloadFactory;
@@ -62,9 +65,16 @@ public class SetupState extends State {
         //TODO: distribute the leader cards to the players
 
 
+        launchInterrupt(new StartGameAction(), ActionQueue.Priority.SERVER_ACTION.ordinal());
         //send the global message
         messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), globalPayload));
 
         return messages;
+    }
+
+    @Override
+    public List<Message> handleAction(StartGameAction startGameAction) throws FSMTransitionFailedException {
+        setNextState(new MenuState(getGameContext()));
+        return new ArrayList<>();
     }
 }

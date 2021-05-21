@@ -1,6 +1,6 @@
 package it.polimi.ingsw.utils;
 
-import it.polimi.ingsw.common.payload_components.groups.PossibleActionPayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.PossibleActionsPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
 import it.polimi.ingsw.common.payload_components.groups.UpdatePayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.updates.*;
@@ -94,8 +94,8 @@ public class PayloadFactory {
         return new ChangeMarketUpdatePayloadComponent(market);
     }
 
-    public static PossibleActionPayloadComponent possibleActions(Set<PossibleActions> possibleActions){
-        return new PossibleActionPayloadComponent(possibleActions);
+    public static PossibleActionsPayloadComponent possibleActions(Set<PossibleActions> possibleActions){
+        return new PossibleActionsPayloadComponent(possibleActions);
     }
 
     public static UpdatePayloadComponent changePossibleConversions(String player, List<Marble> selectedMarbles, List<List<ConversionActuator>> possibleConversions){
