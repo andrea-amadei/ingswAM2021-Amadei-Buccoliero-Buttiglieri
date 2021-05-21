@@ -138,7 +138,7 @@ public class ResourcesMoveAction implements Action{
             try{
                 currentPlayer.getBoard().getStorage().getCupboard().moveBetweenShelves(originShelf, destinationShelf, amount);
             }catch(IllegalCupboardException e){
-                throw new IllegalActionException(e.getMessage());
+                throw new IllegalActionException("cannot move resources between these shelves");
             }
 
         }

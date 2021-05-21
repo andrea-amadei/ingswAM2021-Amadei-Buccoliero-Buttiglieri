@@ -1,16 +1,14 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.model.ClientModel;
-import it.polimi.ingsw.common.payload_components.groups.actions.SelectPlayActionPayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.actions.*;
 import it.polimi.ingsw.common.payload_components.groups.setup.CreateMatchSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.JoinMatchSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.SetUsernameSetupPayloadComponent;
+import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.actions.SelectPlayAction;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class InputReader extends Thread{
 
@@ -35,11 +33,32 @@ public class InputReader extends Thread{
                 case "set_username" :
                     parseUsernameCommand(logicalInput);
                     break;
+                case "back":
+                    parseBackCommand(logicalInput);
+                    break;
+                case "buy_from_market":
+                    parseBuyFromMarketCommand(logicalInput);
+                    break;
+                case "collect_from_basket":
+                    parseCollectFromBasketCommand(logicalInput);
+                    break;
+                case "confirm":
+                    parseConfirmCommand(logicalInput);
+                    break;
+                case "confirm_tidy":
+                    parseConfirmTidyCommand(logicalInput);
+                    break;
                 case "create_match":
                     parseCreateMatchCommand(logicalInput);
                     break;
                 case "join_match":
                     parseJoinMatchCommand(logicalInput);
+                    break;
+                case "resources_move":
+                    parseResourcesMoveCommand(logicalInput);
+                    break;
+                case "select_conversions":
+                    parseSelectConversionsCommand(logicalInput);
                     break;
                 case "select_play":
                     parseSelectPlayCommand(logicalInput);
@@ -65,6 +84,60 @@ public class InputReader extends Thread{
     public void parseUsernameCommand(List<String> logicalInput){
         //TODO: how do we handle invalid command?
         serverHandler.sendPayload(new SetUsernameSetupPayloadComponent(logicalInput.get(1)));
+    }
+
+    public void parseConfirmTidyCommand(List<String> logicalInput){
+        serverHandler.sendPayload(new ConfirmTidyActionPayloadComponent(serverHandler.getUsername()));
+    }
+
+    public void parseConfirmCommand(List<String> logicalInput){
+        serverHandler.sendPayload(new ConfirmActionPayloadComponent(serverHandler.getUsername()));
+    }
+
+    public void parseResourcesMoveCommand(List<String> logicalInput){
+        String origin = logicalInput.get(1);
+        String destination = logicalInput.get(2);
+        int amount = Integer.parseInt(logicalInput.get(4));
+        try {
+            String resourcesToMove = ResourceTypeSingleton.getInstance().getResourceSingleByName(logicalInput.get(3)
+                    .toLowerCase()).getId();
+            serverHandler.sendPayload(new ResourcesMoveActionPayloadComponent(serverHandler.getUsername(), origin, destination,
+                    resourcesToMove, amount));
+        }catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public void parseCollectFromBasketCommand(List<String> logicalInput){
+        int amount = Integer.parseInt(logicalInput.get(2));
+        String shelfID = logicalInput.get(3);
+        try {
+            String resourceToMove = ResourceTypeSingleton.getInstance().getResourceSingleByName(logicalInput.get(1)
+                    .toLowerCase()).getId();
+            serverHandler.sendPayload(new MoveFromBasketToShelfActionPayloadComponent(serverHandler.getUsername(),
+                    resourceToMove, amount, shelfID));
+        }catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void parseSelectConversionsCommand(List<String> logicalInput){
+        List<Integer> actuatorsChoice = new ArrayList<>();
+        for(int i = 1; i < logicalInput.size(); i++){
+            actuatorsChoice.add(Integer.parseInt(logicalInput.get(i)));
+        }
+        serverHandler.sendPayload(new SelectConversionsActionPayloadComponent(serverHandler.getUsername(), actuatorsChoice));
+    }
+
+    public void parseBuyFromMarketCommand(List<String> logicalInput){
+        boolean isRow = Boolean.parseBoolean(logicalInput.get(1));
+        int index = Integer.parseInt(logicalInput.get(2));
+        serverHandler.sendPayload(new BuyFromMarketActionPayloadComponent(serverHandler.getUsername(), isRow, index));
+    }
+
+    public void parseBackCommand(List<String> logicalInput){
+        serverHandler.sendPayload(new BackActionPayloadComponent(serverHandler.getUsername()));
     }
 
     public void parseCreateMatchCommand(List<String> logicalInput){
