@@ -13,7 +13,6 @@ public class SetUsernameUpdate implements Update{
     @Override
     public void apply(ClientModel client) {
         client.getPersonalData().setUsername(username);
-        client.getOutputHandler().update();
     }
 
     @Override

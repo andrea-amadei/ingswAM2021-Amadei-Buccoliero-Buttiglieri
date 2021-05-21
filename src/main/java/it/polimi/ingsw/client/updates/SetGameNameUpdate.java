@@ -15,7 +15,6 @@ public class SetGameNameUpdate implements Update{
     @Override
     public void apply(ClientModel client) {
         client.getPersonalData().setGameName(getGameName());
-        client.getOutputHandler().update();
     }
 
     @Override

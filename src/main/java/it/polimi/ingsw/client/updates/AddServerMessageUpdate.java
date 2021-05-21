@@ -15,7 +15,6 @@ public class AddServerMessageUpdate implements Update{
     @Override
     public void apply(ClientModel client) {
         client.getPersonalData().addServerMessage(text);
-        client.getOutputHandler().update();
     }
 
     @Override
