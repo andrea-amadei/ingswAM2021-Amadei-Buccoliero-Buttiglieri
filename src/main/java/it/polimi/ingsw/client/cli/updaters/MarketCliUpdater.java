@@ -35,8 +35,8 @@ public class MarketCliUpdater implements Listener<ClientMarket> {
     public void setup(ClientMarket market) {
         int i, j;
 
-        groupBox = new GroupBox("market", STARTING_ROW, STARTING_COLUMN, STARTING_ROW + market.getColSize() * 4 + 2,
-                STARTING_COLUMN + market.getRowSize() * 7 + 31, "Market",
+        groupBox = new GroupBox("market", STARTING_ROW, STARTING_COLUMN, STARTING_ROW + market.getRowSize() * 4 + 2,
+                STARTING_COLUMN + market.getColSize() * 7 + 31, "Market",
                 ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK);
 
         marbles = new MarbleBox[market.getColSize()][market.getRowSize()];
@@ -44,28 +44,28 @@ public class MarketCliUpdater implements Listener<ClientMarket> {
 
         for(i = 0; i < market.getColSize(); i++)
             for(j = 0; j < market.getRowSize(); j++) {
-                marbles[i][j] = new MarbleBox("marble_" + (i + 1) + "_" + (j + 1), STARTING_ROW + i * 4 + 3, STARTING_COLUMN + j * 9 + 7,
-                        market.getMarket().getMarbles().get(i * market.getColSize() + j));
+                marbles[i][j] = new MarbleBox("marble_" + (i + 1) + "_" + (j + 1), STARTING_ROW + j * 4 + 3, STARTING_COLUMN + i * 9 + 7,
+                        market.getMarket().getMarbles().get(i * market.getRowSize() + j));
 
                 groupBox.addElement(marbles[i][j]);
             }
 
-        odd = new MarbleBox("marble_odd", STARTING_ROW + 3, STARTING_COLUMN + market.getColSize() * 9 + 25,
+        odd = new MarbleBox("marble_odd", STARTING_ROW + 3, STARTING_COLUMN + market.getRowSize() * 9 + 25,
                 market.getMarket().getOdd());
         groupBox.addElement(odd);
 
-        for(i = 0; i < market.getColSize(); i++) {
+        for(i = 0; i < market.getRowSize(); i++) {
             labels[i] = new TextBox("label_col_" + (i + 1), STARTING_ROW + i * 4 + 4, STARTING_COLUMN + 3,
                     String.valueOf(i + 1), ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK);
 
             groupBox.addElement(labels[i]);
         }
 
-        for(i = 0; i < market.getRowSize(); i++) {
-            labels[market.getColSize() + i] = new TextBox("label_row_" + (i + 1), STARTING_ROW + 1, STARTING_COLUMN + i * 9 + 10,
+        for(i = 0; i < market.getColSize(); i++) {
+            labels[market.getRowSize() + i] = new TextBox("label_row_" + (i + 1), STARTING_ROW + 1, STARTING_COLUMN + i * 9 + 10,
                     String.valueOf(i + 1), ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK);
 
-            groupBox.addElement(labels[market.getColSize() + i]);
+            groupBox.addElement(labels[market.getRowSize() + i]);
         }
 
         frame.addElement(groupBox);
@@ -75,7 +75,7 @@ public class MarketCliUpdater implements Listener<ClientMarket> {
     public void update(ClientMarket market) {
         for(int i = 0; i < market.getColSize(); i++)
             for(int j = 0; j < market.getRowSize(); j++)
-                marbles[i][j].setMarble(market.getMarket().getMarbles().get(i * market.getColSize() + j));
+                marbles[i][j].setMarble(market.getMarket().getMarbles().get(i * market.getRowSize() + j));
 
         odd.setMarble(market.getMarket().getOdd());
     }

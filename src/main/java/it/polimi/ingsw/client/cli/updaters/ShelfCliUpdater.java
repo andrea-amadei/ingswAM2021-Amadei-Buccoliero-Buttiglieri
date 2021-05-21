@@ -117,7 +117,7 @@ public class ShelfCliUpdater implements Listener<ClientShelf> {
                 startingRow,
                 startingColumn + 2,
                 8,
-                shelf.getStorage().getId(),
+                shelf.getStorage().getId().replace("Shelf", ""),
                 ForegroundColor.WHITE_BRIGHT,
                 BackgroundColor.BLACK
         );
