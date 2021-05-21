@@ -1,11 +1,13 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.cli.CliBuilder;
 import it.polimi.ingsw.client.cli.framework.CliFramework;
 import it.polimi.ingsw.client.model.ClientModel;
 import it.polimi.ingsw.common.payload_components.groups.actions.*;
 import it.polimi.ingsw.common.payload_components.groups.setup.CreateMatchSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.JoinMatchSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.SetUsernameSetupPayloadComponent;
+import it.polimi.ingsw.exceptions.UnableToDrawElementException;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.actions.SelectPlayAction;
 
@@ -66,6 +68,13 @@ public class InputReader extends Thread{
                     break;
                 case "select_play":
                     parseSelectPlayCommand(logicalInput);
+                    break;
+                case "start":
+                    parseStartCommand(logicalInput);
+                    break;
+                case "switch":
+                    parseSwitchCommand(logicalInput);
+                    break;
 
                 default:
                     break;
@@ -199,6 +208,33 @@ public class InputReader extends Thread{
 
             serverHandler.sendPayload(new JoinMatchSetupPayloadComponent(matchName));
         }catch(RuntimeException e){
+            System.out.println("Command not valid");
+        }
+    }
+
+    public void parseStartCommand(List<String> logicalInput) {
+        try {
+            CliBuilder.createGameFrames(framework, serverHandler.getClient());
+
+            framework.setActiveFrame("player_1");
+            framework.renderActiveFrame();
+        }catch(RuntimeException | UnableToDrawElementException e){
+            System.out.println("Command not valid " + e.getMessage());
+        }
+    }
+
+    public void parseSwitchCommand(List<String> logicalInput) {
+        try {
+            if(logicalInput.get(1).toLowerCase().equals("global")) {
+                framework.setActiveFrame("global");
+                framework.renderActiveFrame();
+                return;
+            }
+
+            framework.setActiveFrame("player_" + Integer.parseInt(logicalInput.get(1)));
+            framework.renderActiveFrame();
+
+        }catch(RuntimeException | UnableToDrawElementException e){
             System.out.println("Command not valid");
         }
     }
