@@ -45,7 +45,7 @@ public class MarketCliUpdater implements Listener<ClientMarket> {
         for(i = 0; i < market.getColSize(); i++)
             for(j = 0; j < market.getRowSize(); j++) {
                 marbles[i][j] = new MarbleBox("marble_" + (i + 1) + "_" + (j + 1), STARTING_ROW + j * 4 + 3, STARTING_COLUMN + i * 9 + 7,
-                        market.getMarket().getMarbles().get(i * market.getRowSize() + j));
+                        market.getMarket().getMarbles().get(j * market.getColSize() + i));
 
                 groupBox.addElement(marbles[i][j]);
             }
@@ -75,7 +75,7 @@ public class MarketCliUpdater implements Listener<ClientMarket> {
     public void update(ClientMarket market) {
         for(int i = 0; i < market.getColSize(); i++)
             for(int j = 0; j < market.getRowSize(); j++)
-                marbles[i][j].setMarble(market.getMarket().getMarbles().get(i * market.getRowSize() + j));
+                marbles[i][j].setMarble(market.getMarket().getMarbles().get(j * market.getColSize() + i));
 
         odd.setMarble(market.getMarket().getOdd());
     }
