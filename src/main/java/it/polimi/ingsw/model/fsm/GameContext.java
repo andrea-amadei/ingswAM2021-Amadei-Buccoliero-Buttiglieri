@@ -4,6 +4,10 @@ import it.polimi.ingsw.exceptions.CountdownException;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 /**
  * The game context of this game. It contains the model and information about the evolution of the game
  */
@@ -16,10 +20,16 @@ public class GameContext {
     private boolean isHardEndTriggered;
     private int turnsLeft;
 
+    private final String configJson;
+    private final String craftingJson;
+    private final String faithJson;
+    private final String leadersJson;
+
     /**
      * Creates a new game context. Current player is initially null and by default the game is multiplayer
      * @param gameModel the model of the game
      * @throws NullPointerException if gameModel is null
+     * @throws RuntimeException if the hardcoded paths are not valid/cannot be read
      */
     public GameContext(GameModel gameModel){
         if(gameModel == null)
@@ -32,6 +42,17 @@ public class GameContext {
         turnsLeft = -1;
         isSinglePlayer = false;
         isHardEndTriggered = false;
+
+        //TODO: probably we will change these paths and is it ok to throw an exception here?
+        try {
+            configJson = Files.readString(Path.of("src/main/config.json"));
+            craftingJson = Files.readString(Path.of("src/main/crafting.json"));
+            faithJson = Files.readString(Path.of("src/main/faith.json"));
+            leadersJson = Files.readString(Path.of("src/main/leaders.json"));
+        }catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Wrong path to json files/cannot read default json files");
+        }
     }
     /**
      * Creates a new game context specifying if the game is single player or multiplayer. Current player is initially null
@@ -172,5 +193,21 @@ public class GameContext {
      */
     public void setHardEnd(){
         isHardEndTriggered = true;
+    }
+
+    public String getConfigJson() {
+        return configJson;
+    }
+
+    public String getCraftingJson() {
+        return craftingJson;
+    }
+
+    public String getFaithJson() {
+        return faithJson;
+    }
+
+    public String getLeadersJson() {
+        return leadersJson;
     }
 }

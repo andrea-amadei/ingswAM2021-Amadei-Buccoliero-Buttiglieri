@@ -1,9 +1,13 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.common.ActionQueue;
 import it.polimi.ingsw.common.GameConfig;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.MarbleColor;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.fsm.GameContext;
+import it.polimi.ingsw.model.fsm.StateMachine;
+import it.polimi.ingsw.model.fsm.states.SetupState;
 import it.polimi.ingsw.model.holder.FaithHolder;
 import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.model.market.Marble;
@@ -157,5 +161,16 @@ public class ServerBuilder {
 
         return new GameModel(players, market, shop, faithPath, leaderCards);
 
+    }
+
+    public static StateMachine buildStateMachine(String config, String crafting, String faith, String leaders, List<String> usernames, Random seededRandom, boolean isSinglePlayer, ActionQueue actionQueue) throws ParserException {
+        GameModel model = buildModel(config, crafting, faith, leaders, usernames, isSinglePlayer, seededRandom);
+
+        GameContext gameContext = new GameContext(model, isSinglePlayer);
+
+        StateMachine stateMachine = new StateMachine(actionQueue, gameContext, new SetupState(gameContext));
+        model.getFaithPath().setListener(stateMachine);
+
+        return stateMachine;
     }
 }

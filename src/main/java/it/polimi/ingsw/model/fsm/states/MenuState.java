@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.fsm.states;
 
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
@@ -9,10 +10,7 @@ import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
 import it.polimi.ingsw.utils.PayloadFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class MenuState extends State {
     /**
@@ -189,7 +187,7 @@ public class MenuState extends State {
     public List<Message> onEntry() {
         return Collections.singletonList(
                 new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                        Collections.singletonList(PayloadFactory.possibleActions(
+                        Arrays.asList(PayloadFactory.possibleActions(
                                 new HashSet<>(){{
                                     add(PossibleActions.ACTIVATE_LEADER);
                                     add(PossibleActions.DISCARD_LEADER);
@@ -197,7 +195,7 @@ public class MenuState extends State {
                                     add(PossibleActions.END_TURN);
                                     add(PossibleActions.SELECT_PLAY);
                                 }}
-                        )))
+                        ), new InfoPayloadComponent("You are in the menu state!!!")))
         );
     }
 

@@ -67,6 +67,7 @@ public class Controller extends Thread{
                 System.out.println("payloads for: " + entry.getKey());
                 for (PayloadComponent component : entry.getValue()) {
                     System.out.println(JSONSerializer.toJson(component));
+                    clientHub.getClientByName(entry.getKey()).getSecond().sendPayload(component);
                 }
             }
         }
@@ -75,6 +76,8 @@ public class Controller extends Thread{
     @SuppressWarnings("InfiniteLoopStatement")
     @Override
     public void run(){
+        //send the initial messages to the clients
+        sendMessages(stateMachine.getCurrentState().onEntry());
         while(true) {
             List<Message> messages = new ArrayList<>();
             try {

@@ -17,6 +17,9 @@ public class UpdateAdapter implements JsonDeserializer<Update> {
         switch(serializedType){
             case "set_username":
                 return jsonDeserializationContext.deserialize(jsonElement, SetUsernameUpdate.class);
+            case "set_game_name":
+                return jsonDeserializationContext.deserialize(jsonElement, SetGameNameUpdate.class);
+            case "info":
             case "text":
                 return jsonDeserializationContext.deserialize(jsonElement, AddServerMessageUpdate.class);
             case "add_bought_card":
@@ -53,12 +56,16 @@ public class UpdateAdapter implements JsonDeserializer<Update> {
                 return jsonDeserializationContext.deserialize(jsonElement, ChangeShopUpdate.class);
             case "discard_leader_card":
                 return jsonDeserializationContext.deserialize(jsonElement, DiscardLeaderCardUpdate.class);
+            case "possible_actions":
+                return jsonDeserializationContext.deserialize(jsonElement, ChangePossibleActionsUpdate.class);
             case "selected_crafting":
                 return jsonDeserializationContext.deserialize(jsonElement, SelectedCraftingUpdate.class);
             case "selected_resource":
                 return jsonDeserializationContext.deserialize(jsonElement, SelectedResourceUpdate.class);
             case "selected_shop_card":
                 return jsonDeserializationContext.deserialize(jsonElement, SelectedShopCardUpdate.class);
+            case "set_initial_configuration":
+                return jsonDeserializationContext.deserialize(jsonElement, InitialConfigurationUpdate.class);
             case "unselect":
                 return jsonDeserializationContext.deserialize(jsonElement, UnselectUpdate.class);
             default:

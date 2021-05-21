@@ -35,6 +35,12 @@ public class ClientModel implements Observable<ClientModel> {
         listeners = new ArrayList<>();
     }
 
+    public ClientModel(OutputHandler outputHandler){
+        this();
+        this.outputHandler = outputHandler;
+
+    }
+
     public void setLeaderCards(List<RawLeaderCard> leaderCards) {
         this.leaderCards = leaderCards;
     }
