@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.cli.framework.CliFramework;
 import it.polimi.ingsw.client.model.ClientModel;
 import it.polimi.ingsw.common.payload_components.groups.actions.*;
 import it.polimi.ingsw.common.payload_components.groups.setup.CreateMatchSetupPayloadComponent;
@@ -13,15 +14,18 @@ import java.util.*;
 public class InputReader extends Thread{
 
     private String inputString;
-    private final CommandExecutor commandExecutor;
     private final ServerHandler serverHandler;
     private final Scanner scanner;
+    private final CliFramework framework;
 
-    public InputReader(CommandExecutor commandExecutor, ServerHandler serverHandler){
-        inputString = null;
-        this.commandExecutor = commandExecutor;
-        scanner = new Scanner(System.in);
+    public InputReader(ServerHandler serverHandler, CliFramework framework) {
+        if(serverHandler == null || framework == null)
+            throw new NullPointerException();
+
         this.serverHandler = serverHandler;
+        this.framework = framework;
+
+        scanner = new Scanner(System.in);
     }
 
     @Override

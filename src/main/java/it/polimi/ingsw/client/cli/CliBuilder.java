@@ -7,8 +7,12 @@ import it.polimi.ingsw.client.model.ClientModel;
 import it.polimi.ingsw.client.model.ClientPlayer;
 
 public final class CliBuilder {
-    public void createStartFrame(CliFramework framework) {
-        // TODO
+    public static void createStartFrame(CliFramework framework, ClientModel model) {
+        Frame frame = new Frame("start");
+        new PersonalDataCliUpdater(model.getPersonalData(), frame);
+
+        framework.addFrame(frame);
+        framework.setActiveFrame("start");
     }
 
     public static void createGameFrames(CliFramework framework, ClientModel model) {
