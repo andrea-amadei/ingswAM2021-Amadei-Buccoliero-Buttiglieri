@@ -74,4 +74,8 @@ public class ServerHandler extends Thread{
     public String getUsername(){
         return client.getPersonalData().getUsername();
     }
+
+    public ClientModel getClient() {
+        return client;
+    }
 }
