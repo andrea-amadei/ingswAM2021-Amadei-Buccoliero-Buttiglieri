@@ -12,6 +12,6 @@ class GameConfigTest {
     @Test
     public void correctlyDeserialize() throws IOException {
         GameConfig config = JSONParser.getGameConfig(Path.of("src/main/config.json"));
-        assertEquals("BottomShelf", config.getBaseCupboardShelfNames().get(0));
+        assertEquals("BottomShelf", config.getBaseCupboardShelfNames().get(2));
     }
 }
