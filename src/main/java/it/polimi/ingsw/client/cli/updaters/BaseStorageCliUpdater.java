@@ -62,17 +62,10 @@ public class BaseStorageCliUpdater implements Listener<ClientBaseStorage> {
 
     @Override
     public void update(ClientBaseStorage clientBaseStorage) {
-        if(clientBaseStorage.getStorage().getResources().containsKey("gold"))
-            gold.setAmount(clientBaseStorage.getStorage().getResources().get("gold"));
-
-        if(clientBaseStorage.getStorage().getResources().containsKey("stone"))
-            stone.setAmount(clientBaseStorage.getStorage().getResources().get("stone"));
-
-        if(clientBaseStorage.getStorage().getResources().containsKey("servant"))
-            servant.setAmount(clientBaseStorage.getStorage().getResources().get("servant"));
-
-        if(clientBaseStorage.getStorage().getResources().containsKey("shield"))
-            shield.setAmount(clientBaseStorage.getStorage().getResources().get("shield"));
+        gold.setAmount(clientBaseStorage.getStorage().getResources().getOrDefault("gold", 0));
+        stone.setAmount(clientBaseStorage.getStorage().getResources().getOrDefault("stone", 0));
+        servant.setAmount(clientBaseStorage.getStorage().getResources().getOrDefault("servant", 0));
+        shield.setAmount(clientBaseStorage.getStorage().getResources().getOrDefault("shield", 0));
 
         if(clientBaseStorage.getSelectedResources().containsKey("gold") && clientBaseStorage.getSelectedResources().get("gold") > 0) {
             txt_gold.setText("Sel: " + clientBaseStorage.getSelectedResources().get("gold"));
