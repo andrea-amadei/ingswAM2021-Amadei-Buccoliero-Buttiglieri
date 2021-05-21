@@ -17,9 +17,9 @@
   "third_player_amount_of_resources_on_start" : 1,
   "fourth_player_amount_of_resources_on_start" : 2,
 
-  "base_cupboard_shelf_names" : ["BottomShelf", "MiddleShelf", "TopShelf"],
+  "base_cupboard_shelf_names" : ["TopShelf", "MiddleShelf", "BottomShelf"],
   "base_cupboard_shelf_types" : ["any", "any", "any"],
-  "base_cupboard_shelf_sizes" : [3, 2, 1],
+  "base_cupboard_shelf_sizes" : [1, 2, 3],
 
   "hand_id" : "Hand",
   "basket_id" : "MarketBasket",
