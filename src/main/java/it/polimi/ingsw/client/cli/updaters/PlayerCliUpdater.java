@@ -26,12 +26,19 @@ public class PlayerCliUpdater implements Listener<ClientPlayer> {
     private GroupBox cupboardBox, pointsBox;
     private TextBox points;
 
+    private List<ShelfCliUpdater> shelfUpdaters;
+    int nBase, nLeaders;
+
     public PlayerCliUpdater(ClientPlayer player, Frame frame) {
         if(frame == null || player == null)
             throw new NullPointerException();
 
         this.frame = frame;
         this.player = player;
+
+        nBase = 0;
+        nLeaders = 0;
+        shelfUpdaters = new ArrayList<>();
 
         player.addListener(this);
 
@@ -50,172 +57,25 @@ public class PlayerCliUpdater implements Listener<ClientPlayer> {
                 "Points", ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK,
                 Collections.singletonList(points));
 
+        cupboardBox.setZIndex(-1);
+
         frame.addElement(cupboardBox);
         frame.addElement(pointsBox);
     }
 
-    private ResourceBox getElem(boolean leader, int id, int n, int row, int column, ClientShelf shelf) {
-        String resource;
-        boolean faded;
-        List<String> resources = List.copyOf(shelf.getStorage().getResources().keySet());
-        String trueResource;
-        String baseName;
-
-        if(resources.size() != 0)
-            trueResource = resources.get(0);
-        else
-            trueResource = "null";
-
-        if(!shelf.getStorage().getResources().containsKey(trueResource) || shelf.getStorage().getResources().get(trueResource) <= n - 1) {
-            resource = shelf.getAcceptedType();
-            faded = true;
-        }
-        else {
-            resource = trueResource;
-            faded = false;
-        }
-
-        if(leader)
-            baseName = "elem_leader_";
-        else
-            baseName = "elem_base_";
-
-        ResourceBox elem = new ResourceBox(
-                baseName + (id + 1) + "_" + n,
-                row,
-                column,
-                resource
-        );
-
-        elem.setFaded(faded);
-
-        return elem;
-    }
-
-    private VisibleElement getDivider(boolean leader, int id, int n, int row, int column) {
-        String baseName;
-
-        if(leader)
-            baseName = "divider_base_";
-        else
-            baseName = "divider_leader_";
-
-        return new TextBox(
-                baseName + (id + 1) + "_" + n,
-                row,
-                column,
-                "──",
-                ForegroundColor.WHITE_BRIGHT,
-                BackgroundColor.BLACK
-        );
-    }
-
     @Override
     public void update(ClientPlayer player) {
-        for(String elem : cupboardBox.getAllElementNames())
-            cupboardBox.removeElement(elem);
+        int i;
 
-        List<ClientShelf> sortedList = player.getCupboard()
-                .stream()
-                .sorted(Comparator.comparing(ClientShelf::getSize))
-                .collect(Collectors.toList());
+        for(i = nBase; i < player.getCupboard().size(); i++)
+            shelfUpdaters.add(new ShelfCliUpdater(player.getCupboard().get(i), frame, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN));
 
-        for(int i = 0; i < sortedList.size(); i++) {
-            switch (sortedList.get(i).getSize()) {
-                case 1:
-                    cupboardBox.addElement(getElem(false, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 15, sortedList.get(i)));
+        nBase = i;
 
-                    break;
+        for(i = nLeaders; i < player.getLeaderShelves().size(); i++)
+            shelfUpdaters.add(new ShelfCliUpdater(player.getLeaderShelves().get(i), frame, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 30));
 
-                case 2:
-                    cupboardBox.addElement(getElem(false, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 13, sortedList.get(i)));
-                    cupboardBox.addElement(getElem(false, i, 2, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 17, sortedList.get(i)));
-
-                    cupboardBox.addElement(getDivider(false, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 15));
-
-                    break;
-
-                case 3:
-                    cupboardBox.addElement(getElem(false, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 11, sortedList.get(i)));
-                    cupboardBox.addElement(getElem(false, i, 2, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 15, sortedList.get(i)));
-                    cupboardBox.addElement(getElem(false, i, 3, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 19, sortedList.get(i)));
-
-                    cupboardBox.addElement(getDivider(false, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 13));
-                    cupboardBox.addElement(getDivider(false, i, 2, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 17));
-
-                    break;
-            }
-
-            cupboardBox.addElement(new FixedTextBox(
-                    "name_base_" + (i + 1),
-                    CUPBOARD_STARTING_ROW + (i * 2) + 1,
-                    CUPBOARD_STARTING_COLUMN + 1,
-                    8,
-                    sortedList.get(i).getStorage().getId(),
-                    ForegroundColor.WHITE_BRIGHT,
-                    BackgroundColor.BLACK
-            ));
-
-            cupboardBox.addElement(new TextBox(
-                    "selected_base_" + (i + 1),
-                    CUPBOARD_STARTING_ROW + (i * 2) + 1,
-                    CUPBOARD_STARTING_COLUMN + 22,
-                    " ",
-                    ForegroundColor.WHITE_BRIGHT,
-                    BackgroundColor.BLACK
-            ));
-        }
-
-        sortedList = player.getLeaderShelves()
-                .stream()
-                .sorted(Comparator.comparing(ClientShelf::getSize))
-                .collect(Collectors.toList());
-
-        for(int i = 0; i < sortedList.size(); i++) {
-            switch (sortedList.get(i).getSize()) {
-                case 1:
-                    cupboardBox.addElement(getElem(true, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 45, sortedList.get(i)));
-
-                    break;
-
-                case 2:
-                    cupboardBox.addElement(getElem(true, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 43, sortedList.get(i)));
-                    cupboardBox.addElement(getElem(true, i, 2, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 47, sortedList.get(i)));
-
-                    cupboardBox.addElement(getDivider(true, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 45));
-
-                    break;
-
-                case 3:
-                    cupboardBox.addElement(getElem(true, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 41, sortedList.get(i)));
-                    cupboardBox.addElement(getElem(true, i, 2, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 45, sortedList.get(i)));
-                    cupboardBox.addElement(getElem(true, i, 3, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 49, sortedList.get(i)));
-
-                    cupboardBox.addElement(getDivider(true, i, 1, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 43));
-                    cupboardBox.addElement(getDivider(true, i, 2, CUPBOARD_STARTING_ROW + (i * 2) + 1, CUPBOARD_STARTING_COLUMN + 47));
-
-                    break;
-            }
-
-            cupboardBox.addElement(new FixedTextBox(
-                    "name_leader_" + (i + 1),
-                    CUPBOARD_STARTING_ROW + (i * 2) + 1,
-                    CUPBOARD_STARTING_COLUMN + 31,
-                    8,
-                    sortedList.get(i).getStorage().getId(),
-                    ForegroundColor.WHITE_BRIGHT,
-                    BackgroundColor.BLACK
-            ));
-
-            cupboardBox.addElement(new TextBox(
-                    "selected_leader_" + (i + 1),
-                    CUPBOARD_STARTING_ROW + (i * 2) + 1,
-                    CUPBOARD_STARTING_COLUMN + 52,
-                    " ",
-                    ForegroundColor.WHITE_BRIGHT,
-                    BackgroundColor.BLACK
-            ));
-        }
+        nLeaders = i;
 
         if(player.getVictoryPoints() < 10)
             points.setText(" " + player.getVictoryPoints());
