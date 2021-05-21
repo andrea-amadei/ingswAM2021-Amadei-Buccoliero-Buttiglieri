@@ -61,6 +61,8 @@ public class UpdateAdapter implements JsonDeserializer<Update> {
                 return jsonDeserializationContext.deserialize(jsonElement, SelectedResourceUpdate.class);
             case "selected_shop_card":
                 return jsonDeserializationContext.deserialize(jsonElement, SelectedShopCardUpdate.class);
+            case "set_initial_configuration":
+                return jsonDeserializationContext.deserialize(jsonElement, InitialConfigurationUpdate.class);
             case "unselect":
                 return jsonDeserializationContext.deserialize(jsonElement, UnselectUpdate.class);
             default:

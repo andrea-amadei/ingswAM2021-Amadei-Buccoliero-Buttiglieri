@@ -135,5 +135,21 @@ public class Shop {
         return grid.get((levelAxisSize - level)*FlagColor.values().length + color.ordinal()).removeFirst();
     }
 
+    /**
+     * Returns the number of rows in the shop
+     * @return the number of rows in the shop
+     */
+    public int getRowSize(){
+        return levelAxisSize;
+    }
+
+    /**
+     * Returns the number of columns in the shop
+     * @return the number of columns in the shop
+     */
+    public int getColumnSize(){
+        return FlagColor.values().length;
+    }
+
 
 }
