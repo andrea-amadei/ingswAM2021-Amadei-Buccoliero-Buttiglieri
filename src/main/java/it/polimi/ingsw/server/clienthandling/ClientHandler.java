@@ -1,11 +1,13 @@
 package it.polimi.ingsw.server.clienthandling;
 
+import it.polimi.ingsw.common.ActionQueue;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.SetGameNameSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.SetUsernameSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.TextSetupPayloadComponent;
 import it.polimi.ingsw.exceptions.DuplicateUsernameException;
 import it.polimi.ingsw.exceptions.GameNotInLobbyException;
+import it.polimi.ingsw.model.actions.Action;
 import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.server.Logger;
@@ -26,6 +28,7 @@ public class ClientHandler implements Runnable{
     private BufferedReader in;
 
     private String username;
+    private Match currentMatch;
 
     private final MatchesManager matchesManager;
 
@@ -62,6 +65,9 @@ public class ClientHandler implements Runnable{
                 if(clientNetworkObject instanceof SetupAction){
                     ((SetupAction)clientNetworkObject).checkFormat();
                     ((SetupAction)clientNetworkObject).execute(this);
+                }else if(clientNetworkObject instanceof Action){
+                    ((Action)clientNetworkObject).checkFormat();
+                    currentMatch.getActionQueue().addAction((Action)clientNetworkObject, ActionQueue.Priority.CLIENT_ACTION.ordinal());
                 }
 
             } catch (IOException e) {
@@ -119,6 +125,7 @@ public class ClientHandler implements Runnable{
             sendPayload(new TextSetupPayloadComponent(e.getMessage()));
         }
 
+        this.currentMatch = match;
         sendPayload(new SetGameNameSetupPayloadComponent(matchName));
     }
 
@@ -143,7 +150,7 @@ public class ClientHandler implements Runnable{
         } catch (DuplicateUsernameException | GameNotInLobbyException e) {
             e.printStackTrace();
         }
-
+        this.currentMatch = match;
         sendPayload(new SetGameNameSetupPayloadComponent(matchName));
 
 

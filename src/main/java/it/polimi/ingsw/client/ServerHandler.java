@@ -66,7 +66,7 @@ public class ServerHandler extends Thread{
         out.println(JSONSerializer.toJson(payloadComponent));
     }
 
-    public void sendSetUsernameCommand(String username){
-        sendPayload(new SetUsernameSetupPayloadComponent(username));
+    public String getUsername(){
+        return client.getPersonalData().getUsername();
     }
 }

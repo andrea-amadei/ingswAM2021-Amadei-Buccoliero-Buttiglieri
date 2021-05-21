@@ -1,8 +1,11 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.common.payload_components.groups.actions.SelectPlayActionPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.CreateMatchSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.JoinMatchSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.SetUsernameSetupPayloadComponent;
+import it.polimi.ingsw.model.actions.SelectPlayAction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,10 +41,24 @@ public class InputReader extends Thread{
                 case "join_match":
                     parseJoinMatchCommand(logicalInput);
                     break;
+                case "select_play":
+                    parseSelectPlayCommand(logicalInput);
+
                 default:
                     break;
             }
 
+        }
+    }
+
+    private void parseSelectPlayCommand(List<String> logicalInput) {
+        SelectPlayAction.Play play;
+        String playString = logicalInput.get(1).toUpperCase();
+        try {
+            play = SelectPlayAction.Play.valueOf(playString);
+            serverHandler.sendPayload(new SelectPlayActionPayloadComponent(serverHandler.getUsername(), play));
+        }catch(IllegalArgumentException e){
+            System.out.println("There is no \"" + playString + "\" option");
         }
     }
 
