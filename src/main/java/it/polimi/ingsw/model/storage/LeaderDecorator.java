@@ -2,6 +2,8 @@ package it.polimi.ingsw.model.storage;
 
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
+import it.polimi.ingsw.gamematerials.ResourceType;
+import it.polimi.ingsw.server.Logger;
 
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -82,9 +84,59 @@ public class LeaderDecorator implements Cupboard{
         try{
             decoratedCupboard.moveBetweenShelves(from, to, amount);
         }catch(NoSuchElementException e){
-            if(from.equals(leaderShelf) && decoratedCupboard.contains(to))
-                throw new IllegalCupboardException("Resources cannot be moved from leader shelf to another shelf");
-            throw new NoSuchElementException();
+            //It means that resources must be removed from this leader shelf and must be added to the underlying cupboard
+            if(from.equals(leaderShelf) && decoratedCupboard.contains(to)) {
+                ResourceSingle resourceTypeToMove = from.getCurrentType();
+
+                //Try to remove resources from the leader shelf. If not possible, IllegalCupboardException is thrown
+                try{
+                    leaderShelf.removeResources(amount);
+                } catch (IllegalResourceTransferException illegalResourceTransferException) {
+                    throw new IllegalCupboardException("Resources cannot be moved from the leader shelf");
+                }
+
+                //try to add resources to the underlying cupboard. If not possible, resources are inserted again in the
+                //leader shelf and IllegalCupboardException is thrown
+                try {
+                    decoratedCupboard.addResource(to, resourceTypeToMove, amount);
+                } catch (IllegalCupboardException e1) {
+                    try {
+                        leaderShelf.addResources(resourceTypeToMove, amount);
+                    } catch (IllegalResourceTransferException resourceTransferException) {
+                        Logger.log("Logic failed when moving resources from a leader shelf to another shelf that could not" +
+                                "receive those resources", Logger.Severity.ERROR);
+                        throw new IllegalCupboardException("Logic failed when moving resources from a leader shelf to another shelf that could not" +
+                                "receive those resources");
+                    }
+                    throw e1;
+                }
+            //It means that resources must be added to this leader shelf and must be removed from the underlying cupboard
+            }else if(to.equals(leaderShelf) && decoratedCupboard.contains(from)){
+                ResourceSingle resourceTypeToMove = decoratedCupboard.getShelfById(from.getId()).getCurrentType();
+
+                //Try to remove resources from the cupboard. If it is impossible to remove those resources,
+                //IllegalCupboardException is propagated
+                decoratedCupboard.removeResource(from, amount);
+
+                //Try to add resources to this leaderShelf. If it is not possible, we restore the shelf from which
+                //resource have been taken and throw an IllegalCupboardException
+                try{
+                    leaderShelf.addResources(resourceTypeToMove, amount);
+                } catch (IllegalResourceTransferException e1) {
+                    try {
+                        decoratedCupboard.addResource(from, resourceTypeToMove, amount);
+                    }catch(IllegalCupboardException e2){
+                        Logger.log("Logic failed when moving resources from a shelf to a leader shelf that could not" +
+                                "receive those resources", Logger.Severity.ERROR);
+                        throw new IllegalCupboardException("Logic failed when moving resources from a shelf to a leader shelf that could not" +
+                                "receive those resources");
+
+                    }
+                    throw new IllegalCupboardException(e1.getMessage());
+                }
+            }else {
+                throw new NoSuchElementException();
+            }
         }
     }
 

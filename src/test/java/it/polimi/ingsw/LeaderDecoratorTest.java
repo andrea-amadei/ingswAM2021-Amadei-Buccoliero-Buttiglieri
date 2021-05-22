@@ -188,6 +188,58 @@ public class LeaderDecoratorTest {
     }
 
     @Test
+    public void validAddResourcesFromLeaderShelfToAnotherLeaderShelf(){
+        Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
+        Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
+        Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
+
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+        ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
+
+        Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
+
+        Shelf leaderShelf1 = new Shelf("LeaderShelf1", stone, 2);
+        Shelf leaderShelf2 = new Shelf("LeaderShelf2", stone, 2);
+
+        Cupboard c1;
+        c1 = new LeaderDecorator(leaderShelf1, c);
+        c1 = new LeaderDecorator(leaderShelf2, c1);
+        Cupboard c2 = c1;
+
+        assertDoesNotThrow(() -> c2.addResource(leaderShelf1, stone, 1));
+        assertDoesNotThrow(()-> c2.moveBetweenShelves(leaderShelf1, leaderShelf2, 1));
+        assertEquals(1, leaderShelf2.getAllResources().get(stone));
+        assertNull(leaderShelf1.getAllResources().get(stone));
+
+    }
+
+    @Test
+    public void invalidAddResourcesFromLeaderShelfToAnotherLeaderShelf(){
+        Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
+        Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
+        Shelf top = new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1 );
+
+        ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
+        ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
+
+        Cupboard c = new BaseCupboard(Arrays.asList(bottom, middle, top));
+
+        Shelf leaderShelf1 = new Shelf("LeaderShelf1", stone, 2);
+        Shelf leaderShelf2 = new Shelf("LeaderShelf2", servant, 2);
+
+        Cupboard c1;
+        c1 = new LeaderDecorator(leaderShelf1, c);
+        c1 = new LeaderDecorator(leaderShelf2, c1);
+        Cupboard c2 = c1;
+
+        assertDoesNotThrow(() -> c2.addResource(leaderShelf1, stone, 1));
+        assertThrows(IllegalCupboardException.class, ()-> c2.moveBetweenShelves(leaderShelf1, leaderShelf2, 1));
+        assertEquals(1, leaderShelf1.getAllResources().get(stone));
+        assertNull(leaderShelf2.getAllResources().get(stone));
+    }
+
+
+    @Test
     public void invalidParametersMoveBetweenShelves(){
         Shelf bottom = new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3);
         Shelf middle = new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2 );
@@ -213,7 +265,7 @@ public class LeaderDecoratorTest {
 
         assertDoesNotThrow(()->c2.addResource(leaderShelf1, stone, 1));
         assertThrows(NullPointerException.class, () -> c2.moveBetweenShelves(null, bottom, 2));
-        assertThrows(IllegalCupboardException.class, () -> c2.moveBetweenShelves(leaderShelf1, bottom, 1));
+        assertDoesNotThrow(() -> c2.moveBetweenShelves(leaderShelf1, bottom, 1));
         assertThrows(NoSuchElementException.class, () -> c2.moveBetweenShelves(new Shelf("lol", gold, 3), bottom, 1));
     }
 
