@@ -7,7 +7,7 @@ import it.polimi.ingsw.common.payload_components.PayloadComponent;
 
 import java.util.Set;
 
-@SerializedGroup("possible_actions")
+@SerializedGroup("update")
 @SerializedType("possible_actions")
 public class PossibleActionsPayloadComponent implements PayloadComponent {
 

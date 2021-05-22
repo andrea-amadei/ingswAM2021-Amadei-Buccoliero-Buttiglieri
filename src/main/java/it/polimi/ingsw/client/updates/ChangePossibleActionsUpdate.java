@@ -17,7 +17,7 @@ public class ChangePossibleActionsUpdate implements Update{
     }
     @Override
     public void apply(ClientModel client) {
-        //TODO: implement possible action apply
+        client.getPersonalData().setPossibleActions(possibleActions);
     }
 
     @Override
