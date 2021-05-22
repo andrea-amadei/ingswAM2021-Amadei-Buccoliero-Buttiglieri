@@ -12,8 +12,8 @@ import it.polimi.ingsw.utils.ForegroundColor;
 import java.util.Map;
 
 public class ShopCliUpdater implements Listener<ClientShop> {
-    public static final int STARTING_ROW = 17;
-    public static final int STARTING_COLUMN = 2;
+    public static final int STARTING_ROW = 2;
+    public static final int STARTING_COLUMN = 91;
 
     private final Frame frame;
     private ClientShop clientShop;
@@ -40,25 +40,9 @@ public class ShopCliUpdater implements Listener<ClientShop> {
 
         for(int i = 0; i < clientShop.getRowSize(); i++)
             for(int j = 0; j < clientShop.getColSize(); j++) {
-                switch (i) {
-                    case 0:
-                        cards[i][j] = new GroupBox("card_" + (i + 1) + "_" + (j + 1), STARTING_ROW, STARTING_COLUMN + j * 22,
-                                STARTING_ROW + 14, STARTING_COLUMN + j * 22 + 20, "Card " + (i + 1) + " - " + (j + 1),
-                                ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK);
-                        break;
-
-                    case 1:
-                        cards[i][j] = new GroupBox("card_" + (i + 1) + "_" + (j + 1), STARTING_ROW, STARTING_COLUMN + j * 22 + 88,
-                                STARTING_ROW + 14, STARTING_COLUMN + j * 22 + 108, "Card " + (i + 1) + " - " + (j + 1),
-                                ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK);
-                        break;
-
-                    case 2:
-                        cards[i][j] = new GroupBox("card_" + (i + 1) + "_" + (j + 1), STARTING_ROW + 15, STARTING_COLUMN + j * 22 + 44,
-                                STARTING_ROW + 29, STARTING_COLUMN + j * 22 + 64, "Card " + (i + 1) + " - " + (j + 1),
-                                ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK);
-                        break;
-                }
+                cards[i][j] = new GroupBox("card_" + (i + 1) + "_" + (j + 1), STARTING_ROW + 15 * i, STARTING_COLUMN + j * 22,
+                        STARTING_ROW + 15 * i + 14, STARTING_COLUMN + j * 22 + 20, "Card " + (i + 1) + " - " + (j + 1),
+                        ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK);
 
                 group.addElement(cards[i][j]);
             }
@@ -77,6 +61,8 @@ public class ShopCliUpdater implements Listener<ClientShop> {
 
                 for(VisibleElement elem : cards[i][j].getAllElements())
                     cards[i][j].removeElement(elem.getName());
+
+                cards[i][j].setDoubleBorder(true);
 
                 if(clientShop.getGrid()[i][j] == null) {
                     cards[i][j].addElement(

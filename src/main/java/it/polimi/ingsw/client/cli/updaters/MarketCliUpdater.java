@@ -8,8 +8,8 @@ import it.polimi.ingsw.utils.BackgroundColor;
 import it.polimi.ingsw.utils.ForegroundColor;
 
 public class MarketCliUpdater implements Listener<ClientMarket> {
-    public static final int STARTING_ROW = 1;
-    public static final int STARTING_COLUMN = 46;
+    public static final int STARTING_ROW = 17;
+    public static final int STARTING_COLUMN = 2;
 
     private final Frame frame;
     private ClientMarket market;
@@ -18,6 +18,8 @@ public class MarketCliUpdater implements Listener<ClientMarket> {
     private MarbleBox[][] marbles;
     private MarbleBox odd;
     private TextBox[] labels;
+    private TextBox label_odd;
+    private TextBox[] arrows;
 
     public MarketCliUpdater(ClientMarket market, Frame frame) {
         if(frame == null || market == null)
@@ -35,12 +37,15 @@ public class MarketCliUpdater implements Listener<ClientMarket> {
     public void setup(ClientMarket market) {
         int i, j;
 
-        groupBox = new GroupBox("market", STARTING_ROW, STARTING_COLUMN, STARTING_ROW + market.getRowSize() * 4 + 2,
-                STARTING_COLUMN + market.getColSize() * 7 + 31, "Market",
+        groupBox = new GroupBox("market", STARTING_ROW, STARTING_COLUMN, STARTING_ROW + market.getRowSize() * 4 + 2 + 10,
+                STARTING_COLUMN + market.getColSize() * 7 + 31 + 6, "Market",
                 ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK);
+
+        groupBox.setDoubleBorder(true);
 
         marbles = new MarbleBox[market.getColSize()][market.getRowSize()];
         labels = new TextBox[market.getColSize() + market.getRowSize()];
+        arrows = new TextBox[market.getColSize() + market.getRowSize()];
 
         for(i = 0; i < market.getColSize(); i++)
             for(j = 0; j < market.getRowSize(); j++) {
@@ -66,6 +71,24 @@ public class MarketCliUpdater implements Listener<ClientMarket> {
                     String.valueOf(i + 1), ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK);
 
             groupBox.addElement(labels[market.getRowSize() + i]);
+        }
+
+        label_odd = new TextBox("label_odd", STARTING_ROW + 7, STARTING_COLUMN + market.getRowSize() * 9 + 27,
+                "Odd", ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK);
+        groupBox.addElement(label_odd);
+
+        for(i = 0; i < market.getRowSize(); i++) {
+            arrows[i] = new TextBox("arrow_col_" + (i + 1), STARTING_ROW + i * 4 + 4, STARTING_COLUMN + market.getRowSize() * 9 + 16,
+                    "<", ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK);
+
+            groupBox.addElement(arrows[i]);
+        }
+
+        for(i = 0; i < market.getColSize(); i++) {
+            arrows[market.getRowSize() + i] = new TextBox("arrow_bottom_row_" + (i + 1), STARTING_ROW + market.getRowSize() * 4 + 3, STARTING_COLUMN + i * 9 + 10,
+                    "^", ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK);
+
+            groupBox.addElement(arrows[market.getRowSize() + i]);
         }
 
         frame.addElement(groupBox);
