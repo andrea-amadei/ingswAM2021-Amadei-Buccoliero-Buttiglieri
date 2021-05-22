@@ -8,7 +8,7 @@ import it.polimi.ingsw.utils.BackgroundColor;
 import it.polimi.ingsw.utils.ForegroundColor;
 
 public class MarketCliUpdater implements Listener<ClientMarket> {
-    public static final int STARTING_ROW = 17;
+    public static final int STARTING_ROW = 16;
     public static final int STARTING_COLUMN = 2;
 
     private final Frame frame;

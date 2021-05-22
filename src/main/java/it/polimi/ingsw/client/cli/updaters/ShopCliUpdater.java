@@ -12,7 +12,7 @@ import it.polimi.ingsw.utils.ForegroundColor;
 import java.util.Map;
 
 public class ShopCliUpdater implements Listener<ClientShop> {
-    public static final int STARTING_ROW = 2;
+    public static final int STARTING_ROW = 1;
     public static final int STARTING_COLUMN = 91;
 
     private final Frame frame;
