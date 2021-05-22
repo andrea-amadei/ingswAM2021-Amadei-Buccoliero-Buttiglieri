@@ -38,12 +38,15 @@ public final class CliBuilder {
 
             new PlayerCliUpdater(player, frame);
 
+            new ModelCliUpdater(model, frame, model.getPlayers().get(i).getUsername());
+
             framework.addFrame(frame);
         }
 
         frame = new Frame("global");
         new MarketCliUpdater(model.getMarket(), frame);
         new ShopCliUpdater(model.getShop(), frame);
+        new ModelCliUpdater(model, frame, null);
         framework.addFrame(frame);
     }
 }
