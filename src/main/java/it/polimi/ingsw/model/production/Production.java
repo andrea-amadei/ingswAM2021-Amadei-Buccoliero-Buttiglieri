@@ -312,15 +312,15 @@ public class Production {
 
         List<PayloadComponent> payload = new ArrayList<>();
         for(Crafting i : baseCrafting)
-            if(i.readyToCraft())
+            if(i != null && i.readyToCraft())
                 payload.addAll(i.activateCrafting(player, fp));
 
         for(Crafting i : upgradableCrafting)
-            if(i.readyToCraft())
+            if(i!= null && i.readyToCraft())
                 payload.addAll(i.activateCrafting(player, fp));
 
         for(Crafting i : leaderCrafting)
-            if(i.readyToCraft())
+            if(i != null && i.readyToCraft())
                 payload.addAll(i.activateCrafting(player, fp));
 
         return payload;

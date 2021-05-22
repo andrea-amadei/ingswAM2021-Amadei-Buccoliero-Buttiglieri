@@ -157,7 +157,7 @@ public class CraftingResourceSelectionState extends State {
             else
                 single.put((ResourceSingle) i, selectedCrafting.getInput().get(i));
 
-        //creating a limited storage to check if the cost of the card is correct
+        //creating a limited storage to check if the cost of the crafting is correct
         LimitedStorage checkStorage = new LimitedStorage(single, group, "check");
 
         //try to get all selected resources and see if the cost is correct
@@ -212,7 +212,7 @@ public class CraftingResourceSelectionState extends State {
         }
 
         //TODO: we may want to send a message to inform the client that the selected crafting is ready to craft
-        selectedCrafting.readyToCraft();
+        selectedCrafting.setAllResourcesTransferred(true);
 
         production.resetCraftingSelection();
         payload.add(PayloadFactory.unselect(getGameContext().getCurrentPlayer().getUsername(), "production"));

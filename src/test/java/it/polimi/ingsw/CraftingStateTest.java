@@ -161,16 +161,18 @@ public class CraftingStateTest {
 
     }
 
-    //TODO: finish test after the mechanism is ready
     @Test
     public void successfulActivateProduction(){
+
+        //if the player is here, it means they already moved
+        gameContext.setPlayerMoved(true);
         //crafting1 is set as selected, as well as all required resources
-        /*
-        assertDoesNotThrow(()-> gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getProduction()
-                .selectCrafting(Production.CraftingType.UPGRADABLE, 0));
+
         assertDoesNotThrow(()-> gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getStorage()
                 .addToSelection(gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getStorage().getCupboard()
                         .getShelfById("BottomShelf"), gold, 2));
+        assertDoesNotThrow(()->gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getProduction().getUpgradableCrafting(0)
+        .setAllResourcesTransferred(true));
 
         //crafting2 is set as selected, as well as all required resources
         assertDoesNotThrow(()-> gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getProduction()
@@ -182,8 +184,8 @@ public class CraftingStateTest {
                 .addToSelection(gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getStorage()
                         .getChest(), servant, 2));
 
-        gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getProduction().getSelectedCrafting()
-                .activateCrafting(gameContext.getCurrentPlayer(), gameContext.getGameModel().getFaithPath());
+        assertDoesNotThrow(()->gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getProduction().getUpgradableCrafting(1)
+                .setAllResourcesTransferred(true));
 
 
         List<Message> messages;
@@ -197,8 +199,6 @@ public class CraftingStateTest {
         assertTrue(currentState.getNextState() instanceof MenuState);
         assertTrue(gameContext.hasPlayerMoved());
         assertTrue(messages.size() > 0);
-
-         */
 
     }
 
