@@ -211,10 +211,9 @@ public class ShopResourceSelectionState extends State {
 
         //add crafting to the production
         production.setUpgradableCrafting(selectedCrafting, card.getCrafting());
-        payload.add(PayloadFactory.addCrafting(
+        payload.add(PayloadFactory.addUpgradableCrafting(
                 currentPlayer.getUsername(),
-                card.getCrafting().toRaw(),
-                Production.CraftingType.UPGRADABLE,
+                card.getId(),
                 selectedCrafting
         ));
 

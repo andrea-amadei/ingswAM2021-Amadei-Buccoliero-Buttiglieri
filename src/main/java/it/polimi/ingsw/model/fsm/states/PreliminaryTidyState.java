@@ -77,7 +77,6 @@ public class PreliminaryTidyState extends State {
             return messages;
         }
 
-        //TODO: add the payload type to communicate to the clients the next player
         //set next connected player as next player
         Player nextPlayer = null;
         int index = getGameContext().getGameModel().getPlayers().indexOf(getGameContext().getCurrentPlayer());
@@ -92,6 +91,7 @@ public class PreliminaryTidyState extends State {
         if(nextPlayer != null){
             setNextState(new PreliminaryPickState(getGameContext()));
             getGameContext().setCurrentPlayer(nextPlayer);
+            messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), Collections.singletonList(PayloadFactory.changeCurrentPlayer(nextPlayer.getUsername()))));
             return messages;
         }
 
@@ -100,6 +100,8 @@ public class PreliminaryTidyState extends State {
         nextPlayer = getGameContext().getGameModel().getPlayers().stream().filter(Player::isConnected).findFirst().orElse(null);
         setNextState(new MenuState(getGameContext()));
         getGameContext().setCurrentPlayer(nextPlayer);
+        assert nextPlayer != null;
+        messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), Collections.singletonList(PayloadFactory.changeCurrentPlayer(nextPlayer.getUsername()))));
         return messages;
 
     }

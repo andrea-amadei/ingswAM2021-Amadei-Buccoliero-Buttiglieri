@@ -95,7 +95,6 @@ public class CraftingState extends State {
                 )
         );
 
-        //TODO: add the message to tell the clients that those crafting are not ready anymore
 
         setNextState(new MenuState(getGameContext()));
 
