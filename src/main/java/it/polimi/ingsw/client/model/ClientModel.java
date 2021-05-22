@@ -23,13 +23,6 @@ public class ClientModel implements Observable<ClientModel> {
     private List<RawLeaderCard> leaderCards;
     private List<RawCraftingCard> craftingCards;
 
-    public ClientModel(OutputHandler outputHandler, List<ClientPlayer> players){
-        this.players = players;
-        personalData = new PersonalData();
-        this.outputHandler = outputHandler;
-        listeners = new ArrayList<>();
-    }
-
     public ClientModel(){
         this.personalData = new PersonalData();
         listeners = new ArrayList<>();
