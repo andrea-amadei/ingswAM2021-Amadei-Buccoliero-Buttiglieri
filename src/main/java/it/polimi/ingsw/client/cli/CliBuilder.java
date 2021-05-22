@@ -43,6 +43,7 @@ public final class CliBuilder {
 
         frame = new Frame("global");
         new MarketCliUpdater(model.getMarket(), frame);
+        new ShopCliUpdater(model.getShop(), frame);
         framework.addFrame(frame);
     }
 }

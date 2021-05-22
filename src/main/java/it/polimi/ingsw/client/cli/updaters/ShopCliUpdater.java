@@ -113,6 +113,12 @@ public class ShopCliUpdater implements Listener<ClientShop> {
                                     ForegroundColor.WHITE_BRIGHT,BackgroundColor.BLACK)
                     );
 
+                    cards[i][j].addElement(
+                            new TextBox("id", cards[i][j].getStartingRow() + 5, cards[i][j].getStartingColumn() + 14,
+                                    "Id: " + clientShop.getGrid()[i][j].getId(),
+                                    ForegroundColor.WHITE_BRIGHT,BackgroundColor.BLACK)
+                    );
+
                     crafting = new GroupBox("crafting", cards[i][j].getStartingRow() + 6, cards[i][j].getStartingColumn() + 1,
                             cards[i][j].getStartingRow() + 13, cards[i][j].getStartingColumn() + 19, "Crafting",
                             ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK);
