@@ -156,6 +156,18 @@ public class ClientProduction implements Observable<ClientProduction> {
         return selectedType;
     }
 
+    public List<Boolean> getBaseCraftingsReady() {
+        return baseCraftingsReady;
+    }
+
+    public List<Boolean> getUpgradableCraftingsReady() {
+        return upgradableCraftingsReady;
+    }
+
+    public List<Boolean> getLeaderCraftingsReady() {
+        return leaderCraftingsReady;
+    }
+
     @Override
     public void addListener(Listener<ClientProduction> listener) {
         listeners.add(listener);
