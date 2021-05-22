@@ -14,9 +14,14 @@ public class ClientProduction implements Observable<ClientProduction> {
     private final int upgradableCraftingNumber;
 
     private final List<RawCrafting> baseCraftings;
+    private final List<Boolean> baseCraftingsReady;
+
     private final List<RawCrafting> upgradableCraftings;
     private final List<Integer> upgradableLevels;
+    private final List<Boolean> upgradableCraftingsReady;
+
     private final List<RawCrafting> leaderCraftings;
+    private final List<Boolean> leaderCraftingsReady;
 
     private Integer selectedCraftingIndex;
     private Production.CraftingType selectedType;
@@ -30,16 +35,22 @@ public class ClientProduction implements Observable<ClientProduction> {
     public ClientProduction(int upgradableCraftingNumber){
 
         this.upgradableCraftingNumber = upgradableCraftingNumber;
+
         this.baseCraftings = new ArrayList<>();
+        this.baseCraftingsReady = new ArrayList<>();
 
         this.upgradableCraftings = new ArrayList<>();
         this.upgradableLevels = new ArrayList<>();
+        this.upgradableCraftingsReady = new ArrayList<>();
+
+        this.leaderCraftings = new ArrayList<>();
+        this.leaderCraftingsReady = new ArrayList<>();
+
         for(int i = 0; i < upgradableCraftingNumber; i++) {
             upgradableCraftings.add(null);
             upgradableLevels.add(0);
+            upgradableCraftingsReady.add(false);
         }
-
-        this.leaderCraftings = new ArrayList<>();
 
         this.selectedCraftingIndex = null;
         this.selectedType = null;
@@ -54,6 +65,7 @@ public class ClientProduction implements Observable<ClientProduction> {
      */
     public void addBaseCrafting(RawCrafting baseCrafting){
         this.baseCraftings.add(baseCrafting);
+        baseCraftingsReady.add(false);
         update();
     }
 
@@ -67,6 +79,7 @@ public class ClientProduction implements Observable<ClientProduction> {
     public void addUpgradableCrafting(RawCrafting crafting, int level, int index){
         upgradableCraftings.set(index, crafting);
         upgradableLevels.set(index, level);
+        upgradableCraftingsReady.set(index, false);
         update();
     }
 
@@ -76,6 +89,22 @@ public class ClientProduction implements Observable<ClientProduction> {
      */
     public void addLeaderCrafting(RawCrafting crafting){
         leaderCraftings.add(crafting);
+        leaderCraftingsReady.add(false);
+        update();
+    }
+
+    public void setCraftingStatus(Production.CraftingType craftingType, int index, boolean status){
+        switch(craftingType){
+            case UPGRADABLE:
+                upgradableCraftingsReady.set(index, status);
+                break;
+            case BASE:
+                baseCraftingsReady.set(index, status);
+                break;
+            case LEADER:
+                leaderCraftingsReady.set(index, status);
+                break;
+        }
         update();
     }
 

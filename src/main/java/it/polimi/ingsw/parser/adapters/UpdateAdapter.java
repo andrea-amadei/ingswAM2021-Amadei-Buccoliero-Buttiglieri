@@ -42,6 +42,8 @@ public class UpdateAdapter implements JsonDeserializer<Update> {
                 return jsonDeserializationContext.deserialize(jsonElement, AddUpgradableCraftingUpdate.class);
             case "change_covered_leader_card":
                 return jsonDeserializationContext.deserialize(jsonElement, ChangeCoveredLeaderCardUpdate.class);
+            case "change_crafting_status":
+                return jsonDeserializationContext.deserialize(jsonElement, ChangeCraftingStatusUpdate.class);
             case "change_current_player":
                 return jsonDeserializationContext.deserialize(jsonElement, ChangeCurrentPlayerUpdate.class);
             case "change_market":

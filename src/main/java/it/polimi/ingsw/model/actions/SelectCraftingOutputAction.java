@@ -64,15 +64,14 @@ public class SelectCraftingOutputAction implements Action {
         try {
             crafting.setGroupConversion(ResourceTypeSingleton.getInstance().getAnyResource(), conversion);
         } catch (IllegalArgumentException e) {
-            //TODO: communicate to the client that there is the need to select the output again
-            throw new IllegalActionException(e.getMessage());
+            throw new IllegalActionException("The requested output mapping is wrong. Please select it again");
         }
 
         if(crafting.getUndecidedOutputs().size() != 0)
             Logger.log("Logic failed at SelectCraftingOutputAction: after selecting conversion, there are still undecided outputs!",
                     Logger.Severity.ERROR, ForegroundColor.RED);
 
-        //TODO: we need to create a payload to communicate the selected output to the player.
+        //TODO: we may need to create a payload to communicate the selected output to the player.
         return new ArrayList<>();
     }
 

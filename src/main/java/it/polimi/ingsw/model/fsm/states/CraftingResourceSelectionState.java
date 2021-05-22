@@ -211,8 +211,8 @@ public class CraftingResourceSelectionState extends State {
                     new RawStorage(container.getId(), resourcesToRemove)));
         }
 
-        //TODO: we may want to send a message to inform the client that the selected crafting is ready to craft
         selectedCrafting.setAllResourcesTransferred(true);
+        payload.add(PayloadFactory.changeCraftingStatus(getGameContext().getCurrentPlayer().getUsername(), true, production.getSelectedCraftingIndex(), production.getSelectedCraftingType()));
 
         production.resetCraftingSelection();
         payload.add(PayloadFactory.unselect(getGameContext().getCurrentPlayer().getUsername(), "production"));

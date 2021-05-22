@@ -106,4 +106,8 @@ public class PayloadFactory {
         return new ChangeCurrentPlayerPayloadComponent(newPlayer);
     }
 
+    public static UpdatePayloadComponent changeCraftingStatus(String player, boolean isReady, int index, Production.CraftingType craftingType){
+        return new ChangeCraftingStatusUpdatePayloadComponent(player, isReady, index, craftingType);
+    }
+
 }

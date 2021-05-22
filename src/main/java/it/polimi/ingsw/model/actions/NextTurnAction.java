@@ -26,7 +26,6 @@ public class NextTurnAction implements Action{
     }
 
 
-    //TODO:  add the payload to inform the clients of the current player
     /**
      * Informs the state machine that a new turn is started
      *

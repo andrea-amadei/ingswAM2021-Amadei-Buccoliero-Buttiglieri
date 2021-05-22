@@ -6,6 +6,7 @@ import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.FaithPath;
 import it.polimi.ingsw.model.GameParameters;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -312,16 +313,22 @@ public class Production {
 
         List<PayloadComponent> payload = new ArrayList<>();
         for(Crafting i : baseCrafting)
-            if(i != null && i.readyToCraft())
+            if(i != null && i.readyToCraft()) {
                 payload.addAll(i.activateCrafting(player, fp));
+                payload.add(PayloadFactory.changeCraftingStatus(player.getUsername(), false, baseCrafting.indexOf(i), CraftingType.BASE));
+            }
 
         for(Crafting i : upgradableCrafting)
-            if(i!= null && i.readyToCraft())
+            if(i!= null && i.readyToCraft()) {
                 payload.addAll(i.activateCrafting(player, fp));
+                payload.add(PayloadFactory.changeCraftingStatus(player.getUsername(), false, baseCrafting.indexOf(i), CraftingType.UPGRADABLE));
+            }
 
         for(Crafting i : leaderCrafting)
-            if(i != null && i.readyToCraft())
+            if(i != null && i.readyToCraft()) {
                 payload.addAll(i.activateCrafting(player, fp));
+                payload.add(PayloadFactory.changeCraftingStatus(player.getUsername(), false, baseCrafting.indexOf(i), CraftingType.LEADER));
+            }
 
         return payload;
     }

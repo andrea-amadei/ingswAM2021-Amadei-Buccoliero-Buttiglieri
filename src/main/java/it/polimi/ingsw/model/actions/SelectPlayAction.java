@@ -73,13 +73,6 @@ public class SelectPlayAction implements Action {
 
         if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
             throw new IllegalActionException("It is not your turn");
-
-        currentPlayer = gameContext.getCurrentPlayer();
-
-        if(!currentPlayer.equals(gameContext.getCurrentPlayer()))
-            throw new IllegalActionException("The current player doesn't match the executor player");
-
-        //TODO: choose how to communicate the selected play
         return new ArrayList<>();
     }
 
