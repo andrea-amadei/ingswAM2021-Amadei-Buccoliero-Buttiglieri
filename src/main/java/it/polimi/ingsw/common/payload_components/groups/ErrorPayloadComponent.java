@@ -5,7 +5,7 @@ import it.polimi.ingsw.annotations.SerializedGroup;
 import it.polimi.ingsw.annotations.SerializedType;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 
-@SerializedGroup("error")
+@SerializedGroup("update")
 @SerializedType("generic_error")
 public class ErrorPayloadComponent implements PayloadComponent {
 
