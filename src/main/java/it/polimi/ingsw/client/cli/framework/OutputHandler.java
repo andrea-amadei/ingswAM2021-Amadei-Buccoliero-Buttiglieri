@@ -190,13 +190,13 @@ public class OutputHandler {
         if(newString.length() == 0)
             throw new IllegalArgumentException("Invalid empty string");
 
-        if(startingRow < 0 || startingRow >= height)
+        if(startingRow < 0 || startingRow > height)
             throw new IndexOutOfBoundsException("Invalid starting row");
 
         if(startingColumn < 0)
             throw new IndexOutOfBoundsException("Invalid starting column");
 
-        if(startingColumn + newString.length() >= width)
+        if(startingColumn + newString.length() > width)
             throw new IndexOutOfBoundsException("String too long to fit");
 
         for(int i = 0; i < newString.length(); i++)
@@ -210,13 +210,13 @@ public class OutputHandler {
         if(newString.length() == 0)
             throw new IllegalArgumentException("Invalid empty string");
 
-        if(startingRow < 0 || startingRow >= height)
+        if(startingRow < 0 || startingRow > height)
             throw new IndexOutOfBoundsException("Invalid starting row");
 
         if(startingColumn < 0)
             throw new IndexOutOfBoundsException("Invalid starting column");
 
-        if(startingColumn + newString.length() >= width)
+        if(startingColumn + newString.length() > width)
             throw new IndexOutOfBoundsException("String too long to fit");
 
         for(int i = 0; i < newString.length(); i++) {
@@ -232,13 +232,13 @@ public class OutputHandler {
         if(newString.length() == 0)
             throw new IllegalArgumentException("Invalid empty string");
 
-        if(startingRow < 0 || startingRow >= height)
+        if(startingRow < 0 || startingRow > height)
             throw new IndexOutOfBoundsException("Invalid starting row");
 
         if(startingColumn < 0)
             throw new IndexOutOfBoundsException("Invalid starting column");
 
-        if(startingColumn + newString.length() >= width)
+        if(startingColumn + newString.length() > width)
             throw new IndexOutOfBoundsException("String too long to fit");
 
         for(int i = 0; i < newString.length(); i++) {
