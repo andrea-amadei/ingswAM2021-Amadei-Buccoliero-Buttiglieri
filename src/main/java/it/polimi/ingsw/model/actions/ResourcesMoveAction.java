@@ -92,12 +92,19 @@ public class ResourcesMoveAction implements Action{
         storage = currentPlayer.getBoard().getStorage();
 
 
+        String correctOrigin;
+        String correctDestination;
+
 
         //if the origin is the hand
         if(origin.equalsIgnoreCase(currentPlayer.getBoard().getStorage().getHand().getId())){
+            correctOrigin = currentPlayer.getBoard().getStorage().getHand().getId();
+
+            //using the correct case for origin
             Shelf destinationShelf;
             try {
                 destinationShelf = storage.getCupboard().getShelfById(destination);
+                correctDestination = storage.getCupboard().getShelfById(destination).getId();
             }catch (NoSuchElementException e){
                 throw new IllegalActionException(e.getMessage());
             }
@@ -110,10 +117,13 @@ public class ResourcesMoveAction implements Action{
 
         //if the destination is the hand and the origin is a shelf
         else if(destination.equalsIgnoreCase(currentPlayer.getBoard().getStorage().getHand().getId())){
+            correctDestination = currentPlayer.getBoard().getStorage().getHand().getId();
+
             Shelf originShelf;
             ResourceContainer hand = storage.getHand();
             try {
                 originShelf = storage.getCupboard().getShelfById(origin);
+                correctOrigin = storage.getCupboard().getShelfById(origin).getId();
             }catch (NoSuchElementException e){
                 throw new IllegalActionException(e.getMessage());
             }
@@ -137,6 +147,10 @@ public class ResourcesMoveAction implements Action{
             }catch (NoSuchElementException e){
                 throw new IllegalActionException(e.getMessage());
             }
+
+            correctOrigin = storage.getCupboard().getShelfById(origin).getId();
+            correctDestination = storage.getCupboard().getShelfById(destination).getId();
+
             try{
                 currentPlayer.getBoard().getStorage().getCupboard().moveBetweenShelves(originShelf, destinationShelf, amount);
             }catch(IllegalCupboardException e){
@@ -154,14 +168,14 @@ public class ResourcesMoveAction implements Action{
         //removing from origin payload
         payload.add(PayloadFactory.changeResources(
                 currentPlayer.getUsername(),
-                new RawStorage(origin,
+                new RawStorage(correctOrigin,
                         new HashMap<>(){{
                             put(resourceToMove.toString().toLowerCase(), -amount);
                         }})
         ));
         payload.add(PayloadFactory.changeResources(
                 currentPlayer.getUsername(),
-                new RawStorage(destination,
+                new RawStorage(correctDestination,
                         new HashMap<>(){{
                             put(resourceToMove.toString().toLowerCase(), amount);
                         }})
