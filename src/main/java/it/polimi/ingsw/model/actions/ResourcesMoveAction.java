@@ -93,6 +93,7 @@ public class ResourcesMoveAction implements Action{
 
 
 
+        //if the origin is the hand
         if(origin.equalsIgnoreCase(currentPlayer.getBoard().getStorage().getHand().getId())){
             Shelf destinationShelf;
             try {
@@ -101,12 +102,13 @@ public class ResourcesMoveAction implements Action{
                 throw new IllegalActionException(e.getMessage());
             }
             try{
-                storage.getHand().moveTo(destinationShelf, resourceToMove, amount);
-            }catch(IllegalResourceTransferException e){
+                storage.getCupboard().addResourceFromContainer(storage.getHand(), destinationShelf, resourceToMove, amount);
+            }catch(IllegalCupboardException e){
                 throw new IllegalActionException(e.getMessage());
             }
         }
 
+        //if the destination is the hand and the origin is a shelf
         else if(destination.equalsIgnoreCase(currentPlayer.getBoard().getStorage().getHand().getId())){
             Shelf originShelf;
             ResourceContainer hand = storage.getHand();

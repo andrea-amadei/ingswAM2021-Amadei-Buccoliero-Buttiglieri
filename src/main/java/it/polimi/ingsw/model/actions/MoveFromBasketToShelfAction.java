@@ -5,6 +5,7 @@ import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.exceptions.IllegalCupboardException;
 import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.model.GameModel;
@@ -89,8 +90,11 @@ public class MoveFromBasketToShelfAction implements Action{
         }
 
         try{
-            currentPlayer.getBoard().getStorage().getMarketBasket().moveTo(shelf, resourceToMove, amount);
-        }catch(IllegalResourceTransferException e){
+            currentPlayer.getBoard().getStorage().getCupboard().addResourceFromContainer(
+                    currentPlayer.getBoard().getStorage().getMarketBasket(),
+                    shelf, resourceToMove, amount
+            );
+        }catch(IllegalCupboardException e){
             throw new IllegalActionException(e.getMessage());
         }
 
