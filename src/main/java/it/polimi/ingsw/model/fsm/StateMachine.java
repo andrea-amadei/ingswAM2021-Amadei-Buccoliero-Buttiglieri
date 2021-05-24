@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.actions.Action;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class StateMachine implements InterruptListener{
 
@@ -51,8 +52,8 @@ public class StateMachine implements InterruptListener{
             messages.addAll(action.acceptHandler(currentState));
         } catch (FSMTransitionFailedException e) {
             messages.addAll(e.getGameMessages());
-            if(e.getMessage() != null)
-                messages.add(new Message(Collections.singletonList(action.getSender()), Collections.singletonList(new InfoPayloadComponent(e.getMessage()))));
+            messages.add(new Message(Collections.singletonList(action.getSender()), Collections.singletonList(
+                    new InfoPayloadComponent(Optional.ofNullable(e.getMessage()).orElse("generic error")))));
             currentState.resetNextState();
         }
 
