@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.model;
 
 import it.polimi.ingsw.client.observables.Listener;
 import it.polimi.ingsw.client.observables.Observable;
+import it.polimi.ingsw.gamematerials.MarbleColor;
 import it.polimi.ingsw.parser.raw.RawMarket;
 
 import java.util.ArrayList;
@@ -13,6 +14,11 @@ public class ClientMarket implements Observable<ClientMarket> {
     private final int rowSize;
     private final int colSize;
 
+    //The outer list contains a list of option for each marble
+    //(the size of the outer list is equal to the amount of selected marbles)
+    private List<List<ConversionOption>> possibleConversions;
+    private List<MarbleColor> selectedMarbles;
+
     private RawMarket market;
 
     /**
@@ -23,11 +29,19 @@ public class ClientMarket implements Observable<ClientMarket> {
     public ClientMarket(int rowSize, int colSize){
         this.rowSize = rowSize;
         this.colSize = colSize;
+        possibleConversions = new ArrayList<>();
+        selectedMarbles = new ArrayList<>();
         listeners = new ArrayList<>();
     }
 
     public void changeMarket(RawMarket newMarket){
         this.market = newMarket;
+        update();
+    }
+
+    public void changePossibleConversions(List<MarbleColor> selectedMarbles, List<List<ConversionOption>> possibleConversions){
+        this.selectedMarbles = selectedMarbles;
+        this.possibleConversions = possibleConversions;
         update();
     }
 

@@ -15,6 +15,7 @@ import it.polimi.ingsw.model.market.ConversionActuator;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.server.Logger;
+import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -102,6 +103,9 @@ public class SelectConversionsAction implements Action{
 
 
         List<PayloadComponent> payload = new ArrayList<>();
+
+        //empty the selection in the client model
+        payload.add(PayloadFactory.changePossibleConversions(currentPlayer.getUsername(), new ArrayList<>(), new ArrayList<>()));
 
         //apply the selected conversions
         for(int i = 0; i < selectedMarbles.size(); i++){
