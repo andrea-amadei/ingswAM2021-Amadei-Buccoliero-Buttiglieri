@@ -27,7 +27,7 @@ public class FlagBox implements MutablePositionedElement {
     private String color;
     private boolean blockCharactersEnabled;
 
-    private static final String[] LEVELS = {"   ", " I ", "II ", "III"};
+    private static final String[] LEVELS = {"   ", " I ", "I I", "III"};
 
     private static final String[] ACCEPTED_COLORS = {"blue", "green", "purple", "yellow"};
 
