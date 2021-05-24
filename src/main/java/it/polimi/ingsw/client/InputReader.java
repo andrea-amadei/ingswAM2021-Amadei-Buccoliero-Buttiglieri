@@ -39,6 +39,9 @@ public class InputReader extends Thread{
                 case "set_username" :
                     parseUsernameCommand(logicalInput);
                     break;
+                case "activate_leader":
+                    parseActivateLeaderCommand(logicalInput);
+                    break;
                 case "back":
                     parseBackCommand(logicalInput);
                     break;
@@ -56,6 +59,9 @@ public class InputReader extends Thread{
                     break;
                 case "create_match":
                     parseCreateMatchCommand(logicalInput);
+                    break;
+                case "discard_leader":
+                    parseDiscardLeaderCommand(logicalInput);
                     break;
                 case "join_match":
                     parseJoinMatchCommand(logicalInput);
@@ -115,6 +121,24 @@ public class InputReader extends Thread{
         try {
             serverHandler.sendPayload(new SetUsernameSetupPayloadComponent(logicalInput.get(1)));
         }catch(RuntimeException e){
+            System.out.println("Command not valid");
+        }
+    }
+
+    public void parseDiscardLeaderCommand(List<String> logicalInput){
+        try {
+            int id = Integer.parseInt(logicalInput.get(1));
+            serverHandler.sendPayload(new DiscardLeaderActionPayloadComponent(serverHandler.getUsername(), id));
+        }catch (RuntimeException e){
+            System.out.println("Command not valid");
+        }
+    }
+
+    public void parseActivateLeaderCommand(List<String> logicalInput){
+        try {
+            int id = Integer.parseInt(logicalInput.get(1));
+            serverHandler.sendPayload(new ActivateLeaderActionPayloadComponent(serverHandler.getUsername(), id));
+        }catch (RuntimeException e){
             System.out.println("Command not valid");
         }
     }
