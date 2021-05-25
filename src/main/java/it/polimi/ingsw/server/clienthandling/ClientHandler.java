@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.clienthandling;
 
+import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.common.ActionQueue;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.ErrorPayloadComponent;
@@ -21,7 +22,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.net.Socket;
+import java.util.Collections;
+import java.util.List;
 
 public class ClientHandler implements Runnable{
 
@@ -90,7 +94,11 @@ public class ClientHandler implements Runnable{
     }
 
     public void sendPayload(PayloadComponent payloadComponent){
-        String json = JSONSerializer.toJson(payloadComponent);
+        sendPayload(Collections.singletonList(payloadComponent));
+    }
+
+    public void sendPayload(List<PayloadComponent> payloads){
+        String json = JSONSerializer.toJson(payloads);
         out.println(json);
     }
 

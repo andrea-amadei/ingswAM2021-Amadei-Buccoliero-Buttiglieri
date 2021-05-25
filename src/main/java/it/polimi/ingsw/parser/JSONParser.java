@@ -3,8 +3,10 @@ package it.polimi.ingsw.parser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.client.network.ServerNetworkObject;
 import it.polimi.ingsw.common.GameConfig;
+import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.gamematerials.ResourceGroup;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceType;
@@ -28,6 +30,7 @@ import it.polimi.ingsw.server.clienthandling.setupactions.SetupAction;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -286,6 +289,19 @@ public final class JSONParser {
                 .create();
 
         return gson.fromJson(json, ServerNetworkObject.class);
+    }
+
+    public static List<ServerNetworkObject> getServerNetworkObjects(String json){
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(ServerNetworkObject.class, new ServerNetworkObjectAdapter())
+                .registerTypeAdapter(Update.class, new UpdateAdapter())
+                .registerTypeAdapter(ResourceSingle.class, new ResourceSingleAdapter())
+                .registerTypeAdapter(ResourceGroup.class, new ResourceGroupAdapter())
+                .registerTypeAdapter(ResourceType.class, new ResourceTypeDeserializer())
+                .create();
+
+        Type serverNetworkObjListType = new TypeToken<List<ServerNetworkObject>>(){}.getType();
+        return gson.fromJson(json, serverNetworkObjListType);
     }
 
     public static GameConfig getGameConfig(String json){

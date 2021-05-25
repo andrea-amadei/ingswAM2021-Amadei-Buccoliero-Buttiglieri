@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 
 public class ServerHandler extends Thread{
     private Socket serverSocket;
@@ -50,16 +51,16 @@ public class ServerHandler extends Thread{
 
     @Override
     public void run(){
-        ServerNetworkObject readObject;
+        List<ServerNetworkObject> readObjects;
         while(true){
             try {
-                readObject = JSONParser.getServerNetworkObject(in.readLine());
-
-                if(readObject instanceof Update){
-                    ((Update) readObject).apply(client);
-
-                framework.renderActiveFrame();
+                readObjects = JSONParser.getServerNetworkObjects(in.readLine());
+                for(ServerNetworkObject readObject : readObjects){
+                    if(readObject instanceof Update) {
+                        ((Update) readObject).apply(client);
+                    }
                 }
+                framework.renderActiveFrame();
             } catch (IOException | UnableToDrawElementException e) {
                 e.printStackTrace();
                 break;

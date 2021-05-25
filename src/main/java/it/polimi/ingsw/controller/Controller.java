@@ -67,8 +67,9 @@ public class Controller extends Thread{
                 System.out.println("payloads for: " + entry.getKey());
                 for (PayloadComponent component : entry.getValue()) {
                     System.out.println(JSONSerializer.toJson(component));
-                    clientHub.getClientByName(entry.getKey()).getSecond().sendPayload(component);
+                    //clientHub.getClientByName(entry.getKey()).getSecond().sendPayload(component);
                 }
+                clientHub.getClientByName(entry.getKey()).getSecond().sendPayload(entry.getValue());
             }
         }
     }
