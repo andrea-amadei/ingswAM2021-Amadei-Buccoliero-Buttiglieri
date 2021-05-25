@@ -15,6 +15,7 @@ public class PersonalData implements Observable<PersonalData> {
     private String username;
     private String gameName;
     private final List<String> serverMessages;
+    private final List<String> serverErrors;
     private Set<PossibleActions> possibleActions;
 
     public PersonalData(){
@@ -22,6 +23,7 @@ public class PersonalData implements Observable<PersonalData> {
         gameName = "Unknown";
         serverMessages = new ArrayList<>();
         possibleActions = new HashSet<>();
+        serverErrors = new ArrayList<>();
     }
 
     public void setUsername(String username){
@@ -39,6 +41,11 @@ public class PersonalData implements Observable<PersonalData> {
         update();
     }
 
+    public void addError(String error){
+        serverErrors.add(error);
+        update();
+    }
+
     public void setPossibleActions(Set<PossibleActions> possibleActions){
         this.possibleActions = possibleActions;
         update();
@@ -52,8 +59,16 @@ public class PersonalData implements Observable<PersonalData> {
         return gameName;
     }
 
+    public Set<PossibleActions> getPossibleActions() {
+        return possibleActions;
+    }
+
     public List<String> getServerMessages() {
         return serverMessages;
+    }
+
+    public List<String> getServerErrors() {
+        return serverErrors;
     }
 
     @Override

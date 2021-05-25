@@ -2,7 +2,6 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.CliBuilder;
 import it.polimi.ingsw.client.cli.framework.CliFramework;
-import it.polimi.ingsw.client.model.ClientModel;
 import it.polimi.ingsw.common.payload_components.groups.actions.*;
 import it.polimi.ingsw.common.payload_components.groups.setup.CreateMatchSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.JoinMatchSetupPayloadComponent;
@@ -10,6 +9,7 @@ import it.polimi.ingsw.common.payload_components.groups.setup.SetUsernameSetupPa
 import it.polimi.ingsw.exceptions.UnableToDrawElementException;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.actions.SelectPlayAction;
+import it.polimi.ingsw.model.production.Production;
 
 import java.util.*;
 
@@ -39,6 +39,9 @@ public class InputReader extends Thread{
                 case "set_username" :
                     parseUsernameCommand(logicalInput);
                     break;
+                case "activate_leader":
+                    parseActivateLeaderCommand(logicalInput);
+                    break;
                 case "back":
                     parseBackCommand(logicalInput);
                     break;
@@ -57,17 +60,32 @@ public class InputReader extends Thread{
                 case "create_match":
                     parseCreateMatchCommand(logicalInput);
                     break;
+                case "discard_leader":
+                    parseDiscardLeaderCommand(logicalInput);
+                    break;
                 case "join_match":
                     parseJoinMatchCommand(logicalInput);
                     break;
                 case "resources_move":
                     parseResourcesMoveCommand(logicalInput);
                     break;
+                case "select_card_from_shop":
+                    parseSelectCardFromShopCommand(logicalInput);
+                    break;
                 case "select_conversions":
                     parseSelectConversionsCommand(logicalInput);
                     break;
+                case "select_crafting":
+                    parseSelectCraftingCommand(logicalInput);
+                    break;
+                case "select_output":
+                    parseSelectOutputCommand(logicalInput);
+                    break;
                 case "select_play":
                     parseSelectPlayCommand(logicalInput);
+                    break;
+                case "select_resources":
+                    parseSelectResourcesCommand(logicalInput);
                     break;
                 case "start":
                     parseStartCommand(logicalInput);
@@ -85,14 +103,14 @@ public class InputReader extends Thread{
 
     private void parseSelectPlayCommand(List<String> logicalInput) {
         try {
-            SelectPlayAction.Play play;
+            SelectPlayAction.Play play = null;
             String playString = logicalInput.get(1).toUpperCase();
             try {
                 play = SelectPlayAction.Play.valueOf(playString);
-                serverHandler.sendPayload(new SelectPlayActionPayloadComponent(serverHandler.getUsername(), play));
             } catch (IllegalArgumentException e) {
                 System.out.println("There is no \"" + playString + "\" option");
             }
+            serverHandler.sendPayload(new SelectPlayActionPayloadComponent(serverHandler.getUsername(), play));
         }catch(RuntimeException e){
             System.out.println("Command not valid");
         }
@@ -103,6 +121,83 @@ public class InputReader extends Thread{
         try {
             serverHandler.sendPayload(new SetUsernameSetupPayloadComponent(logicalInput.get(1)));
         }catch(RuntimeException e){
+            System.out.println("Command not valid");
+        }
+    }
+
+    public void parseDiscardLeaderCommand(List<String> logicalInput){
+        try {
+            int id = Integer.parseInt(logicalInput.get(1));
+            serverHandler.sendPayload(new DiscardLeaderActionPayloadComponent(serverHandler.getUsername(), id));
+        }catch (RuntimeException e){
+            System.out.println("Command not valid");
+        }
+    }
+
+    public void parseActivateLeaderCommand(List<String> logicalInput){
+        try {
+            int id = Integer.parseInt(logicalInput.get(1));
+            serverHandler.sendPayload(new ActivateLeaderActionPayloadComponent(serverHandler.getUsername(), id));
+        }catch (RuntimeException e){
+            System.out.println("Command not valid");
+        }
+    }
+
+    public void parseSelectResourcesCommand(List<String> logicalInput){
+        try {
+            String containerID = logicalInput.get(1);
+            String resource = ResourceTypeSingleton.getInstance().getResourceSingleByName(logicalInput.get(2).toLowerCase()).getId();
+            int amount = Integer.parseInt(logicalInput.get(3));
+            serverHandler.sendPayload(new SelectResourcesActionPayloadComponent(serverHandler.getUsername(), containerID,
+                    resource, amount));
+        }catch(RuntimeException e){
+            System.out.println("Command not valid");
+        }
+    }
+
+    public void parseSelectOutputCommand(List<String> logicalInput){
+        try {
+            Map<String, Integer> conversion = new HashMap<>();
+            Integer amount;
+            String resource;
+            for(int i = 1; i < logicalInput.size(); i += 2){
+                resource = ResourceTypeSingleton.getInstance().getResourceSingleByName(logicalInput.get(i).toLowerCase())
+                .getId();
+                amount = Integer.parseInt(logicalInput.get(i + 1));
+                conversion.putIfAbsent(resource, 0);
+                conversion.put(resource, conversion.get(resource) + amount);
+            }
+            serverHandler.sendPayload(new SelectCraftingOutputActionPayloadComponent(serverHandler.getUsername(), conversion));
+        }catch (RuntimeException e){
+            System.out.println("Command not valid");
+        }
+    }
+
+    public void parseSelectCraftingCommand(List<String> logicalInput){
+        try {
+            Production.CraftingType craftingType = null;
+            String craftingTypeString = logicalInput.get(1).toUpperCase();
+            int index = Integer.parseInt(logicalInput.get(2));
+            try {
+                craftingType = Production.CraftingType.valueOf(craftingTypeString);
+            } catch (IllegalArgumentException e) {
+                System.out.println("There is no \"" + craftingTypeString + "\" option");
+            }
+            serverHandler.sendPayload(new SelectCraftingActionPayloadComponent(serverHandler.getUsername(), craftingType,
+                    index));
+        }catch (RuntimeException e){
+            System.out.println("Command not valid");
+        }
+    }
+
+    public void parseSelectCardFromShopCommand(List<String> logicalInput){
+        try {
+            int row = Integer.parseInt(logicalInput.get(1));
+            int col = Integer.parseInt(logicalInput.get(2));
+            int upgradableCraftingIndex = Integer.parseInt(logicalInput.get(3));
+            serverHandler.sendPayload(new SelectCardFromShopActionPayloadComponent(serverHandler.getUsername(), row, col,
+                    upgradableCraftingIndex));
+        }catch (RuntimeException e){
             System.out.println("Command not valid");
         }
     }
@@ -225,7 +320,7 @@ public class InputReader extends Thread{
 
     public void parseSwitchCommand(List<String> logicalInput) {
         try {
-            if(logicalInput.get(1).toLowerCase().equals("global")) {
+            if(logicalInput.get(1).equalsIgnoreCase("global")) {
                 framework.setActiveFrame("global");
                 framework.renderActiveFrame();
                 return;

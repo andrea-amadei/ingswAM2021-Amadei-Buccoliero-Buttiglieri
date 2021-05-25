@@ -195,7 +195,7 @@ public class CraftingResourceSelectionState extends State {
         // remove all resources
         for(ResourceContainer container : selectedResources.keySet()) {
             Map<String, Integer> resourcesToRemove = new HashMap<>();
-            for (ResourceSingle res : container.getAllResources().keySet()) {
+            for (ResourceSingle res : selectedResources.get(container).keySet()) {
                 try {
                     resourcesToRemove.put(res.getId().toLowerCase(), -selectedResources.get(container).get(res));
                     container.removeResources(res, selectedResources.get(container).get(res));

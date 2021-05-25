@@ -58,6 +58,8 @@ public class UpdateAdapter implements JsonDeserializer<Update> {
                 return jsonDeserializationContext.deserialize(jsonElement, ChangeShopUpdate.class);
             case "discard_leader_card":
                 return jsonDeserializationContext.deserialize(jsonElement, DiscardLeaderCardUpdate.class);
+            case "generic_error":
+                return jsonDeserializationContext.deserialize(jsonElement, AddErrorUpdate.class);
             case "possible_actions":
                 return jsonDeserializationContext.deserialize(jsonElement, ChangePossibleActionsUpdate.class);
             case "selected_crafting":

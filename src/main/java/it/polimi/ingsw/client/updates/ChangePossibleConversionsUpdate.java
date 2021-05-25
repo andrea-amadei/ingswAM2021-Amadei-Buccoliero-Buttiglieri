@@ -2,10 +2,16 @@ package it.polimi.ingsw.client.updates;
 
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.model.ConversionOption;
+import it.polimi.ingsw.gamematerials.MarbleColor;
+import it.polimi.ingsw.gamematerials.ResourceSingle;
+import it.polimi.ingsw.gamematerials.ResourceType;
 import it.polimi.ingsw.model.market.ConversionActuator;
 import it.polimi.ingsw.model.market.Marble;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ChangePossibleConversionsUpdate implements Update{
 
@@ -25,7 +31,39 @@ public class ChangePossibleConversionsUpdate implements Update{
 
     @Override
     public void apply(ClientModel client) {
+        List<MarbleColor> selectedMarbleColors = selectedMarbles.stream().map(Marble::getColor).collect(Collectors.toList());
 
+
+        // List<List<ConversionOption>> conversionOptions =
+        //        possibleConversions.stream()
+        //                           .map(actuatorList -> actuatorList.stream()
+        //                                                            .map(actuator ->
+        //                                                                    new ConversionOption(
+        //                                                                            actuator.getResources().stream()
+        //                                                                                                   .map(ResourceType::getId)
+        //                                                                                                   .collect(Collectors.toList()),
+        //                                                                            actuator.getFaith())
+        //                                                            )
+        //                                                            .collect(Collectors.toList())
+        //                           ).collect(Collectors.toList());
+
+
+        //Converting the List<List<ConversionActuator>> in a List<List<ConversionOption>>
+        List<List<ConversionOption>> conversionOptions = new ArrayList<>();
+
+        for(List<ConversionActuator> actuatorList : possibleConversions){
+            List<ConversionOption> conversionOptionList = new ArrayList<>();
+            for(ConversionActuator actuator : actuatorList){
+                List<String> strResource = actuator.getResources().stream().map(ResourceSingle::getId).collect(Collectors.toList());
+                int faith = actuator.getFaith();
+
+                conversionOptionList.add(new ConversionOption(strResource, faith));
+            }
+
+            conversionOptions.add(conversionOptionList);
+        }
+
+        client.getMarket().changePossibleConversions(selectedMarbleColors, conversionOptions);
     }
 
     @Override

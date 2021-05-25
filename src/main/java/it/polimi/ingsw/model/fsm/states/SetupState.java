@@ -5,14 +5,20 @@ import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.updates.SetInitialConfigurationUpdatePayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
+import it.polimi.ingsw.gamematerials.ResourceSingle;
+import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.Shop;
 import it.polimi.ingsw.model.actions.StartGameAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
+import it.polimi.ingsw.parser.raw.RawStorage;
 import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SetupState extends State {
     /**
@@ -63,6 +69,27 @@ public class SetupState extends State {
         }
 
         //TODO: distribute the leader cards to the players
+
+
+        //TODO: remove this hack (debug only)
+
+        for(String username : getGameContext().getGameModel().getPlayerNames()){
+            Map<ResourceSingle, Integer> debugResources = new HashMap<>();
+            debugResources.put(ResourceTypeSingleton.getInstance().getGoldResource(), 10);
+            debugResources.put(ResourceTypeSingleton.getInstance().getServantResource(), 10);
+            debugResources.put(ResourceTypeSingleton.getInstance().getShieldResource(), 10);
+            debugResources.put(ResourceTypeSingleton.getInstance().getStoneResource(), 10);
+
+            for(Map.Entry<ResourceSingle, Integer> entry : debugResources.entrySet()){
+                getGameContext().getGameModel().getPlayerById(username).getBoard().getStorage().getChest().addResources(entry.getKey(), entry.getValue());
+            }
+            globalPayload.add(
+                    PayloadFactory.changeResources(username,
+                            new RawStorage(getGameContext().getGameModel().getPlayerById(username).getBoard().getStorage().getChest().getId(),
+                            debugResources.entrySet().stream()
+                                    .collect(Collectors.toMap(e -> e.getKey().getId(), Map.Entry::getValue))))
+            );
+        }
 
 
         launchInterrupt(new StartGameAction(), ActionQueue.Priority.SERVER_ACTION.ordinal());

@@ -318,16 +318,16 @@ public class Production {
                 payload.add(PayloadFactory.changeCraftingStatus(player.getUsername(), false, baseCrafting.indexOf(i), CraftingType.BASE));
             }
 
-        for(Crafting i : upgradableCrafting)
+        for(UpgradableCrafting i : upgradableCrafting)
             if(i!= null && i.readyToCraft()) {
                 payload.addAll(i.activateCrafting(player, fp));
-                payload.add(PayloadFactory.changeCraftingStatus(player.getUsername(), false, baseCrafting.indexOf(i), CraftingType.UPGRADABLE));
+                payload.add(PayloadFactory.changeCraftingStatus(player.getUsername(), false, upgradableCrafting.indexOf(i), CraftingType.UPGRADABLE));
             }
 
         for(Crafting i : leaderCrafting)
             if(i != null && i.readyToCraft()) {
                 payload.addAll(i.activateCrafting(player, fp));
-                payload.add(PayloadFactory.changeCraftingStatus(player.getUsername(), false, baseCrafting.indexOf(i), CraftingType.LEADER));
+                payload.add(PayloadFactory.changeCraftingStatus(player.getUsername(), false, leaderCrafting.indexOf(i), CraftingType.LEADER));
             }
 
         return payload;
