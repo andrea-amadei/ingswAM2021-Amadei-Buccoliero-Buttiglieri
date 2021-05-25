@@ -103,8 +103,10 @@ public class SetupState extends State {
             Player p = getGameContext().getGameModel().getPlayerById(username);
             p.getBoard().getFlagHolder().addFlag(green);
             p.getBoard().getFlagHolder().addFlag(yellow);
+            p.getBoard().getFlagHolder().addFlag(yellow);
             p.getBoard().getFlagHolder().addFlag(blue);
             globalPayload.add(PayloadFactory.addFlag(username, green.toRaw()));
+            globalPayload.add(PayloadFactory.addFlag(username, yellow.toRaw()));
             globalPayload.add(PayloadFactory.addFlag(username, yellow.toRaw()));
             globalPayload.add(PayloadFactory.addFlag(username, blue.toRaw()));
 
@@ -126,25 +128,43 @@ public class SetupState extends State {
                     getGameContext().getGameModel().getPlayerById(username).getBoard().getProduction().getAllBaseCrafting().size() - 1));
         }
 
+        //send the global message
+        messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), globalPayload));
 
         //TODO: shuffle the cards and give random card to everyone according with game config file.
         //      For now it distributes these 4 leader cards to the first player
-        List<LeaderCard> leaderCardsToDistribute = Arrays.asList(
-                getGameContext().getGameModel().getLeaderCards().get(0),
-                getGameContext().getGameModel().getLeaderCards().get(4),
-                getGameContext().getGameModel().getLeaderCards().get(8),
-                getGameContext().getGameModel().getLeaderCards().get(15)
-        );
 
-        Player player1 = getGameContext().getGameModel().getPlayers().get(0);
-        for(LeaderCard leaderCard : leaderCardsToDistribute){
-            player1.getBoard().addLeaderCard(leaderCard);
-            globalPayload.add(new AddLeaderCardUpdatePayloadComponent(player1.getUsername(), leaderCard.getId()));
+        //shuffling the cards
+        List<LeaderCard> leaderCards = getGameContext().getGameModel().getLeaderCards();
+        Collections.shuffle(leaderCards, new Random(3));
+
+        int i = 0;
+        List<PayloadComponent> specificPlayer;
+        List<PayloadComponent> otherPlayers;
+
+        for(String username : getGameContext().getGameModel().getPlayerNames()){
+            specificPlayer = new ArrayList<>();
+            otherPlayers = new ArrayList<>();
+
+            //adding the cards to the player in the model
+            Player p = getGameContext().getGameModel().getPlayerById(username);
+            p.getBoard().addLeaderCard(leaderCards.get(i));
+            p.getBoard().addLeaderCard(leaderCards.get(i+1));
+
+            //inform the current client of the new leader cards
+            specificPlayer.add(PayloadFactory.addLeaderCard(username, p.getBoard().getLeaderCards().get(0).getId()));
+            specificPlayer.add(PayloadFactory.addLeaderCard(username, p.getBoard().getLeaderCards().get(1).getId()));
+
+            //inform all the other clients of the increase in covered cards
+            otherPlayers.add(PayloadFactory.changeCoveredLeaderCard(username, 2));
+
+            //sending the payloads to the clients
+            messages.add(new Message(Collections.singletonList(username), specificPlayer));
+            messages.add(new Message(getGameContext().getGameModel().getPlayerNames().stream().filter(x -> !x.equals(username)).collect(Collectors.toList()), otherPlayers));
         }
 
         launchInterrupt(new StartGameAction(), ActionQueue.Priority.SERVER_ACTION.ordinal());
-        //send the global message
-        messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), globalPayload));
+
 
         return messages;
     }

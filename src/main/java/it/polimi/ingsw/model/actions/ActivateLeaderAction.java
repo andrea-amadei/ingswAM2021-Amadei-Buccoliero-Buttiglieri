@@ -11,11 +11,9 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.leader.LeaderCard;
+import it.polimi.ingsw.utils.PayloadFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ActivateLeaderAction implements Action{
@@ -87,12 +85,18 @@ public class ActivateLeaderAction implements Action{
             throw new IllegalActionException(e.getMessage());
         }
 
+        //inform all the other clients that this player has a new leader card and has a covered card
+        List<String> otherPlayersUsernames = model.getPlayerNames().stream().filter(p -> !p.equals(player)).collect(Collectors.toList());
+        List<PayloadComponent> othersPayload = new ArrayList<>();
+        othersPayload.add(PayloadFactory.addLeaderCard(player, leaderCard.getId()));
+        othersPayload.add(PayloadFactory.changeCoveredLeaderCard(player, -1));
+
         List<String> destinations = model.getPlayers()
                 .stream()
                 .map(Player::getUsername)
                 .collect(Collectors.toList());
 
-        return Collections.singletonList(new Message(destinations, payload));
+        return Arrays.asList(new Message(destinations, payload), new Message(otherPlayersUsernames, othersPayload));
     }
 
     /**

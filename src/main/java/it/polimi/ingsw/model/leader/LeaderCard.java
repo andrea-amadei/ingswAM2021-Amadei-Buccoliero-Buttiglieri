@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.parser.UniqueSerializableObject;
 import it.polimi.ingsw.parser.raw.RawLeaderCard;
 import it.polimi.ingsw.server.Logger;
+import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +90,8 @@ public class LeaderCard implements UniqueSerializableObject<RawLeaderCard> {
         for(SpecialAbility specialAbility : abilities){
             payload.addAll(specialAbility.activate(player));
         }
+
+        payload.add(PayloadFactory.addPoints(player.getUsername(), points));
         status = true;
 
         return payload;
