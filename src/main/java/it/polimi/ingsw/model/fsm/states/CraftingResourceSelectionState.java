@@ -181,7 +181,8 @@ public class CraftingResourceSelectionState extends State {
 
         // check if the storage is full
         if(!checkStorage.isFull()) {
-            errorMessage = "Too few resources are selected";
+            if(isSelectionCorrect)
+                errorMessage = "Not enough resources selected";
             isSelectionCorrect = false;
         }
 

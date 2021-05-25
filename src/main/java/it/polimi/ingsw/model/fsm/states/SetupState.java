@@ -3,23 +3,26 @@ package it.polimi.ingsw.model.fsm.states;
 import it.polimi.ingsw.common.ActionQueue;
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.updates.AddLeaderCardUpdatePayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.updates.SetInitialConfigurationUpdatePayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
+import it.polimi.ingsw.gamematerials.FlagColor;
+import it.polimi.ingsw.gamematerials.LevelFlag;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Shop;
 import it.polimi.ingsw.model.actions.StartGameAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
+import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.parser.raw.RawStorage;
 import it.polimi.ingsw.utils.PayloadFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class SetupState extends State {
@@ -70,8 +73,6 @@ public class SetupState extends State {
             }
         }
 
-        //TODO: distribute the leader cards to the players
-
 
         //TODO: remove this hack (debug only)
 
@@ -93,6 +94,22 @@ public class SetupState extends State {
             );
         }
 
+        //TODO: remove this hack (debug only)
+
+        LevelFlag green = new LevelFlag(FlagColor.GREEN, 2);
+        LevelFlag yellow = new LevelFlag(FlagColor.YELLOW, 2);
+        LevelFlag blue = new LevelFlag(FlagColor.BLUE, 2);
+        for(String username : getGameContext().getGameModel().getPlayerNames()){
+            Player p = getGameContext().getGameModel().getPlayerById(username);
+            p.getBoard().getFlagHolder().addFlag(green);
+            p.getBoard().getFlagHolder().addFlag(yellow);
+            p.getBoard().getFlagHolder().addFlag(blue);
+            globalPayload.add(PayloadFactory.addFlag(username, green.toRaw()));
+            globalPayload.add(PayloadFactory.addFlag(username, yellow.toRaw()));
+            globalPayload.add(PayloadFactory.addFlag(username, blue.toRaw()));
+
+        }
+
         //TODO: read from json the correct base crafting
         for(String username : getGameContext().getGameModel().getPlayerNames()){
             Crafting baseCrafting = new Crafting(
@@ -109,6 +126,21 @@ public class SetupState extends State {
                     getGameContext().getGameModel().getPlayerById(username).getBoard().getProduction().getAllBaseCrafting().size() - 1));
         }
 
+
+        //TODO: shuffle the cards and give random card to everyone according with game config file.
+        //      For now it distributes these 4 leader cards to the first player
+        List<LeaderCard> leaderCardsToDistribute = Arrays.asList(
+                getGameContext().getGameModel().getLeaderCards().get(0),
+                getGameContext().getGameModel().getLeaderCards().get(4),
+                getGameContext().getGameModel().getLeaderCards().get(8),
+                getGameContext().getGameModel().getLeaderCards().get(15)
+        );
+
+        Player player1 = getGameContext().getGameModel().getPlayers().get(0);
+        for(LeaderCard leaderCard : leaderCardsToDistribute){
+            player1.getBoard().addLeaderCard(leaderCard);
+            globalPayload.add(new AddLeaderCardUpdatePayloadComponent(player1.getUsername(), leaderCard.getId()));
+        }
 
         launchInterrupt(new StartGameAction(), ActionQueue.Priority.SERVER_ACTION.ordinal());
         //send the global message

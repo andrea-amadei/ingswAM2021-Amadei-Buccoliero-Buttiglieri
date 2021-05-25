@@ -176,13 +176,15 @@ public class ShopResourceSelectionState extends State {
         }
 
         if(!checkStorage.isFull()) {
+            if(isSelectionCorrect)
+                errorMessage = "Not enough resources selected";
             isSelectionCorrect = false;
-            errorMessage = "Not enough resources selected";
         }
 
         //if resource selection is wrong, an error message is sent to the current player and the update to unselect
         //the resources of the current player is sent to everyone
         if(!isSelectionCorrect){
+            storage.resetSelection();
             payload.add(PayloadFactory.unselect(currentPlayer.getUsername(), "storage"));
             messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), payload));
             throw new FSMTransitionFailedException(messages, errorMessage);
