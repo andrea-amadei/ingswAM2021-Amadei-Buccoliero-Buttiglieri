@@ -102,7 +102,7 @@ public class SetupState extends State {
                     new HashMap<>() {{
                         put(ResourceTypeSingleton.getInstance().getAnyResource(), 1);
                     }},
-                    0
+                    5
             );
             getGameContext().getGameModel().getPlayerById(username).getBoard().getProduction().addBaseCrafting(baseCrafting);
             globalPayload.add(PayloadFactory.addCrafting(username, baseCrafting.toRaw(), Production.CraftingType.BASE,
