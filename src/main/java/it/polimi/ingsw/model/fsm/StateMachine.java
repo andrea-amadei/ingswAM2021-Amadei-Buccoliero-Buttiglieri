@@ -3,14 +3,12 @@ package it.polimi.ingsw.model.fsm;
 import it.polimi.ingsw.common.ActionQueue;
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.ErrorPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.model.actions.Action;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class StateMachine implements InterruptListener{
 
@@ -52,8 +50,9 @@ public class StateMachine implements InterruptListener{
             messages.addAll(action.acceptHandler(currentState));
         } catch (FSMTransitionFailedException e) {
             messages.addAll(e.getGameMessages());
-            messages.add(new Message(Collections.singletonList(action.getSender()), Collections.singletonList(
-                    new InfoPayloadComponent(Optional.ofNullable(e.getMessage()).orElse("generic error")))));
+            messages.add(new Message(Collections.singletonList(action.getSender()), Arrays.asList(
+                    new InfoPayloadComponent(Optional.ofNullable(e.getMessage()).orElse("generic error")),
+                    new ErrorPayloadComponent(Optional.ofNullable(e.getMessage()).orElse("generic error")))));
             currentState.resetNextState();
         }
 

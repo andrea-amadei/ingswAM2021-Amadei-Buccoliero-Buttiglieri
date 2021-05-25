@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.clienthandling;
 
 import it.polimi.ingsw.common.ActionQueue;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.ErrorPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.SetGameNameSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.SetUsernameSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.TextSetupPayloadComponent;
@@ -14,6 +15,7 @@ import it.polimi.ingsw.server.Logger;
 import it.polimi.ingsw.server.MatchesManager;
 import it.polimi.ingsw.server.clienthandling.setupactions.SetupAction;
 import it.polimi.ingsw.utils.Pair;
+import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -63,10 +65,20 @@ public class ClientHandler implements Runnable{
                 ClientNetworkObject clientNetworkObject = JSONParser.getClientNetworkObject(line);
 
                 if(clientNetworkObject instanceof SetupAction){
-                    ((SetupAction)clientNetworkObject).checkFormat();
+                    try {
+                        ((SetupAction) clientNetworkObject).checkFormat();
+                    }catch(RuntimeException e){
+                        sendPayload(new ErrorPayloadComponent("Invalid request"));
+                        continue;
+                    }
                     ((SetupAction)clientNetworkObject).execute(this);
                 }else if(clientNetworkObject instanceof Action){
-                    ((Action)clientNetworkObject).checkFormat();
+                    try {
+                        ((Action) clientNetworkObject).checkFormat();
+                    }catch(RuntimeException e){
+                        sendPayload(new ErrorPayloadComponent("Invalid request"));
+                        continue;
+                    }
                     currentMatch.getActionQueue().addAction((Action)clientNetworkObject, ActionQueue.Priority.CLIENT_ACTION.ordinal());
                 }
 
