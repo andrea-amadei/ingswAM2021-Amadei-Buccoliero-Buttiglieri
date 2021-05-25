@@ -25,9 +25,9 @@ public class ServerHandler extends Thread{
     private final ClientModel client;
     private final CliFramework framework;
 
-    public ServerHandler(int port, ClientModel client, CliFramework framework){
+    public ServerHandler(String host, int port, ClientModel client, CliFramework framework){
         try {
-            serverSocket = new Socket("localhost", port);
+            serverSocket = new Socket(host, port);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -72,10 +72,11 @@ public class SelectCraftingAction implements Action {
 
         try {
             production.selectCrafting(craftingType, index);
-            payload.add(PayloadFactory.selectedCrafting(currentPlayer.getUsername(), craftingType, index));
         } catch (IndexOutOfBoundsException e) {
             throw new IllegalActionException(e.getMessage());
         }
+
+
 
         Crafting crafting;
         try{
@@ -84,8 +85,18 @@ public class SelectCraftingAction implements Action {
             throw new IllegalActionException(e.getMessage());
         }
 
-        if(crafting == null)
+        if(crafting == null) {
+            production.resetCraftingSelection();
             throw new IllegalActionException("Cannot select an empty crafting slot");
+        }
+
+        if(crafting.readyToCraft()){
+            production.resetCraftingSelection();
+            throw new IllegalActionException("Cannot select a crafting already prepared");
+        }
+
+        //the selected crafting is valid, proceed to inform the client
+        payload.add(PayloadFactory.selectedCrafting(currentPlayer.getUsername(), craftingType, index));
 
         //send the message
         List<String> targets = gameContext.getGameModel().getPlayerNames();

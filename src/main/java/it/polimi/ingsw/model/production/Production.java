@@ -189,6 +189,18 @@ public class Production {
     }
 
     /**
+     * Adds to production a new base crafting
+     * @param crafting the crafting to be added
+     * @throws NullPointerException if crafting is null
+     */
+    public void addBaseCrafting(Crafting crafting){
+        if(crafting == null)
+            throw new NullPointerException();
+
+        baseCrafting.add(crafting);
+    }
+
+    /**
      * Sets to production a new upgradable crafting in the specified slot
      * @param index the slot to be modified. Must be between 0 and GameParameters.UPGRADABLE_CRAFTING_NUMBER
      * @param crafting the new crafting to be set

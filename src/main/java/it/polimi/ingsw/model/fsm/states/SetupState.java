@@ -11,6 +11,8 @@ import it.polimi.ingsw.model.Shop;
 import it.polimi.ingsw.model.actions.StartGameAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
+import it.polimi.ingsw.model.production.Crafting;
+import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.parser.raw.RawStorage;
 import it.polimi.ingsw.utils.PayloadFactory;
 
@@ -89,6 +91,22 @@ public class SetupState extends State {
                             debugResources.entrySet().stream()
                                     .collect(Collectors.toMap(e -> e.getKey().getId(), Map.Entry::getValue))))
             );
+        }
+
+        //TODO: read from json the correct base crafting
+        for(String username : getGameContext().getGameModel().getPlayerNames()){
+            Crafting baseCrafting = new Crafting(
+                    new HashMap<>(){{
+                        put(ResourceTypeSingleton.getInstance().getAnyResource(), 2);
+                    }},
+                    new HashMap<>() {{
+                        put(ResourceTypeSingleton.getInstance().getAnyResource(), 1);
+                    }},
+                    5
+            );
+            getGameContext().getGameModel().getPlayerById(username).getBoard().getProduction().addBaseCrafting(baseCrafting);
+            globalPayload.add(PayloadFactory.addCrafting(username, baseCrafting.toRaw(), Production.CraftingType.BASE,
+                    getGameContext().getGameModel().getPlayerById(username).getBoard().getProduction().getAllBaseCrafting().size() - 1));
         }
 
 
