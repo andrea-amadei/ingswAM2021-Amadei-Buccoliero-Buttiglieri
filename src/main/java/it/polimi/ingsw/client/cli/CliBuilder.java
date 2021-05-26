@@ -9,7 +9,7 @@ import it.polimi.ingsw.client.model.ClientPlayer;
 public final class CliBuilder {
     public static void createStartFrame(CliFramework framework, ClientModel model) {
         Frame frame = new Frame("start");
-        new PersonalDataCliUpdater(model.getPersonalData(), frame);
+        new LobbyPersonalDataCliUpdater(model.getPersonalData(), frame);
 
         framework.addFrame(frame);
         framework.setActiveFrame("start");
@@ -40,6 +40,8 @@ public final class CliBuilder {
 
             new ModelCliUpdater(model, frame, model.getPlayers().get(i).getUsername());
 
+            new PersonalDataCliUpdater(model.getPersonalData(), frame, 13, 126);
+
             framework.addFrame(frame);
         }
 
@@ -47,6 +49,7 @@ public final class CliBuilder {
         new MarketCliUpdater(model.getMarket(), frame);
         new ShopCliUpdater(model.getShop(), frame);
         new ModelCliUpdater(model, frame, null);
+        new PersonalDataCliUpdater(model.getPersonalData(), frame, 10, 2);
         framework.addFrame(frame);
     }
 }

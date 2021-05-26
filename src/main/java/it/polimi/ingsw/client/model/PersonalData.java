@@ -17,6 +17,7 @@ public class PersonalData implements Observable<PersonalData> {
     private final List<String> serverMessages;
     private final List<String> serverErrors;
     private Set<PossibleActions> possibleActions;
+    private boolean messageConfirmed;
 
     public PersonalData(){
         username = "Unknown";
@@ -51,6 +52,11 @@ public class PersonalData implements Observable<PersonalData> {
         update();
     }
 
+    public void setMessageConfirmed(boolean messageConfirmed) {
+        this.messageConfirmed = messageConfirmed;
+        update();
+    }
+
     public String getUsername() {
         return username;
     }
@@ -69,6 +75,10 @@ public class PersonalData implements Observable<PersonalData> {
 
     public List<String> getServerErrors() {
         return serverErrors;
+    }
+
+    public boolean isMessageConfirmed() {
+        return messageConfirmed;
     }
 
     @Override
