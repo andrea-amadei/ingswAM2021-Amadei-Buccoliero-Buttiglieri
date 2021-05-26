@@ -7,7 +7,6 @@ import it.polimi.ingsw.utils.BackgroundColor;
 import it.polimi.ingsw.utils.ForegroundColor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class PersonalDataCliUpdater implements Listener<PersonalData> {
@@ -103,14 +102,17 @@ public class PersonalDataCliUpdater implements Listener<PersonalData> {
 
         lastMessage = i;
 
+        if(popup.isVisible() && !personalData.isErrorConfirmed())
+            return;
+
         if(lastError < personalData.getServerErrors().size()) {
             error.setText(personalData.getServerErrors().get(lastError));
             lastError++;
             popup.setVisible(true);
-            personalData.setMessageConfirmed(false);
+            personalData.setErrorConfirmed(false);
         }
 
-        if(personalData.isMessageConfirmed())
+        if(personalData.isErrorConfirmed())
             popup.setVisible(false);
     }
 }
