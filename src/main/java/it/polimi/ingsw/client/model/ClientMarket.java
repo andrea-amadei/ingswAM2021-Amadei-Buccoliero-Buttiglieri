@@ -57,6 +57,14 @@ public class ClientMarket implements Observable<ClientMarket> {
         return market;
     }
 
+    public List<List<ConversionOption>> getPossibleConversions() {
+        return possibleConversions;
+    }
+
+    public List<MarbleColor> getSelectedMarbles() {
+        return selectedMarbles;
+    }
+
     @Override
     public void addListener(Listener<ClientMarket> listener) {
         listeners.add(listener);
