@@ -93,7 +93,11 @@ public class InputReader extends Thread{
                 case "switch":
                     parseSwitchCommand(logicalInput);
                     break;
-
+                case "k":
+                case "ok":
+                case "okay":
+                    parseOkayCommand(logicalInput);
+                    break;
                 default:
                     break;
             }
@@ -331,6 +335,15 @@ public class InputReader extends Thread{
 
         }catch(RuntimeException | UnableToDrawElementException e){
             System.out.println("Command not valid");
+        }
+    }
+
+    public void parseOkayCommand(List<String> logicalInput){
+        try {
+            serverHandler.getClient().getPersonalData().setErrorConfirmed(true);
+            framework.renderActiveFrame();
+        } catch (RuntimeException | UnableToDrawElementException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 }
