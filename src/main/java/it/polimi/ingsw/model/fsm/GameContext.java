@@ -1,8 +1,10 @@
 package it.polimi.ingsw.model.fsm;
 
+import it.polimi.ingsw.common.GameConfig;
 import it.polimi.ingsw.exceptions.CountdownException;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.parser.JSONParser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,12 +20,12 @@ public class GameContext {
     private boolean countdownStarted;
     private boolean isSinglePlayer;
     private boolean isHardEndTriggered;
-    private int turnsLeft;
 
     private final String configJson;
     private final String craftingJson;
     private final String faithJson;
     private final String leadersJson;
+    private final GameConfig gameConfig;
 
     /**
      * Creates a new game context. Current player is initially null and by default the game is multiplayer
@@ -39,7 +41,6 @@ public class GameContext {
         currentPlayer = null;
         playerMoved = false;
         countdownStarted = false;
-        turnsLeft = -1;
         isSinglePlayer = false;
         isHardEndTriggered = false;
 
@@ -53,6 +54,8 @@ public class GameContext {
             e.printStackTrace();
             throw new RuntimeException("Wrong path to json files/cannot read default json files");
         }
+
+        this.gameConfig = JSONParser.getGameConfig(configJson);
     }
     /**
      * Creates a new game context specifying if the game is single player or multiplayer. Current player is initially null
@@ -118,34 +121,9 @@ public class GameContext {
 
     /**
      * Starts a new turn countdown to mark the end of the game
-     * @param turnsLeft the amount of turns (one for player) left to play
-     * @throws IllegalArgumentException if turns left isn't positive
-     * @throws CountdownException if the countdown was already running
      */
-    public void startCountdown(int turnsLeft) {
-        if(turnsLeft <= 0)
-            throw new IllegalArgumentException("Turns left must be positive");
-
-        if(countdownStarted)
-            throw new CountdownException("Cannot start countdown while another is already in place");
-
+    public void startCountdown() {
         countdownStarted = true;
-        this.turnsLeft = turnsLeft;
-    }
-
-    /**
-     * Returns the amount of turns left
-     * @return the amount of turns left
-     * @throws CountdownException if no countdown is active or the countdown already ended
-     */
-    public int getTurnsLeft() {
-        if(!countdownStarted)
-            throw new CountdownException("Cannot advance countdown since no countdown is active");
-
-        if(turnsLeft <= 0)
-            throw new CountdownException("Cannot advance countdown since the countdown already ended");
-
-        return turnsLeft;
     }
 
     /**
@@ -156,29 +134,6 @@ public class GameContext {
         return countdownStarted;
     }
 
-    /**
-     * Returns true if the countdown already ended, false otherwise
-     * @return true if the countdown already ended, false otherwise
-     */
-    public boolean hasCountdownEnded() {
-        return countdownStarted && turnsLeft == 0;
-    }
-
-    /**
-     * Advance the countdown by one
-     * @return true if, after the advancement, the countdown ended; false otherwise
-     * @throws CountdownException if no countdown is active or the countdown already ended
-     */
-    public boolean advanceCountdown() {
-        if(!countdownStarted)
-            throw new CountdownException("Cannot advance countdown since no countdown is active");
-
-        if(turnsLeft <= 0)
-            throw new CountdownException("Cannot advance countdown since the countdown already ended");
-
-        turnsLeft--;
-        return turnsLeft == 0;
-    }
 
     /**
      * Returns true iff the hardEnd sequence is triggered
@@ -209,5 +164,9 @@ public class GameContext {
 
     public String getLeadersJson() {
         return leadersJson;
+    }
+
+    public GameConfig getGameConfig() {
+        return gameConfig;
     }
 }

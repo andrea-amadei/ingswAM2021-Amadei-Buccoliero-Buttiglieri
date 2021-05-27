@@ -151,5 +151,22 @@ public class Shop {
         return FlagColor.values().length;
     }
 
-
+    /**
+     * Returns true iff the column of the specified index is empty
+     * @param index the index of the column (0-based)
+     * @return true iff the column of the specified index is emptytrue iff the column of the specified index is empty
+     */
+    public boolean isColumnEmpty(int index){
+        boolean isEmpty = true;
+        for(int i = 0; i < levelAxisSize; i++){
+            try{
+                getTopCard(i, index);
+                isEmpty = false;
+                break;
+            }catch(NoSuchElementException e){
+                isEmpty = true;
+            }
+        }
+        return isEmpty;
+    }
 }

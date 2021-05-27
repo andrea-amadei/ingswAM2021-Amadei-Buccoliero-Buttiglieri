@@ -3,6 +3,7 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.common.ActionQueue;
 import it.polimi.ingsw.common.GameConfig;
 import it.polimi.ingsw.exceptions.ParserException;
+import it.polimi.ingsw.gamematerials.FlagColor;
 import it.polimi.ingsw.gamematerials.MarbleColor;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.fsm.GameContext;
@@ -10,6 +11,10 @@ import it.polimi.ingsw.model.fsm.StateMachine;
 import it.polimi.ingsw.model.fsm.states.SetupState;
 import it.polimi.ingsw.model.holder.FaithHolder;
 import it.polimi.ingsw.model.leader.LeaderCard;
+import it.polimi.ingsw.model.lorenzo.AddFaithToken;
+import it.polimi.ingsw.model.lorenzo.DiscardToken;
+import it.polimi.ingsw.model.lorenzo.ShuffleToken;
+import it.polimi.ingsw.model.lorenzo.Token;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarbleFactory;
 import it.polimi.ingsw.model.market.Market;
@@ -159,7 +164,20 @@ public class ServerBuilder {
         //creating the list (use the real parser)
         List<LeaderCard> leaderCards = buildLeaderCards(leaders);
 
-        return new GameModel(players, market, shop, faithPath, leaderCards);
+        //--------------------------------------------------------------------------------------------------------------
+        //creating the tokens if the game is single player (otherwise tokens are an empty deque)
+        //--------------------------------------------------------------------------------------------------------------
+        Deque<Token> tokens = new ArrayDeque<>();
+
+        if(isSinglePlayer){
+            tokens.add(new ShuffleToken(1));
+            tokens.add(new DiscardToken(FlagColor.YELLOW, 2));
+            tokens.add(new DiscardToken(FlagColor.BLUE, 2));
+            tokens.add(new DiscardToken(FlagColor.GREEN, 2));
+            tokens.add(new DiscardToken(FlagColor.PURPLE, 2));
+            tokens.add(new AddFaithToken(2));
+        }
+        return new GameModel(players, market, shop, faithPath, leaderCards, tokens);
 
     }
 
@@ -170,6 +188,8 @@ public class ServerBuilder {
 
         StateMachine stateMachine = new StateMachine(actionQueue, gameContext, new SetupState(gameContext));
         model.getFaithPath().setListener(stateMachine);
+        for(Token t : model.getLorenzoTokens())
+            t.setListener(stateMachine);
 
         return stateMachine;
     }

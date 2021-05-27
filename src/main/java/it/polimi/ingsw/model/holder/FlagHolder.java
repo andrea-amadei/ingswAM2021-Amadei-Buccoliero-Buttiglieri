@@ -102,6 +102,19 @@ public class FlagHolder {
     }
 
     /**
+     * Returns the total amount of flags owned by the player
+     * @return the total amount of flags owned by the player
+     */
+    public int getTotalAmountOfFlags(){
+        int n = 0;
+        for(Map.Entry<LevelFlag, Integer> entry : flags.entrySet()){
+            n += entry.getValue();
+        }
+
+        return n;
+    }
+
+    /**
      * Clears all flags
      */
     public void reset() {
