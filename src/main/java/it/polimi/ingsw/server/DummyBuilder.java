@@ -187,7 +187,7 @@ public final class DummyBuilder {
         //creating the list (use the real parser)
         List<LeaderCard> leaderCards = DummyBuilder.buildLeaderCards();
 
-        return new GameModel(players, market, shop, faithPath, leaderCards);
+        return new GameModel(players, market, shop, faithPath, leaderCards, new ArrayDeque<>());
 
     }
 

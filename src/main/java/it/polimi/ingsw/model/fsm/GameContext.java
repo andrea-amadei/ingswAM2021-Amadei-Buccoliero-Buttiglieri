@@ -1,8 +1,10 @@
 package it.polimi.ingsw.model.fsm;
 
+import it.polimi.ingsw.common.GameConfig;
 import it.polimi.ingsw.exceptions.CountdownException;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.parser.JSONParser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,6 +26,7 @@ public class GameContext {
     private final String craftingJson;
     private final String faithJson;
     private final String leadersJson;
+    private final GameConfig gameConfig;
 
     /**
      * Creates a new game context. Current player is initially null and by default the game is multiplayer
@@ -53,6 +56,8 @@ public class GameContext {
             e.printStackTrace();
             throw new RuntimeException("Wrong path to json files/cannot read default json files");
         }
+
+        this.gameConfig = JSONParser.getGameConfig(configJson);
     }
     /**
      * Creates a new game context specifying if the game is single player or multiplayer. Current player is initially null
@@ -209,5 +214,9 @@ public class GameContext {
 
     public String getLeadersJson() {
         return leadersJson;
+    }
+
+    public GameConfig getGameConfig() {
+        return gameConfig;
     }
 }

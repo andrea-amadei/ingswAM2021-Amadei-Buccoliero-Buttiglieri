@@ -1,15 +1,13 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.leader.LeaderCard;
+import it.polimi.ingsw.model.lorenzo.Token;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.production.CraftingCard;
 import it.polimi.ingsw.server.DummyBuilder;
 import it.polimi.ingsw.utils.Pair;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -21,6 +19,7 @@ public class GameModel {
     private final Shop shop;
     private final FaithPath faithPath;
     private final List<LeaderCard> leaderCards;
+    private Deque<Token> lorenzoTokens;
 
     /**
      * Creates a new GameModel. This constructor creates a dummy game model.
@@ -43,6 +42,7 @@ public class GameModel {
         }};
         faithPath = new FaithPath(groupPoints, tiles);
         leaderCards = DummyBuilder.buildLeaderCards();
+        lorenzoTokens = new ArrayDeque<>();
     }
 
     public GameModel(List<Player> players){
@@ -53,12 +53,39 @@ public class GameModel {
      * This constructor is used by the builder. The builder builds each component first and then
      * creates the game model
      */
-    public GameModel(List<Player> players, Market market, Shop shop, FaithPath faithPath, List<LeaderCard> leaderCards){
+    public GameModel(List<Player> players, Market market, Shop shop, FaithPath faithPath, List<LeaderCard> leaderCards, Deque<Token> lorenzoTokens){
         this.players = players;
         this.market = market;
         this.shop = shop;
         this.faithPath = faithPath;
         this.leaderCards = leaderCards;
+        this.lorenzoTokens = lorenzoTokens;
+    }
+
+    /**
+     * Shuffles all the tokens
+     */
+    public void shuffleTokens(){
+        List<Token> tokenList = new ArrayList<>(lorenzoTokens);
+        Collections.shuffle(tokenList);
+        lorenzoTokens = new ArrayDeque<>(tokenList);
+    }
+
+    /**
+     * Puts the top token in the last place
+     * @throws NoSuchElementException if the token list is empty
+     */
+    public void swapToken(){
+        Token topToken = lorenzoTokens.removeFirst();
+        lorenzoTokens.addLast(topToken);
+    }
+
+    /**
+     * Returns the lorenzo tokens
+     * @return the lorenzo tokens
+     */
+    public Deque<Token> getLorenzoTokens() {
+        return lorenzoTokens;
     }
 
     /**
