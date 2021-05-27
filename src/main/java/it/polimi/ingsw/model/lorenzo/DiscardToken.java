@@ -60,9 +60,10 @@ public class DiscardToken extends Token{
             }
         }
 
-        if(shop.isColumnEmpty(color.ordinal()))
+        if(shop.isColumnEmpty(color.ordinal())) {
+            gameContext.setHardEnd();
             launchInterrupt(new EndGameAction(), ActionQueue.Priority.SERVER_ACTION.ordinal());
-
+        }
         return payload;
     }
 }

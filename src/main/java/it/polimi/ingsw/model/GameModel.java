@@ -136,5 +136,16 @@ public class GameModel {
      */
     public FaithPath getFaithPath() {return faithPath;}
 
+    /**
+     * returns the leaderCards
+     * @return the leaderCards
+     */
     public List<LeaderCard> getLeaderCards() {return leaderCards;}
+
+    /**
+     * Used for test only
+     */
+    public void setTopToken(Token t){
+        lorenzoTokens.addFirst(t);
+    }
 }

@@ -161,9 +161,10 @@ public class Shop {
         for(int i = 0; i < levelAxisSize; i++){
             try{
                 getTopCard(i, index);
-            }catch(NoSuchElementException e){
                 isEmpty = false;
                 break;
+            }catch(NoSuchElementException e){
+                isEmpty = true;
             }
         }
         return isEmpty;
