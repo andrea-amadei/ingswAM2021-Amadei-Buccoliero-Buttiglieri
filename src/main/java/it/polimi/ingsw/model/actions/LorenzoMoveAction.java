@@ -47,6 +47,7 @@ public class LorenzoMoveAction implements Action {
         Token topToken = model.getLorenzoTokens().getFirst();
         List<PayloadComponent> payload;
         payload = new ArrayList<>(topToken.execute(gameContext));
+        model.swapToken();
 
         return Collections.singletonList(
                 new Message(model.getPlayerNames(), payload)

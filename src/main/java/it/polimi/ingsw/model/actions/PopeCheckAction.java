@@ -101,9 +101,7 @@ public class PopeCheckAction implements Action{
             if(gameContext.isSinglePlayer()){
                 gameContext.setHardEnd();
             }else{
-                //TODO: remove the number of turns left because it also depends on the connection/disconnection.
-                //      Better to take the first player as a reference
-                gameContext.startCountdown(100);
+                gameContext.startCountdown();
             }
         }
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.fsm.states;
 
+import it.polimi.ingsw.common.ActionQueue;
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
@@ -12,6 +13,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Shop;
 import it.polimi.ingsw.model.actions.BackAction;
 import it.polimi.ingsw.model.actions.ConfirmAction;
+import it.polimi.ingsw.model.actions.EndGameAction;
 import it.polimi.ingsw.model.actions.SelectResourcesAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
@@ -238,6 +240,16 @@ public class ShopResourceSelectionState extends State {
         //add the flag of the card to the flag holder
         currentPlayer.getBoard().getFlagHolder().addFlag(card.getFlag());
         payload.add(PayloadFactory.addFlag(currentPlayer.getUsername(), card.getFlag().toRaw()));
+
+        //if the player bought their 7th card, an ending sequence must begin
+        if(currentPlayer.getBoard().getFlagHolder().getTotalAmountOfFlags() == 7) {
+            if (getGameContext().isSinglePlayer()) {
+                getGameContext().setHardEnd();
+                launchInterrupt(new EndGameAction(), ActionQueue.Priority.SERVER_ACTION.ordinal());
+            } else {
+                getGameContext().startCountdown();
+            }
+        }
 
         //reset all selections
         shop.resetSelectedCard();

@@ -40,11 +40,21 @@ public class EndTurnState extends State {
      */
     @Override
     public List<Message> onEntry() {
+
+        //if in single player and Lorenzo has not moved yet, push the lorenzo move in the queue
         if(getGameContext().isSinglePlayer() && !hasLorenzoPlayed && !getGameContext().hasCountdownStarted()){
             launchInterrupt(new LorenzoMoveAction(), 1);
             hasLorenzoPlayed = true;
             return new ArrayList<>();
         }
+
+        //if in single player and hard end is triggered then end the game
+        if(getGameContext().isSinglePlayer() && getGameContext().isHardEndTriggered()){
+            launchInterrupt(new EndGameAction(), 1);
+            return new ArrayList<>();
+        }
+
+
         //compute the next connected player
 
         List<Player> players = getGameContext().getGameModel().getPlayers();
