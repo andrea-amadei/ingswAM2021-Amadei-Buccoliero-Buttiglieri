@@ -66,7 +66,7 @@ public class ShopCliUpdater implements Listener<ClientShop> {
 
                 cards[i][j].setDoubleBorder(true);
 
-                if(clientShop.getSelectedCardRow() == i && clientShop.getSelectedCardCol() == j) {
+                if(clientShop.getSelectedCardRow() != null && clientShop.getSelectedCardCol() != null && clientShop.getSelectedCardRow() == i && clientShop.getSelectedCardCol() == j) {
                     bg = BackgroundColor.GREEN;
                     fg = ForegroundColor.GREEN;
                 }
