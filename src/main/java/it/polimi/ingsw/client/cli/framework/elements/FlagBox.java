@@ -26,6 +26,7 @@ public class FlagBox implements MutablePositionedElement {
     private int level;
     private String color;
     private boolean blockCharactersEnabled;
+    private ForegroundColor blockCharactersColor;
 
     private static final String[] LEVELS = {"   ", " I ", "I I", "III"};
 
@@ -69,6 +70,7 @@ public class FlagBox implements MutablePositionedElement {
         setVisible(true);
         setZIndex(1);
         setBlockCharactersEnabled(true);
+        setBlockCharactersColor(ForegroundColor.BLACK);
     }
 
     @Override
@@ -158,6 +160,14 @@ public class FlagBox implements MutablePositionedElement {
         this.blockCharactersEnabled = blockCharactersEnabled;
     }
 
+    public ForegroundColor getBlockCharactersColor() {
+        return blockCharactersColor;
+    }
+
+    public void setBlockCharactersColor(ForegroundColor blockCharactersColor) {
+        this.blockCharactersColor = blockCharactersColor;
+    }
+
     @Override
     public void draw(OutputHandler outputHandler) throws UnableToDrawElementException {
         if(!isVisible())
@@ -206,10 +216,10 @@ public class FlagBox implements MutablePositionedElement {
                 case TRIANGLE:
                 case CIRCLE:
                     if (isBlockCharactersEnabled()) {
-                        outputHandler.setForegroundColor(getStartingRow() + 2, getStartingColumn(), ForegroundColor.BLACK);
+                        outputHandler.setForegroundColor(getStartingRow() + 2, getStartingColumn(), getBlockCharactersColor());
                         outputHandler.setChar(getStartingRow() + 2, getStartingColumn(), '▄');
 
-                        outputHandler.setForegroundColor(getStartingRow() + 2, getStartingColumn() + 2, ForegroundColor.BLACK);
+                        outputHandler.setForegroundColor(getStartingRow() + 2, getStartingColumn() + 2, getBlockCharactersColor());
                         outputHandler.setChar(getStartingRow() + 2, getStartingColumn() + 2, '▄');
                     } else {
                         outputHandler.setBackgroundColor(getStartingRow() + 2, getStartingColumn(), OutputHandler.getDefaultBackgroundColor());
@@ -220,7 +230,7 @@ public class FlagBox implements MutablePositionedElement {
 
                 case SWALLOWTAIL:
                     if (isBlockCharactersEnabled()) {
-                        outputHandler.setForegroundColor(getStartingRow() + 2, getStartingColumn() + 1, ForegroundColor.BLACK);
+                        outputHandler.setForegroundColor(getStartingRow() + 2, getStartingColumn() + 1, getBlockCharactersColor());
                         outputHandler.setChar(getStartingRow() + 2, getStartingColumn() + 1, '▄');
                     } else
                         outputHandler.setBackgroundColor(getStartingRow() + 2, getStartingColumn() + 1, OutputHandler.getDefaultBackgroundColor());
