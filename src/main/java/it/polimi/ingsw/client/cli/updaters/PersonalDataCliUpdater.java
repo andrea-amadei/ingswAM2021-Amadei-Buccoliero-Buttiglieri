@@ -46,15 +46,7 @@ public class PersonalDataCliUpdater implements Listener<PersonalData> {
     public void setup(PersonalData personalData) {
         int i;
 
-        StringBuilder str = new StringBuilder();
-        for(i = personalData.getServerMessages().size() - 1; i >= 0; i--) {
-            str.append("- ").append(personalData.getServerMessages().get(i)).append('\n');
-        }
-
-        if(str.toString().isEmpty())
-            str.append("[No messages so far]");
-
-        messages = new LongTextBox("messages", messagesStartingRow, messagesStartingColumn, str.toString(), 53, MAX_LINES,
+        messages = new LongTextBox("messages", messagesStartingRow, messagesStartingColumn, "[No messages so far]", 53, MAX_LINES,
                 ForegroundColor.WHITE, BackgroundColor.BLACK);
         messages.setOverflowEnabled(true);
 
@@ -91,7 +83,15 @@ public class PersonalDataCliUpdater implements Listener<PersonalData> {
     public void update(PersonalData personalData) {
         int i, j;
 
+        StringBuilder str = new StringBuilder();
+        for(i = personalData.getServerMessages().size() - 1; i >= 0; i--) {
+            str.append("- ").append(personalData.getServerMessages().get(i)).append('\n');
+        }
 
+        if(str.toString().isEmpty())
+            str.append("[No messages so far]");
+
+        messages.setText(str.toString());
 
         if(popup.isVisible() && !personalData.isErrorConfirmed())
             return;
