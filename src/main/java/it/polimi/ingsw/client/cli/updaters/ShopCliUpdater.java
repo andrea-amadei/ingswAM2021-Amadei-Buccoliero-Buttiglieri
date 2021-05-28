@@ -54,6 +54,8 @@ public class ShopCliUpdater implements Listener<ClientShop> {
     public void update(ClientShop clientShop) {
         GroupBox crafting;
         Map<String, Integer> resources;
+        BackgroundColor bg;
+        ForegroundColor fg;
         int k;
 
         for(int i = 0; i < clientShop.getRowSize(); i++)
@@ -64,10 +66,21 @@ public class ShopCliUpdater implements Listener<ClientShop> {
 
                 cards[i][j].setDoubleBorder(true);
 
+                if(clientShop.getSelectedCardRow() == i && clientShop.getSelectedCardCol() == j) {
+                    bg = BackgroundColor.GREEN;
+                    fg = ForegroundColor.GREEN;
+                }
+                else {
+                    bg = BackgroundColor.BLACK;
+                    fg = ForegroundColor.BLACK;
+                }
+
+                cards[i][j].setBackgroundColor(bg);
+
                 if(clientShop.getGrid()[i][j] == null) {
                     cards[i][j].addElement(
                             new TextBox("empty", cards[i][j].getStartingRow() + 7, cards[i][j].getStartingColumn() + 8,
-                                    "EMPTY", ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK)
+                                    "EMPTY", ForegroundColor.WHITE_BRIGHT, bg)
                     );
                 }
                 else {
@@ -77,7 +90,7 @@ public class ShopCliUpdater implements Listener<ClientShop> {
                         cards[i][j].addElement(
                                 new ResourceBoxWithAmount("cost_" + res,
                                         cards[i][j].getStartingRow() + 2 + k, cards[i][j].getStartingColumn() + 1,
-                                        res, resources.get(res))
+                                        res, resources.get(res), ForegroundColor.WHITE_BRIGHT, bg)
                         );
 
                         k++;
@@ -88,35 +101,37 @@ public class ShopCliUpdater implements Listener<ClientShop> {
                                     clientShop.getGrid()[i][j].getLevel(), clientShop.getGrid()[i][j].getFlag().name())
                     );
 
+                    ((FlagBox) cards[i][j].getElement("flag")).setBlockCharactersColor(fg);
+
                     cards[i][j].addElement(
                             new TextBox("cost", cards[i][j].getStartingRow() + 1, cards[i][j].getStartingColumn() + 1,
-                                    "Cost:", ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK)
+                                    "Cost:", ForegroundColor.WHITE_BRIGHT, bg)
                     );
 
                     cards[i][j].addElement(
                             new TextBox("points", cards[i][j].getStartingRow() + 4, cards[i][j].getStartingColumn() + 10,
                                     "Points: " + clientShop.getGrid()[i][j].getPoints(),
-                                    ForegroundColor.WHITE_BRIGHT,BackgroundColor.BLACK)
+                                    ForegroundColor.WHITE_BRIGHT, bg)
                     );
 
                     cards[i][j].addElement(
                             new TextBox("id", cards[i][j].getStartingRow() + 5, cards[i][j].getStartingColumn() + 14,
                                     "Id: " + clientShop.getGrid()[i][j].getId(),
-                                    ForegroundColor.WHITE_BRIGHT,BackgroundColor.BLACK)
+                                    ForegroundColor.WHITE_BRIGHT, bg)
                     );
 
                     crafting = new GroupBox("crafting", cards[i][j].getStartingRow() + 6, cards[i][j].getStartingColumn() + 1,
                             cards[i][j].getStartingRow() + 13, cards[i][j].getStartingColumn() + 19, "Crafting",
-                            ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK);
+                            ForegroundColor.WHITE_BRIGHT, bg);
 
                     crafting.addElement(
                             new TextBox("arrow", cards[i][j].getStartingRow() + 8, cards[i][j].getStartingColumn() + 9,
-                                    "->", ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK)
+                                    "->", ForegroundColor.WHITE_BRIGHT, bg)
                     );
 
                     crafting.addElement(
                             new TextBox("level", cards[i][j].getStartingRow() + 7, cards[i][j].getStartingColumn() + 2,
-                                    "Level: " + clientShop.getGrid()[i][j].getLevel(), ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK)
+                                    "Level: " + clientShop.getGrid()[i][j].getLevel(), ForegroundColor.WHITE_BRIGHT, bg)
                     );
 
                     resources = clientShop.getGrid()[i][j].getCrafting().getInput();
@@ -125,7 +140,7 @@ public class ShopCliUpdater implements Listener<ClientShop> {
                         crafting.addElement(
                                 new ResourceBoxWithAmount("input_" + res,
                                         cards[i][j].getStartingRow() + 8 + k, cards[i][j].getStartingColumn() + 2,
-                                        res, resources.get(res))
+                                        res, resources.get(res), ForegroundColor.WHITE_BRIGHT, bg)
                         );
 
                         k++;
@@ -137,7 +152,7 @@ public class ShopCliUpdater implements Listener<ClientShop> {
                         crafting.addElement(
                                 new ResourceBoxWithAmount("output_" + res,
                                         cards[i][j].getStartingRow() + 8 + k, cards[i][j].getStartingColumn() + 13,
-                                        res, resources.get(res))
+                                        res, resources.get(res), ForegroundColor.WHITE_BRIGHT, bg)
                         );
 
                         k++;
@@ -146,13 +161,14 @@ public class ShopCliUpdater implements Listener<ClientShop> {
                     if(clientShop.getGrid()[i][j].getCrafting().getFaithOutput() > 0) {
                         crafting.addElement(
                                 new TextBox("plus", cards[i][j].getStartingRow() + 12, cards[i][j].getStartingColumn() + 10,
-                                        "+", ForegroundColor.WHITE_BRIGHT, BackgroundColor.BLACK)
+                                        "+", ForegroundColor.WHITE_BRIGHT, bg)
                         );
 
                         crafting.addElement(
                                 new ResourceBoxWithAmount("output_faith",
                                         cards[i][j].getStartingRow() + 12, cards[i][j].getStartingColumn() + 13,
-                                        "faith", clientShop.getGrid()[i][j].getCrafting().getFaithOutput())
+                                        "faith", clientShop.getGrid()[i][j].getCrafting().getFaithOutput(),
+                                        ForegroundColor.WHITE_BRIGHT, bg)
                         );
                     }
 
