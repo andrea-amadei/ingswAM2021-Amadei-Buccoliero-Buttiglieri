@@ -148,6 +148,10 @@ public class ResourcesMoveAction implements Action{
                 throw new IllegalActionException(e.getMessage());
             }
 
+            if(originShelf.getCurrentType() == null || !originShelf.getCurrentType().equals(resourceToMove)){
+                throw new IllegalActionException("Cannot move resources");
+            }
+
             correctOrigin = storage.getCupboard().getShelfById(origin).getId();
             correctDestination = storage.getCupboard().getShelfById(destination).getId();
 
