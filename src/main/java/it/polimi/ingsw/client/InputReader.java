@@ -318,7 +318,8 @@ public class InputReader extends Thread{
             framework.setActiveFrame("player_1");
             framework.renderActiveFrame();
         }catch(RuntimeException | UnableToDrawElementException e){
-            System.out.println("Command not valid " + e.getMessage());
+            System.out.println("Command not valid ");
+            e.printStackTrace();
         }
     }
 
@@ -335,6 +336,7 @@ public class InputReader extends Thread{
 
         }catch(RuntimeException | UnableToDrawElementException e){
             System.out.println("Command not valid");
+            e.printStackTrace();
         }
     }
 

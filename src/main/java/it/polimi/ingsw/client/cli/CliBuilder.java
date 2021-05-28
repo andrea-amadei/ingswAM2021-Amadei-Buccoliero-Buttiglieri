@@ -40,7 +40,7 @@ public final class CliBuilder {
 
             new ModelCliUpdater(model, frame, model.getPlayers().get(i).getUsername());
 
-            new PersonalDataCliUpdater(model.getPersonalData(), frame, 13, 126);
+            new PersonalDataCliUpdater(model.getPersonalData(), frame, 12, 126);
 
             framework.addFrame(frame);
         }
