@@ -28,6 +28,8 @@ public class ClientModel implements Observable<ClientModel> {
         listeners = new ArrayList<>();
     }
 
+    //test for branch fork
+
     public ClientModel(OutputHandler outputHandler){
         this();
         this.outputHandler = outputHandler;
