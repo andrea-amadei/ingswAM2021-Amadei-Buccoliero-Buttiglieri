@@ -90,10 +90,10 @@ public class Match {
         currentState = MatchState.PLAYING;
 
         //TODO: we will change how these files are passed (also exceptions)
-        String config = null;
-        String crafting = null;
-        String faith = null;
-        String leaders = null;
+        String config;
+        String crafting;
+        String faith;
+        String leaders;
 
         try {
             config = Files.readString(Path.of("src/main/config.json"));

@@ -33,7 +33,7 @@ public class ClientHub {
      * @throws NullPointerException if username or socket are null
      * @throws IllegalArgumentException if there exists another player with the same username in the hub
      */
-    public void addClient(String username, ClientHandler clientHandler){
+    public synchronized void addClient(String username, ClientHandler clientHandler){
         if(username == null || clientHandler == null)
             throw new NullPointerException();
 
@@ -51,7 +51,7 @@ public class ClientHub {
      * @throws NullPointerException if username is null
      * @throws NoSuchElementException if username is not part of the usernames
      */
-    public void disconnectClient(String username){
+    public synchronized void disconnectClient(String username){
         if(username == null)
             throw new NullPointerException();
 
@@ -65,7 +65,7 @@ public class ClientHub {
      * Returns the size of the hub.
      * @return the size of the hub.
      */
-    public int size(){
+    public synchronized int size(){
         return usernames.size();
     }
 
@@ -74,7 +74,7 @@ public class ClientHub {
      * @param username the requested username
      * @return true iff the username is in the hub
      */
-    public boolean contains(String username){
+    public synchronized boolean contains(String username){
         return usernames.contains(username);
     }
 
@@ -84,7 +84,7 @@ public class ClientHub {
      * @return the username-clientHandler pair of the client at position index
      * @throws IndexOutOfBoundsException if index < 0 or index > size of lists
      */
-    public Pair<String, ClientHandler> getClientByIndex(int index){
+    public synchronized Pair<String, ClientHandler> getClientByIndex(int index){
         if(index < 0 || index >= size())
             throw new IndexOutOfBoundsException();
 
@@ -98,7 +98,7 @@ public class ClientHub {
      * @throws NullPointerException if username is null
      * @throws NoSuchElementException if the specified username is not contained in the hub
      */
-    public Pair<String, ClientHandler> getClientByName(String username){
+    public synchronized Pair<String, ClientHandler> getClientByName(String username){
         if(username == null)
             throw new NullPointerException();
 
@@ -112,7 +112,7 @@ public class ClientHub {
      * Return the list of usernames sorted by arrival order
      * @return the list of usernames sorted by arrival order
      */
-    public List<String> getUsernames(){
+    public synchronized List<String> getUsernames(){
         return usernames;
     }
 
@@ -124,7 +124,7 @@ public class ClientHub {
      * @throws NoSuchElementException if there is not such username in the hub
      * @throws AlreadyConnectedClientException if the client with this username is still connected
      */
-    public void reconnectClient(String username, ClientHandler clientHandler) throws AlreadyConnectedClientException {
+    public synchronized void reconnectClient(String username, ClientHandler clientHandler) throws AlreadyConnectedClientException {
         if(username == null || clientHandler == null)
             throw new NullPointerException();
 

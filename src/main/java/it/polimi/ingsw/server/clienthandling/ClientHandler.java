@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.clienthandling;
 
-import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.common.ActionQueue;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.ErrorPayloadComponent;
@@ -13,16 +12,14 @@ import it.polimi.ingsw.model.actions.Action;
 import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.server.Logger;
-import it.polimi.ingsw.server.MatchesManager;
+import it.polimi.ingsw.server.ServerManager;
 import it.polimi.ingsw.server.clienthandling.setupactions.SetupAction;
 import it.polimi.ingsw.utils.Pair;
-import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.lang.reflect.Type;
 import java.net.Socket;
 import java.util.Collections;
 import java.util.List;
@@ -36,11 +33,11 @@ public class ClientHandler implements Runnable{
     private String username;
     private Match currentMatch;
 
-    private final MatchesManager matchesManager;
+    private final ServerManager serverManager;
 
-    public ClientHandler(Socket clientSocket, MatchesManager matchesManager){
+    public ClientHandler(Socket clientSocket, ServerManager serverManager){
         this.clientSocket = clientSocket;
-        this.matchesManager = matchesManager;
+        this.serverManager = serverManager;
         if(clientSocket.isConnected()) {
 
             try {
@@ -109,7 +106,7 @@ public class ClientHandler implements Runnable{
             return;
         }
         try{
-            matchesManager.registerUsername(username);
+            serverManager.registerUsername(username, this);
         }catch(IllegalArgumentException ex){
             sendPayload(new TextSetupPayloadComponent("Someone already registered the username \"" + username + "\""));
             return;
@@ -140,7 +137,7 @@ public class ClientHandler implements Runnable{
         Match match = new Match(matchName, new Pair<>(username, this), playerCount, isSinglePlayer);
 
         try {
-            matchesManager.addMatch(match);
+            serverManager.addMatch(match);
         }catch(IllegalArgumentException e){
             sendPayload(new TextSetupPayloadComponent(e.getMessage()));
         }
@@ -158,12 +155,12 @@ public class ClientHandler implements Runnable{
            sendPayload(new TextSetupPayloadComponent("Match name not inserted"));
            return;
        }
-       if(!matchesManager.alreadyExistentGameName(matchName)){
+       if(!serverManager.alreadyExistentGameName(matchName)){
            sendPayload(new TextSetupPayloadComponent("Match \"" + matchName + "\" does not exist in the server"));
            return;
        }
 
-       Match match = matchesManager.getMatchByName(matchName);
+       Match match = serverManager.getMatchByName(matchName);
 
         try {
             match.addPlayer(new Pair<>(username, this));
