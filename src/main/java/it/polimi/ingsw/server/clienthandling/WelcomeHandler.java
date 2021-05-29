@@ -10,6 +10,7 @@ import java.net.Socket;
 public class WelcomeHandler {
     private ServerSocket serverSocket;
     private final ServerManager serverManager;
+    private DisconnectionManager disconnectionManager;
 
     public WelcomeHandler(int port){
         try {
@@ -23,12 +24,14 @@ public class WelcomeHandler {
     }
 
     public void startServer() {
+        disconnectionManager = new DisconnectionManager(serverManager, 5000);
+        disconnectionManager.start();
         while (true) {
             Socket clientSocket;
 
             try {
                 clientSocket = serverSocket.accept();
-                new Thread(new ClientHandler(clientSocket, serverManager)).start();
+                new Thread(new ClientHandler(clientSocket, serverManager, disconnectionManager)).start();
             } catch (IOException e) {
                 e.printStackTrace();
                 break;

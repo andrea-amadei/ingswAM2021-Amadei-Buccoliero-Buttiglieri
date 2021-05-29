@@ -58,9 +58,6 @@ public class Match {
             e.printStackTrace();
         }
 
-
-
-
     }
 
     public synchronized void addPlayer(Pair<String, ClientHandler> client) throws DuplicateUsernameException, GameNotInLobbyException {
@@ -81,6 +78,23 @@ public class Match {
                 e.printStackTrace();
             }
         }
+    }
+
+    //TODO: check the eventuality in which the player disconnects when the match is ended
+
+    /**
+     * If the match is in Lobby state, then the pair (username, clientHandler) is removed from the clientHub.
+     * If the match is in Playing state, then the clientHandler associated with the specified username is set to null in the clientHub
+     * @param username the disconnecting player's username
+     * @throws RuntimeException if the match is not in Lobby or Playing status
+     */
+    public synchronized void disconnectPlayer(String username){
+        if(currentState.equals(MatchState.LOBBY))
+            clientHub.hardDisconnectClient(username);
+        else if(currentState.equals(MatchState.PLAYING))
+            clientHub.disconnectClient(username);
+        else
+            throw new RuntimeException("A player tried to disconnect once the match was over");
     }
 
     public synchronized void startGame() throws GameNotReadyException {
@@ -110,7 +124,7 @@ public class Match {
             e.printStackTrace();
             throw new RuntimeException("Could not parse the json files");
         }
-        new Controller(stateMachine, actionQueue, clientHub).start();
+        new Controller(stateMachine, actionQueue, clientHub, this).start();
     }
 
     public synchronized void endGame() throws GameNotStartedException{
@@ -135,6 +149,7 @@ public class Match {
     public synchronized List<String> getUsernames() {
         return clientHub.getUsernames();
     }
+
     public synchronized int getMatchSize() {
         return matchSize;
     }

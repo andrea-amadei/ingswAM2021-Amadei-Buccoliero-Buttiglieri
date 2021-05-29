@@ -50,19 +50,22 @@ public class ServerManager {
     }
 
 
+    /**
+     * Adds a new match
+     * @param match the new match
+     * @throws NullPointerException if match is null
+     * @throws IllegalArgumentException if there is another match with the same name or if a player of the new match has
+     */
     public synchronized void addMatch(Match match){
         if(match == null)
             throw new NullPointerException();
         if(alreadyExistentGameName(match.getGameName()))
             throw new IllegalArgumentException("There is another match with name \"" + match.getGameName() + "\"");
-        if(match.getUsernames().stream().anyMatch(this::alreadyExistentUsername))
-            throw new IllegalArgumentException("There is at least a client that has the same username of another client in the server");
-
         matches.add(match);
     }
 
     /**
-     *
+     * Registers a new username
      * @param username the username to add
      * @throws IllegalArgumentException if another username is already registered
      */
@@ -75,6 +78,21 @@ public class ServerManager {
 
         registeredUsernames.add(username);
         registeredHandlers.add(clientHandler);
+    }
+
+    /**
+     * Sets the clientHandler associated with the specified username to null
+     * @param username the username to disconnect from the server
+     * @throws NullPointerException if username is null
+     * @throws NoSuchElementException if username is not present in the server
+     */
+    public synchronized void disconnectPlayer(String username){
+        if(username == null)
+            throw new NullPointerException("Username is null");
+        if(!registeredUsernames.contains(username))
+            throw new NoSuchElementException("The user is not in the server");
+
+        registeredHandlers.set(registeredUsernames.indexOf(username), null);
     }
 
 

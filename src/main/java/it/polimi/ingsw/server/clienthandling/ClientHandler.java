@@ -13,6 +13,7 @@ import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.server.Logger;
 import it.polimi.ingsw.server.ServerManager;
+import it.polimi.ingsw.server.clienthandling.ping.Ping;
 import it.polimi.ingsw.server.clienthandling.setupactions.SetupAction;
 import it.polimi.ingsw.utils.Pair;
 
@@ -23,6 +24,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class ClientHandler implements Runnable{
 
@@ -34,8 +36,9 @@ public class ClientHandler implements Runnable{
     private Match currentMatch;
 
     private final ServerManager serverManager;
+    private final DisconnectionManager disconnectionManager;
 
-    public ClientHandler(Socket clientSocket, ServerManager serverManager){
+    public ClientHandler(Socket clientSocket, ServerManager serverManager, DisconnectionManager disconnectionManager){
         this.clientSocket = clientSocket;
         this.serverManager = serverManager;
         if(clientSocket.isConnected()) {
@@ -53,6 +56,7 @@ public class ClientHandler implements Runnable{
             }
         }
 
+        this.disconnectionManager = disconnectionManager;
     }
 
 
@@ -81,26 +85,29 @@ public class ClientHandler implements Runnable{
                         continue;
                     }
                     currentMatch.getActionQueue().addAction((Action)clientNetworkObject, ActionQueue.Priority.CLIENT_ACTION.ordinal());
+                }else if(clientNetworkObject instanceof Ping){
+                    disconnectionManager.ack(username);
                 }
 
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+                Logger.log("The client with username \"" + Optional.ofNullable(username).orElse("Unknown") + "\" disconnected due to IOException in ClientHandler.run");
                 break;
             }
         }
     }
 
-    public void sendPayload(PayloadComponent payloadComponent){
+    public synchronized void sendPayload(PayloadComponent payloadComponent){
         sendPayload(Collections.singletonList(payloadComponent));
     }
 
-    public void sendPayload(List<PayloadComponent> payloads){
+    public synchronized void sendPayload(List<PayloadComponent> payloads){
         String json = JSONSerializer.toJson(payloads);
         out.println(json);
     }
 
 
-    public void setUsername(String username){
+    public synchronized void setUsername(String username){
         if(this.username != null){
             sendPayload(new TextSetupPayloadComponent("Already chose an username"));
             return;
@@ -116,7 +123,7 @@ public class ClientHandler implements Runnable{
         sendPayload(new SetUsernameSetupPayloadComponent(username));
     }
 
-    public void createMatch(String matchName, int playerCount, boolean isSinglePlayer){
+    public synchronized void createMatch(String matchName, int playerCount, boolean isSinglePlayer){
         if(username == null){
             sendPayload(new TextSetupPayloadComponent("Set your username first"));
             return;
@@ -146,7 +153,7 @@ public class ClientHandler implements Runnable{
         sendPayload(new SetGameNameSetupPayloadComponent(matchName));
     }
 
-    public void joinMatch(String matchName){
+    public synchronized void joinMatch(String matchName){
         if(username == null){
             sendPayload(new TextSetupPayloadComponent("Set your username first"));
             return;
@@ -169,7 +176,23 @@ public class ClientHandler implements Runnable{
         }
         this.currentMatch = match;
         sendPayload(new SetGameNameSetupPayloadComponent(matchName));
+    }
 
+    public synchronized void disconnect() throws IOException {
+        Logger.log("Disconnecting the client \"" + Optional.ofNullable(username).orElse("Unknown") + "\" with the disconnect() method of ClientHandler");
+        if (username == null){
+            clientSocket.close();
+            return;
+        }
 
+        serverManager.disconnectPlayer(username);
+
+        if(currentMatch == null){
+            clientSocket.close();
+            return;
+        }
+
+        currentMatch.disconnectPlayer(username);
+        clientSocket.close();
     }
 }

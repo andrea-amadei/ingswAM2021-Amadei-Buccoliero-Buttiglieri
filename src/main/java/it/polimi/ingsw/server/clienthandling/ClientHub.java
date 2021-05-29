@@ -62,6 +62,24 @@ public class ClientHub {
     }
 
     /**
+     * Removes the player from the hub.
+     * The pair (username, clientHandler) is removed from the list
+     * @param username the username of the disconnected player
+     * @throws NullPointerException if username is null
+     * @throws NoSuchElementException if username is not part of the usernames
+     */
+    public synchronized void hardDisconnectClient(String username){
+        if(username == null)
+            throw new NullPointerException();
+        if(!usernames.contains(username))
+            throw new NoSuchElementException("No player with the username \"" + username +"\"");
+
+        int index = usernames.indexOf(username);
+        usernames.remove(index);
+        clientHandlers.remove(index);
+    }
+
+    /**
      * Returns the size of the hub.
      * @return the size of the hub.
      */
@@ -113,7 +131,7 @@ public class ClientHub {
      * @return the list of usernames sorted by arrival order
      */
     public synchronized List<String> getUsernames(){
-        return usernames;
+        return new ArrayList<>(usernames);
     }
 
     /**

@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.actions.Action;
 import it.polimi.ingsw.model.fsm.StateMachine;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.server.clienthandling.ClientHub;
+import it.polimi.ingsw.server.clienthandling.Match;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ public class Controller extends Thread{
     private final StateMachine stateMachine;
     private final ActionQueue actionQueue;
     private final ClientHub clientHub;
+    private final Match playingMatch;
 
     /**
      * Creates the controller with a state machine, an action queue and a clientHub
@@ -28,10 +30,11 @@ public class Controller extends Thread{
      * @param actionQueue the action queue
      * @param clientHub the client hub
      */
-    public Controller(StateMachine stateMachine, ActionQueue actionQueue, ClientHub clientHub){
+    public Controller(StateMachine stateMachine, ActionQueue actionQueue, ClientHub clientHub, Match playingMatch){
         this.stateMachine = stateMachine;
         this.actionQueue = actionQueue;
         this.clientHub = clientHub;
+        this.playingMatch = playingMatch;
     }
 
     /**
@@ -60,7 +63,6 @@ public class Controller extends Thread{
                     messageDictionary.get(target).addAll(m.getPayloadComponents());
                 }
         }
-        //TODO: for each entry send the payload to the socket
         for(Map.Entry<String, List<PayloadComponent>> entry : messageDictionary.entrySet()){
             if (clientHub.getClientByName(entry.getKey()).getSecond() != null && entry.getValue().size() > 0) {
                 System.out.println("-----------------------------------------------------------");
