@@ -32,11 +32,21 @@ public class ServerManager {
     }
 
     public synchronized boolean alreadyExistentUsername(String username){
-        return matches.stream().anyMatch(m -> m.getUsernames().contains(username));
+        return registeredUsernames.stream().anyMatch(u -> u.equals(username));
     }
 
     public synchronized boolean alreadyExistentGameName(String gameName){
         return matches.stream().anyMatch(m -> m.getGameName().equals(gameName));
+    }
+
+    public synchronized boolean isPlayerConnected(String username){
+        if(username == null)
+            return false;
+        int index = registeredUsernames.indexOf(username);
+        if(index == -1)
+            return false;
+
+        return registeredHandlers.get(index) != null;
     }
 
     public synchronized List<Pair<String, ClientHandler>> getConnectedClients(){
@@ -93,6 +103,15 @@ public class ServerManager {
             throw new NoSuchElementException("The user is not in the server");
 
         registeredHandlers.set(registeredUsernames.indexOf(username), null);
+    }
+
+    public synchronized void reconnectPlayer(String username, ClientHandler handler){
+        if(username == null)
+            throw new NullPointerException("Username is null");
+        if(!registeredUsernames.contains(username))
+            throw new NoSuchElementException("There is no \"" + username + "\" in the server");
+
+        registeredHandlers.set(registeredUsernames.indexOf(username), handler);
     }
 
 

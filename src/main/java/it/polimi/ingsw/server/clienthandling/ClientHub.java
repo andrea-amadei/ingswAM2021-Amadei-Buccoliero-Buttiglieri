@@ -140,17 +140,13 @@ public class ClientHub {
      * @param clientHandler the new clientHandler of the client
      * @throws NullPointerException if username or socket are null
      * @throws NoSuchElementException if there is not such username in the hub
-     * @throws AlreadyConnectedClientException if the client with this username is still connected
      */
-    public synchronized void reconnectClient(String username, ClientHandler clientHandler) throws AlreadyConnectedClientException {
+    public synchronized void reconnectClient(String username, ClientHandler clientHandler){
         if(username == null || clientHandler == null)
             throw new NullPointerException();
 
         if(!contains(username))
             throw new NoSuchElementException();
-
-        if(getClientByName(username).getSecond() != null)
-            throw new AlreadyConnectedClientException("The client with the username \"" + username + "\" is already connected");
 
         clientHandlers.set(usernames.indexOf(username), clientHandler);
     }

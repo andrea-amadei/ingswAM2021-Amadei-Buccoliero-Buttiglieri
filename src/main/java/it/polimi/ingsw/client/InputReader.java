@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.cli.framework.CliFramework;
 import it.polimi.ingsw.common.payload_components.groups.actions.*;
 import it.polimi.ingsw.common.payload_components.groups.setup.CreateMatchSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.JoinMatchSetupPayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.setup.ReconnectSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.SetUsernameSetupPayloadComponent;
 import it.polimi.ingsw.exceptions.UnableToDrawElementException;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
@@ -68,6 +69,9 @@ public class InputReader extends Thread{
                     break;
                 case "resources_move":
                     parseResourcesMoveCommand(logicalInput);
+                    break;
+                case "reconnect":
+                    parseReconnectCommand(logicalInput);
                     break;
                 case "select_card_from_shop":
                     parseSelectCardFromShopCommand(logicalInput);
@@ -346,6 +350,15 @@ public class InputReader extends Thread{
             framework.renderActiveFrame();
         } catch (RuntimeException | UnableToDrawElementException e) {
             System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    public void parseReconnectCommand(List<String> logicalInput){
+        try{
+            String username = logicalInput.get(1);
+            serverHandler.sendPayload(new ReconnectSetupPayloadComponent(username));
+        }catch(RuntimeException e){
+            System.out.println("Command not valid: " + e.getMessage());
         }
     }
 }

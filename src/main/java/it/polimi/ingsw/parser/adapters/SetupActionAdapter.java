@@ -4,10 +4,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import it.polimi.ingsw.server.clienthandling.setupactions.CreateMatchSetupAction;
-import it.polimi.ingsw.server.clienthandling.setupactions.JoinMatchSetupAction;
-import it.polimi.ingsw.server.clienthandling.setupactions.SetUsernameSetupAction;
-import it.polimi.ingsw.server.clienthandling.setupactions.SetupAction;
+import it.polimi.ingsw.server.clienthandling.setupactions.*;
 
 import java.lang.reflect.Type;
 
@@ -24,6 +21,8 @@ public class SetupActionAdapter implements JsonDeserializer<SetupAction> {
                 return jsonDeserializationContext.deserialize(jsonElement, CreateMatchSetupAction.class);
             case "join_match":
                 return jsonDeserializationContext.deserialize(jsonElement, JoinMatchSetupAction.class);
+            case "reconnect":
+                return jsonDeserializationContext.deserialize(jsonElement, ReconnectSetupAction.class);
             default:
                 throw new JsonParseException("Unknown type \"" + serializedType + "\"");
         }

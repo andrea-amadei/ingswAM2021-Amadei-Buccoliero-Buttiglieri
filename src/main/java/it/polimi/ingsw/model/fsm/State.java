@@ -89,6 +89,34 @@ public abstract class State implements InterruptLauncher, ActionHandler{
         return messages;
     }
 
+    //TODO: handle the case in which the target is the current player
+    /**
+     * Disconnects a player.
+     * @param disconnectPlayerAction the action to be executed
+     * @return the list of messages that need to be sent to the clients
+     * @throws FSMTransitionFailedException if the action cannot be executed
+     */
+    @Override
+    public List<Message> handleAction(DisconnectPlayerAction disconnectPlayerAction) throws FSMTransitionFailedException {
+        try {
+            resetNextState();
+            return disconnectPlayerAction.execute(getGameContext());
+        }catch(IllegalActionException e){
+            throw new FSMTransitionFailedException(e.getMessage());
+        }
+    }
+
+    //TODO: handle the case in which the target is the current player
+    @Override
+    public List<Message> handleAction(ReconnectPlayerAction reconnectPlayerAction) throws FSMTransitionFailedException {
+        try {
+            resetNextState();
+            return reconnectPlayerAction.execute(getGameContext());
+        }catch(IllegalActionException e){
+            throw new FSMTransitionFailedException(e.getMessage());
+        }
+    }
+
     /**
      * This method will be executed every time this state is entered from a different state
      * @return the list of messages to be sent to the client

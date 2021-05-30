@@ -97,6 +97,12 @@ public class Match {
             throw new RuntimeException("A player tried to disconnect once the match was over");
     }
 
+    public synchronized void reconnectPlayer(String username, ClientHandler handler){
+        if(!currentState.equals(MatchState.PLAYING))
+            throw new RuntimeException("A player tried to reconnect to a game that was not in playing state");
+        clientHub.reconnectClient(username, handler);
+    }
+
     public synchronized void startGame() throws GameNotReadyException {
         if(!currentState.equals(MatchState.READY))
             throw new GameNotReadyException("The game is not ready");

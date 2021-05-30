@@ -9,6 +9,8 @@ import it.polimi.ingsw.common.payload_components.groups.setup.TextSetupPayloadCo
 import it.polimi.ingsw.exceptions.DuplicateUsernameException;
 import it.polimi.ingsw.exceptions.GameNotInLobbyException;
 import it.polimi.ingsw.model.actions.Action;
+import it.polimi.ingsw.model.actions.DisconnectPlayerAction;
+import it.polimi.ingsw.model.actions.ReconnectPlayerAction;
 import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.server.Logger;
@@ -22,9 +24,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class ClientHandler implements Runnable{
 
@@ -34,6 +34,7 @@ public class ClientHandler implements Runnable{
 
     private String username;
     private Match currentMatch;
+    private boolean freshClient;
 
     private final ServerManager serverManager;
     private final DisconnectionManager disconnectionManager;
@@ -57,6 +58,7 @@ public class ClientHandler implements Runnable{
         }
 
         this.disconnectionManager = disconnectionManager;
+        freshClient = true;
     }
 
 
@@ -66,10 +68,10 @@ public class ClientHandler implements Runnable{
         while (true) {
             try {
                 if ((line = in.readLine()) == null) break;
-                Logger.log("Client sent: " + line);
                 ClientNetworkObject clientNetworkObject = JSONParser.getClientNetworkObject(line);
 
                 if(clientNetworkObject instanceof SetupAction){
+                    Logger.log("Client sent: " + line);
                     try {
                         ((SetupAction) clientNetworkObject).checkFormat();
                     }catch(RuntimeException e){
@@ -78,6 +80,7 @@ public class ClientHandler implements Runnable{
                     }
                     ((SetupAction)clientNetworkObject).execute(this);
                 }else if(clientNetworkObject instanceof Action){
+                    Logger.log("Client sent: " + line);
                     try {
                         ((Action) clientNetworkObject).checkFormat();
                     }catch(RuntimeException e){
@@ -172,7 +175,8 @@ public class ClientHandler implements Runnable{
         try {
             match.addPlayer(new Pair<>(username, this));
         } catch (DuplicateUsernameException | GameNotInLobbyException e) {
-            e.printStackTrace();
+            sendPayload(new TextSetupPayloadComponent("The match is not in lobby state"));
+            return;
         }
         this.currentMatch = match;
         sendPayload(new SetGameNameSetupPayloadComponent(matchName));
@@ -193,6 +197,57 @@ public class ClientHandler implements Runnable{
         }
 
         currentMatch.disconnectPlayer(username);
+        currentMatch.getActionQueue().addAction(new DisconnectPlayerAction(username), 0);
         clientSocket.close();
+    }
+
+    public synchronized void reconnect(String username){
+        if(username == null) {
+            sendPayload(new TextSetupPayloadComponent("Null username, try again"));
+            return;
+        }
+        if(!serverManager.alreadyExistentUsername(username)) {
+            sendPayload(new TextSetupPayloadComponent("There is no registered username \"" + username + "\" in the server. Try again"));
+            return;
+        }
+        if(serverManager.isPlayerConnected(username)) {
+            sendPayload(new TextSetupPayloadComponent("Another client is already connected to the server with the same username. Don't cheat :/"));
+            return;
+        }
+
+        //we can indeed reconnect
+
+        sendPayload(new TextSetupPayloadComponent("You have been reconnected to the server"));
+
+        this.username = username;
+        sendPayload(new SetUsernameSetupPayloadComponent(username));
+
+        //find the match in which the client is playing (if no match is found, set it to null)
+        Set<Match> matches = serverManager.getMatches();
+        currentMatch = matches.stream().filter(m -> m.getUsernames().contains(username)).findFirst().orElse(null);
+
+        //update the player status in the server manager
+        serverManager.reconnectPlayer(username, this);
+
+        if(currentMatch == null)
+            return;
+
+        sendPayload(new SetGameNameSetupPayloadComponent(currentMatch.getGameName()));
+
+        //Reconnect the player to the game.
+        //Note that if the player left the lobby, it is not part of the older game anymore. So if a match is found
+        //it must be in the play state
+
+        currentMatch.reconnectPlayer(username, this);
+        currentMatch.getActionQueue().addAction(new ReconnectPlayerAction(username), 0);
+
+    }
+
+    public synchronized boolean isFreshClient(){
+        return freshClient;
+    }
+
+    public synchronized void setNotFreshClient(){
+        freshClient = false;
     }
 }
