@@ -6,13 +6,12 @@ import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.model.actions.Action;
 import it.polimi.ingsw.model.fsm.StateMachine;
 import it.polimi.ingsw.parser.JSONSerializer;
+import it.polimi.ingsw.server.clienthandling.ClientHandler;
 import it.polimi.ingsw.server.clienthandling.ClientHub;
 import it.polimi.ingsw.server.clienthandling.Match;
+import it.polimi.ingsw.utils.Pair;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The controller of the game. It consumes actions from the ActionQueue (eventually producing action if internal)
@@ -23,6 +22,7 @@ public class Controller extends Thread{
     private final ActionQueue actionQueue;
     private final ClientHub clientHub;
     private final Match playingMatch;
+    private final Map<String, Deque<PayloadComponent>> backup;
 
     /**
      * Creates the controller with a state machine, an action queue and a clientHub
@@ -35,6 +35,11 @@ public class Controller extends Thread{
         this.actionQueue = actionQueue;
         this.clientHub = clientHub;
         this.playingMatch = playingMatch;
+        backup = new HashMap<>();
+        List<String> playerNames = clientHub.getUsernames();
+        for(String username : playerNames){
+            backup.put(username, new ArrayDeque<>());
+        }
     }
 
     /**
@@ -64,14 +69,33 @@ public class Controller extends Thread{
                 }
         }
         for(Map.Entry<String, List<PayloadComponent>> entry : messageDictionary.entrySet()){
-            if (clientHub.getClientByName(entry.getKey()).getSecond() != null && entry.getValue().size() > 0) {
+            if (entry.getValue().size() > 0) {
                 System.out.println("-----------------------------------------------------------");
                 System.out.println("payloads for: " + entry.getKey());
                 for (PayloadComponent component : entry.getValue()) {
                     System.out.println(JSONSerializer.toJson(component));
-                    //clientHub.getClientByName(entry.getKey()).getSecond().sendPayload(component);
                 }
-                clientHub.getClientByName(entry.getKey()).getSecond().sendPayload(entry.getValue());
+
+                //retrieve the clientHandler of the player that need to receive the payload components
+                ClientHandler clientHandler = clientHub.getClientByName(entry.getKey()).getSecond();
+
+                //if the client is connected, proceed to send the payloads
+                if(clientHandler != null) {
+                    if(clientHandler.isFreshClient()){
+                        List<PayloadComponent> earlierNecessaryPayloads = new ArrayList<>();
+                        for(PayloadComponent earlierComponent : backup.get(entry.getKey())){
+                            if(earlierComponent.isNecessary()){
+                                earlierNecessaryPayloads.add(earlierComponent);
+                            }
+                        }
+                        clientHandler.sendPayload(earlierNecessaryPayloads);
+                        clientHandler.setNotFreshClient();
+                    }
+                    clientHandler.sendPayload(entry.getValue());
+                }
+
+                for(PayloadComponent component : entry.getValue())
+                    backup.get(entry.getKey()).addLast(component);
             }
         }
     }

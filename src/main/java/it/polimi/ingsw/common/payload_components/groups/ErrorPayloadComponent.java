@@ -30,6 +30,11 @@ public class ErrorPayloadComponent implements PayloadComponent {
         this.message = message;
     }
 
+    @Override
+    public boolean isNecessary(){
+        return false;
+    }
+
     public String getMessage() {
         return message;
     }
