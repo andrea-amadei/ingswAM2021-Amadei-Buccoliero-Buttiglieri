@@ -58,6 +58,7 @@ public class ClientHandler implements Runnable{
         }
 
         this.disconnectionManager = disconnectionManager;
+        serverManager.addUnregisteredHandler(this);
         freshClient = true;
     }
 
@@ -89,7 +90,11 @@ public class ClientHandler implements Runnable{
                     }
                     currentMatch.getActionQueue().addAction((Action)clientNetworkObject, ActionQueue.Priority.CLIENT_ACTION.ordinal());
                 }else if(clientNetworkObject instanceof Ping){
-                    disconnectionManager.ack(username);
+                    if(username != null) {
+                        disconnectionManager.ack(username);
+                    }else{
+                        disconnectionManager.ackUnregistered(this);
+                    }
                 }
 
             } catch (IOException e) {
@@ -123,6 +128,7 @@ public class ClientHandler implements Runnable{
         }
 
         this.username = username;
+        serverManager.removeUnregisteredClient(this);
         sendPayload(new SetUsernameSetupPayloadComponent(username));
     }
 
@@ -186,6 +192,7 @@ public class ClientHandler implements Runnable{
         Logger.log("Disconnecting the client \"" + Optional.ofNullable(username).orElse("Unknown") + "\" with the disconnect() method of ClientHandler");
         if (username == null){
             clientSocket.close();
+            serverManager.removeUnregisteredClient(this);
             return;
         }
 
@@ -220,6 +227,7 @@ public class ClientHandler implements Runnable{
         sendPayload(new TextSetupPayloadComponent("You have been reconnected to the server"));
 
         this.username = username;
+        serverManager.removeUnregisteredClient(this);
         sendPayload(new SetUsernameSetupPayloadComponent(username));
 
         //find the match in which the client is playing (if no match is found, set it to null)

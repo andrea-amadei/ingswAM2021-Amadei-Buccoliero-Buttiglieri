@@ -17,6 +17,10 @@ public class DisconnectionManager extends Thread{
     private List<Pair<String, ClientHandler>> connectedClients;
     private List<Boolean> ackList;
 
+    private List<ClientHandler> unregisteredHandlers;
+    private List<Boolean> unregisteredAckList;
+
+
     public DisconnectionManager(ServerManager serverManager, int timeout){
         this.serverManager = serverManager;
         this.timeout = timeout;
@@ -31,6 +35,14 @@ public class DisconnectionManager extends Thread{
                 ackList.add(false);
                 client.getSecond().sendPayload(new PingPayloadComponent());
                 Logger.log("SENT PING TO: " + client.getFirst());
+            }
+
+            unregisteredHandlers = serverManager.getUnregisteredHandlers();
+            unregisteredAckList = new ArrayList<>();
+            for(ClientHandler unregister : unregisteredHandlers){
+                unregisteredAckList.add(false);
+                unregister.sendPayload(new PingPayloadComponent());
+                Logger.log("SENT PING TO AN UNREGISTERED CLIENT");
             }
 
             try {
@@ -49,6 +61,17 @@ public class DisconnectionManager extends Thread{
                     }
                 }
             }
+
+            for(int i = 0; i < unregisteredHandlers.size(); i++){
+                if(!unregisteredAckList.get(i)){
+                    try{
+                        unregisteredHandlers.get(i).disconnect();
+                    } catch (IOException e) {
+                        //TODO: think how to handle this exception
+                        Logger.log("The client \"" + connectedClients.get(i).getFirst() + "\" launched an IO exception when ended");
+                    }
+                }
+            }
         }
     }
 
@@ -56,5 +79,10 @@ public class DisconnectionManager extends Thread{
     public synchronized void ack(String username){
         int index = connectedClients.stream().map(Pair::getFirst).collect(Collectors.toList()).indexOf(username);
         ackList.set(index, true);
+    }
+
+    public synchronized void ackUnregistered(ClientHandler handler){
+        int index = unregisteredHandlers.indexOf(handler);
+        unregisteredAckList.set(index, true);
     }
 }

@@ -13,11 +13,13 @@ public class ServerManager {
     private final Set<Match> matches;
     private final List<String> registeredUsernames;
     private final List<ClientHandler> registeredHandlers;
+    private final List<ClientHandler> unregisteredHandlers;
 
     public ServerManager(){
         matches = new HashSet<>();
         registeredUsernames = new ArrayList<>();
         registeredHandlers = new ArrayList<>();
+        unregisteredHandlers = new ArrayList<>();
     }
 
     public synchronized Set<Match> getMatches(){
@@ -57,6 +59,14 @@ public class ServerManager {
         }
 
         return result;
+    }
+
+    public synchronized List<ClientHandler> getUnregisteredHandlers(){
+        return new ArrayList<>(unregisteredHandlers);
+    }
+
+    public synchronized void addUnregisteredHandler(ClientHandler handler){
+        unregisteredHandlers.add(handler);
     }
 
 
@@ -114,6 +124,15 @@ public class ServerManager {
             throw new NoSuchElementException("The user is not in the server");
 
         registeredHandlers.set(registeredUsernames.indexOf(username), null);
+    }
+
+    public synchronized void removeUnregisteredClient(ClientHandler handler){
+        if(handler == null)
+            throw new NullPointerException("Handler is null");
+        if(!unregisteredHandlers.contains(handler))
+            throw new NoSuchElementException("The handler is not present in the list");
+
+        unregisteredHandlers.remove(handler);
     }
 
     public synchronized void reconnectPlayer(String username, ClientHandler handler){
