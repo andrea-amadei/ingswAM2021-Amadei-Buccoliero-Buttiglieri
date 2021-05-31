@@ -240,7 +240,7 @@ public class FaithPath implements InterruptLauncher {
             if (tilePoints > 0) {
                 pointsToAdd += tilePoints;
             }
-            if(tiles.get(i).isPopeCheck()) {
+            if(tiles.get(i).isPopeCheck() && !alreadyTriggeredPopeCheckOrders.contains(tiles.get(i).getOrder())) {
                 newPopeChecks.add(tiles.get(i).getOrder());
             }
         }
