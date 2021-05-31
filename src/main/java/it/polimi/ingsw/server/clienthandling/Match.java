@@ -6,6 +6,7 @@ import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.fsm.StateMachine;
 import it.polimi.ingsw.server.DummyBuilder;
 import it.polimi.ingsw.server.ServerBuilder;
+import it.polimi.ingsw.server.ServerManager;
 import it.polimi.ingsw.utils.Pair;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class Match {
     private StateMachine stateMachine;
     private final ActionQueue actionQueue;
     private final ClientHub clientHub;
+    private final ServerManager serverManager;
 
     private final String gameName;
     private final int matchSize;
@@ -38,7 +40,7 @@ public class Match {
 
 
 
-    public Match(String gameName, Pair<String, ClientHandler> host, int matchSize, boolean isSinglePlayer){
+    public Match(String gameName, Pair<String, ClientHandler> host, int matchSize, boolean isSinglePlayer, ServerManager serverManager){
 
         //TODO: add checks for gameName etc...
 
@@ -46,6 +48,8 @@ public class Match {
         actionQueue = new ActionQueue();
 
         clientHub = new ClientHub();
+
+        this.serverManager = serverManager;
 
         this.gameName = gameName;
         this.matchSize = matchSize;
@@ -91,10 +95,10 @@ public class Match {
     public synchronized void disconnectPlayer(String username){
         if(currentState.equals(MatchState.LOBBY))
             clientHub.hardDisconnectClient(username);
-        else if(currentState.equals(MatchState.PLAYING))
+        else if(currentState.equals(MatchState.PLAYING) || currentState.equals(MatchState.ENDED))
             clientHub.disconnectClient(username);
         else
-            throw new RuntimeException("A player tried to disconnect once the match was over");
+            throw new RuntimeException("The match was in READY state (?.?)");
     }
 
     public synchronized void reconnectPlayer(String username, ClientHandler handler){
@@ -130,13 +134,10 @@ public class Match {
             e.printStackTrace();
             throw new RuntimeException("Could not parse the json files");
         }
-        new Controller(stateMachine, actionQueue, clientHub, this).start();
+        new Controller(stateMachine, actionQueue, clientHub, this, serverManager).start();
     }
 
-    public synchronized void endGame() throws GameNotStartedException{
-        if(!currentState.equals(MatchState.PLAYING))
-            throw new GameNotStartedException("Can't terminate the game if it hasn't started");
-
+    public synchronized void endGame(){
         currentState = MatchState.ENDED;
     }
 

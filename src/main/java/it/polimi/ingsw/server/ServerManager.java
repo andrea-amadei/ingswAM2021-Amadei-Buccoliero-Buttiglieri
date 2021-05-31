@@ -75,6 +75,17 @@ public class ServerManager {
     }
 
     /**
+     * Removes the specified match from the set of matches
+     * @param match the match to be removed
+     * @throws NullPointerException if match is null
+     */
+    public synchronized void removeMatch(Match match){
+        if(match == null)
+            throw new NullPointerException();
+        matches.remove(match);
+    }
+
+    /**
      * Registers a new username
      * @param username the username to add
      * @throws IllegalArgumentException if another username is already registered

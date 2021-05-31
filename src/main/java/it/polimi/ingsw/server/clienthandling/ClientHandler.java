@@ -144,7 +144,7 @@ public class ClientHandler implements Runnable{
             return;
         }
 
-        Match match = new Match(matchName, new Pair<>(username, this), playerCount, isSinglePlayer);
+        Match match = new Match(matchName, new Pair<>(username, this), playerCount, isSinglePlayer, serverManager);
 
         try {
             serverManager.addMatch(match);

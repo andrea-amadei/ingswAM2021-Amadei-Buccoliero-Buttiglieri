@@ -135,6 +135,19 @@ public class ClientHub {
     }
 
     /**
+     * Returns a list of the pairs (username, handler). Handler is null if the player is not connected
+     * @return a list of the pairs (username, handler). Handler is null if the player is not connected
+     */
+    public synchronized List<Pair<String, ClientHandler>> getClients(){
+        List<Pair<String, ClientHandler>> result = new ArrayList<>();
+        for(int i = 0; i < usernames.size(); i++){
+            result.add(new Pair<>(usernames.get(i), clientHandlers.get(i)));
+        }
+
+        return result;
+    }
+
+    /**
      * Reconnects a client to the hub. It substitutes its socket with the new one
      * @param username the username of the client that wants to be reconnected
      * @param clientHandler the new clientHandler of the client

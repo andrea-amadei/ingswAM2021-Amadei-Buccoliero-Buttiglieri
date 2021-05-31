@@ -6,12 +6,16 @@ import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.model.actions.Action;
 import it.polimi.ingsw.model.fsm.StateMachine;
 import it.polimi.ingsw.parser.JSONSerializer;
+import it.polimi.ingsw.server.Logger;
+import it.polimi.ingsw.server.ServerManager;
 import it.polimi.ingsw.server.clienthandling.ClientHandler;
 import it.polimi.ingsw.server.clienthandling.ClientHub;
 import it.polimi.ingsw.server.clienthandling.Match;
 import it.polimi.ingsw.utils.Pair;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The controller of the game. It consumes actions from the ActionQueue (eventually producing action if internal)
@@ -24,17 +28,19 @@ public class Controller extends Thread{
     private final Match playingMatch;
     private final Map<String, Deque<PayloadComponent>> backup;
 
+    private final ServerManager serverManager;
     /**
      * Creates the controller with a state machine, an action queue and a clientHub
      * @param stateMachine the state machine of the game
      * @param actionQueue the action queue
      * @param clientHub the client hub
      */
-    public Controller(StateMachine stateMachine, ActionQueue actionQueue, ClientHub clientHub, Match playingMatch){
+    public Controller(StateMachine stateMachine, ActionQueue actionQueue, ClientHub clientHub, Match playingMatch, ServerManager serverManager){
         this.stateMachine = stateMachine;
         this.actionQueue = actionQueue;
         this.clientHub = clientHub;
         this.playingMatch = playingMatch;
+        this.serverManager = serverManager;
         backup = new HashMap<>();
         List<String> playerNames = clientHub.getUsernames();
         for(String username : playerNames){
@@ -52,7 +58,6 @@ public class Controller extends Thread{
         return stateMachine.executeAction(action);
     }
 
-    //TODO: we may want to send the previously sent messages to the clients that have lost connections (store them in queues?)
     /**
      * Sends all messages to the correct clients (if connected)
      * @param messages the messages to be sent
@@ -100,12 +105,11 @@ public class Controller extends Thread{
         }
     }
 
-    @SuppressWarnings("InfiniteLoopStatement")
     @Override
     public void run(){
         //send the initial messages to the clients
         sendMessages(stateMachine.getCurrentState().onEntry());
-        while(true) {
+        while(!stateMachine.getGameContext().isGameEnded()) {
             List<Message> messages = new ArrayList<>();
             try {
                 messages.addAll(consumeMove());
@@ -115,6 +119,23 @@ public class Controller extends Thread{
 
             sendMessages(messages);
         }
+
+        //set the match state to ended, disconnect all connected clients, remove the match from the list of
+        //matches
+
+        playingMatch.endGame();
+        List<ClientHandler> clientHandlers = clientHub.getClients().stream().map(Pair::getSecond).collect(Collectors.toList());
+        for(ClientHandler clientHandler : clientHandlers){
+            if(clientHandler != null){
+                try {
+                    clientHandler.disconnect();
+                } catch (IOException e) {
+                    Logger.log("A client launched an IO exception when ended");
+                }
+            }
+        }
+
+        serverManager.removeMatch(playingMatch);
     }
 
 

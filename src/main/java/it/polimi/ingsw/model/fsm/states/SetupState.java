@@ -105,9 +105,13 @@ public class SetupState extends State {
             p.getBoard().getFlagHolder().addFlag(yellow);
             p.getBoard().getFlagHolder().addFlag(yellow);
             p.getBoard().getFlagHolder().addFlag(blue);
+            p.getBoard().getFlagHolder().addFlag(blue);
+            p.getBoard().getFlagHolder().addFlag(blue);
             globalPayload.add(PayloadFactory.addFlag(username, green.toRaw()));
             globalPayload.add(PayloadFactory.addFlag(username, yellow.toRaw()));
             globalPayload.add(PayloadFactory.addFlag(username, yellow.toRaw()));
+            globalPayload.add(PayloadFactory.addFlag(username, blue.toRaw()));
+            globalPayload.add(PayloadFactory.addFlag(username, blue.toRaw()));
             globalPayload.add(PayloadFactory.addFlag(username, blue.toRaw()));
 
         }

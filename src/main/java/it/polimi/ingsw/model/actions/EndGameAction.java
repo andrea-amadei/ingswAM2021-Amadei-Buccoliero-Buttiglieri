@@ -37,6 +37,7 @@ public class EndGameAction implements Action{
     public List<Message> execute(GameContext gameContext) throws IllegalActionException {
         if(gameContext == null)
             throw new NullPointerException();
+        gameContext.setGameEnded();
         return new ArrayList<>();
     }
 
