@@ -176,7 +176,7 @@ public class ShelfCliUpdater implements Listener<ClientShelf> {
         }
         else {
             selected.setBackgroundColor(BackgroundColor.GREEN);
-            selected.setText("Sel: " + shelf.getSelectedResources().get(List.copyOf(shelf.getStorage().getResources().keySet()).get(0)));
+            selected.setText("Sel: " + shelf.getSelectedResources().get(List.copyOf(shelf.getSelectedResources().keySet()).get(0)));
         }
     }
 }
