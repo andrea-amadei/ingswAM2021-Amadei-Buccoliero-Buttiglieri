@@ -6,6 +6,7 @@ import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.FlagColor;
 import it.polimi.ingsw.gamematerials.LevelFlag;
 import it.polimi.ingsw.parser.raw.RawLevelFlag;
+import it.polimi.ingsw.utils.ResourceReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -32,10 +33,10 @@ public class AddFlagUpdateTest {
         usernames.add("Giuseppa");
         usernames.add("Domenica");
 
-        String configJSON = Files.readString(Path.of("src/main/config.json"));
-        String craftingJSON = Files.readString(Path.of("src/main/crafting.json"));
-        String faithJSON = Files.readString(Path.of("src/main/faith.json"));
-        String leadersJSON = Files.readString(Path.of("src/main/leaders.json"));
+        String configJSON = Files.readString(ResourceReader.getPathFromResource("cfg/config.json"));
+        String craftingJSON = Files.readString(ResourceReader.getPathFromResource("cfg/crafting.json"));
+        String faithJSON = Files.readString(ResourceReader.getPathFromResource("cfg/faith.json"));
+        String leadersJSON = Files.readString(ResourceReader.getPathFromResource("cfg/leaders.json"));
 
         ClientGameBuilder.buildGame(clientModel, usernames, configJSON, craftingJSON, faithJSON, leadersJSON);
     }

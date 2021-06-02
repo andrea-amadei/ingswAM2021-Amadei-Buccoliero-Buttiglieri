@@ -4,15 +4,14 @@ import it.polimi.ingsw.common.ActionQueue;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.fsm.StateMachine;
-import it.polimi.ingsw.server.DummyBuilder;
 import it.polimi.ingsw.server.ServerBuilder;
 import it.polimi.ingsw.utils.Pair;
+import it.polimi.ingsw.utils.ResourceReader;
 
 import java.io.IOException;
-import java.net.Socket;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -96,10 +95,10 @@ public class Match {
         String leaders = null;
 
         try {
-            config = Files.readString(Path.of("src/main/config.json"));
-            crafting = Files.readString(Path.of("src/main/crafting.json"));
-            faith = Files.readString(Path.of("src/main/faith.json"));
-            leaders = Files.readString(Path.of("src/main/leaders.json"));
+            config = Files.readString(ResourceReader.getPathFromResource("cfg/config.json"));
+            crafting =Files.readString(ResourceReader.getPathFromResource("cfg/crafting.json"));
+            faith = Files.readString(ResourceReader.getPathFromResource("cfg/faith.json"));
+            leaders = Files.readString(ResourceReader.getPathFromResource("cfg/leaders.json"));
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Cannot read from json files while starting the game");

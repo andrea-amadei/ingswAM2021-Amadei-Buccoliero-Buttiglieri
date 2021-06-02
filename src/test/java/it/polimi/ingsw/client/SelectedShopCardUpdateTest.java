@@ -2,11 +2,13 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.model.ClientModel;
 import it.polimi.ingsw.client.updates.SelectedShopCardUpdate;
 import it.polimi.ingsw.exceptions.ParserException;
+import it.polimi.ingsw.utils.ResourceReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ public class SelectedShopCardUpdateTest {
     private ClientModel clientModel;
 
     @BeforeEach
-    public void init() throws IOException, ParserException {
+    public void init() throws IOException, ParserException, URISyntaxException {
         clientModel = new ClientModel();
 
         List<String> usernames = new ArrayList<>();
@@ -28,10 +30,10 @@ public class SelectedShopCardUpdateTest {
         usernames.add("Giuseppa");
         usernames.add("Domenica");
 
-        String configJSON = Files.readString(Path.of("src/main/config.json"));
-        String craftingJSON = Files.readString(Path.of("src/main/crafting.json"));
-        String faithJSON = Files.readString(Path.of("src/main/faith.json"));
-        String leadersJSON = Files.readString(Path.of("src/main/leaders.json"));
+        String configJSON = Files.readString(ResourceReader.getPathFromResource("cfg/config.json"));
+        String craftingJSON = Files.readString(ResourceReader.getPathFromResource("cfg/crafting.json"));
+        String faithJSON = Files.readString(ResourceReader.getPathFromResource("cfg/faith.json"));
+        String leadersJSON = Files.readString(ResourceReader.getPathFromResource("cfg/leaders.json"));
 
         ClientGameBuilder.buildGame(clientModel, usernames, configJSON, craftingJSON, faithJSON, leadersJSON);
     }

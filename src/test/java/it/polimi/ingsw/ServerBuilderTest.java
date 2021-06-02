@@ -3,6 +3,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.server.ServerBuilder;
+import it.polimi.ingsw.utils.ResourceReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,10 +23,10 @@ public class ServerBuilderTest {
 
     @BeforeEach
     public void init() throws IOException {
-        configJson = Files.readString(Path.of("src/main/config.json"));
-        leadersJson = Files.readString(Path.of("src/main/leaders.json"));
-        craftingJson = Files.readString(Path.of("src/main/crafting.json"));
-        faithJson = Files.readString(Path.of("src/main/faith.json"));
+        configJson = Files.readString(ResourceReader.getPathFromResource("cfg/config.json"));
+        craftingJson = Files.readString(ResourceReader.getPathFromResource("cfg/crafting.json"));
+        faithJson = Files.readString(ResourceReader.getPathFromResource("cfg/faith.json"));
+        leadersJson = Files.readString(ResourceReader.getPathFromResource("cfg/leaders.json"));
 
     }
 

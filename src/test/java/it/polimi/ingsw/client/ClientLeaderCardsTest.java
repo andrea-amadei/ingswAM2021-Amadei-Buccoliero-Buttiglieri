@@ -5,6 +5,7 @@ import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.raw.RawLeaderCard;
+import it.polimi.ingsw.utils.ResourceReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +24,7 @@ class ClientLeaderCardsTest {
     @BeforeEach
     public void init(){
         try {
-            leaders = JSONParser.parseLeaders(Paths.get("src/main/leaders.json")).stream().map(LeaderCard::toRaw).collect(Collectors.toList());
+            leaders = JSONParser.parseLeaders(ResourceReader.getPathFromResource("cfg/leaders.json")).stream().map(LeaderCard::toRaw).collect(Collectors.toList());
         } catch (ParserException | IOException e) {
             throw new RuntimeException();
         }

@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.UpgradableCrafting;
 import it.polimi.ingsw.parser.JSONParser;
+import it.polimi.ingsw.utils.ResourceReader;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -124,7 +125,7 @@ public class CraftingTest {
         Player player = new Player("Name", 0);
 
 
-        FaithPath fp = JSONParser.parseFaithPath(Paths.get("src/main/faith.json"));
+        FaithPath fp = JSONParser.parseFaithPath(ResourceReader.getPathFromResource("cfg/faith.json"));
 
         HashMap<ResourceType, Integer> input = new HashMap<>();
         input.put(ResourceTypeSingleton.getInstance().getGoldResource(), 1);

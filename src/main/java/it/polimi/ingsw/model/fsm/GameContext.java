@@ -5,6 +5,7 @@ import it.polimi.ingsw.exceptions.CountdownException;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.parser.JSONParser;
+import it.polimi.ingsw.utils.ResourceReader;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -46,10 +47,10 @@ public class GameContext {
 
         //TODO: probably we will change these paths and is it ok to throw an exception here?
         try {
-            configJson = Files.readString(Path.of("src/main/config.json"));
-            craftingJson = Files.readString(Path.of("src/main/crafting.json"));
-            faithJson = Files.readString(Path.of("src/main/faith.json"));
-            leadersJson = Files.readString(Path.of("src/main/leaders.json"));
+            configJson = Files.readString(ResourceReader.getPathFromResource("cfg/config.json"));
+            craftingJson = Files.readString(ResourceReader.getPathFromResource("cfg/crafting.json"));
+            faithJson = Files.readString(ResourceReader.getPathFromResource("cfg/faith.json"));
+            leadersJson = Files.readString(ResourceReader.getPathFromResource("cfg/leaders.json"));
         }catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Wrong path to json files/cannot read default json files");
