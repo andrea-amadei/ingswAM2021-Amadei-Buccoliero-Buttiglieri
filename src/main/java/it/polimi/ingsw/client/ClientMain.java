@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.cli.CliBuilder;
 import it.polimi.ingsw.client.cli.framework.CliFramework;
 import it.polimi.ingsw.client.model.ClientModel;
 import it.polimi.ingsw.exceptions.UnableToDrawElementException;
+import it.polimi.ingsw.server.clienthandling.DisconnectionManager;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -24,6 +25,9 @@ public class ClientMain {
 
         ServerHandler serverHandler = new ServerHandler(ip, port, client, framework);
         serverHandler.start();
+
+        ClientDisconnectionManager disconnectionManager = new ClientDisconnectionManager(5000, serverHandler);
+        disconnectionManager.start();
 
         InputReader inputReader = new InputReader(serverHandler, framework);
         inputReader.start();

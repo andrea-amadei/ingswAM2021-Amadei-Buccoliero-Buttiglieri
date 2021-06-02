@@ -33,7 +33,8 @@ public class InputReader extends Thread{
 
     @Override
     public void run(){
-        while(true){
+        boolean end = false;
+        while(!end){
             inputString = scanner.nextLine();
             List<String> logicalInput = new ArrayList<>(Arrays.asList(inputString.split(" ")));
             switch(logicalInput.get(0)){
@@ -101,6 +102,9 @@ public class InputReader extends Thread{
                 case "ok":
                 case "okay":
                     parseOkayCommand(logicalInput);
+                    break;
+                case "exit":
+                    end = true;
                     break;
                 default:
                     break;

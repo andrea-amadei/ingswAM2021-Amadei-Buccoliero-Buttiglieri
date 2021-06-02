@@ -7,15 +7,12 @@ import it.polimi.ingsw.client.ping.Ping;
 import it.polimi.ingsw.client.updates.Update;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.PingPayloadComponent;
-import it.polimi.ingsw.common.payload_components.groups.setup.SetUsernameSetupPayloadComponent;
 import it.polimi.ingsw.exceptions.UnableToDrawElementException;
 import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.JSONSerializer;
+import it.polimi.ingsw.server.Logger;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.List;
 
@@ -27,6 +24,9 @@ public class ServerHandler extends Thread{
 
     private final ClientModel client;
     private final CliFramework framework;
+
+    private boolean connected;
+    private boolean pingReceived;
 
     public ServerHandler(String host, int port, ClientModel client, CliFramework framework){
         try {
@@ -47,6 +47,8 @@ public class ServerHandler extends Thread{
             e.printStackTrace();
         }
 
+        this.connected = true;
+        this.pingReceived = false;
         this.client = client;
         this.framework = framework;
     }
@@ -67,26 +69,49 @@ public class ServerHandler extends Thread{
                     }
                     else if(readObject instanceof Ping){
                         sendPayload(new PingPayloadComponent());
+                        setPingReceived(true);
                     }
                 }
                 if(needRefresh)
                     framework.renderActiveFrame();
             } catch (IOException | UnableToDrawElementException e) {
-                e.printStackTrace();
+                Logger.log("The client detected the disconnection with the reader");
                 break;
             }
         }
     }
 
-    public void sendPayload(PayloadComponent payloadComponent){
+    public synchronized void sendPayload(PayloadComponent payloadComponent){
         out.println(JSONSerializer.toJson(payloadComponent));
     }
 
-    public String getUsername(){
+    public synchronized String getUsername(){
         return client.getPersonalData().getUsername();
     }
 
-    public ClientModel getClient() {
+    public synchronized ClientModel getClient() {
         return client;
+    }
+
+    public synchronized boolean isConnected(){
+        return connected;
+    }
+
+    public synchronized void setConnected(boolean connected){
+        this.connected = connected;
+    }
+
+    public synchronized void setPingReceived(boolean pingReceived){
+        this.pingReceived = pingReceived;
+    }
+
+    public synchronized boolean isPingReceived(){
+        return this.pingReceived;
+    }
+
+    public synchronized void disconnect() throws IOException {
+        Logger.log("The client has been disconnected from the server");
+        serverSocket.close();
+        this.connected = false;
     }
 }
