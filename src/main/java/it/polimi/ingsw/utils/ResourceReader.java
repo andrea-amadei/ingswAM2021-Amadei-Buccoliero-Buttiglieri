@@ -9,7 +9,7 @@ public final class ResourceReader {
     private ResourceReader() { }
 
     public static File getFileFromResource(String fileName) {
-        URL resource = ResourceReader.class.getClassLoader().getResource(fileName);
+        URL resource = ResourceReader.class.getProtectionDomain().getClassLoader().getResource(fileName);
 
         if (resource == null)
             throw new IllegalArgumentException("File not found! " + fileName);
@@ -22,7 +22,7 @@ public final class ResourceReader {
     }
 
     public static Path getPathFromResource(String fileName) {
-        URL resource = ResourceReader.class.getClassLoader().getResource(fileName);
+        URL resource = ResourceReader.class.getProtectionDomain().getClassLoader().getResource(fileName);
 
         if (resource == null)
             throw new IllegalArgumentException("File not found! " + fileName);
