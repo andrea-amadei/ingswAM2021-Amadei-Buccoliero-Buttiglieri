@@ -46,15 +46,10 @@ public class GameContext {
         isHardEndTriggered = false;
 
         //TODO: probably we will change these paths and is it ok to throw an exception here?
-        try {
-            configJson = Files.readString(ResourceReader.getPathFromResource("cfg/config.json"));
-            craftingJson = Files.readString(ResourceReader.getPathFromResource("cfg/crafting.json"));
-            faithJson = Files.readString(ResourceReader.getPathFromResource("cfg/faith.json"));
-            leadersJson = Files.readString(ResourceReader.getPathFromResource("cfg/leaders.json"));
-        }catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Wrong path to json files/cannot read default json files");
-        }
+        configJson = ResourceReader.getStringFromResource("cfg/config.json");
+        craftingJson = ResourceReader.getStringFromResource("cfg/crafting.json");
+        faithJson = ResourceReader.getStringFromResource("cfg/faith.json");
+        leadersJson = ResourceReader.getStringFromResource("cfg/leaders.json");
 
         this.gameConfig = JSONParser.getGameConfig(configJson);
     }

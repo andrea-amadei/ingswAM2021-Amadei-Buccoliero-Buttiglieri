@@ -94,15 +94,11 @@ public class Match {
         String faith = null;
         String leaders = null;
 
-        try {
-            config = Files.readString(ResourceReader.getPathFromResource("cfg/config.json"));
-            crafting =Files.readString(ResourceReader.getPathFromResource("cfg/crafting.json"));
-            faith = Files.readString(ResourceReader.getPathFromResource("cfg/faith.json"));
-            leaders = Files.readString(ResourceReader.getPathFromResource("cfg/leaders.json"));
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Cannot read from json files while starting the game");
-        }
+        config = ResourceReader.getStringFromResource("cfg/config.json");
+        crafting = ResourceReader.getStringFromResource("cfg/crafting.json");
+        faith = ResourceReader.getStringFromResource("cfg/faith.json");
+        leaders = ResourceReader.getStringFromResource("cfg/leaders.json");
+
         try {
             this.stateMachine = ServerBuilder.buildStateMachine(config, crafting, faith, leaders, clientHub.getUsernames(), new Random(3), isSinglePlayer, actionQueue);
         } catch (ParserException e) {
