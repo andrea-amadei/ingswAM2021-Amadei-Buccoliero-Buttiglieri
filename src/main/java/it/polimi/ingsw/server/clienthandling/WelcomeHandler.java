@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.clienthandling;
 
 import it.polimi.ingsw.server.Logger;
-import it.polimi.ingsw.server.MatchesManager;
+import it.polimi.ingsw.server.ServerManager;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -9,7 +9,8 @@ import java.net.Socket;
 
 public class WelcomeHandler {
     private ServerSocket serverSocket;
-    private final MatchesManager matchesManager;
+    private final ServerManager serverManager;
+    private DisconnectionManager disconnectionManager;
 
     public WelcomeHandler(int port){
         try {
@@ -18,17 +19,19 @@ public class WelcomeHandler {
             e.printStackTrace();
         }
 
-        matchesManager = new MatchesManager();
+        serverManager = new ServerManager();
 
     }
 
     public void startServer() {
+        disconnectionManager = new DisconnectionManager(serverManager, 5000);
+        disconnectionManager.start();
         while (true) {
             Socket clientSocket;
 
             try {
                 clientSocket = serverSocket.accept();
-                new Thread(new ClientHandler(clientSocket, matchesManager)).start();
+                new Thread(new ClientHandler(clientSocket, serverManager, disconnectionManager)).start();
             } catch (IOException e) {
                 e.printStackTrace();
                 break;

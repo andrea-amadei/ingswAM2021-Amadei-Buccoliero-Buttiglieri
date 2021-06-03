@@ -7,11 +7,17 @@ import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class EndGameAction implements Action{
+public class ReconnectPlayerAction implements Action{
+
+    private final String target;
+
+    public ReconnectPlayerAction(String target){
+        this.target = target;
+        checkFormat();
+    }
     /**
      * Calls the appropriate method of the handler
      *
@@ -28,7 +34,7 @@ public class EndGameAction implements Action{
     }
 
     /**
-     * Informs the state machine that the game is ended.
+     * Executes the action on the provided game context
      *
      * @param gameContext the current context of the game
      * @return a list of messages that contains information about the change applied to the model
@@ -37,11 +43,9 @@ public class EndGameAction implements Action{
      */
     @Override
     public List<Message> execute(GameContext gameContext) throws IllegalActionException {
-        if(gameContext == null)
-            throw new NullPointerException();
-        gameContext.setGameEnded();
+        gameContext.getGameModel().getPlayerById(target).setConnected(true);
         return Collections.singletonList(new Message(gameContext.getGameModel().getPlayerNames(),
-                Collections.singletonList(new InfoPayloadComponent("Game is ended"))));
+                Collections.singletonList(new InfoPayloadComponent("Player \"" + target + "\" re-joined the game"))));
     }
 
     /**
@@ -61,6 +65,7 @@ public class EndGameAction implements Action{
      */
     @Override
     public void checkFormat() {
-
+        if(this.target == null)
+            throw new NullPointerException("The target of the reconnections is null");
     }
 }

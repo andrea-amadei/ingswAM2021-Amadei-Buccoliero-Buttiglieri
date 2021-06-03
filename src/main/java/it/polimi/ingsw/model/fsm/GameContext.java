@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.fsm;
 
 import it.polimi.ingsw.common.GameConfig;
-import it.polimi.ingsw.exceptions.CountdownException;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.parser.JSONParser;
@@ -21,6 +20,7 @@ public class GameContext {
     private boolean countdownStarted;
     private boolean isSinglePlayer;
     private boolean isHardEndTriggered;
+    private boolean gameEnded;
 
     private final String configJson;
     private final String craftingJson;
@@ -44,6 +44,7 @@ public class GameContext {
         countdownStarted = false;
         isSinglePlayer = false;
         isHardEndTriggered = false;
+        gameEnded = false;
 
         //TODO: probably we will change these paths and is it ok to throw an exception here?
         configJson = ResourceReader.getStringFromResource("cfg/config.json");
@@ -144,6 +145,14 @@ public class GameContext {
      */
     public void setHardEnd(){
         isHardEndTriggered = true;
+    }
+
+    public void setGameEnded(){
+        gameEnded = true;
+    }
+
+    public boolean isGameEnded(){
+        return gameEnded;
     }
 
     public String getConfigJson() {

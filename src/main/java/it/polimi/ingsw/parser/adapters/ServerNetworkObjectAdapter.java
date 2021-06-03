@@ -5,6 +5,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import it.polimi.ingsw.client.network.ServerNetworkObject;
+import it.polimi.ingsw.client.ping.Ping;
 import it.polimi.ingsw.client.updates.Update;
 
 import java.lang.reflect.Type;
@@ -19,6 +20,8 @@ public class ServerNetworkObjectAdapter implements JsonDeserializer<ServerNetwor
             case "setup" :
             case "possible_actions":
                 return jsonDeserializationContext.deserialize(jsonElement, Update.class);
+            case "ping":
+                return jsonDeserializationContext.deserialize(jsonElement, Ping.class);
             default:
                 throw new JsonParseException("Unknown group \"" + group + "\"");
         }
