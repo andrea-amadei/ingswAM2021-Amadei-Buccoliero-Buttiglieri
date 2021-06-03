@@ -24,7 +24,7 @@ public class WelcomeHandler {
     }
 
     public void startServer() {
-        disconnectionManager = new DisconnectionManager(serverManager, 5000);
+        disconnectionManager = new DisconnectionManager(serverManager, 2000);
         disconnectionManager.start();
         while (true) {
             Socket clientSocket;

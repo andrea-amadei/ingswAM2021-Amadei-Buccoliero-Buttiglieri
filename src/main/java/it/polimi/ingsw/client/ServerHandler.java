@@ -58,7 +58,10 @@ public class ServerHandler extends Thread{
         List<ServerNetworkObject> readObjects;
         while(true){
             try {
-                readObjects = JSONParser.getServerNetworkObjects(in.readLine());
+                String line = in.readLine();
+                if(line == null)
+                    throw new IOException("Connection terminated");
+                readObjects = JSONParser.getServerNetworkObjects(line);
                 boolean needRefresh = false;
                 for(ServerNetworkObject readObject : readObjects){
                     needRefresh = false;
