@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.clienthandling;
 import it.polimi.ingsw.common.payload_components.groups.PingPayloadComponent;
 import it.polimi.ingsw.server.Logger;
 import it.polimi.ingsw.server.ServerManager;
+import it.polimi.ingsw.utils.ForegroundColor;
 import it.polimi.ingsw.utils.Pair;
 
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class DisconnectionManager extends Thread{
+    private static final boolean PRINT_DEBUG_MESSAGES = false;
 
     private final int timeout;
     private final ServerManager serverManager;
@@ -34,7 +36,9 @@ public class DisconnectionManager extends Thread{
             for(Pair<String, ClientHandler> client : connectedClients){
                 ackList.add(false);
                 client.getSecond().sendPayload(new PingPayloadComponent());
-                Logger.log("SENT PING TO: " + client.getFirst());
+
+                if(PRINT_DEBUG_MESSAGES)
+                    Logger.log("SENT PING TO: " + client.getFirst());
             }
 
             unregisteredHandlers = serverManager.getUnregisteredHandlers();
@@ -42,7 +46,9 @@ public class DisconnectionManager extends Thread{
             for(ClientHandler unregister : unregisteredHandlers){
                 unregisteredAckList.add(false);
                 unregister.sendPayload(new PingPayloadComponent());
-                Logger.log("SENT PING TO AN UNREGISTERED CLIENT");
+
+                if(PRINT_DEBUG_MESSAGES)
+                    Logger.log("SENT PING TO AN UNREGISTERED CLIENT");
             }
 
             try {
@@ -57,7 +63,8 @@ public class DisconnectionManager extends Thread{
                         connectedClients.get(i).getSecond().disconnect();
                     } catch (IOException e) {
                         //TODO: think how to handle this exception
-                        Logger.log("The client \"" + connectedClients.get(i).getFirst() + "\" launched an IO exception when ended");
+                        Logger.log("The client \"" + connectedClients.get(i).getFirst() + "\" launched an IO exception when ended", Logger.Severity.WARNING,
+                                ForegroundColor.YELLOW);
                     }
                 }
             }

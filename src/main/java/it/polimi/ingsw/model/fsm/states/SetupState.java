@@ -103,17 +103,10 @@ public class SetupState extends State {
             Player p = getGameContext().getGameModel().getPlayerById(username);
             p.getBoard().getFlagHolder().addFlag(green);
             p.getBoard().getFlagHolder().addFlag(yellow);
-            p.getBoard().getFlagHolder().addFlag(yellow);
-            p.getBoard().getFlagHolder().addFlag(blue);
-            p.getBoard().getFlagHolder().addFlag(blue);
             p.getBoard().getFlagHolder().addFlag(blue);
             globalPayload.add(PayloadFactory.addFlag(username, green.toRaw()));
             globalPayload.add(PayloadFactory.addFlag(username, yellow.toRaw()));
-            globalPayload.add(PayloadFactory.addFlag(username, yellow.toRaw()));
             globalPayload.add(PayloadFactory.addFlag(username, blue.toRaw()));
-            globalPayload.add(PayloadFactory.addFlag(username, blue.toRaw()));
-            globalPayload.add(PayloadFactory.addFlag(username, blue.toRaw()));
-
         }
 
         //TODO: read from json the correct base crafting
