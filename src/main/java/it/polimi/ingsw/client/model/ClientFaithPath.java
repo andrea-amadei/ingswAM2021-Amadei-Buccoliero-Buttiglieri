@@ -29,39 +29,39 @@ public class ClientFaithPath implements Observable<ClientFaithPath> {
         faithPoints = 0;
     }
 
-    public void addFaithPoints(int amount){
+    public synchronized void addFaithPoints(int amount){
         faithPoints += amount;
         update();
     }
 
-    public void changeCardStatus(int index, FaithHolder.CheckpointStatus status){
+    public synchronized void changeCardStatus(int index, FaithHolder.CheckpointStatus status){
         checkpointStatus.set(index, status);
         update();
     }
 
-    public List<RawFaithPathTile> getTiles() {
-        return tiles;
+    public synchronized List<RawFaithPathTile> getTiles() {
+        return new ArrayList<>(tiles);
     }
 
-    public List<RawFaithPathGroup> getFaithGroups() {
-        return faithGroups;
+    public synchronized List<RawFaithPathGroup> getFaithGroups() {
+        return new ArrayList<>(faithGroups);
     }
 
-    public List<FaithHolder.CheckpointStatus> getCheckpointStatus() {
-        return checkpointStatus;
+    public synchronized List<FaithHolder.CheckpointStatus> getCheckpointStatus() {
+        return new ArrayList<>(checkpointStatus);
     }
 
-    public int getFaithPoints() {
+    public synchronized int getFaithPoints() {
         return faithPoints;
     }
 
     @Override
-    public void addListener(Listener<ClientFaithPath> listener) {
+    public synchronized void addListener(Listener<ClientFaithPath> listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void update() {
+    public synchronized void update() {
         for(Listener<ClientFaithPath> l : listeners)
             l.update(this);
     }

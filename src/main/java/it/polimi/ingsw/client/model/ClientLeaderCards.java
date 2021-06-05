@@ -29,22 +29,22 @@ public class ClientLeaderCards implements Observable<ClientLeaderCards> {
         this.listeners = new ArrayList<>();
     }
 
-    public void addLeaderCard(RawLeaderCard card){
+    public synchronized void addLeaderCard(RawLeaderCard card){
         leaderCards.add(card);
         update();
     }
 
-    public void removeLeaderCard(int index){
+    public synchronized void removeLeaderCard(int index){
         leaderCards.remove(index);
         update();
     }
 
-    public void activateLeaderCard(int index){
+    public synchronized void activateLeaderCard(int index){
         activatedLeaderCardIndexes.add(index);
         update();
     }
 
-    public void activateLeaderCardsById(int id){
+    public synchronized void activateLeaderCardsById(int id){
         RawLeaderCard toActivate = leaderCards.stream()
                 .filter(x -> x.getId() == id)
                 .findFirst()
@@ -53,12 +53,12 @@ public class ClientLeaderCards implements Observable<ClientLeaderCards> {
         activateLeaderCard(leaderCards.indexOf(toActivate));
     }
 
-    public void changeCoveredCardsNumber(int delta){
+    public synchronized void changeCoveredCardsNumber(int delta){
         coveredCards += delta;
         update();
     }
 
-    public void removeLeaderCardById(int id){
+    public synchronized void removeLeaderCardById(int id){
         RawLeaderCard toRemove = leaderCards.stream()
                                .filter(x -> x.getId() == id)
                                .findFirst()
@@ -67,25 +67,25 @@ public class ClientLeaderCards implements Observable<ClientLeaderCards> {
         removeLeaderCard(leaderCards.indexOf(toRemove));
     }
 
-    public List<RawLeaderCard> getLeaderCards() {
-        return leaderCards;
+    public synchronized List<RawLeaderCard> getLeaderCards() {
+        return new ArrayList<>(leaderCards);
     }
 
-    public Set<Integer> getActivatedLeaderCardIndexes() {
-        return activatedLeaderCardIndexes;
+    public synchronized Set<Integer> getActivatedLeaderCardIndexes() {
+        return new HashSet<>(activatedLeaderCardIndexes);
     }
 
-    public int getCoveredCards() {
+    public synchronized int getCoveredCards() {
         return coveredCards;
     }
 
     @Override
-    public void addListener(Listener<ClientLeaderCards> listener) {
+    public synchronized void addListener(Listener<ClientLeaderCards> listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void update() {
+    public synchronized void update() {
         for(Listener<ClientLeaderCards> l : listeners)
             l.update(this);
     }

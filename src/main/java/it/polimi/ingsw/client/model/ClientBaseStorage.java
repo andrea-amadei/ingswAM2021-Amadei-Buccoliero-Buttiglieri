@@ -23,22 +23,22 @@ public class ClientBaseStorage implements Observable<ClientBaseStorage> {
         listeners = new ArrayList<>();
     }
 
-    public RawStorage getStorage() {
+    public synchronized RawStorage getStorage() {
         return storage;
     }
 
-    public Map<String, Integer> getSelectedResources() {
-        return selectedResources;
+    public synchronized Map<String, Integer> getSelectedResources() {
+        return new HashMap<>(selectedResources);
     }
 
-    public void changeResources(RawStorage delta){
+    public synchronized void changeResources(RawStorage delta){
         if(delta == null)
             throw new NullPointerException();
         storage = storage.sum(delta);
         update();
     }
 
-    public void selectResources(String resourceType, Integer amount){
+    public synchronized void selectResources(String resourceType, Integer amount){
         resourceType = resourceType.toLowerCase();
         selectedResources.putIfAbsent(resourceType, 0);
         selectedResources.put(resourceType, selectedResources.get(resourceType) + amount);
@@ -46,18 +46,18 @@ public class ClientBaseStorage implements Observable<ClientBaseStorage> {
         update();
     }
 
-    public void unselect(){
+    public synchronized void unselect(){
         selectedResources.clear();
         update();
     }
 
     @Override
-    public void addListener(Listener<ClientBaseStorage> listener) {
+    public synchronized void addListener(Listener<ClientBaseStorage> listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void update() {
+    public synchronized void update() {
         for(Listener<ClientBaseStorage> l : listeners)
             l.update(this);
     }

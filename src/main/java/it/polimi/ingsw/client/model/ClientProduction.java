@@ -63,7 +63,7 @@ public class ClientProduction implements Observable<ClientProduction> {
      * config file
      * @param baseCrafting the base crafting
      */
-    public void addBaseCrafting(RawCrafting baseCrafting){
+    public synchronized void addBaseCrafting(RawCrafting baseCrafting){
         this.baseCraftings.add(baseCrafting);
         baseCraftingsReady.add(false);
         update();
@@ -76,7 +76,7 @@ public class ClientProduction implements Observable<ClientProduction> {
      * @param level the level of the crafting
      * @param index the index of the slot where the crafting is put
      */
-    public void addUpgradableCrafting(RawCrafting crafting, int level, int index){
+    public synchronized void addUpgradableCrafting(RawCrafting crafting, int level, int index){
         upgradableCraftings.set(index, crafting);
         upgradableLevels.set(index, level);
         upgradableCraftingsReady.set(index, false);
@@ -87,13 +87,13 @@ public class ClientProduction implements Observable<ClientProduction> {
      * Adds a new crafting to the leader crafting list
      * @param crafting the crafting to be added
      */
-    public void addLeaderCrafting(RawCrafting crafting){
+    public synchronized void addLeaderCrafting(RawCrafting crafting){
         leaderCraftings.add(crafting);
         leaderCraftingsReady.add(false);
         update();
     }
 
-    public void setCraftingStatus(Production.CraftingType craftingType, int index, boolean status){
+    public synchronized void setCraftingStatus(Production.CraftingType craftingType, int index, boolean status){
         switch(craftingType){
             case UPGRADABLE:
                 upgradableCraftingsReady.set(index, status);
@@ -113,7 +113,7 @@ public class ClientProduction implements Observable<ClientProduction> {
      * @param selectedType the type of crafting selected
      * @param index the index of the selected crafting
      */
-    public void selectCrafting(Production.CraftingType selectedType, int index){
+    public synchronized void selectCrafting(Production.CraftingType selectedType, int index){
         this.selectedType = selectedType;
         this.selectedCraftingIndex = index;
         update();
@@ -122,59 +122,59 @@ public class ClientProduction implements Observable<ClientProduction> {
     /**
      * Clears the selection
      */
-    public void unselect(){
+    public synchronized void unselect(){
         selectedCraftingIndex = null;
         selectedType = null;
         update();
     }
 
-    public int getUpgradableCraftingNumber() {
+    public synchronized int getUpgradableCraftingNumber() {
         return upgradableCraftingNumber;
     }
 
-    public List<RawCrafting> getBaseCraftings() {
-        return baseCraftings;
+    public synchronized List<RawCrafting> getBaseCraftings() {
+        return new ArrayList<>(baseCraftings);
     }
 
-    public List<RawCrafting> getUpgradableCraftings() {
-        return upgradableCraftings;
+    public synchronized List<RawCrafting> getUpgradableCraftings() {
+        return new ArrayList<>(upgradableCraftings);
     }
 
-    public List<Integer> getUpgradableLevels() {
-        return upgradableLevels;
+    public synchronized List<Integer> getUpgradableLevels() {
+        return new ArrayList<>(upgradableLevels);
     }
 
-    public List<RawCrafting> getLeaderCraftings() {
-        return leaderCraftings;
+    public synchronized List<RawCrafting> getLeaderCraftings() {
+        return new ArrayList<>(leaderCraftings);
     }
 
-    public Integer getSelectedCraftingIndex() {
+    public synchronized Integer getSelectedCraftingIndex() {
         return selectedCraftingIndex;
     }
 
-    public Production.CraftingType getSelectedType() {
+    public synchronized Production.CraftingType getSelectedType() {
         return selectedType;
     }
 
-    public List<Boolean> getBaseCraftingsReady() {
-        return baseCraftingsReady;
+    public synchronized List<Boolean> getBaseCraftingsReady() {
+        return new ArrayList<>(baseCraftingsReady);
     }
 
-    public List<Boolean> getUpgradableCraftingsReady() {
-        return upgradableCraftingsReady;
+    public synchronized List<Boolean> getUpgradableCraftingsReady() {
+        return new ArrayList<>(upgradableCraftingsReady);
     }
 
-    public List<Boolean> getLeaderCraftingsReady() {
-        return leaderCraftingsReady;
+    public synchronized List<Boolean> getLeaderCraftingsReady() {
+        return new ArrayList<>(leaderCraftingsReady);
     }
 
     @Override
-    public void addListener(Listener<ClientProduction> listener) {
+    public synchronized void addListener(Listener<ClientProduction> listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void update() {
+    public synchronized void update() {
         for(Listener<ClientProduction> l : listeners)
             l.update(this);
     }

@@ -31,46 +31,46 @@ public class ClientShelf implements Observable<ClientShelf> {
         this.rawStorage = rawStorage;
     }
 
-    public void changeResources(RawStorage delta){
+    public synchronized void changeResources(RawStorage delta){
         rawStorage = rawStorage.sum(delta);
         update();
     }
 
-    public void selectResources(String resourceType, Integer amount){
+    public synchronized void selectResources(String resourceType, Integer amount){
         resourceType = resourceType.toLowerCase();
         selectedResources.putIfAbsent(resourceType, 0);
         selectedResources.put(resourceType, selectedResources.get(resourceType) + amount);
         update();
     }
 
-    public void unselect(){
+    public synchronized void unselect(){
         selectedResources.clear();
         update();
     }
 
-    public RawStorage getStorage() {
+    public synchronized RawStorage getStorage() {
         return rawStorage;
     }
 
-    public String getAcceptedType() {
+    public synchronized String getAcceptedType() {
         return acceptedType;
     }
 
-    public int getSize() {
+    public synchronized int getSize() {
         return size;
     }
 
-    public Map<String, Integer> getSelectedResources() {
+    public synchronized Map<String, Integer> getSelectedResources() {
         return selectedResources;
     }
 
     @Override
-    public void addListener(Listener<ClientShelf> listener) {
+    public synchronized void addListener(Listener<ClientShelf> listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void update() {
+    public synchronized void update() {
         for(Listener<ClientShelf> l : listeners)
             l.update(this);
     }

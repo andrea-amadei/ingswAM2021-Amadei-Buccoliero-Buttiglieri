@@ -16,22 +16,22 @@ public class ClientFlagHolder implements Observable<ClientFlagHolder> {
         listeners = new ArrayList<>();
     }
 
-    public Set<RawLevelFlag> getFlags() {
-        return flags;
+    public synchronized Set<RawLevelFlag> getFlags() {
+        return new HashSet<>(flags);
     }
 
-    public void addFlag(RawLevelFlag flag){
+    public synchronized void addFlag(RawLevelFlag flag){
         flags.add(flag);
         update();
     }
 
     @Override
-    public void addListener(Listener<ClientFlagHolder> listener) {
+    public synchronized void addListener(Listener<ClientFlagHolder> listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void update() {
+    public synchronized void update() {
         for(Listener<ClientFlagHolder> l : listeners)
             l.update(this);
     }
