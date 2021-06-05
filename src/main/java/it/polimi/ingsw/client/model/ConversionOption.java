@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConversionOption {
@@ -13,7 +14,7 @@ public class ConversionOption {
     }
 
     public List<String> getResources() {
-        return resources;
+        return new ArrayList<>(resources);
     }
 
     public int getFaithPoints() {

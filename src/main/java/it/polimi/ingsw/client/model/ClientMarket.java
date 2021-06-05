@@ -34,44 +34,44 @@ public class ClientMarket implements Observable<ClientMarket> {
         listeners = new ArrayList<>();
     }
 
-    public void changeMarket(RawMarket newMarket){
+    public synchronized void changeMarket(RawMarket newMarket){
         this.market = newMarket;
         update();
     }
 
-    public void changePossibleConversions(List<MarbleColor> selectedMarbles, List<List<ConversionOption>> possibleConversions){
+    public synchronized void changePossibleConversions(List<MarbleColor> selectedMarbles, List<List<ConversionOption>> possibleConversions){
         this.selectedMarbles = selectedMarbles;
         this.possibleConversions = possibleConversions;
         update();
     }
 
-    public int getRowSize() {
+    public synchronized int getRowSize() {
         return rowSize;
     }
 
-    public int getColSize() {
+    public synchronized int getColSize() {
         return colSize;
     }
 
-    public RawMarket getMarket() {
+    public synchronized RawMarket getMarket() {
         return market;
     }
 
-    public List<List<ConversionOption>> getPossibleConversions() {
-        return possibleConversions;
+    public synchronized List<List<ConversionOption>> getPossibleConversions() {
+        return new ArrayList<>(possibleConversions);
     }
 
-    public List<MarbleColor> getSelectedMarbles() {
-        return selectedMarbles;
+    public synchronized List<MarbleColor> getSelectedMarbles() {
+        return new ArrayList<>(selectedMarbles);
     }
 
     @Override
-    public void addListener(Listener<ClientMarket> listener) {
+    public synchronized void addListener(Listener<ClientMarket> listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void update() {
+    public synchronized void update() {
         for(Listener<ClientMarket> l : listeners)
             l.update(this);
     }

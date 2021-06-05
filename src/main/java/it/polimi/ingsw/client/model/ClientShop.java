@@ -33,55 +33,59 @@ public class ClientShop implements Observable<ClientShop> {
         listeners = new ArrayList<>();
     }
 
-    public void changeCard(int row, int col, RawCraftingCard card){
+    public synchronized void changeCard(int row, int col, RawCraftingCard card){
         grid[row][col] = card;
         update();
     }
 
-    public void removeCard(int row, int col){
+    public synchronized void removeCard(int row, int col){
         grid[row][col] = null;
         update();
     }
 
-    public void selectCard(int row, int col){
+    public synchronized void selectCard(int row, int col){
         selectedCardRow = row;
         selectedCardCol = col;
         update();
     }
 
-    public void unselect(){
+    public synchronized void unselect(){
         selectedCardRow = null;
         selectedCardCol = null;
         update();
     }
 
-    public int getRowSize() {
+    public synchronized int getRowSize() {
         return rowSize;
     }
 
-    public int getColSize() {
+    public synchronized int getColSize() {
         return colSize;
     }
 
-    public RawCraftingCard[][] getGrid() {
-        return grid;
+    public synchronized RawCraftingCard[][] getGrid() {
+        RawCraftingCard[][] gridClone = new RawCraftingCard[grid.length][];
+        for(int i = 0; i < grid.length; i++)
+            gridClone[i] = grid[i].clone();
+
+        return gridClone;
     }
 
-    public Integer getSelectedCardRow() {
+    public synchronized Integer getSelectedCardRow() {
         return selectedCardRow;
     }
 
-    public Integer getSelectedCardCol() {
+    public synchronized Integer getSelectedCardCol() {
         return selectedCardCol;
     }
 
     @Override
-    public void addListener(Listener<ClientShop> listener) {
+    public synchronized void addListener(Listener<ClientShop> listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void update() {
+    public synchronized void update() {
         for(Listener<ClientShop> l : listeners)
             l.update(this);
     }

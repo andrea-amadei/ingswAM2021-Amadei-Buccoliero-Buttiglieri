@@ -53,54 +53,54 @@ public class ClientPlayer implements Observable<ClientPlayer> {
         listeners = new ArrayList<>();
     }
 
-    public void addBaseShelf(ClientShelf shelf){
+    public synchronized void addBaseShelf(ClientShelf shelf){
         cupboard.add(shelf);
         update();
     }
 
-    public void addLeaderShelf(ClientShelf shelf){
+    public synchronized void addLeaderShelf(ClientShelf shelf){
         leaderShelves.add(shelf);
         update();
     }
 
-    public void addVictoryPoints(int amount){
+    public synchronized void addVictoryPoints(int amount){
         victoryPoints += amount;
         update();
     }
 
-    public String getUsername() {
+    public synchronized String getUsername() {
         return username;
     }
 
-    public int getVictoryPoints() {
+    public synchronized int getVictoryPoints() {
         return victoryPoints;
     }
 
-    public List<Listener<ClientPlayer>> getListeners() {
-        return listeners;
+    public synchronized List<Listener<ClientPlayer>> getListeners() {
+        return new ArrayList<>(listeners);
     }
 
-    public ClientBaseStorage getChest() {
+    public synchronized ClientBaseStorage getChest() {
         return chest;
     }
 
-    public ClientBaseStorage getHand() {
+    public synchronized ClientBaseStorage getHand() {
         return hand;
     }
 
-    public ClientBaseStorage getMarketBasket() {
+    public synchronized ClientBaseStorage getMarketBasket() {
         return marketBasket;
     }
 
-    public List<ClientShelf> getCupboard() {
-        return cupboard;
+    public synchronized List<ClientShelf> getCupboard() {
+        return new ArrayList<>(cupboard);
     }
 
-    public List<ClientShelf> getLeaderShelves() {
-        return leaderShelves;
+    public synchronized List<ClientShelf> getLeaderShelves() {
+        return new ArrayList<>(leaderShelves);
     }
 
-    public ClientBaseStorage getBaseStorageById(String id){
+    public synchronized ClientBaseStorage getBaseStorageById(String id){
         if(id == null)
             throw new NullPointerException();
 
@@ -112,7 +112,7 @@ public class ClientPlayer implements Observable<ClientPlayer> {
                            .orElseThrow(() -> new NoSuchElementException("There is no ClientBaseStorage with id \"" + id + "\""));
     }
 
-    public ClientShelf getClientShelfById(String id){
+    public synchronized ClientShelf getClientShelfById(String id){
         if(id == null)
             throw new NullPointerException();
 
@@ -126,34 +126,34 @@ public class ClientPlayer implements Observable<ClientPlayer> {
                 .orElseThrow(() -> new NoSuchElementException("There is no ClientShelf with id \"" + id + "\""));
     }
 
-    public ClientProduction getProduction() {
+    public synchronized ClientProduction getProduction() {
         return production;
     }
 
-    public ClientFlagHolder getFlagHolder() {
+    public synchronized ClientFlagHolder getFlagHolder() {
         return flagHolder;
     }
 
-    public ClientDiscountHolder getDiscountHolder() {
+    public synchronized ClientDiscountHolder getDiscountHolder() {
         return discountHolder;
     }
 
-    public ClientLeaderCards getLeaderCards() {
+    public synchronized ClientLeaderCards getLeaderCards() {
         return leaderCards;
     }
 
-    public ClientFaithPath getFaithPath() {
+    public synchronized ClientFaithPath getFaithPath() {
         return faithPath;
     }
 
 
     @Override
-    public void addListener(Listener<ClientPlayer> listener) {
+    public synchronized void addListener(Listener<ClientPlayer> listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void update() {
+    public synchronized void update() {
         for(Listener<ClientPlayer> l : listeners)
             l.update(this);
     }

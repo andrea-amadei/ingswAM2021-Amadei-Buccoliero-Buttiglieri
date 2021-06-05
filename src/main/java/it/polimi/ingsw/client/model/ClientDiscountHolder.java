@@ -19,24 +19,24 @@ public class ClientDiscountHolder implements Observable<ClientDiscountHolder> {
         discounts = new HashMap<>();
     }
 
-    public void addDiscount(String resourceType, Integer discount){
+    public synchronized void addDiscount(String resourceType, Integer discount){
         resourceType = resourceType.toLowerCase();
         discounts.putIfAbsent(resourceType, 0);
         discounts.put(resourceType, discounts.get(resourceType) + discount);
         update();
     }
 
-    public Map<String, Integer> getDiscounts() {
-        return discounts;
+    public synchronized Map<String, Integer> getDiscounts() {
+        return new HashMap<>(discounts);
     }
 
     @Override
-    public void addListener(Listener<ClientDiscountHolder> listener) {
+    public synchronized void addListener(Listener<ClientDiscountHolder> listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void update() {
+    public synchronized void update() {
         for(Listener<ClientDiscountHolder> l : listeners)
             l.update(this);
     }

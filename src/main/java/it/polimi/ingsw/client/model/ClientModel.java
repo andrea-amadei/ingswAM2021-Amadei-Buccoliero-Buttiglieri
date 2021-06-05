@@ -28,7 +28,6 @@ public class ClientModel implements Observable<ClientModel> {
         listeners = new ArrayList<>();
     }
 
-    //test for branch fork
 
     public ClientModel(OutputHandler outputHandler){
         this();
@@ -36,40 +35,40 @@ public class ClientModel implements Observable<ClientModel> {
 
     }
 
-    public void setLeaderCards(List<RawLeaderCard> leaderCards) {
+    public synchronized void setLeaderCards(List<RawLeaderCard> leaderCards) {
         this.leaderCards = leaderCards;
     }
 
-    public void setCraftingCards(List<RawCraftingCard> craftingCards) {
+    public synchronized void setCraftingCards(List<RawCraftingCard> craftingCards) {
         this.craftingCards = craftingCards;
     }
 
-    public void setPlayers(List<ClientPlayer> players) {
+    public synchronized void setPlayers(List<ClientPlayer> players) {
         this.players = players;
     }
 
-    public void setCurrentPlayer(ClientPlayer nextCurrentPlayer){
+    public synchronized void setCurrentPlayer(ClientPlayer nextCurrentPlayer){
         this.currentPlayer = nextCurrentPlayer;
         update();
     }
 
-    public void setMarket(ClientMarket market) {
+    public synchronized void setMarket(ClientMarket market) {
         this.market = market;
     }
 
-    public void setShop(ClientShop shop) {
+    public synchronized void setShop(ClientShop shop) {
         this.shop = shop;
     }
 
-    public PersonalData getPersonalData(){
+    public synchronized PersonalData getPersonalData(){
         return personalData;
     }
 
-    public List<ClientPlayer> getPlayers() {
-        return players;
+    public synchronized List<ClientPlayer> getPlayers() {
+        return new ArrayList<>(players);
     }
 
-    public ClientPlayer getPlayerByName(String username){
+    public synchronized ClientPlayer getPlayerByName(String username){
         if(username == null)
             throw new NullPointerException();
 
@@ -79,52 +78,52 @@ public class ClientModel implements Observable<ClientModel> {
                       .orElseThrow(()->new NoSuchElementException("no player \"" + username + "\""));
     }
 
-    public ClientPlayer getCurrentPlayer() {
+    public synchronized ClientPlayer getCurrentPlayer() {
         return currentPlayer;
     }
 
 
-    public ClientShop getShop() {
+    public synchronized ClientShop getShop() {
         return shop;
     }
 
-    public ClientMarket getMarket() {
+    public synchronized ClientMarket getMarket() {
         return market;
     }
 
-    public List<RawLeaderCard> getLeaderCards() {
-        return leaderCards;
+    public synchronized List<RawLeaderCard> getLeaderCards() {
+        return new ArrayList<>(leaderCards);
     }
 
-    public RawLeaderCard getLeaderCardById(int id){
+    public synchronized RawLeaderCard getLeaderCardById(int id){
         return leaderCards.stream()
                           .filter(c -> c.getId() == id)
                           .findFirst()
                           .orElseThrow(() -> new NoSuchElementException("No leader card with id " + id));
     }
 
-    public List<RawCraftingCard> getCraftingCards() {
-        return craftingCards;
+    public synchronized List<RawCraftingCard> getCraftingCards() {
+        return new ArrayList<>(craftingCards);
     }
 
-    public RawCraftingCard getCraftingCardById(int id){
+    public synchronized RawCraftingCard getCraftingCardById(int id){
         return craftingCards.stream()
                             .filter(c -> c.getId() == id)
                             .findFirst()
                             .orElseThrow(()-> new NoSuchElementException("No crafting card with id " + id));
     }
 
-    public OutputHandler getOutputHandler(){
+    public synchronized OutputHandler getOutputHandler(){
         return this.outputHandler;
     }
 
     @Override
-    public void addListener(Listener<ClientModel> listener) {
+    public synchronized void addListener(Listener<ClientModel> listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void update() {
+    public synchronized void update() {
         for(Listener<ClientModel> l : listeners)
             l.update(this);
     }

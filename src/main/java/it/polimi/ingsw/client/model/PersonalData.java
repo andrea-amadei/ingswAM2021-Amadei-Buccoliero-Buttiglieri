@@ -27,67 +27,67 @@ public class PersonalData implements Observable<PersonalData> {
         serverErrors = new ArrayList<>();
     }
 
-    public void setUsername(String username){
+    public synchronized void setUsername(String username){
         this.username = username;
         update();
     }
 
-    public void setGameName(String gameName){
+    public synchronized void setGameName(String gameName){
         this.gameName = gameName;
         update();
     }
 
-    public void addServerMessage(String message){
+    public synchronized void addServerMessage(String message){
         serverMessages.add(message);
         update();
     }
 
-    public void addError(String error){
+    public synchronized void addError(String error){
         serverErrors.add(error);
         update();
     }
 
-    public void setPossibleActions(Set<PossibleActions> possibleActions){
+    public synchronized void setPossibleActions(Set<PossibleActions> possibleActions){
         this.possibleActions = possibleActions;
         update();
     }
 
-    public void setErrorConfirmed(boolean errorConfirmed) {
+    public synchronized void setErrorConfirmed(boolean errorConfirmed) {
         this.errorConfirmed = errorConfirmed;
         update();
     }
 
-    public String getUsername() {
+    public synchronized String getUsername() {
         return username;
     }
 
-    public String getGameName() {
+    public synchronized String getGameName() {
         return gameName;
     }
 
-    public Set<PossibleActions> getPossibleActions() {
-        return possibleActions;
+    public synchronized Set<PossibleActions> getPossibleActions() {
+        return new HashSet<>(possibleActions);
     }
 
-    public List<String> getServerMessages() {
-        return serverMessages;
+    public synchronized List<String> getServerMessages() {
+        return new ArrayList<>(serverMessages);
     }
 
-    public List<String> getServerErrors() {
-        return serverErrors;
+    public synchronized List<String> getServerErrors() {
+        return new ArrayList<>(serverErrors);
     }
 
-    public boolean isErrorConfirmed() {
+    public synchronized boolean isErrorConfirmed() {
         return errorConfirmed;
     }
 
     @Override
-    public void addListener(Listener<PersonalData> listener) {
+    public synchronized void addListener(Listener<PersonalData> listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void update() {
+    public synchronized void update() {
         for(Listener<PersonalData> l : listeners){
             l.update(this);
         }
