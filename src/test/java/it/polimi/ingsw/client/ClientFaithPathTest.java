@@ -8,12 +8,11 @@ import it.polimi.ingsw.model.holder.FaithHolder;
 import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.raw.RawFaithPathGroup;
 import it.polimi.ingsw.parser.raw.RawFaithPathTile;
-import it.polimi.ingsw.utils.ResourceReader;
+import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,8 +26,8 @@ public class ClientFaithPathTest {
     @BeforeEach
     public void init() throws IOException, ParserException {
         JSONParser.setShowLogs(false);
-        tiles = JSONParser.parseFaithPath(ResourceReader.getPathFromResource("cfg/faith.json")).getTiles().stream().map(FaithPathTile::toRaw).collect(Collectors.toList());
-        groups = JSONParser.parseFaithPath(ResourceReader.getPathFromResource("cfg/faith.json")).getFaithGroupList().stream().map(FaithPathGroup::toRaw).collect(Collectors.toList());
+        tiles = JSONParser.parseFaithPath(ResourceLoader.getPathFromResource("cfg/faith.json")).getTiles().stream().map(FaithPathTile::toRaw).collect(Collectors.toList());
+        groups = JSONParser.parseFaithPath(ResourceLoader.getPathFromResource("cfg/faith.json")).getFaithGroupList().stream().map(FaithPathGroup::toRaw).collect(Collectors.toList());
     }
 
     @Test

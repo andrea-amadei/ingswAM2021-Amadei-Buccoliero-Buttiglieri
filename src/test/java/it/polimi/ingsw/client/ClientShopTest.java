@@ -5,12 +5,11 @@ import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.model.production.CraftingCard;
 import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.raw.RawCraftingCard;
-import it.polimi.ingsw.utils.ResourceReader;
+import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +22,7 @@ public class ClientShopTest {
     @BeforeEach
     public void init() throws ParserException, IOException {
         JSONParser.setShowLogs(false);
-        craftingCards = JSONParser.parseCraftingCards(ResourceReader.getPathFromResource("cfg/crafting.json")).stream().map(CraftingCard::toRaw).collect(Collectors.toList());
+        craftingCards = JSONParser.parseCraftingCards(ResourceLoader.getPathFromResource("cfg/crafting.json")).stream().map(CraftingCard::toRaw).collect(Collectors.toList());
     }
     @Test
     public void creation(){

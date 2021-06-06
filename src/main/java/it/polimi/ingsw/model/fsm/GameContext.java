@@ -4,11 +4,7 @@ import it.polimi.ingsw.common.GameConfig;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.parser.JSONParser;
-import it.polimi.ingsw.utils.ResourceReader;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import it.polimi.ingsw.utils.ResourceLoader;
 
 /**
  * The game context of this game. It contains the model and information about the evolution of the game
@@ -47,10 +43,10 @@ public class GameContext {
         gameEnded = false;
 
         //TODO: probably we will change these paths and is it ok to throw an exception here?
-        configJson = ResourceReader.getStringFromResource("cfg/config.json");
-        craftingJson = ResourceReader.getStringFromResource("cfg/crafting.json");
-        faithJson = ResourceReader.getStringFromResource("cfg/faith.json");
-        leadersJson = ResourceReader.getStringFromResource("cfg/leaders.json");
+        configJson = ResourceLoader.loadFile("cfg/config.json");
+        craftingJson = ResourceLoader.loadFile("cfg/crafting.json");
+        faithJson = ResourceLoader.loadFile("cfg/faith.json");
+        leadersJson = ResourceLoader.loadFile("cfg/leaders.json");
 
         this.gameConfig = JSONParser.getGameConfig(configJson);
     }

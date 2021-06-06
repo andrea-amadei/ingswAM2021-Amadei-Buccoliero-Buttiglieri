@@ -7,12 +7,8 @@ import it.polimi.ingsw.model.fsm.StateMachine;
 import it.polimi.ingsw.server.ServerBuilder;
 import it.polimi.ingsw.server.ServerManager;
 import it.polimi.ingsw.utils.Pair;
-import it.polimi.ingsw.utils.ResourceReader;
+import it.polimi.ingsw.utils.ResourceLoader;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Random;
 
@@ -118,10 +114,10 @@ public class Match {
         String faith;
         String leaders;
 
-        config = ResourceReader.getStringFromResource("cfg/config.json");
-        crafting = ResourceReader.getStringFromResource("cfg/crafting.json");
-        faith = ResourceReader.getStringFromResource("cfg/faith.json");
-        leaders = ResourceReader.getStringFromResource("cfg/leaders.json");
+        config = ResourceLoader.loadFile("cfg/config.json");
+        crafting = ResourceLoader.loadFile("cfg/crafting.json");
+        faith = ResourceLoader.loadFile("cfg/faith.json");
+        leaders = ResourceLoader.loadFile("cfg/leaders.json");
 
         try {
             this.stateMachine = ServerBuilder.buildStateMachine(config, crafting, faith, leaders, clientHub.getUsernames(), new Random(3), isSinglePlayer, actionQueue);

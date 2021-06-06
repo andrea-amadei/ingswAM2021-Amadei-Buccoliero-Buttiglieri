@@ -17,10 +17,9 @@ import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.model.production.UpgradableCrafting;
 import it.polimi.ingsw.model.storage.*;
 import it.polimi.ingsw.parser.JSONParser;
-import it.polimi.ingsw.utils.ResourceReader;
+import it.polimi.ingsw.utils.ResourceLoader;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.*;
 
 public final class DummyBuilder {
@@ -33,7 +32,7 @@ public final class DummyBuilder {
     public static List<LeaderCard> buildLeaderCards(){
         JSONParser.setShowLogs(false);
         try {
-            return JSONParser.parseLeaders(ResourceReader.getPathFromResource("cfg/leaders.json"));
+            return JSONParser.parseLeaders(ResourceLoader.getPathFromResource("cfg/leaders.json"));
         }catch(IOException | ParserException e1){
             Logger.log(e1.getMessage(), Logger.Severity.ERROR);
             return null;
