@@ -18,6 +18,7 @@ public class PersonalData implements Observable<PersonalData> {
     private final List<String> serverErrors;
     private Set<PossibleActions> possibleActions;
     private boolean errorConfirmed;
+    private boolean gameStarted;
 
     public PersonalData(){
         username = "Unknown";
@@ -25,6 +26,7 @@ public class PersonalData implements Observable<PersonalData> {
         serverMessages = new ArrayList<>();
         possibleActions = new HashSet<>();
         serverErrors = new ArrayList<>();
+        gameStarted = false;
     }
 
     public synchronized void setUsername(String username){
@@ -57,6 +59,11 @@ public class PersonalData implements Observable<PersonalData> {
         update();
     }
 
+    public synchronized void setGameStarted(){
+        this.gameStarted = true;
+        update();
+    }
+
     public synchronized String getUsername() {
         return username;
     }
@@ -79,6 +86,10 @@ public class PersonalData implements Observable<PersonalData> {
 
     public synchronized boolean isErrorConfirmed() {
         return errorConfirmed;
+    }
+
+    public boolean isGameStarted() {
+        return gameStarted;
     }
 
     @Override

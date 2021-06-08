@@ -120,6 +120,16 @@ public class ClientHandler implements Runnable{
             sendPayload(new TextSetupPayloadComponent("Already chose an username"));
             return;
         }
+
+        if(username.equalsIgnoreCase("Unknown")){
+            sendPayload(new TextSetupPayloadComponent("Username \"" + username + "\" is invalid"));
+            return;
+        }
+
+        if(username.length() <= 2 || username.length() >= 24){
+            sendPayload(new TextSetupPayloadComponent("Username length must be between 2 and 24"));
+            return;
+        }
         try{
             serverManager.registerUsername(username, this);
         }catch(IllegalArgumentException ex){

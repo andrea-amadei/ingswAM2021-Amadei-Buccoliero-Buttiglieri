@@ -1,6 +1,5 @@
 package it.polimi.ingsw.utils;
 
-import it.polimi.ingsw.JFXTest;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
