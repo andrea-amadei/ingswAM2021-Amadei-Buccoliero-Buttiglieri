@@ -42,6 +42,8 @@ public class InitialConfigurationUpdate implements Update{
             e.printStackTrace();
             throw new RuntimeException("The server sent an invalid json file (could not be parsed)");
         }
+
+        client.getPersonalData().setGameStarted();
     }
 
     @Override
