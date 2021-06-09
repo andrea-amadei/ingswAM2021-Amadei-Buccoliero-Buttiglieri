@@ -6,6 +6,7 @@ import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.actions.*;
 import it.polimi.ingsw.model.fsm.states.EndGameState;
+import it.polimi.ingsw.model.fsm.states.EndTurnState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,12 +99,20 @@ public abstract class State implements InterruptLauncher, ActionHandler{
      */
     @Override
     public List<Message> handleAction(DisconnectPlayerAction disconnectPlayerAction) throws FSMTransitionFailedException {
+        List<Message> messages;
         try {
-            resetNextState();
-            return disconnectPlayerAction.execute(getGameContext());
+            messages = new ArrayList<>(disconnectPlayerAction.execute(getGameContext()));
         }catch(IllegalActionException e){
             throw new FSMTransitionFailedException(e.getMessage());
         }
+
+        if(!disconnectPlayerAction.getTarget().equals(getGameContext().getCurrentPlayer().getUsername())){
+            resetNextState();
+        }else{
+            setNextState(new EndTurnState(getGameContext()));
+        }
+
+        return messages;
     }
 
     //TODO: handle the case in which the target is the current player
