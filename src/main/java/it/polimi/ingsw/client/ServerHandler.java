@@ -75,7 +75,7 @@ public class ServerHandler extends Thread{
                         setPingReceived(true);
                     }
                 }
-                if(needRefresh)
+                if(framework != null && needRefresh)
                     framework.renderActiveFrame();
             } catch (IOException | UnableToDrawElementException e) {
                 Logger.log("The client detected the disconnection with the reader");
