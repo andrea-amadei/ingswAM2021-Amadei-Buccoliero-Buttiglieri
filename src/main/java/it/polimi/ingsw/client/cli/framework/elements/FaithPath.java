@@ -244,8 +244,6 @@ public class FaithPath implements MutablePositionedElement {
                     "+" + i.getPoints() + " points",
                     ForegroundColor.WHITE_BRIGHT
             );
-
-            //TODO: dynamically change status
         }
     }
 }
