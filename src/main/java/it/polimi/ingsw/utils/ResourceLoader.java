@@ -40,10 +40,10 @@ public final class ResourceLoader {
         return new BufferedReader(new InputStreamReader(in)).lines().collect(Collectors.joining("\n"));
     }
 
-    public static Parent loadFXML(String fileName) {
+    public static Pair<Parent, ?> loadFXML(String fileName) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(ResourceLoader.class.getProtectionDomain().getClassLoader().getResource(fileName));
-            return fxmlLoader.load();
+            return new Pair<>(fxmlLoader.load(), fxmlLoader.getController());
         } catch (Exception e) {
             throw new IllegalArgumentException("File not found! " + fileName);
         }
