@@ -38,7 +38,7 @@ public class InputReader extends Thread{
             inputString = scanner.nextLine();
             List<String> logicalInput = new ArrayList<>(Arrays.asList(inputString.split(" ")));
             switch(logicalInput.get(0)){
-                case "set_username" :
+                case "set_username":
                     parseUsernameCommand(logicalInput);
                     break;
                 case "activate_leader":
@@ -129,7 +129,8 @@ public class InputReader extends Thread{
     }
 
     public void parseUsernameCommand(List<String> logicalInput){
-        //TODO: how do we handle invalid command?
+        //TODO: Q: How do we handle invalid command?
+        //      A: We Don't
         try {
             serverHandler.sendPayload(new SetUsernameSetupPayloadComponent(logicalInput.get(1)));
         }catch(RuntimeException e){
