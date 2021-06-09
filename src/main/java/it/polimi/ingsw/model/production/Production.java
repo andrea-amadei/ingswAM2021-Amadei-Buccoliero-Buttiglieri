@@ -310,6 +310,42 @@ public class Production {
     }
 
     /**
+     * Reset the state of the production:
+     * - Reset selection
+     * - Reset selectedOutputs
+     * - Reset isReadyToCraft
+     * @return The list of payload components that describes the change of the production
+     */
+    public List<PayloadComponent> craftingTotalReset(Player p){
+       List<PayloadComponent> payload = new ArrayList<>();
+       resetCraftingSelection();
+       payload.add(PayloadFactory.unselect(p.getUsername(), "production"));
+
+        for(Crafting i : baseCrafting)
+            if(i != null) {
+                i.resetUndecidedOutputs();
+                i.setAllResourcesTransferred(false);
+                payload.add(PayloadFactory.changeCraftingStatus(p.getUsername(), false, baseCrafting.indexOf(i), CraftingType.BASE));
+            }
+
+        for(UpgradableCrafting i : upgradableCrafting)
+            if(i!= null) {
+                i.resetUndecidedOutputs();
+                i.setAllResourcesTransferred(false);
+                payload.add(PayloadFactory.changeCraftingStatus(p.getUsername(), false, upgradableCrafting.indexOf(i), CraftingType.UPGRADABLE));
+            }
+
+        for(Crafting i : leaderCrafting)
+            if(i != null) {
+                i.resetUndecidedOutputs();
+                i.setAllResourcesTransferred(false);
+                payload.add(PayloadFactory.changeCraftingStatus(p.getUsername(), false, leaderCrafting.indexOf(i), CraftingType.LEADER));
+            }
+
+        return payload;
+    }
+
+    /**
      * Activates all productions that are ready
      * @param player the player activating the production
      * @param fp the faith path

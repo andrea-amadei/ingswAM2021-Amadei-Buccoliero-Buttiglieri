@@ -1,18 +1,32 @@
 package it.polimi.ingsw.model.actions;
 
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.updates.ChangePossibleConversionsUpdatePayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.gamematerials.ResourceSingle;
+import it.polimi.ingsw.model.GameModel;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Shop;
 import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
+import it.polimi.ingsw.model.market.Market;
+import it.polimi.ingsw.model.production.Production;
+import it.polimi.ingsw.model.storage.Storage;
+import it.polimi.ingsw.parser.raw.RawStorage;
+import it.polimi.ingsw.utils.PayloadFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DisconnectPlayerAction implements Action{
 
-    private String target;
+    private final String target;
 
     public DisconnectPlayerAction(String target){
         this.target = target;
@@ -42,9 +56,51 @@ public class DisconnectPlayerAction implements Action{
      */
     @Override
     public List<Message> execute(GameContext gameContext) throws IllegalActionException {
+        List<PayloadComponent> payload = new ArrayList<>();
+
+        if(target.equals(gameContext.getCurrentPlayer().getUsername())) {
+            GameModel model = gameContext.getGameModel();
+            Player currentPlayer = gameContext.getCurrentPlayer();
+
+            Production production = currentPlayer.getBoard().getProduction();
+            Shop shop = model.getShop();
+            Storage storage = currentPlayer.getBoard().getStorage();
+
+            //Sending payload to reset possible conversions
+            payload.add(new ChangePossibleConversionsUpdatePayloadComponent(target, new ArrayList<>(), new ArrayList<>()));
+
+            //Resetting shop
+            shop.resetSelectedCard();
+            payload.add(PayloadFactory.unselect(currentPlayer.getUsername(), "shop"));
+
+            //Resetting storage
+            storage.resetSelection();
+            payload.add(PayloadFactory.unselect(currentPlayer.getUsername(), "storage"));
+
+            //Emptying market basket if not already empty
+            if(storage.getMarketBasket().totalAmountOfResources() > 0) {
+                Map<ResourceSingle, Integer> resourcesInMarketBasket = storage.getMarketBasket().getAllResources();
+                Map<String, Integer> resourcesToRemove =
+                        resourcesInMarketBasket.entrySet()
+                                               .stream()
+                                               .collect(Collectors.toMap(e -> e.getKey().getId(), e -> -e.getValue()));
+
+                storage.getMarketBasket().reset();
+                payload.add(PayloadFactory.changeResources(currentPlayer.getUsername(),
+                        new RawStorage(storage.getMarketBasket().getId(), resourcesToRemove)));
+            }
+
+            //Reset selected output(model only) and crafting status
+            payload.addAll(production.craftingTotalReset(currentPlayer));
+
+
+        }
         gameContext.getGameModel().getPlayerById(target).setConnected(false);
+        payload.add(new InfoPayloadComponent("Player \"" + target + "\" left the game"));
+
+
         return Collections.singletonList(new Message(gameContext.getGameModel().getPlayerNames(),
-                Collections.singletonList(new InfoPayloadComponent("Player \"" + target + "\" left the game"))));
+                payload));
     }
 
     /**
@@ -65,5 +121,9 @@ public class DisconnectPlayerAction implements Action{
     @Override
     public void checkFormat() {
 
+    }
+
+    public String getTarget() {
+        return target;
     }
 }
