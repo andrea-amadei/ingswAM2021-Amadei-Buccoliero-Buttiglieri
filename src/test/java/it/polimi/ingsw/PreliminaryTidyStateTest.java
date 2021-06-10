@@ -142,6 +142,7 @@ public class PreliminaryTidyStateTest {
     @Test
     public void fourthPlayer(){
         gameContext.setCurrentPlayer(model.getPlayerById("Ottone"));
+        gameContext.addPlayerWhoPicked(model.getPlayerById("Ottone"));
 
         //fourth player moves his resource to his middle shelf and top shelf
         try{
