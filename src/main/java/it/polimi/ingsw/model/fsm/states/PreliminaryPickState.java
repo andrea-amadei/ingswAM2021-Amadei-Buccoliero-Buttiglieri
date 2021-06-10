@@ -4,15 +4,15 @@ import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.actions.DisconnectPlayerAction;
 import it.polimi.ingsw.model.actions.PreliminaryPickAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
+import it.polimi.ingsw.utils.GameUtilities;
 import it.polimi.ingsw.utils.PayloadFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class PreliminaryPickState extends State {
     /**
@@ -45,6 +45,56 @@ public class PreliminaryPickState extends State {
         }
         setNextState(new PreliminaryTidyState(getGameContext()));
         return messages;
+    }
+
+    /**
+     * a player disconnects during the preliminary pick phase and their disconnection is handled according to the game logic.
+     * @param disconnectPlayerAction the action to be executed
+     * @return the list of messages to send to the clients
+     * @throws FSMTransitionFailedException iff the action cannot be executed
+     * @throws NullPointerException iff pointer to preliminaryPickAction is null
+     */
+    @Override
+    public List<Message> handleAction(DisconnectPlayerAction disconnectPlayerAction) throws FSMTransitionFailedException{
+        if(disconnectPlayerAction == null)
+            throw new NullPointerException();
+        List<Message> messages;
+        String disconnectedPlayerID = disconnectPlayerAction.getTarget();
+
+        try {
+            messages = new ArrayList<>(disconnectPlayerAction.execute(getGameContext()));
+        }catch (IllegalActionException e){
+            throw new FSMTransitionFailedException(e.getMessage());
+        }
+
+        Player nextConnectedPlayer = GameUtilities.calculateNextConnectedPlayer(getGameContext());
+
+        //if there are no players connected, game pauses at current state
+        if(nextConnectedPlayer == null){
+            setNextState(this);
+            return messages;
+        }
+
+        //player disconnected is current player
+        if(disconnectedPlayerID.equals(getGameContext().getCurrentPlayer().getUsername())){
+            //player disconnected is current player and last connected player
+            if(GameUtilities.doesRoundStartAgain(getGameContext())){
+                messages.addAll(GameUtilities.automatedPick(getGameContext()));
+                getGameContext().setCurrentPlayer(GameUtilities.calculateNextConnectedPlayer(getGameContext()));
+                messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), Collections.singletonList(
+                        PayloadFactory.changeCurrentPlayer(nextConnectedPlayer.getUsername()))));
+                setNextState(new MenuState(getGameContext()));
+            }
+            //player disconnected is current player but not the last connected player
+            else {
+                getGameContext().setCurrentPlayer(GameUtilities.calculateNextConnectedPlayer(getGameContext()));
+                messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), Collections.singletonList(
+                        PayloadFactory.changeCurrentPlayer(nextConnectedPlayer.getUsername()))));
+                setNextState(new PreliminaryPickState(getGameContext()));
+            }
+        }
+
+        return  messages;
     }
 
     /**
