@@ -1,8 +1,6 @@
 package it.polimi.ingsw.gamematerials;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * The ResourceTypeSingleton class implements a singleton design pattern.
@@ -105,6 +103,17 @@ public class ResourceTypeSingleton {
             return getResourceSingleByName(name);
         } catch (NoSuchElementException e1) {
             return getResourceGroupByName(name);
+        }
+    }
+
+    public ResourceSingle getRandomResourceSingle(){
+        Random random = new Random();
+        int n = random.nextInt(4);
+        switch (n) {
+            case 0: return GOLD;
+            case 1: return SHIELD;
+            case 2: return STONE;
+            default: return SERVANT;
         }
     }
 }
