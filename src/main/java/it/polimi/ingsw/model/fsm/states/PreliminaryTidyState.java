@@ -6,11 +6,14 @@ import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.actions.ConfirmTidyAction;
+import it.polimi.ingsw.model.actions.DisconnectPlayerAction;
 import it.polimi.ingsw.model.actions.ResourcesMoveAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
+import it.polimi.ingsw.utils.GameUtilities;
 import it.polimi.ingsw.utils.PayloadFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -71,39 +74,39 @@ public class PreliminaryTidyState extends State {
             throw new FSMTransitionFailedException(e.getMessage());
         }
 
-        //if there are no players, return messages and set next state to this
-        if(getGameContext().getGameModel().getPlayers().stream().noneMatch(Player::isConnected)){
-            setNextState(this);
-            return messages;
-        }
+        //calculate and execute transition to next state and next current player
+        messages.addAll(executePreliminaryTidyTransition(getGameContext()));
 
-        //set next connected player as next player
-        Player nextPlayer = null;
-        int index = getGameContext().getGameModel().getPlayers().indexOf(getGameContext().getCurrentPlayer());
-        for(int i = index + 1; i < getGameContext().getGameModel().getPlayers().size(); i++){
-            if(getGameContext().getGameModel().getPlayers().get(i).isConnected()) {
-                nextPlayer = getGameContext().getGameModel().getPlayers().get(i);
-                break;
-            }
-        }
-
-        //current player is not last player of the list, another player goes to preliminary pick state
-        if(nextPlayer != null){
-            setNextState(new PreliminaryPickState(getGameContext()));
-            getGameContext().setCurrentPlayer(nextPlayer);
-            messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), Collections.singletonList(PayloadFactory.changeCurrentPlayer(nextPlayer.getUsername()))));
-            return messages;
-        }
-
-        //at this point current player is the last player of the list. Next state is menu state and next player
-        //is the first connected player starting from player 0
-        nextPlayer = getGameContext().getGameModel().getPlayers().stream().filter(Player::isConnected).findFirst().orElse(null);
-        setNextState(new MenuState(getGameContext()));
-        getGameContext().setCurrentPlayer(nextPlayer);
-        assert nextPlayer != null;
-        messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), Collections.singletonList(PayloadFactory.changeCurrentPlayer(nextPlayer.getUsername()))));
         return messages;
+    }
 
+    /**
+     * This action sets newly disconnected player as disconnected. Then if  the current player is the last player of the list,
+     * the game goes to menu state and the first connected player of the list starts to play; if current player is not
+     * the last player of the list, the next connected player goes to preliminary pick state.
+     * @param disconnectPlayerAction the action to execute
+     * @return the list of messages to send to the clients
+     * @throws FSMTransitionFailedException iff action cannot be performed
+     * @throws NullPointerException iff pointer to resourceMoveAction is null
+     */
+    @Override
+    public List<Message> handleAction(DisconnectPlayerAction disconnectPlayerAction) throws FSMTransitionFailedException{
+        if(disconnectPlayerAction == null)
+            throw new NullPointerException();
+        List<Message> messages;
+
+        try {
+            messages = new ArrayList<>(disconnectPlayerAction.execute(getGameContext()));
+        }catch (IllegalActionException e){
+            throw new FSMTransitionFailedException(e.getMessage());
+        }
+
+        //if disconnected player is the current player, the transition to the next state and the next current
+        // player are executed
+        if(disconnectPlayerAction.getTarget().equals(getGameContext().getCurrentPlayer().getUsername())) {
+            messages.addAll(executePreliminaryTidyTransition(getGameContext()));
+        }
+        return messages;
     }
 
     /**
@@ -123,6 +126,42 @@ public class PreliminaryTidyState extends State {
                         }}
                 ))));
 
+        return messages;
+    }
+
+    /**
+     * executes transition from PreliminaryTidyState for both confirm and disconnect actions. Sets next state and next
+     * current player accordingly.
+     * @param gameContext the context of the game
+     * @return the list of messages to send to the clients
+     */
+    private List<Message> executePreliminaryTidyTransition(GameContext gameContext){
+        List<Message> messages = new ArrayList<>();
+        Player nextConnectedPlayer = GameUtilities.calculateNextConnectedPlayer(gameContext);
+
+        //if there are no players connected, return messages and set next state to this
+        if(nextConnectedPlayer == null){
+            setNextState(this);
+            return messages;
+        }
+
+        //if round starts again, next state is MenuState and random picks must be made for players who have not
+        // already picked
+        if(GameUtilities.doesRoundStartAgain(gameContext)){
+            messages.addAll(GameUtilities.automatedPick(gameContext));
+
+            gameContext.setCurrentPlayer(nextConnectedPlayer);
+            messages.add(new Message(gameContext.getGameModel().getPlayerNames(), Collections.singletonList(
+                    PayloadFactory.changeCurrentPlayer(nextConnectedPlayer.getUsername()))));
+            setNextState(new MenuState(gameContext));
+            return messages;
+        }
+
+        //if round does not start again, next state is PreliminaryPickState and next player is NextConnectedPlayer
+        gameContext.setCurrentPlayer(nextConnectedPlayer);
+        messages.add(new Message(gameContext.getGameModel().getPlayerNames(), Collections.singletonList(
+                PayloadFactory.changeCurrentPlayer(nextConnectedPlayer.getUsername()))));
+        setNextState(new PreliminaryPickState(gameContext));
 
         return messages;
     }
