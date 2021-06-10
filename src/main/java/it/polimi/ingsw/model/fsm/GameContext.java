@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.utils.ResourceLoader;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * The game context of this game. It contains the model and information about the evolution of the game
  */
@@ -17,6 +20,7 @@ public class GameContext {
     private boolean isSinglePlayer;
     private boolean isHardEndTriggered;
     private boolean gameEnded;
+    private final Set<Player> alreadyPickedPlayers;
 
     private final String configJson;
     private final String craftingJson;
@@ -41,6 +45,7 @@ public class GameContext {
         isSinglePlayer = false;
         isHardEndTriggered = false;
         gameEnded = false;
+        alreadyPickedPlayers = new HashSet<>();
 
         //TODO: probably we will change these paths and is it ok to throw an exception here?
         configJson = ResourceLoader.loadFile("cfg/config.json");
@@ -134,6 +139,14 @@ public class GameContext {
      */
     public boolean isHardEndTriggered() {
         return isHardEndTriggered;
+    }
+
+    public void addPlayerWhoPicked(Player p){
+        alreadyPickedPlayers.add(p);
+    }
+
+    public Set<Player> getAlreadyPickedPlayers() {
+        return alreadyPickedPlayers;
     }
 
     /**
