@@ -23,10 +23,11 @@ public class GameConfig {
     @SerializedName("min_card_level")
     private Integer minCardLevel;
 
+    @SerializedName("amount_of_leaders_per_player")
+    private Integer amountOfLeaderPerPlayer;
 
     @SerializedName("amount_of_leaders_to_discard")
     private Integer amountOfLeadersToDiscard;
-
 
     @SerializedName("first_player_amount_of_faith_points_on_start")
     private Integer firstPlayerAmountOfFaithPointsOnStart;
@@ -105,6 +106,10 @@ public class GameConfig {
 
     public Integer getMinCardLevel() {
         return minCardLevel;
+    }
+
+    public Integer getAmountOfLeaderPerPlayer() {
+        return amountOfLeaderPerPlayer;
     }
 
     public Integer getAmountOfLeadersToDiscard() {

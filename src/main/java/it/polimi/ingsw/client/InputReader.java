@@ -8,6 +8,7 @@ import it.polimi.ingsw.common.payload_components.groups.setup.JoinMatchSetupPayl
 import it.polimi.ingsw.common.payload_components.groups.setup.ReconnectSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.SetUsernameSetupPayloadComponent;
 import it.polimi.ingsw.exceptions.UnableToDrawElementException;
+import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.actions.SelectPlayAction;
 import it.polimi.ingsw.model.production.Production;
@@ -67,6 +68,9 @@ public class InputReader extends Thread{
                     break;
                 case "join_match":
                     parseJoinMatchCommand(logicalInput);
+                    break;
+                case "preliminary_pick":
+                    parsePreliminaryPickCommand(logicalInput);
                     break;
                 case "resources_move":
                     parseResourcesMoveCommand(logicalInput);
@@ -181,6 +185,39 @@ public class InputReader extends Thread{
             }
             serverHandler.sendPayload(new SelectCraftingOutputActionPayloadComponent(serverHandler.getUsername(), conversion));
         }catch (RuntimeException e){
+            System.out.println("Command not valid");
+        }
+    }
+
+    public void parsePreliminaryPickCommand(List<String> logicalInput){
+        try{
+            List<Integer> leadersToDiscard = new ArrayList<>();
+            Map<String, Integer> chosenResources = new HashMap<>();
+            int paramSize = logicalInput.size() - 1;
+            int discardSize = 0;
+            for(int i = 0; i < paramSize; i++){
+                try{
+                    int discardInteger = Integer.parseInt(logicalInput.get(i+1));
+                    leadersToDiscard.add(discardInteger);
+                    discardSize++;
+                }catch(NumberFormatException e){
+                    break;
+                }
+            }
+
+            String resource;
+            Integer amount;
+            for(int j = discardSize + 1; j < paramSize; j += 2){
+                resource = ResourceTypeSingleton.getInstance().getResourceSingleByName(logicalInput.get(j).toLowerCase())
+                        .getId();
+                amount = Integer.parseInt(logicalInput.get(j + 1));
+                chosenResources.putIfAbsent(resource, 0);
+                chosenResources.put(resource, chosenResources.get(resource) + amount);
+            }
+
+
+            serverHandler.sendPayload(new PreliminaryPickActionPayloadComponent(serverHandler.getUsername(), leadersToDiscard, chosenResources));
+        }catch(RuntimeException e){
             System.out.println("Command not valid");
         }
     }

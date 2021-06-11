@@ -5,6 +5,7 @@
   "max_card_level" : 3,
   "min_card_level" : 1,
 
+  "amount_of_leaders_per_player" : 4,
   "amount_of_leaders_to_discard" : 2,
 
   "first_player_amount_of_faith_points_on_start" : 0,

@@ -102,13 +102,6 @@ public class GameUtilities {
             throw new IllegalActionException("Selected an invalid card index");
         }
 
-        //discard leaders
-        try {
-            pickingPlayer.getBoard().removeLeaderCardsByIndex(leadersToDiscard);
-        }catch (IndexOutOfBoundsException e){
-            throw new IllegalActionException(e.getMessage());
-        }
-
         //assessing the player's order
         int playerOrder = 0;
         for(String playerID : gameContext.getGameModel().getPlayerNames()){
@@ -140,6 +133,13 @@ public class GameUtilities {
             case 3: if(amountOfResources!=GameParameters.FOURTH_PLAYER_AMOUNT_OF_RESOURCES_ON_START)
                 throw new IllegalActionException("Fourth player must get the correct amount of resources on start");
                 faithPoints = GameParameters.FOURTH_PLAYER_AMOUNT_OF_FAITH_POINTS_ON_START;
+        }
+
+        //discard leaders
+        try {
+            pickingPlayer.getBoard().removeLeaderCardsByIndex(leadersToDiscard);
+        }catch (IndexOutOfBoundsException e){
+            throw new IllegalActionException(e.getMessage());
         }
 
         //adding player to list of players who picked

@@ -128,8 +128,6 @@ public class SetupState extends State {
         //send the global message
         messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), globalPayload));
 
-        //TODO: shuffle the cards and give random card to everyone according with game config file.
-        //      For now it distributes these 4 leader cards to the first player
 
         //shuffling the cards
         List<LeaderCard> leaderCards = getGameContext().getGameModel().getLeaderCards();
@@ -145,15 +143,13 @@ public class SetupState extends State {
 
             //adding the cards to the player in the model
             Player p = getGameContext().getGameModel().getPlayerById(username);
-            p.getBoard().addLeaderCard(leaderCards.get(i));
-            p.getBoard().addLeaderCard(leaderCards.get(i+1));
-
-            //inform the current client of the new leader cards
-            specificPlayer.add(PayloadFactory.addLeaderCard(username, p.getBoard().getLeaderCards().get(0).getId()));
-            specificPlayer.add(PayloadFactory.addLeaderCard(username, p.getBoard().getLeaderCards().get(1).getId()));
-
+            for(int j = 0; j < getGameContext().getGameConfig().getAmountOfLeaderPerPlayer(); j++){
+                p.getBoard().addLeaderCard(leaderCards.get(i));
+                specificPlayer.add(PayloadFactory.addLeaderCard(username, p.getBoard().getLeaderCards().get(j).getId()));
+                i++;
+            }
             //inform all the other clients of the increase in covered cards
-            otherPlayers.add(PayloadFactory.changeCoveredLeaderCard(username, 2));
+            otherPlayers.add(PayloadFactory.changeCoveredLeaderCard(username, getGameContext().getGameConfig().getAmountOfLeaderPerPlayer()));
 
             //sending the payloads to the clients
             messages.add(new Message(Collections.singletonList(username), specificPlayer));
@@ -168,7 +164,7 @@ public class SetupState extends State {
 
     @Override
     public List<Message> handleAction(StartGameAction startGameAction) throws FSMTransitionFailedException {
-        setNextState(new MenuState(getGameContext()));
+        setNextState(new PreliminaryPickState(getGameContext()));
         return new ArrayList<>();
     }
 }
