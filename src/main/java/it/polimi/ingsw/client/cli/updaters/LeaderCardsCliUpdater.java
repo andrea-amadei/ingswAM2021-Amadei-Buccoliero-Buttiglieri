@@ -54,7 +54,7 @@ public class LeaderCardsCliUpdater implements Listener<ClientLeaderCards> {
     @Override
     public void update(ClientLeaderCards leaderCards) {
         int i, j, k;
-        boolean stop = false;
+
 
         for(VisibleElement elem : group.getAllElements())
             group.removeElement(elem.getName());
@@ -150,6 +150,7 @@ public class LeaderCardsCliUpdater implements Listener<ClientLeaderCards> {
                         .sorted((x, y) -> x.getType().equals("crafting") ? -1 : x.getType().compareTo(y.getType()))
                         .collect(Collectors.toList());
 
+                boolean stop = false;
                 for(j = 0; j < abilities.size() && !stop; j++) {
                     switch(abilities.get(j).getType()) {
                         case "conversion":
