@@ -67,7 +67,8 @@ public class BaseCupboard implements Cupboard{
     public Shelf getShelfById(String id) {
         if(id == null)
             throw new NullPointerException();
-        return shelves.stream().filter(x-> x.getId().equalsIgnoreCase(id)).findFirst().orElseThrow(NoSuchElementException::new);
+        return shelves.stream().filter(x-> x.getId().equalsIgnoreCase(id)).findFirst().orElseThrow(()->
+                new NoSuchElementException("There is no shelf with ID " + id));
     }
     /**
      * Moves an amount of resources from one shelf to another
@@ -162,9 +163,10 @@ public class BaseCupboard implements Cupboard{
         if(to == null || resource == null || container == null)
             throw new NullPointerException();
         if(amount <= 0 )
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Cannot add a negative amount of resources");
         if(!contains(to))
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("Container " + container.getId() + " does not contain " + amount +
+                    " " + resource.getId());
 
         try{
             container.moveTo(to, resource, amount);
@@ -230,7 +232,7 @@ public class BaseCupboard implements Cupboard{
         if(amount <= 0)
             throw new IllegalArgumentException("The amount must be positive");
         if(!contains(from))
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("Container " + from.getId() + " does not contain " + amount + " " + resource.getId());
 
         try{
             from.moveTo(container, resource, amount);

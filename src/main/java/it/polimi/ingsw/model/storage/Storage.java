@@ -122,7 +122,8 @@ public class Storage {
 
         if(id == null)
             throw new NullPointerException();
-        return spendableContainers.stream().filter(x -> x.getId().equalsIgnoreCase(id)).findFirst().orElseThrow(NoSuchElementException::new);
+        return spendableContainers.stream().filter(x -> x.getId().equalsIgnoreCase(id)).findFirst().orElseThrow(()->
+                new NoSuchElementException("There is no container with ID " + id));
     }
 
     /**
