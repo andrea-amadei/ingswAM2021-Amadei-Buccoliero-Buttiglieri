@@ -81,7 +81,7 @@ public class Controller extends Thread{
                     System.out.println(JSONSerializer.toJson(component));
                 }
 
-                //retrieve the clientHandler of the player that need to receive the payload components
+                //retrieve the clientHandler of the player that needs to receive the payload components
                 ClientHandler clientHandler = clientHub.getClientByName(entry.getKey()).getSecond();
 
                 //if the client is connected, proceed to send the payloads

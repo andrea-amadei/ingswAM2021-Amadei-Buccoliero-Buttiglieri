@@ -90,7 +90,6 @@ public abstract class State implements InterruptLauncher, ActionHandler{
         return messages;
     }
 
-    //TODO: handle the case in which the target is the current player
     /**
      * Disconnects a player.
      * @param disconnectPlayerAction the action to be executed
@@ -115,7 +114,6 @@ public abstract class State implements InterruptLauncher, ActionHandler{
         return messages;
     }
 
-    //TODO: handle the case in which the target is the current player
     @Override
     public List<Message> handleAction(ReconnectPlayerAction reconnectPlayerAction) throws FSMTransitionFailedException {
         try {
