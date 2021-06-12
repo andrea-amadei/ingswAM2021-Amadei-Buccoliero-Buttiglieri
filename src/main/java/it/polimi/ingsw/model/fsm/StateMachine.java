@@ -50,8 +50,7 @@ public class StateMachine implements InterruptListener{
             messages.addAll(action.acceptHandler(currentState));
         } catch (FSMTransitionFailedException e) {
             messages.addAll(e.getGameMessages());
-            messages.add(new Message(Collections.singletonList(action.getSender()), Arrays.asList(
-                    new InfoPayloadComponent(Optional.ofNullable(e.getMessage()).orElse("generic error")),
+            messages.add(new Message(Collections.singletonList(action.getSender()), Collections.singletonList(
                     new ErrorPayloadComponent(Optional.ofNullable(e.getMessage()).orElse("generic error")))));
             currentState.resetNextState();
         }
@@ -73,7 +72,6 @@ public class StateMachine implements InterruptListener{
         return messages;
     }
 
-    //TODO: maybe delete since it is used in tests only
     /**
      * Returns the current state
      * @return the current state
