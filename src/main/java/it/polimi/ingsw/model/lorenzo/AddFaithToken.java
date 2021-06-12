@@ -1,8 +1,10 @@
 package it.polimi.ingsw.model.lorenzo;
 
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.model.fsm.GameContext;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddFaithToken extends Token{
@@ -21,6 +23,9 @@ public class AddFaithToken extends Token{
      */
     @Override
     public List<PayloadComponent> execute(GameContext gameContext) {
-        return gameContext.getGameModel().getFaithPath().executeLorenzoMovement(amount);
+        List<PayloadComponent> payload = new ArrayList<>(gameContext.getGameModel().getFaithPath().executeLorenzoMovement(amount));
+        payload.add(new InfoPayloadComponent("Lorenzo Move: Lorenzo got " + amount + " faith points"));
+
+        return payload;
     }
 }

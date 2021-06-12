@@ -2,11 +2,11 @@ package it.polimi.ingsw.model.lorenzo;
 
 import it.polimi.ingsw.common.ActionQueue;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.gamematerials.FlagColor;
 import it.polimi.ingsw.model.Shop;
 import it.polimi.ingsw.model.actions.EndGameAction;
 import it.polimi.ingsw.model.fsm.GameContext;
-import it.polimi.ingsw.model.production.CraftingCard;
 import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.ArrayList;
@@ -64,6 +64,8 @@ public class DiscardToken extends Token{
             gameContext.setHardEnd();
             launchInterrupt(new EndGameAction(), ActionQueue.Priority.SERVER_ACTION.ordinal());
         }
+
+        payload.add(new InfoPayloadComponent("Lorenzo Move: Lorenzo discards " + amount + " " + color.name().toLowerCase() + " cards"));
         return payload;
     }
 }

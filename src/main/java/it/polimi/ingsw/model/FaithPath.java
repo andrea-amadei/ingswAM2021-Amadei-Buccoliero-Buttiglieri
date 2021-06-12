@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.common.ActionQueue;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.updates.AddLorenzoFaithUpdatePayloadComponent;
 import it.polimi.ingsw.exceptions.InvalidFaithPathException;
 import it.polimi.ingsw.model.actions.Action;
@@ -219,6 +220,9 @@ public class FaithPath implements InterruptLauncher {
 
             lorenzoFaith += amount;
             payloadComponents.add(new AddLorenzoFaithUpdatePayloadComponent(amount));
+
+            //TODO: remove this, debug only
+            payloadComponents.add(new InfoPayloadComponent("DEBUG: Added " + amount + " faith to Lorenzo"));
 
             if(newPopeCheckOrders.size() > 0)
                 launchInterrupt(new PopeCheckAction(newPopeCheckOrders), ActionQueue.Priority.SERVER_ACTION.ordinal());

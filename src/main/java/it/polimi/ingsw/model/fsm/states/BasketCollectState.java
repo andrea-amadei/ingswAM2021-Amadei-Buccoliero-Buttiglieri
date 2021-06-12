@@ -107,8 +107,12 @@ public class BasketCollectState extends State {
 
             currentPlayer.getBoard().getStorage().getMarketBasket().reset();
 
+            //adding the amount of faith to the other players
             for (Player p : otherPlayers)
                 payload.addAll(faithPath.executeMovement(droppedResources, p));
+
+            //adding the amount of faith to Lorenzo
+            payload.addAll(faithPath.executeLorenzoMovement(droppedResources));
         }
 
         //build the message
