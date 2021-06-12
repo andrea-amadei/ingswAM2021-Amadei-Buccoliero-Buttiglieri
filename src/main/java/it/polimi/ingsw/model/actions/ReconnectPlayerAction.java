@@ -59,6 +59,14 @@ public class ReconnectPlayerAction implements Action{
     }
 
     /**
+     * Returns the target of this action
+     * @return the target of this action
+     */
+    public String getTarget() {
+        return target;
+    }
+
+    /**
      * Checks if all attributes are set and have meaningful values.
      * In case they are not, this throws the appropriate RuntimeException.
      * It needs to be used since this class can be created by deserialization

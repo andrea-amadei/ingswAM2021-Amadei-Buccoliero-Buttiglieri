@@ -7,8 +7,10 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.actions.EndGameAction;
 import it.polimi.ingsw.model.actions.LorenzoMoveAction;
 import it.polimi.ingsw.model.actions.NextTurnAction;
+import it.polimi.ingsw.model.actions.ReconnectPlayerAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
+import it.polimi.ingsw.utils.GameUtilities;
 import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.ArrayList;
@@ -86,9 +88,43 @@ public class EndTurnState extends State {
             );
         }
 
-        //TODO: end game
         return new ArrayList<>();
 
+    }
+
+    /**
+     * If the game was in stale the new player becomes the current player and the next state is MenuState
+     * If the game is not in stale, then nothing happens
+     * @param reconnectPlayerAction the action to be executed
+     * @return the messages that needs to be sent to the clients
+     * @throws FSMTransitionFailedException if the action cannot be executed
+     * @throws NullPointerException if reconnectPlayerAction is null
+     */
+    @Override
+    public List<Message> handleAction(ReconnectPlayerAction reconnectPlayerAction) throws FSMTransitionFailedException{
+        List<Message> messages;
+        try {
+            messages = new ArrayList<>(reconnectPlayerAction.execute(getGameContext()));
+        }catch(IllegalActionException e){
+            throw new FSMTransitionFailedException(e.getMessage());
+        }
+
+        if(GameUtilities.numOfConnectedPlayers(getGameContext()) > 1){
+            resetNextState();
+            return messages;
+        }
+
+        //we were in stall
+        Player reconnectingPlayer = getGameContext().getGameModel().getPlayerById(reconnectPlayerAction.getTarget());
+
+        //set the next current player
+        getGameContext().setCurrentPlayer(reconnectingPlayer);
+        messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), Collections.singletonList(
+                PayloadFactory.changeCurrentPlayer(reconnectingPlayer.getUsername()))));
+
+        //it is the reconnecting player's turn
+        setNextState(new MenuState(getGameContext()));
+        return messages;
     }
 
 

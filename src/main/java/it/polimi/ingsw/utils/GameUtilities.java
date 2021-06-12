@@ -234,4 +234,28 @@ public class GameUtilities {
         return nextPlayerIndex <= currentPlayerIndex;
     }
 
+    /**
+     * Returns true iff p1 comes strictly before p2 in the order of player.
+     * @param gameContext the game context
+     * @param p1 a player
+     * @param p2 another player
+     * @return true iff p1 comes strictly before p2 in the order of player.
+     */
+    public static boolean comesFirst(GameContext gameContext, Player p1, Player p2){
+        List<Player> players = gameContext.getGameModel().getPlayers();
+        int p1Index = players.indexOf(p1);
+        int p2Index = players.indexOf(p2);
+
+        return p1Index < p2Index;
+    }
+
+    /**
+     * Returns the number of connected players
+     * @param gameContext the game context
+     * @return the number of connected players
+     */
+    public static int numOfConnectedPlayers(GameContext gameContext){
+        return (int) gameContext.getGameModel().getPlayers().stream().filter(Player::isConnected).count();
+    }
+
 }

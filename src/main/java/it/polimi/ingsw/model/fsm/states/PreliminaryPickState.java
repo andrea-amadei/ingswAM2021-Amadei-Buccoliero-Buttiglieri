@@ -7,6 +7,7 @@ import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.actions.DisconnectPlayerAction;
 import it.polimi.ingsw.model.actions.PreliminaryPickAction;
+import it.polimi.ingsw.model.actions.ReconnectPlayerAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
 import it.polimi.ingsw.utils.GameUtilities;
@@ -95,6 +96,50 @@ public class PreliminaryPickState extends State {
         }
 
         return  messages;
+    }
+
+    /**
+     * Reconnects the player. If the player hasn't lost the turn, the game remains in this state.
+     * If the player lost the turn, automated picks are computed and next state is MenuState
+     * @param reconnectPlayerAction the action to be executed
+     * @return the messages that needs to be sent to the clients
+     * @throws FSMTransitionFailedException if the action cannot be executed
+     * @throws NullPointerException if reconnectPlayerAction is null
+     */
+    @Override
+    public List<Message> handleAction(ReconnectPlayerAction reconnectPlayerAction) throws FSMTransitionFailedException{
+        List<Message> messages;
+        try {
+            messages = new ArrayList<>(reconnectPlayerAction.execute(getGameContext()));
+        }catch(IllegalActionException e){
+            throw new FSMTransitionFailedException(e.getMessage());
+        }
+
+        if(GameUtilities.numOfConnectedPlayers(getGameContext()) > 1){
+            resetNextState();
+            return messages;
+        }
+
+        //we were in stall
+        Player reconnectingPlayer = getGameContext().getGameModel().getPlayerById(reconnectPlayerAction.getTarget());
+        Player oldCurrentPlayer = getGameContext().getCurrentPlayer();
+
+        //set the next current player
+        getGameContext().setCurrentPlayer(reconnectingPlayer);
+        messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), Collections.singletonList(
+                PayloadFactory.changeCurrentPlayer(reconnectingPlayer.getUsername()))));
+
+        //check if the reconnected player needs to do their turn
+        if(GameUtilities.comesFirst(getGameContext(), reconnectingPlayer, oldCurrentPlayer)){
+            messages.addAll(GameUtilities.automatedPick(getGameContext()));
+
+            setNextState(new MenuState(getGameContext()));
+            return messages;
+        }
+
+        //the reconnected player needs to do their turn
+        setNextState(this);
+        return messages;
     }
 
     /**

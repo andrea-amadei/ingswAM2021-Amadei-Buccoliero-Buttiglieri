@@ -7,6 +7,7 @@ import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.actions.ConfirmTidyAction;
 import it.polimi.ingsw.model.actions.DisconnectPlayerAction;
+import it.polimi.ingsw.model.actions.ReconnectPlayerAction;
 import it.polimi.ingsw.model.actions.ResourcesMoveAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
@@ -108,6 +109,61 @@ public class PreliminaryTidyState extends State {
         }
         return messages;
     }
+
+    /**
+     * If the game was in stale:
+     *      -if the reconnected player comes before the old current player, automated picks are performed and
+     *       next state is MenuState
+     *      -if the reconnected player is the old current player, next state is still this state
+     *      -if the reconnected player comes after the old current player, next state is PreliminaryPickState
+     *
+     * If the game is not in stale, then nothing happens
+     * @param reconnectPlayerAction the reconnecting player
+     * @return the messages that needs to be sent to the clients
+     * @throws FSMTransitionFailedException if the action cannot be executed
+     * @throws NullPointerException if reconnectPlayerAction is null
+     */
+    @Override
+    public List<Message> handleAction(ReconnectPlayerAction reconnectPlayerAction) throws FSMTransitionFailedException{
+        List<Message> messages;
+        try {
+            messages = new ArrayList<>(reconnectPlayerAction.execute(getGameContext()));
+        }catch(IllegalActionException e){
+            throw new FSMTransitionFailedException(e.getMessage());
+        }
+
+        if(GameUtilities.numOfConnectedPlayers(getGameContext()) > 1){
+            resetNextState();
+            return messages;
+        }
+
+        //we were in stall
+        Player reconnectingPlayer = getGameContext().getGameModel().getPlayerById(reconnectPlayerAction.getTarget());
+        Player oldCurrentPlayer = getGameContext().getCurrentPlayer();
+
+        //set the next current player
+        getGameContext().setCurrentPlayer(reconnectingPlayer);
+        messages.add(new Message(getGameContext().getGameModel().getPlayerNames(), Collections.singletonList(
+                PayloadFactory.changeCurrentPlayer(reconnectingPlayer.getUsername()))));
+
+        //if the reconnecting player is the old current player, then it continues to do what he was doing
+        if(reconnectingPlayer.getUsername().equals(oldCurrentPlayer.getUsername())){
+            setNextState(this);
+            return messages;
+        }
+
+        //if the reconnecting player comes before the old current player, then automated picks are performed and next state is menu state
+        if(GameUtilities.comesFirst(getGameContext(), reconnectingPlayer, oldCurrentPlayer)){
+            messages.addAll(GameUtilities.automatedPick(getGameContext()));
+            setNextState(new MenuState(getGameContext()));
+            return messages;
+        }
+
+        //the reconnected player needs to make their pick. So next state is PreliminaryPick
+        setNextState(new PreliminaryPickState(getGameContext()));
+        return messages;
+    }
+
 
     /**
      * This method will be executed every time this state is entered.
