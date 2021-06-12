@@ -98,6 +98,10 @@ public class PopeCheckAction implements Action{
 
         //if this is the last pope check
         if(newPopeCheckOrders.get(newPopeCheckOrders.size()-1).equals(tiles.size()-1)){
+            //if Lorenzo reached the end, set the flag associated to the winning status of Lorenzo
+            if(gameContext.getGameModel().getFaithPath().getLorenzoFaith() == tiles.get(tiles.size()-1).getOrder()){
+                gameContext.setLorenzoWon(true);
+            }
             if(gameContext.isSinglePlayer()){
                 gameContext.setHardEnd();
             }else{

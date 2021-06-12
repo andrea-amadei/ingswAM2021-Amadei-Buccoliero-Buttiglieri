@@ -20,6 +20,7 @@ public class GameContext {
     private boolean isSinglePlayer;
     private boolean isHardEndTriggered;
     private boolean gameEnded;
+    private boolean hasLorenzoWon;
     private final Set<Player> alreadyPickedPlayers;
 
     private final String configJson;
@@ -45,6 +46,7 @@ public class GameContext {
         isSinglePlayer = false;
         isHardEndTriggered = false;
         gameEnded = false;
+        hasLorenzoWon = false;
         alreadyPickedPlayers = new HashSet<>();
 
         //TODO: probably we will change these paths and is it ok to throw an exception here?
@@ -162,6 +164,14 @@ public class GameContext {
 
     public boolean isGameEnded(){
         return gameEnded;
+    }
+
+    public void setLorenzoWon(boolean hasLorenzoWon){
+        this.hasLorenzoWon = hasLorenzoWon;
+    }
+
+    public boolean hasLorenzoWon(){
+        return hasLorenzoWon;
     }
 
     public String getConfigJson() {

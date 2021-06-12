@@ -1,15 +1,19 @@
 package it.polimi.ingsw.model.actions;
 
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.updates.EndGameResultsUpdatePayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.gamematerials.ResourceSingle;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
+import it.polimi.ingsw.utils.Triplet;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class EndGameAction implements Action{
     /**
@@ -39,9 +43,37 @@ public class EndGameAction implements Action{
     public List<Message> execute(GameContext gameContext) throws IllegalActionException {
         if(gameContext == null)
             throw new NullPointerException();
+
+        List<PayloadComponent> payload = new ArrayList<>();
         gameContext.setGameEnded();
+
+        //each triplet contains (username, points, arrivalId)
+        List<Triplet<String, Integer, Integer>> finalScores = new ArrayList<>();
+
+        //for each player calculate the final score
+        for(Player p : gameContext.getGameModel().getPlayers()){
+            Map<ResourceSingle, Integer> storedResources = p.getBoard().getStorage().getStoredResources();
+            int resourceCount = storedResources.values().stream().reduce(0, Integer::sum);
+
+            int bonus = resourceCount / 5;
+
+            finalScores.add(new Triplet<>(p.getUsername(), p.getPoints() + bonus, p.getArrivalId()));
+        }
+        finalScores.sort((a, b) -> {
+            if (a.getSecond() > b.getSecond()) return -1;
+            if (a.getSecond().equals(b.getSecond()) && a.getThird() < b.getThird()) return -1;
+            if(a.getSecond().equals(b.getSecond()) && a.getThird().equals(b.getThird())) return 0;
+            return 1;
+        });
+
+        payload.add(new InfoPayloadComponent("Game is ended"));
+
+        List<String> usernames = finalScores.stream().map(Triplet::getFirst).collect(Collectors.toList());
+        List<Integer> scores = finalScores.stream().map(Triplet::getSecond).collect(Collectors.toList());
+        payload.add(new EndGameResultsUpdatePayloadComponent(gameContext.hasLorenzoWon(), usernames, scores));
+
         return Collections.singletonList(new Message(gameContext.getGameModel().getPlayerNames(),
-                Collections.singletonList(new InfoPayloadComponent("Game is ended"))));
+                payload));
     }
 
     /**

@@ -62,6 +62,7 @@ public class DiscardToken extends Token{
 
         if(shop.isColumnEmpty(color.ordinal())) {
             gameContext.setHardEnd();
+            gameContext.setLorenzoWon(true);
             launchInterrupt(new EndGameAction(), ActionQueue.Priority.SERVER_ACTION.ordinal());
         }
 
