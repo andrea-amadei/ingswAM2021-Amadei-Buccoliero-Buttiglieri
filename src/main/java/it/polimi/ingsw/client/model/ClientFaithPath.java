@@ -17,6 +17,7 @@ public class ClientFaithPath implements Observable<ClientFaithPath> {
     private final List<FaithHolder.CheckpointStatus> checkpointStatus;
 
     private int faithPoints;
+    private int lorenzoFaith;
 
     public ClientFaithPath(List<RawFaithPathTile> tiles, List<RawFaithPathGroup> faithGroups){
         this.tiles = tiles;
@@ -27,10 +28,16 @@ public class ClientFaithPath implements Observable<ClientFaithPath> {
             checkpointStatus.add(FaithHolder.CheckpointStatus.UNREACHED);
 
         faithPoints = 0;
+        lorenzoFaith = 0;
     }
 
     public synchronized void addFaithPoints(int amount){
         faithPoints += amount;
+        update();
+    }
+
+    public synchronized void addLorenzoFaith(int amount){
+        lorenzoFaith += amount;
         update();
     }
 
