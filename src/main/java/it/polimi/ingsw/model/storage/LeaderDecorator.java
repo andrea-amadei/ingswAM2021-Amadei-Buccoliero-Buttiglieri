@@ -66,7 +66,7 @@ public class LeaderDecorator implements Cupboard{
                 return leaderShelf;
         }
 
-        throw new NoSuchElementException();
+        throw new NoSuchElementException("There is no shelf with ID " + id);
     }
 
     /**
@@ -186,7 +186,8 @@ public class LeaderDecorator implements Cupboard{
             decoratedCupboard.addResourceFromContainer(container, to, resource, amount);
         }catch(NoSuchElementException e){
             if(!leaderShelf.equals(to))
-                throw new NoSuchElementException();
+                throw new NoSuchElementException("Container " + container.getId() + " does not contain " + amount +
+                        " " + resource.getId());
 
             //if the resources can't be added to the shelf, IllegalCupboardException is propagated
             try{

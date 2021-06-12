@@ -82,9 +82,9 @@ public class LeaderCard implements UniqueSerializableObject<RawLeaderCard> {
         if(player == null)
             throw new NullPointerException();
         if(!LeaderCard.this.isSatisfied(player))
-            throw new RequirementsNotSatisfiedException();
+            throw new RequirementsNotSatisfiedException("Cannot activate leader card if requirements are not satisfied");
         if(LeaderCard.this.status)
-            throw new AlreadyActiveException();
+            throw new AlreadyActiveException("Cannot activate an already active leader card");
 
         List<PayloadComponent> payload = new ArrayList<>();
         for(SpecialAbility specialAbility : abilities){
