@@ -22,9 +22,11 @@ public class ClientModel implements Observable<ClientModel> {
     private ClientMarket market;
     private List<RawLeaderCard> leaderCards;
     private List<RawCraftingCard> craftingCards;
+    private final ClientEndGameResults endGameResults;
 
     public ClientModel(){
         this.personalData = new PersonalData();
+        this.endGameResults = new ClientEndGameResults();
         listeners = new ArrayList<>();
     }
 
@@ -111,6 +113,10 @@ public class ClientModel implements Observable<ClientModel> {
                             .filter(c -> c.getId() == id)
                             .findFirst()
                             .orElseThrow(()-> new NoSuchElementException("No crafting card with id " + id));
+    }
+
+    public ClientEndGameResults getEndGameResults() {
+        return endGameResults;
     }
 
     public synchronized OutputHandler getOutputHandler(){
