@@ -2,18 +2,19 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.CliBuilder;
 import it.polimi.ingsw.client.cli.framework.CliFramework;
+import it.polimi.ingsw.client.model.ClientPlayer;
 import it.polimi.ingsw.common.payload_components.groups.actions.*;
 import it.polimi.ingsw.common.payload_components.groups.setup.CreateMatchSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.JoinMatchSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.ReconnectSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.SetUsernameSetupPayloadComponent;
 import it.polimi.ingsw.exceptions.UnableToDrawElementException;
-import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.actions.SelectPlayAction;
 import it.polimi.ingsw.model.production.Production;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class InputReader extends Thread{
 
@@ -78,8 +79,8 @@ public class InputReader extends Thread{
                 case "reconnect":
                     parseReconnectCommand(logicalInput);
                     break;
-                case "select_card_from_shop":
-                    parseSelectCardFromShopCommand(logicalInput);
+                case "select_card":
+                    parseSelectCardCommand(logicalInput);
                     break;
                 case "select_conversions":
                     parseSelectConversionsCommand(logicalInput);
@@ -90,7 +91,9 @@ public class InputReader extends Thread{
                 case "select_output":
                     parseSelectOutputCommand(logicalInput);
                     break;
-                case "select_play":
+                case "market":
+                case "shop":
+                case "crafting":
                     parseSelectPlayCommand(logicalInput);
                     break;
                 case "select_resources":
@@ -120,20 +123,27 @@ public class InputReader extends Thread{
     private void parseSelectPlayCommand(List<String> logicalInput) {
         try {
             SelectPlayAction.Play play = null;
-            String playString = logicalInput.get(1).toUpperCase();
+            String playString = logicalInput.get(0).toUpperCase();
             try {
                 play = SelectPlayAction.Play.valueOf(playString);
             } catch (IllegalArgumentException e) {
                 System.out.println("There is no \"" + playString + "\" option");
             }
+
+            switch(Objects.requireNonNull(play)){
+                case SHOP:
+                case MARKET:
+                    framework.setActiveFrame("global");
+                    framework.renderActiveFrame();
+                    break;
+            }
             serverHandler.sendPayload(new SelectPlayActionPayloadComponent(serverHandler.getUsername(), play));
-        }catch(RuntimeException e){
+        }catch(RuntimeException | UnableToDrawElementException e){
             System.out.println("Command not valid");
         }
     }
 
     public void parseUsernameCommand(List<String> logicalInput){
-        //TODO: how do we handle invalid command?
         try {
             serverHandler.sendPayload(new SetUsernameSetupPayloadComponent(logicalInput.get(1)));
         }catch(RuntimeException e){
@@ -198,7 +208,7 @@ public class InputReader extends Thread{
             for(int i = 0; i < paramSize; i++){
                 try{
                     int discardInteger = Integer.parseInt(logicalInput.get(i+1));
-                    leadersToDiscard.add(discardInteger);
+                    leadersToDiscard.add(discardInteger - 1);
                     discardSize++;
                 }catch(NumberFormatException e){
                     break;
@@ -226,7 +236,7 @@ public class InputReader extends Thread{
         try {
             Production.CraftingType craftingType = null;
             String craftingTypeString = logicalInput.get(1).toUpperCase();
-            int index = Integer.parseInt(logicalInput.get(2));
+            int index = Integer.parseInt(logicalInput.get(2)) - 1;
             try {
                 craftingType = Production.CraftingType.valueOf(craftingTypeString);
             } catch (IllegalArgumentException e) {
@@ -239,11 +249,11 @@ public class InputReader extends Thread{
         }
     }
 
-    public void parseSelectCardFromShopCommand(List<String> logicalInput){
+    public void parseSelectCardCommand(List<String> logicalInput){
         try {
-            int row = Integer.parseInt(logicalInput.get(1));
-            int col = Integer.parseInt(logicalInput.get(2));
-            int upgradableCraftingIndex = Integer.parseInt(logicalInput.get(3));
+            int row = Integer.parseInt(logicalInput.get(1)) - 1;
+            int col = Integer.parseInt(logicalInput.get(2)) - 1;
+            int upgradableCraftingIndex = Integer.parseInt(logicalInput.get(3)) - 1;
             serverHandler.sendPayload(new SelectCardFromShopActionPayloadComponent(serverHandler.getUsername(), row, col,
                     upgradableCraftingIndex));
         }catch (RuntimeException e){
@@ -308,7 +318,7 @@ public class InputReader extends Thread{
         try {
             List<Integer> actuatorsChoice = new ArrayList<>();
             for (int i = 1; i < logicalInput.size(); i++) {
-                actuatorsChoice.add(Integer.parseInt(logicalInput.get(i)));
+                actuatorsChoice.add(Integer.parseInt(logicalInput.get(i)) - 1);
             }
             serverHandler.sendPayload(new SelectConversionsActionPayloadComponent(serverHandler.getUsername(), actuatorsChoice));
         }catch(RuntimeException e){
@@ -319,7 +329,7 @@ public class InputReader extends Thread{
     public void parseBuyFromMarketCommand(List<String> logicalInput){
         try {
             boolean isRow = Boolean.parseBoolean(logicalInput.get(1));
-            int index = Integer.parseInt(logicalInput.get(2));
+            int index = Integer.parseInt(logicalInput.get(2)) - 1;
             serverHandler.sendPayload(new BuyFromMarketActionPayloadComponent(serverHandler.getUsername(), isRow, index));
         }catch(RuntimeException e){
             System.out.println("Command not valid");
@@ -360,7 +370,9 @@ public class InputReader extends Thread{
         try {
             CliBuilder.createGameFrames(framework, serverHandler.getClient());
 
-            framework.setActiveFrame("player_1");
+            List<String> players = serverHandler.getClient().getPlayers().stream().map(ClientPlayer::getUsername).collect(Collectors.toList());
+            int clientIndex = players.indexOf(serverHandler.getUsername());
+            framework.setActiveFrame("player_" + (clientIndex + 1));
             framework.renderActiveFrame();
         }catch(RuntimeException | UnableToDrawElementException e){
             System.out.println("Command not valid ");
