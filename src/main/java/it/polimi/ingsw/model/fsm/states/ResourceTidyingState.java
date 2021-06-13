@@ -1,7 +1,10 @@
 package it.polimi.ingsw.model.fsm.states;
 
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
+import it.polimi.ingsw.common.payload_components.groups.PossibleActionsPayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.actions.ConfirmTidyAction;
@@ -16,6 +19,8 @@ import java.util.HashSet;
 import java.util.List;
 
 public class ResourceTidyingState extends State {
+
+    private boolean alreadyVisited = false;
     /**
      * A new State is created with the provided game context. The nextState and the interruptListener
      * are both initially null
@@ -85,13 +90,19 @@ public class ResourceTidyingState extends State {
     public List<Message> onEntry(){
         List<Message> messages = super.onEntry();
 
-        messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                Collections.singletonList(PayloadFactory.possibleActions(
-                        new HashSet<>(){{
-                            add(PossibleActions.RESOURCE_MOVE);
-                            add(PossibleActions.CONFIRM_TIDY);
-                        }}
-                ))));
+        List<PayloadComponent> payload = new ArrayList<>();
+
+        if(!alreadyVisited) {
+            payload.add(new InfoPayloadComponent("You can now move resources between shelves and hand, or confirm the configuration"));
+            alreadyVisited = true;
+        }
+        payload.add(new PossibleActionsPayloadComponent(
+            new HashSet<>(){{
+                add(PossibleActions.RESOURCE_MOVE);
+                add(PossibleActions.CONFIRM_TIDY);
+            }}
+        ));
+        messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()), payload));
 
         return messages;
     }

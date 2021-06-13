@@ -2,7 +2,9 @@ package it.polimi.ingsw.model.fsm.states;
 
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
+import it.polimi.ingsw.common.payload_components.groups.PossibleActionsPayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.actions.BackAction;
@@ -99,14 +101,16 @@ public class OutputSelectionState extends State {
     public List<Message> onEntry() {
         List<Message> messages = super.onEntry();
 
+        List<PayloadComponent> payload = new ArrayList<>();
 
-        messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                Collections.singletonList(PayloadFactory.possibleActions(
-                        new HashSet<>(){{
-                            add(PossibleActions.BACK);
-                            add(PossibleActions.SELECT_OUTPUTS);
-                        }}
-                ))));
+        payload.add(new InfoPayloadComponent("Select the output of the crafting"));
+        payload.add(new PossibleActionsPayloadComponent(
+                new HashSet<>(){{
+                    add(PossibleActions.BACK);
+                    add(PossibleActions.SELECT_OUTPUTS);
+                }}
+        ));
+        messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()), payload));
 
 
         return messages;

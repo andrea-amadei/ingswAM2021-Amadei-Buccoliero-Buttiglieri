@@ -2,7 +2,9 @@ package it.polimi.ingsw.model.fsm.states;
 
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
+import it.polimi.ingsw.common.payload_components.groups.PossibleActionsPayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.actions.BackAction;
@@ -12,10 +14,7 @@ import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
 import it.polimi.ingsw.utils.PayloadFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class CraftingState extends State {
     /**
@@ -146,23 +145,22 @@ public class CraftingState extends State {
     public List<Message> onEntry() {
         List<Message> messages = super.onEntry();
 
-        if(getGameContext().getCurrentPlayer().getBoard().getProduction().isCraftingReady())
-            messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                    Collections.singletonList(PayloadFactory.possibleActions(
-                            new HashSet<>(){{
-                                add(PossibleActions.ACTIVATE_PRODUCTION);
-                                add(PossibleActions.SELECT_CRAFTING);
-                                add(PossibleActions.BACK);
-                            }}
-                    ))));
-        else
-            messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                    Collections.singletonList(PayloadFactory.possibleActions(
-                            new HashSet<>(){{
-                                add(PossibleActions.SELECT_CRAFTING);
-                                add(PossibleActions.BACK);
-                            }}
-                    ))));
+        List<PayloadComponent> payload = new ArrayList<>();
+        Set<PossibleActions> possibleActions = new HashSet<>();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Select a slot in the production for crafting");
+
+        possibleActions.add(PossibleActions.SELECT_CRAFTING);
+        possibleActions.add(PossibleActions.BACK);
+        if(getGameContext().getCurrentPlayer().getBoard().getProduction().isCraftingReady()){
+            sb.append(" or confirm to start the production");
+            possibleActions.add(PossibleActions.CONFIRM);
+        }
+
+        payload.add(new InfoPayloadComponent(sb.toString()));
+        payload.add(new PossibleActionsPayloadComponent(possibleActions));
+        messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()), payload));
 
 
         return messages;

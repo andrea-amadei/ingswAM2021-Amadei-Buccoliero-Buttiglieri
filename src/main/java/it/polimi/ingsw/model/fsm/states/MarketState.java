@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.fsm.states;
 
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
@@ -10,6 +12,7 @@ import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
 import it.polimi.ingsw.utils.PayloadFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -87,13 +90,18 @@ public class MarketState extends State {
     public List<Message> onEntry() {
 
         List<Message> messages = super.onEntry();
+        List<PayloadComponent> payload = new ArrayList<>();
+
+        payload.add(new InfoPayloadComponent("You chose the Market: pick a row or a column"));
+        payload.add(PayloadFactory.possibleActions(
+                new HashSet<>(){{
+                    add(PossibleActions.BACK);
+                    add(PossibleActions.BUY_FROM_MARKET);
+                }}
+        ));
         messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                Collections.singletonList(PayloadFactory.possibleActions(
-                        new HashSet<>(){{
-                            add(PossibleActions.BACK);
-                            add(PossibleActions.BUY_FROM_MARKET);
-                        }}
-                ))));
+                payload));
+
         return messages;
     }
 

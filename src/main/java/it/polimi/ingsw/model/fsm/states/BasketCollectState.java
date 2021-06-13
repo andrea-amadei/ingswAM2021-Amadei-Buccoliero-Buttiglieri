@@ -2,7 +2,9 @@ package it.polimi.ingsw.model.fsm.states;
 
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
+import it.polimi.ingsw.common.payload_components.groups.PossibleActionsPayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.FaithPath;
@@ -19,6 +21,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class BasketCollectState extends State {
+
+    private boolean alreadyVisited = false;
     /**
      * A new State is created with the provided game context. The nextState and the interruptListener
      * are both initially null
@@ -132,13 +136,20 @@ public class BasketCollectState extends State {
     @Override
     public List<Message> onEntry() {
         List<Message> messages = super.onEntry();
-        messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                Collections.singletonList(PayloadFactory.possibleActions(
-                        new HashSet<>(){{
-                            add(PossibleActions.MOVE_FROM_BASKET_TO_SHELF);
-                            add(PossibleActions.END_MARKET_ACTION);
-                        }}
-                ))));
+
+        List<PayloadComponent> payload = new ArrayList<>();
+
+        if(!alreadyVisited){
+            payload.add(new InfoPayloadComponent("Collect resources from the basket. When you are ready confirm"));
+        }
+
+        payload.add(new PossibleActionsPayloadComponent(
+            new HashSet<>(){{
+                add(PossibleActions.MOVE_FROM_BASKET_TO_SHELF);
+                add(PossibleActions.END_MARKET_ACTION);
+            }}
+        ));
+        messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()), payload));
 
         return messages;
     }
