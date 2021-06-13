@@ -75,6 +75,9 @@ public class DiscardLeaderAction implements Action{
             throw new IllegalActionException(e.getMessage());
         }
 
+        if(leaderCard.isActive())
+            throw new IllegalActionException("Cannot discard an active leader");
+
         try {
             currentPlayer.getBoard().getLeaderCards().remove(leaderCard);
         }catch(NoSuchElementException e){
