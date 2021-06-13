@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.fsm.states;
 
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
@@ -8,11 +9,13 @@ import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.actions.*;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
+import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.*;
 
 public class MenuState extends State {
+
     /**
      * A new State is created with the provided game context. The nextState and the interruptListener
      * are both initially null
@@ -185,18 +188,42 @@ public class MenuState extends State {
      */
     @Override
     public List<Message> onEntry() {
+
+        List<PayloadComponent> payload = new ArrayList<>();
+
+        Set<PossibleActions> possibleActions = new HashSet<>();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Available actions:\n");
+
+        //the player can make their move
+        if (!getGameContext().hasPlayerMoved() && getGameContext().getCurrentPlayer().getBoard().getStorage().getHand().getAllResources().isEmpty()) {
+            sb.append("Craft resources, Buy a development card, Buy resources from market\n");
+            possibleActions.add(PossibleActions.SELECT_PLAY);
+        } else {
+            sb.append("End turn\n");
+            possibleActions.add(PossibleActions.CONFIRM);
+        }
+
+        //the player can activate or discard a leader
+        if (getGameContext().getCurrentPlayer().getBoard().getLeaderCards().stream().anyMatch(c -> !c.isActive())) {
+            sb.append("Activate a leader card, Discard a leader card\n");
+            possibleActions.add(PossibleActions.DISCARD_LEADER);
+            possibleActions.add(PossibleActions.ACTIVATE_LEADER);
+        }
+
+        //the player can move resources
+        sb.append("Move resources");
+        possibleActions.add(PossibleActions.RESOURCE_MOVE);
+
+
+        payload.add(new InfoPayloadComponent(sb.toString()));
+
+        payload.add(PayloadFactory.possibleActions(possibleActions));
+
         return Collections.singletonList(
-                new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                        Arrays.asList(PayloadFactory.possibleActions(
-                                new HashSet<>(){{
-                                    add(PossibleActions.ACTIVATE_LEADER);
-                                    add(PossibleActions.DISCARD_LEADER);
-                                    add(PossibleActions.RESOURCE_MOVE);
-                                    add(PossibleActions.END_TURN);
-                                    add(PossibleActions.SELECT_PLAY);
-                                }}
-                        ), new InfoPayloadComponent("You are in the menu state!!!")))
-        );
+                new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()), payload));
+
     }
 
 
