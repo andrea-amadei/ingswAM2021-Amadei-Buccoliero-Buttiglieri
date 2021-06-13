@@ -3,7 +3,9 @@ package it.polimi.ingsw.model.fsm.states;
 import it.polimi.ingsw.common.ActionQueue;
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
+import it.polimi.ingsw.common.payload_components.groups.PossibleActionsPayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
@@ -30,6 +32,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ShopResourceSelectionState extends State {
+
+    private boolean alreadyEntered = false;
     /**
      * A new State is created with the provided game context. The nextState and the interruptListener
      * are both initially null
@@ -279,14 +283,21 @@ public class ShopResourceSelectionState extends State {
     public List<Message> onEntry() {
         List<Message> messages = super.onEntry();
 
-        messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                Collections.singletonList(PayloadFactory.possibleActions(
-                        new HashSet<>(){{
-                            add(PossibleActions.BACK);
-                            add(PossibleActions.SELECT_RESOURCES);
-                            add(PossibleActions.CONFIRM);
-                        }}
-                ))));
+        List<PayloadComponent> payload = new ArrayList<>();
+
+        if(!alreadyEntered){
+            payload.add(new InfoPayloadComponent("Select the resources to buy the card"));
+            alreadyEntered = true;
+        }
+
+        payload.add(new PossibleActionsPayloadComponent(
+                new HashSet<>(){{
+                    add(PossibleActions.BACK);
+                    add(PossibleActions.SELECT_RESOURCES);
+                    add(PossibleActions.CONFIRM);
+                }}
+        ));
+        messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()), payload));
 
 
         return messages;

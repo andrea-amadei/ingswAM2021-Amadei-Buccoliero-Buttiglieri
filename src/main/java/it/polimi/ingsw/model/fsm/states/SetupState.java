@@ -89,8 +89,8 @@ public class SetupState extends State {
             globalPayload.add(
                     PayloadFactory.changeResources(username,
                             new RawStorage(getGameContext().getGameModel().getPlayerById(username).getBoard().getStorage().getChest().getId(),
-                            debugResources.entrySet().stream()
-                                    .collect(Collectors.toMap(e -> e.getKey().getId(), Map.Entry::getValue))))
+                                    debugResources.entrySet().stream()
+                                            .collect(Collectors.toMap(e -> e.getKey().getId(), Map.Entry::getValue))))
             );
         }
 

@@ -1,7 +1,10 @@
 package it.polimi.ingsw.model.fsm.states;
 
 import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
+import it.polimi.ingsw.common.payload_components.groups.PossibleActionsPayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.Player;
@@ -20,6 +23,8 @@ import java.util.HashSet;
 import java.util.List;
 
 public class PreliminaryTidyState extends State {
+
+    private boolean alreadyEntered = false;
 
     /**
      * A new State is created with the provided game context. The nextState and the interruptListener
@@ -174,13 +179,20 @@ public class PreliminaryTidyState extends State {
     public List<Message> onEntry() {
         List<Message> messages = super.onEntry();
 
-        messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()),
-                Collections.singletonList(PayloadFactory.possibleActions(
-                        new HashSet<>(){{
-                            add(PossibleActions.RESOURCE_MOVE);
-                            add(PossibleActions.CONFIRM_TIDY);
-                        }}
-                ))));
+        List<PayloadComponent> payload = new ArrayList<>();
+        
+        if(!alreadyEntered){
+            payload.add(new InfoPayloadComponent("Tidy your resources and then confirm"));
+            alreadyEntered = true;
+        }
+        
+        payload.add(new PossibleActionsPayloadComponent(
+            new HashSet<>(){{
+                add(PossibleActions.RESOURCE_MOVE);
+                add(PossibleActions.CONFIRM_TIDY);
+            }}
+        ));
+        messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()), payload));
 
         return messages;
     }
