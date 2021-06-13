@@ -26,9 +26,7 @@ public class LobbyPersonalDataCliUpdater implements Listener<PersonalData> {
     private FixedTextBox username_label, gameName_label;
     private TextBox username, gameName;
 
-    private Group messages;
-    private List<TextBox> messageList;
-    int lastMessage;
+    private LongTextBox messages;
 
 
     public LobbyPersonalDataCliUpdater(PersonalData personalData, Frame frame) {
@@ -37,7 +35,6 @@ public class LobbyPersonalDataCliUpdater implements Listener<PersonalData> {
 
         this.frame = frame;
         this.personalData = personalData;
-        lastMessage = 0;
 
         personalData.addListener(this);
 
@@ -66,14 +63,9 @@ public class LobbyPersonalDataCliUpdater implements Listener<PersonalData> {
 
         frame.addElement(info);
 
-        messages = new Group("messages");
-        messageList = new ArrayList<>(MAX_MESSAGES);
-        for(int i = 0; i < MAX_MESSAGES; i++) {
-            messageList.add(new TextBox("message_" + (i + 1), MESSAGES_STARTING_ROW + i, MESSAGES_STARTING_COLUMN, " ",
-                    ForegroundColor.WHITE, BackgroundColor.BLACK));
-
-            messages.addElement(messageList.get(i));
-        }
+        messages = new LongTextBox("messages", MESSAGES_STARTING_ROW, MESSAGES_STARTING_COLUMN, "[No messages so far]", 53, 6,
+                ForegroundColor.WHITE, BackgroundColor.BLACK);
+        messages.setOverflowEnabled(true);
 
         frame.addElement(messages);
     }
@@ -85,13 +77,14 @@ public class LobbyPersonalDataCliUpdater implements Listener<PersonalData> {
         username.setText(personalData.getUsername());
         gameName.setText(personalData.getGameName());
 
-        for(i = lastMessage; i < personalData.getServerMessages().size(); i++) {
-            for(j = MAX_MESSAGES - 1; j > 0; j--)
-                messageList.get(j).setText(messageList.get(j - 1).getText());
-
-            messageList.get(0).setText(personalData.getServerMessages().get(i));
+        StringBuilder str = new StringBuilder();
+        for(i = personalData.getServerMessages().size() - 1; i >= 0; i--) {
+            str.append("- ").append(personalData.getServerMessages().get(i)).append('\n');
         }
 
-        lastMessage = i;
+        if(str.toString().isEmpty())
+            str.append("[No messages so far]");
+
+        messages.setText(str.toString());
     }
 }
