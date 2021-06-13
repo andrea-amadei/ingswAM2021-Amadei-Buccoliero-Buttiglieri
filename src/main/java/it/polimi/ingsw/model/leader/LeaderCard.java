@@ -91,6 +91,7 @@ public class LeaderCard implements UniqueSerializableObject<RawLeaderCard> {
             payload.addAll(specialAbility.activate(player));
         }
 
+        player.addPoints(points);
         payload.add(PayloadFactory.addPoints(player.getUsername(), points));
         status = true;
 
