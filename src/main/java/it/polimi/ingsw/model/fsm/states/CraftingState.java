@@ -70,7 +70,6 @@ public class CraftingState extends State {
      * @throws FSMTransitionFailedException if the action cannot be executed
      */
     @Override
-    //TODO: REMAKE EVERYTHING ONCE EVERYTHING IS OVER
     public List<Message> handleAction(ConfirmAction confirmAction) throws FSMTransitionFailedException {
         if(confirmAction == null)
             throw new NullPointerException();

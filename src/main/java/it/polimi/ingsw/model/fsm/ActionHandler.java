@@ -139,5 +139,4 @@ public interface ActionHandler {
     List<Message> handleAction(DisconnectPlayerAction disconnectPlayerAction) throws FSMTransitionFailedException;
 
     List<Message> handleAction(ReconnectPlayerAction reconnectPlayerAction) throws FSMTransitionFailedException;
-    //TODO: add the other actions
 }

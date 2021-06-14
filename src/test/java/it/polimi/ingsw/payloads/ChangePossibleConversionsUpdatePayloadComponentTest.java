@@ -38,7 +38,6 @@ public class ChangePossibleConversionsUpdatePayloadComponentTest {
 
     @Test
     public void correctlySerialized(){
-        //TODO: consider requesting MarbleColor instead of Marble
         PayloadComponent payload = PayloadFactory.changePossibleConversions("Ernestino", marbles, possibleConversions);
         String serialized = JSONSerializer.toJson(payload);
 
@@ -47,7 +46,6 @@ public class ChangePossibleConversionsUpdatePayloadComponentTest {
                 "[\"gold\"],\"faithOutput\":0}]],\"player\":\"Ernestino\"}", serialized);
     }
 
-    //TODO: uncomment test after deserializer is complete
     /*
     @Test
     public void correctlyDeserialized(){

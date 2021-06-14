@@ -227,7 +227,6 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
                 }
 
                 try {
-                    //TODO: choose a meaningful name
                     return new StorageAbility(new Shelf(storageName, t, amount));
                 } catch (IllegalArgumentException e) {
                     throw new IllegalRawConversionException(e.getMessage());

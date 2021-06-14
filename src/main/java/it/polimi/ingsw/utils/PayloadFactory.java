@@ -33,7 +33,6 @@ public class PayloadFactory {
         return new ChangeResourcesUpdatePayloadComponent(player, deltaResources);
     }
 
-    //TODO: use this instead of the addCrafting when a card is bought from the shop
     public static UpdatePayloadComponent addUpgradableCrafting(String player, Integer id, Integer index){
         return new AddUpgradableCraftingUpdatePayloadComponent(player, id, index);
     }

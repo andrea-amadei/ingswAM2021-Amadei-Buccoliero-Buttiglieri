@@ -19,10 +19,8 @@ public abstract class ResourceType {
     public ResourceType(String id){
         this.id = id;
         associatedResources = new HashSet<>();
-        //TODO: exception on Constructor
     }
 
-    //TODO:Refactor "isA"
     public abstract boolean isA(ResourceType other);
 
     public abstract boolean isGroup();

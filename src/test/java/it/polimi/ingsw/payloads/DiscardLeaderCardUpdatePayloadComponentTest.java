@@ -15,7 +15,6 @@ public class DiscardLeaderCardUpdatePayloadComponentTest {
 
     @Test
     public void correctlySerialized(){
-        //TODO: possibly change "id" to "index"
         PayloadComponent payload = PayloadFactory.discardLeaderCard("Ernestino", 0);
         String serialized = JSONSerializer.toJson(payload);
 

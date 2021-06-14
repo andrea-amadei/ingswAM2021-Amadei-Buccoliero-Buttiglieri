@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.actions.Action;
 
 import java.util.*;
 
-//TODO: add priority of producer/consumer to the controller thread
 public class ActionQueue {
 
     /**

@@ -104,11 +104,10 @@ public class ShopStateTest {
         assertNull(currentState.getNextState());
     }
 
-    //TODO: togliere il commento una volta implementato il controllo di correttezza del player nelle azioni
-    //@Test
-    //public void selectRequestFromInvalidPlayer(){
-    //   assertThrows(FSMTransitionFailedException.class, ()-> currentState.handleAction(new SelectCardFromShopAction("Mariola", 0, 3, 1)));
-    //}
+    @Test
+    public void selectRequestFromInvalidPlayer(){
+       assertThrows(FSMTransitionFailedException.class, ()-> currentState.handleAction(new SelectCardFromShopAction("Mariola", 0, 3, 1)));
+    }
 
     @Test
     public void backRequestFromInvalidPlayer(){
