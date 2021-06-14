@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.GameModel;
@@ -8,6 +9,8 @@ import it.polimi.ingsw.model.actions.PreliminaryPickAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.server.DummyBuilder;
+import it.polimi.ingsw.server.ServerBuilder;
+import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -30,17 +33,23 @@ public class PreliminaryPickActionTest {
     private Map<ResourceSingle, Integer> chosenResources;
 
     @BeforeEach
-    public void init(){
-        player1 = new Player("Ernestino", 0);
-        Player player2 = new Player("Cosma", 1);
-        player3 = new Player("Leopoldo", 2);
-        Player player4 = new Player("Urbano", 3);
+    public void init() throws ParserException {
 
         leadersToDiscard = new ArrayList<>();
         chosenResources = new HashMap<>();
 
-        GameModel model = new GameModel(Arrays.asList(player1, player2, player3, player4));
-        gameContext = new GameContext(model);
+        List<String> usernames = Arrays.asList("Ernestino", "Cosma", "Leopoldo", "Urbano");
+        String config = ResourceLoader.loadFile("cfg/config.json");
+        String crafting = ResourceLoader.loadFile("cfg/crafting.json");
+        String faith = ResourceLoader.loadFile("cfg/faith.json");
+        String leaders = ResourceLoader.loadFile("cfg/leaders.json");
+
+        GameModel model = ServerBuilder.buildModel(config, crafting, faith, leaders, usernames, false, new Random(3));
+
+        player1 = model.getPlayerById("Ernestino");
+        player3 = model.getPlayerById("Leopoldo");
+
+        gameContext = new GameContext(model, false);
         gameContext.setCurrentPlayer(player1);
 
         List<LeaderCard> allLeaders = DummyBuilder.buildLeaderCards();

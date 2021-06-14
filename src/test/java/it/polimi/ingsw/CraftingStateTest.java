@@ -2,9 +2,9 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
+import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.*;
 import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.actions.BackAction;
 import it.polimi.ingsw.model.actions.ConfirmAction;
 import it.polimi.ingsw.model.actions.SelectCraftingAction;
@@ -14,8 +14,11 @@ import it.polimi.ingsw.model.fsm.states.CraftingResourceSelectionState;
 import it.polimi.ingsw.model.fsm.states.CraftingState;
 import it.polimi.ingsw.model.fsm.states.MenuState;
 import it.polimi.ingsw.model.fsm.states.OutputSelectionState;
+import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.model.production.UpgradableCrafting;
+import it.polimi.ingsw.server.ServerBuilder;
+import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -36,17 +39,26 @@ public class CraftingStateTest {
     private final ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
 
     @BeforeEach
-    public void init() {
+    public void init() throws ParserException {
 
-        Player player1 = new Player("Ernestino", 0);
-        Player player2 = new Player("Geonna", 1);
-        Player player3 = new Player("Alrigo", 2);
-        GameModel model = new GameModel(Arrays.asList(player1, player2, player3), new Random(3));
+        List<String> usernames = Arrays.asList("Ernestino", "Geonna", "Alrigo");
+        String config = ResourceLoader.loadFile("cfg/config.json");
+        String crafting = ResourceLoader.loadFile("cfg/crafting.json");
+        String faith = ResourceLoader.loadFile("cfg/faith.json");
+        String leaders = ResourceLoader.loadFile("cfg/leaders.json");
 
-        gameContext = new GameContext(model);
+        GameModel model  = ServerBuilder.buildModel(config, crafting, faith, leaders, usernames, false, new Random(3));
+
+        gameContext = new GameContext(model, false);
         gameContext.setCurrentPlayer(model.getPlayerById("Ernestino"));
         currentState = new CraftingState(gameContext);
 
+        //base crafting 0
+        Map<ResourceType, Integer> input0 = new HashMap<>();
+        Map<ResourceType, Integer> output0 = new HashMap<>();
+        input0.put(ResourceTypeSingleton.getInstance().getAnyResource(), 2);
+        output0.put(ResourceTypeSingleton.getInstance().getAnyResource(), 1);
+        Crafting baseCrafting = new Crafting(input0, output0, 0);
 
         //crafting 1
         Map<ResourceType, Integer> input1 = new HashMap<>();
@@ -71,7 +83,9 @@ public class CraftingStateTest {
         assertDoesNotThrow(()-> gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getStorage()
                 .getCupboard().getShelfById("BottomShelf").addResources(gold, 3));
 
-        //Ernestino has crafting1 and crafting2
+        //Ernestino has baseCrafting, crafting1 and crafting2
+        assertDoesNotThrow(()-> gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getProduction()
+                .addBaseCrafting(baseCrafting));
         assertDoesNotThrow(()-> gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getProduction()
                 .setUpgradableCrafting(0, crafting1));
         assertDoesNotThrow(()-> gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getProduction()

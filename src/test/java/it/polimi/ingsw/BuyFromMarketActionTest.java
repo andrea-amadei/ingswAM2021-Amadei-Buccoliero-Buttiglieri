@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.MarbleColor;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
@@ -12,6 +13,8 @@ import it.polimi.ingsw.model.actions.BuyFromMarketAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.market.ConversionActuator;
 import it.polimi.ingsw.model.market.Marble;
+import it.polimi.ingsw.server.ServerBuilder;
+import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -27,24 +30,25 @@ public class BuyFromMarketActionTest {
 
     private final ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
     private final ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
-    private final ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
-
 
     @BeforeEach
-    public void init(){
+    public void init() throws ParserException {
 
-        Player player1 = new Player("Paolo", 0);
-        Player player2 = new Player("Genoveffa", 1);
-        Player player3 = new Player("Gertrude", 2);
+        List<String> usernames = Arrays.asList("Paolo", "Genoveffa", "Gertrude");
+        String config = ResourceLoader.loadFile("cfg/config.json");
+        String crafting = ResourceLoader.loadFile("cfg/crafting.json");
+        String faith = ResourceLoader.loadFile("cfg/faith.json");
+        String leaders = ResourceLoader.loadFile("cfg/leaders.json");
 
-        GameModel model = new GameModel(Arrays.asList(player1, player2, player3), new Random(3));
+        GameModel model  = ServerBuilder.buildModel(config, crafting, faith, leaders, usernames, false, new Random(3));
 
+        Player player2 = model.getPlayerById("Genoveffa");
         player2.getBoard().getConversionHolder().addConversionActuator(MarbleColor.WHITE,
                                                                        new ConversionActuator(Collections.singletonList(servant), 0));
 
         player2.getBoard().getConversionHolder().addConversionActuator(MarbleColor.WHITE,
                 new ConversionActuator(Collections.singletonList(gold), 0));
-        gameContext = new GameContext(model);
+        gameContext = new GameContext(model, false);
     }
 
     @Test

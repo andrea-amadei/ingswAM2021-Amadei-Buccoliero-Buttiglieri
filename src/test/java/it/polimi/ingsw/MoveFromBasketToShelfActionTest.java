@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.GameModel;
@@ -9,6 +9,8 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.actions.Action;
 import it.polimi.ingsw.model.actions.MoveFromBasketToShelfAction;
 import it.polimi.ingsw.model.fsm.GameContext;
+import it.polimi.ingsw.server.ServerBuilder;
+import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -17,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -27,12 +30,20 @@ public class MoveFromBasketToShelfActionTest {
     private final ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
 
     @BeforeEach
-    public void init(){
+    public void init() throws ParserException {
 
-        Player player1 = new Player("Ernestino", 0);
-        Player player2 = new Player("Pollo", 1);
-        GameModel model = new GameModel(Arrays.asList(player1, player2));
-        gameContext = new GameContext(model);
+        List<String> usernames = Arrays.asList("Ernestino", "Pollo");
+        String config = ResourceLoader.loadFile("cfg/config.json");
+        String crafting = ResourceLoader.loadFile("cfg/crafting.json");
+        String faith = ResourceLoader.loadFile("cfg/faith.json");
+        String leaders = ResourceLoader.loadFile("cfg/leaders.json");
+
+        GameModel model  = ServerBuilder.buildModel(config, crafting, faith, leaders, usernames, false, new Random(3));
+
+        gameContext = new GameContext(model, false);
+
+        Player player1 = model.getPlayerById("Ernestino");
+        Player player2 = model.getPlayerById("Pollo");
 
         assertDoesNotThrow(()->player2.getBoard().getStorage().getCupboard().getShelfById("MiddleShelf").addResources(servant, 1));
         assertDoesNotThrow(()->player2.getBoard().getStorage().getCupboard().getShelfById("BottomShelf").addResources(gold, 3));
@@ -48,10 +59,9 @@ public class MoveFromBasketToShelfActionTest {
     public void executeTest(){
         gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new MoveFromBasketToShelfAction("Ernestino", servant, 1, "BottomShelf");
-        List<Message> messages;
 
         try{
-            messages = action.execute(gameContext);
+            action.execute(gameContext);
         }catch(IllegalActionException e){
             throw new RuntimeException();
         }

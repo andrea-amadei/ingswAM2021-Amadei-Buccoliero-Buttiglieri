@@ -2,9 +2,9 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
+import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.*;
 import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.actions.BackAction;
 import it.polimi.ingsw.model.actions.SelectCardFromShopAction;
 import it.polimi.ingsw.model.fsm.*;
@@ -13,6 +13,8 @@ import it.polimi.ingsw.model.fsm.states.ShopResourceSelectionState;
 import it.polimi.ingsw.model.fsm.states.ShopState;
 import it.polimi.ingsw.model.production.CraftingCard;
 import it.polimi.ingsw.model.production.UpgradableCrafting;
+import it.polimi.ingsw.server.ServerBuilder;
+import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -33,14 +35,17 @@ public class ShopStateTest {
     private CraftingCard craftingCard1;
 
     @BeforeEach
-    public void init() {
+    public void init() throws ParserException {
 
-        Player player1 = new Player("Ernestino", 0);
-        Player player2 = new Player("Mariola", 1);
-        Player player3 = new Player("Augusta", 2);
-        GameModel model = new GameModel(Arrays.asList(player1, player2, player3), new Random(3));
+        List<String> usernames = Arrays.asList("Ernestino", "Mariola", "Augusta");
+        String config = ResourceLoader.loadFile("cfg/config.json");
+        String crafting = ResourceLoader.loadFile("cfg/crafting.json");
+        String faith = ResourceLoader.loadFile("cfg/faith.json");
+        String leaders = ResourceLoader.loadFile("cfg/leaders.json");
 
-        gameContext = new GameContext(model);
+        GameModel model  = ServerBuilder.buildModel(config, crafting, faith, leaders, usernames, false, new Random(3));
+
+        gameContext = new GameContext(model, false);
         gameContext.setCurrentPlayer(model.getPlayerById("Ernestino"));
         currentState = new ShopState(gameContext);
 
@@ -65,10 +70,9 @@ public class ShopStateTest {
 
     @Test
     public void successfulBack(){
-        List<Message> messages;
 
         try{
-            messages = currentState.handleAction(new BackAction("Ernestino"));
+            currentState.handleAction(new BackAction("Ernestino"));
         }catch(FSMTransitionFailedException e){
             throw new RuntimeException();
         }

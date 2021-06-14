@@ -3,6 +3,7 @@ package it.polimi.ingsw;
 import static org.junit.jupiter.api.Assertions.*;
 
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.GameModel;
@@ -12,13 +13,13 @@ import it.polimi.ingsw.model.actions.SelectCardFromShopAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.model.production.UpgradableCrafting;
+import it.polimi.ingsw.server.ServerBuilder;
+import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SelectCardFromShopActionTest {
@@ -29,10 +30,18 @@ public class SelectCardFromShopActionTest {
     private Player player1;
 
     @BeforeEach
-    public void init(){
-        player1 = new Player("Ernestino", 0);
-        GameModel model = new GameModel(Collections.singletonList(player1));
-        gameContext = new GameContext(model);
+    public void init() throws ParserException {
+        List<String> usernames = Collections.singletonList("Ernestino");
+        String config = ResourceLoader.loadFile("cfg/config.json");
+        String crafting = ResourceLoader.loadFile("cfg/crafting.json");
+        String faith = ResourceLoader.loadFile("cfg/faith.json");
+        String leaders = ResourceLoader.loadFile("cfg/leaders.json");
+
+        GameModel model = ServerBuilder.buildModel(config, crafting, faith, leaders, usernames, true, new Random(3));
+
+        gameContext = new GameContext(model, true);
+
+        player1 = model.getPlayerById("Ernestino");
     }
 
     @Test

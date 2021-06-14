@@ -1,6 +1,5 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.*;
@@ -33,12 +32,13 @@ public class ActivateLeaderActionTest {
 
     @BeforeEach
     public void init() throws ParserException {
-        List<String> usernames = Arrays.asList("Ernestino", "Ermenegildo");
 
+        List<String> usernames = Arrays.asList("Ernestino", "Ermenegildo");
         String config = ResourceLoader.loadFile("cfg/config.json");
         String crafting = ResourceLoader.loadFile("cfg/crafting.json");
         String faith = ResourceLoader.loadFile("cfg/faith.json");
         String leaders = ResourceLoader.loadFile("cfg/leaders.json");
+
         GameModel model  = ServerBuilder.buildModel(config, crafting, faith, leaders, usernames, false, new Random(3));
 
         gameContext = new GameContext(model, false);
@@ -46,6 +46,7 @@ public class ActivateLeaderActionTest {
         Player player1 = model.getPlayerById("Ernestino");
         Player player2 = model.getPlayerById("Ermenegildo");
 
+        //creating leader cards
         BaseFlag flag1 = new BaseFlag(FlagColor.PURPLE);
         Shelf shelf = new Shelf("ExtraShelf", gold, 1);
         SpecialAbility discountAbility = new DiscountAbility(4, servant);
@@ -66,6 +67,8 @@ public class ActivateLeaderActionTest {
         LeaderCard leaderCard1 = new LeaderCard(1, "Lorenzo", 6, abilities, requirements);
         LeaderCard leaderCard2 = new LeaderCard(2, "Pollo", 1, abilities, requirements1);
         LeaderCard leaderCard3 = new LeaderCard(3, "Gallina", 2, abilities1, requirements2);
+
+        //adding leader cards to players
         assertDoesNotThrow(()-> player1.getBoard().getLeaderCards().add(leaderCard1));
         assertDoesNotThrow(()-> player2.getBoard().getLeaderCards().add(leaderCard2));
         assertDoesNotThrow(()-> player1.getBoard().getFlagHolder().addFlag(new LevelFlag(FlagColor.PURPLE, 2)));
@@ -82,10 +85,9 @@ public class ActivateLeaderActionTest {
     public void correctExecutionOfExecuteMethod(){
         gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
         Action action = new ActivateLeaderAction("Ernestino", 1);
-        List<Message> messages;
 
         try{
-            messages = action.execute(gameContext);
+            action.execute(gameContext);
         }catch(IllegalActionException e){
             throw new RuntimeException();
         }

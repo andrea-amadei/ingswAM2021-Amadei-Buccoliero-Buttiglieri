@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
+import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.GameModel;
@@ -14,6 +15,8 @@ import it.polimi.ingsw.model.storage.Cupboard;
 import it.polimi.ingsw.model.storage.LeaderDecorator;
 import it.polimi.ingsw.model.storage.Shelf;
 import it.polimi.ingsw.model.storage.Storage;
+import it.polimi.ingsw.server.ServerBuilder;
+import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -25,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ResourceTidyingStateTest {
 
-    private GameContext gameContext;
     private State currentState;
 
     private final ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
@@ -33,15 +35,19 @@ public class ResourceTidyingStateTest {
     private final ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
 
     @BeforeEach
-    public void init(){
-        Player player1 = new Player("Paolo", 0);
-        Player player2 = new Player("Genoveffa", 1);
-        Player player3 = new Player("Gertrude", 2);
+    public void init() throws ParserException {
 
-        GameModel model = new GameModel(Arrays.asList(player1, player2, player3), new Random(3));
+        List<String> usernames = Arrays.asList("Paolo", "Genoveffa", "Gertrude");
+        String config = ResourceLoader.loadFile("cfg/config.json");
+        String crafting = ResourceLoader.loadFile("cfg/crafting.json");
+        String faith = ResourceLoader.loadFile("cfg/faith.json");
+        String leaders = ResourceLoader.loadFile("cfg/leaders.json");
 
-        gameContext = new GameContext(model);
-        gameContext.setCurrentPlayer(model.getPlayerById("Genoveffa"));
+        GameModel model  = ServerBuilder.buildModel(config, crafting, faith, leaders, usernames, false, new Random(3));
+        Player player2 = model.getPlayerById("Genoveffa");
+
+        GameContext gameContext = new GameContext(model, false);
+        gameContext.setCurrentPlayer(player2);
 
         Storage player2Storage = player2.getBoard().getStorage();
         Cupboard player2Cupboard = player2Storage.getCupboard();

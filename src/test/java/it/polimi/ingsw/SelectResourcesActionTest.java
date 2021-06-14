@@ -3,6 +3,7 @@ package it.polimi.ingsw;
 import static org.junit.jupiter.api.Assertions.*;
 
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.GameModel;
@@ -12,13 +13,13 @@ import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.storage.Cupboard;
 import it.polimi.ingsw.model.storage.ResourceContainer;
 import it.polimi.ingsw.model.storage.Shelf;
+import it.polimi.ingsw.server.ServerBuilder;
+import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SelectResourcesActionTest {
@@ -31,16 +32,21 @@ public class SelectResourcesActionTest {
 
 
     @BeforeEach
-    public void init(){
-        player1 = new Player("Paolo", 0);
+    public void init() throws ParserException {
 
+        List<String> usernames = Collections.singletonList("Paolo");
+        String config = ResourceLoader.loadFile("cfg/config.json");
+        String crafting = ResourceLoader.loadFile("cfg/crafting.json");
+        String faith = ResourceLoader.loadFile("cfg/faith.json");
+        String leaders = ResourceLoader.loadFile("cfg/leaders.json");
 
-        GameModel model = new GameModel(Collections.singletonList(player1));
+        GameModel model = ServerBuilder.buildModel(config, crafting, faith, leaders, usernames, true, new Random(3));
+        player1 = model.getPlayerById("Paolo");
 
         assertDoesNotThrow(()->player1.getBoard().getStorage().getChest().addResources(gold, 3));
         assertDoesNotThrow(()->player1.getBoard().getStorage().getChest().addResources(servant, 3));
 
-        gameContext = new GameContext(model);
+        gameContext = new GameContext(model, true);
     }
 
     @Test

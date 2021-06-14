@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.GameModel;
@@ -9,6 +10,8 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.actions.Action;
 import it.polimi.ingsw.model.actions.ResourcesMoveAction;
 import it.polimi.ingsw.model.fsm.GameContext;
+import it.polimi.ingsw.server.ServerBuilder;
+import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -16,6 +19,7 @@ import org.junit.jupiter.api.TestInstance;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,12 +33,19 @@ public class ResourcesMoveActionTest {
     private final ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
 
     @BeforeEach
-    public void init(){
-        Player player1 = new Player("Ernestino", 0);
-        Player player2 = new Player("Genoveffa", 1);
-        Player player3 = new Player("Gertrude", 2);
+    public void init() throws ParserException {
 
-        GameModel model = new GameModel(Arrays.asList(player1, player2, player3));
+        List<String> usernames = Arrays.asList("Ernestino", "Genoveffa", "Gertrude");
+        String config = ResourceLoader.loadFile("cfg/config.json");
+        String crafting = ResourceLoader.loadFile("cfg/crafting.json");
+        String faith = ResourceLoader.loadFile("cfg/faith.json");
+        String leaders = ResourceLoader.loadFile("cfg/leaders.json");
+
+        GameModel model = ServerBuilder.buildModel(config, crafting, faith, leaders, usernames, false, new Random(3));
+
+        Player player1 = model.getPlayerById("Ernestino");
+        Player player2 = model.getPlayerById("Genoveffa");
+        Player player3 = model.getPlayerById("Gertrude");
 
         assertDoesNotThrow(()->player1.getBoard().getStorage().getHand().addResources(gold, 2));
         assertDoesNotThrow(()->player1.getBoard().getStorage().getHand().addResources(servant, 1));
@@ -50,7 +61,7 @@ public class ResourcesMoveActionTest {
         assertDoesNotThrow(()->player2.getBoard().getStorage().getHand().addResources(servant, 1));
         //Genoveffa has 1 shield in bottom shelf, 1 servant in middle shelf and one servant in hand
 
-        gameContext = new GameContext(model);
+        gameContext = new GameContext(model, false);
     }
 
     @Test
@@ -123,6 +134,8 @@ public class ResourcesMoveActionTest {
             throw new RuntimeException();
         }
 
+        assertTrue(messages.size() > 0);
+
     }
 
     @Test
@@ -137,6 +150,7 @@ public class ResourcesMoveActionTest {
             throw new RuntimeException();
         }
 
+        assertTrue(messages.size() > 0);
     }
 
     @Test
@@ -151,6 +165,7 @@ public class ResourcesMoveActionTest {
             throw new RuntimeException();
         }
 
+        assertTrue(messages.size() > 0);
     }
 
     @Test
