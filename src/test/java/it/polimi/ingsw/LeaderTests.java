@@ -6,19 +6,21 @@ import it.polimi.ingsw.exceptions.AlreadyActiveException;
 import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.exceptions.RequirementsNotSatisfiedException;
 import it.polimi.ingsw.gamematerials.*;
+import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.holder.FaithHolder;
 import it.polimi.ingsw.model.leader.*;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.market.ConversionActuator;
 import it.polimi.ingsw.model.production.Crafting;
+import it.polimi.ingsw.model.production.Production;
+import it.polimi.ingsw.model.storage.BaseStorage;
 import it.polimi.ingsw.model.storage.Shelf;
+import it.polimi.ingsw.model.storage.Storage;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class LeaderTests {
 
@@ -111,7 +113,17 @@ public class LeaderTests {
         abilities.add(conversionAbility);
         requirements.add(flagRequirement);
         LeaderCard leaderCard = new LeaderCard(3, "Genoveffa", 7, abilities, requirements);
-        Player player = new Player("Player", 2);
+
+        Storage storage = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
+        Production production = new Production(3);
+        FaithHolder faithHolder = new FaithHolder(3);
+
+        Board b = new Board(storage, production, faithHolder);
+        Player player = new Player("Player", 0, b);
         player.getBoard().getFlagHolder().addFlag(new LevelFlag(FlagColor.BLUE, 2));
 
         leaderCard.activate(player);
@@ -129,7 +141,16 @@ public class LeaderTests {
         abilities.add(conversionAbility);
         requirements.add(flagRequirement);
         LeaderCard leaderCard = new LeaderCard(3, "Genoveffa", 7, abilities, requirements);
-        Player player = new Player("Player", 2);
+        Storage storage = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
+        Production production = new Production(3);
+        FaithHolder faithHolder = new FaithHolder(3);
+
+        Board b = new Board(storage, production, faithHolder);
+        Player player = new Player("Player", 2, b);
         player.getBoard().getFlagHolder().addFlag(new LevelFlag(FlagColor.BLUE, 2));
 
         leaderCard.activate(player);
@@ -148,8 +169,31 @@ public class LeaderTests {
         abilities.add(storageAbility);
         requirements.add(resourceRequirement);
         LeaderCard leaderCard = new LeaderCard(5, "Eren", 9, abilities, requirements);
-        Player player = new Player("Player", 2);
-        Player player1 = new Player("Player1", 1);
+
+        Storage storage = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
+        Production production = new Production(3);
+        FaithHolder faithHolder = new FaithHolder(3);
+
+        Board b = new Board(storage, production, faithHolder);
+        Player player = new Player("Player", 0, b);
+
+
+        Storage storage1 = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
+        Production production1 = new Production(3);
+        FaithHolder faithHolder1 = new FaithHolder(3);
+
+        Board b1 = new Board(storage1, production1, faithHolder1);
+        Player player1 = new Player("Player1", 0, b1);
+
+
         assertDoesNotThrow(()-> player1.getBoard().getStorage().getChest().addResources(gold, 6));
 
         assertThrows(NullPointerException.class, ()-> leaderCard.activate(null));
@@ -159,8 +203,30 @@ public class LeaderTests {
 
     @Test
     public void isSatisfiedMethodTest() {
-        Player player1 = new Player("Player", 2);
-        Player player2 = new Player("Mikasa", 3);
+        Storage storage = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
+        Production production = new Production(3);
+        FaithHolder faithHolder = new FaithHolder(3);
+
+        Board b = new Board(storage, production, faithHolder);
+        Player player1 = new Player("Player", 0, b);
+
+
+        Storage storage1 = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
+        Production production1 = new Production(3);
+        FaithHolder faithHolder1 = new FaithHolder(3);
+
+        Board b1 = new Board(storage1, production1, faithHolder1);
+        Player player2 = new Player("Mikasa", 0, b1);
+
+
         ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
         Requirement resourceRequirement = new ResourceRequirement(gold, 5);
         Shelf shelf = new Shelf("shelf1", gold, 2);
@@ -210,7 +276,18 @@ public class LeaderTests {
         abilities.add(craftingAbility);
         requirements.add(flagRequirement);
         LeaderCard leaderCard = new LeaderCard(3, "Genoveffa", 7, abilities, requirements);
-        Player player = new Player("Player", 2);
+
+        Storage storage = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
+        Production production = new Production(3);
+        FaithHolder faithHolder = new FaithHolder(3);
+
+        Board b = new Board(storage, production, faithHolder);
+        Player player = new Player("Player", 0, b);
+
         player.getBoard().getFlagHolder().addFlag(new LevelFlag(FlagColor.BLUE, 2));
 
         leaderCard.activate(player);

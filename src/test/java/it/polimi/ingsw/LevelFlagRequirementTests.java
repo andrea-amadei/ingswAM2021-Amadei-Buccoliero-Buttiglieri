@@ -2,9 +2,18 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.gamematerials.FlagColor;
 import it.polimi.ingsw.gamematerials.LevelFlag;
+import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
+import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.holder.FaithHolder;
 import it.polimi.ingsw.model.leader.LevelFlagRequirement;
+import it.polimi.ingsw.model.production.Production;
+import it.polimi.ingsw.model.storage.BaseStorage;
+import it.polimi.ingsw.model.storage.Shelf;
+import it.polimi.ingsw.model.storage.Storage;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -35,8 +44,30 @@ public class LevelFlagRequirementTests {
     @Test
     public void isSatisfiedMethodTest(){
 
-        Player player = new Player("Player", 2);
-        Player player1 = new Player("Player1", 3);
+        Storage storage = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
+        Production production = new Production(3);
+        FaithHolder faithHolder = new FaithHolder(3);
+
+        Board b = new Board(storage, production, faithHolder);
+        Player player = new Player("Player", 0, b);
+
+
+        Storage storage1 = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
+        Production production1 = new Production(3);
+        FaithHolder faithHolder1 = new FaithHolder(3);
+
+        Board b1 = new Board(storage1, production1, faithHolder1);
+        Player player1 = new Player("Player1", 0, b1);
+
+        
         LevelFlag levelFlag = new LevelFlag(FlagColor.GREEN, 3);
         LevelFlag levelFlag1 = new LevelFlag(FlagColor.PURPLE, 2);
         LevelFlag levelFlag2 = new LevelFlag(FlagColor.BLUE, 1);

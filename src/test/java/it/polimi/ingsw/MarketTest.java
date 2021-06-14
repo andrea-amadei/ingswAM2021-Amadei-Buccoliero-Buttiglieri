@@ -1,18 +1,20 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.gamematerials.MarbleColor;
 import it.polimi.ingsw.model.GameParameters;
 import it.polimi.ingsw.model.market.Marble;
+import it.polimi.ingsw.model.market.MarbleFactory;
 import it.polimi.ingsw.model.market.Market;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.function.ThrowingSupplier;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MarketTest {
 
     //seed for test purpose. Configuration:
@@ -23,28 +25,36 @@ public class MarketTest {
         B G R W
      */
     private final int seed = 3;
+    private Market market;
 
-
-    @Test
-    public void validCreation(){
-        assertDoesNotThrow((ThrowingSupplier<Market>) Market::new);
+    @BeforeEach
+    public void init(){
+        List<Marble> marbles = Arrays.asList(
+                MarbleFactory.createMarble(MarbleColor.WHITE),
+                MarbleFactory.createMarble(MarbleColor.BLUE),
+                MarbleFactory.createMarble(MarbleColor.WHITE),
+                MarbleFactory.createMarble(MarbleColor.YELLOW),
+                MarbleFactory.createMarble(MarbleColor.PURPLE),
+                MarbleFactory.createMarble(MarbleColor.YELLOW),
+                MarbleFactory.createMarble(MarbleColor.WHITE),
+                MarbleFactory.createMarble(MarbleColor.GREY),
+                MarbleFactory.createMarble(MarbleColor.BLUE),
+                MarbleFactory.createMarble(MarbleColor.GREY),
+                MarbleFactory.createMarble(MarbleColor.RED),
+                MarbleFactory.createMarble(MarbleColor.WHITE)
+        );
+        market = new Market(marbles, MarbleFactory.createMarble(MarbleColor.PURPLE), 3, 4);
     }
 
-    @Test
-    public void validSeededCreation(){
-        Market market = new Market(new Random(seed));
-    }
 
     @Test
     public void outOfBoundPickRow(){
-        Market market = new Market(new Random(seed));
         assertThrows(IndexOutOfBoundsException.class, ()->market.pickRow(-1));
         assertThrows(IndexOutOfBoundsException.class, ()->market.pickRow(GameParameters.MARKET_ROWS));
     }
 
     @Test
     public void validPickRow(){
-        Market market = new Market(new Random(seed));
         List<Marble> selectedMarbles = new ArrayList<>();
 
         for(int i = 0; i < market.getColSize(); i++)
@@ -61,13 +71,11 @@ public class MarketTest {
 
     @Test
     public void outOfBoundPickCol(){
-        Market market = new Market(new Random(seed));
         assertThrows(IndexOutOfBoundsException.class, ()->market.pickCol(-1));
         assertThrows(IndexOutOfBoundsException.class, ()->market.pickCol(GameParameters.MARKET_COLUMNS));
     }
     @Test
     public void validPickCol(){
-        Market market = new Market(new Random(seed));
         List<Marble> selectedMarbles = new ArrayList<>();
 
         for(int i = 0; i < market.getRowSize(); i++)
@@ -84,11 +92,10 @@ public class MarketTest {
 
     @Test
     public void outOfBoundGetMarble(){
-        Market m = new Market(new Random(seed));
-        assertThrows(IndexOutOfBoundsException.class, () -> m.getMarble(-1, 2));
-        assertThrows(IndexOutOfBoundsException.class, () -> m.getMarble(2, GameParameters.MARKET_COLUMNS));
-        assertThrows(IndexOutOfBoundsException.class, () -> m.getMarble(GameParameters.MARKET_ROWS, 2));
-        assertThrows(IndexOutOfBoundsException.class, () -> m.getMarble(2, -1));
+        assertThrows(IndexOutOfBoundsException.class, () -> market.getMarble(-1, 2));
+        assertThrows(IndexOutOfBoundsException.class, () -> market.getMarble(2, GameParameters.MARKET_COLUMNS));
+        assertThrows(IndexOutOfBoundsException.class, () -> market.getMarble(GameParameters.MARKET_ROWS, 2));
+        assertThrows(IndexOutOfBoundsException.class, () -> market.getMarble(2, -1));
     }
 
 }
