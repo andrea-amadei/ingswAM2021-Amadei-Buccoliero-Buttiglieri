@@ -34,7 +34,7 @@ public class ProductionTest {
         Production production1 = new Production(3);
         Production production2 = new Production(3, new ArrayList<>() {{add(crafting);}});
 
-        assertEquals(production1.getAllBaseCrafting().size(), 1);
+        assertEquals(production1.getAllBaseCrafting().size(), 0);
         assertEquals(production1.getAllLeaderCrafting().size(), 0);
         assertEquals(production1.getAllUpgradableCrafting().size(), 3);
 
