@@ -1,12 +1,10 @@
 package it.polimi.ingsw;
 import it.polimi.ingsw.common.ActionQueue;
-import it.polimi.ingsw.common.Message;
-import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.actions.PreliminaryPickAction;
 import it.polimi.ingsw.model.actions.ResourcesMoveAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
@@ -14,6 +12,8 @@ import it.polimi.ingsw.model.fsm.StateMachine;
 import it.polimi.ingsw.model.fsm.states.MenuState;
 import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.server.DummyBuilder;
+import it.polimi.ingsw.server.ServerBuilder;
+import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -30,25 +30,28 @@ public class StateMachineTest {
     private final ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
     private final ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
 
-    private Player player1;
-    private Player player3;
-
-    private List<Integer> leadersToDiscard;
-    private Map<ResourceSingle, Integer> chosenResources;
     private ActionQueue actionQueue;
 
     @BeforeEach
-    public void init(){
-        player1 = new Player("Ernestino", 0);
-        Player player2 = new Player("Cosma", 1);
-        player3 = new Player("Leopoldo", 2);
-        Player player4 = new Player("Urbano", 3);
+    public void init() throws ParserException {
 
-        leadersToDiscard = new ArrayList<>();
-        chosenResources = new HashMap<>();
+        String config = ResourceLoader.loadFile("cfg/config.json");
+        String crafting = ResourceLoader.loadFile("cfg/crafting.json");
+        String faith = ResourceLoader.loadFile("cfg/faith.json");
+        String leaders = ResourceLoader.loadFile("cfg/leaders.json");
 
-        GameModel model = new GameModel(Arrays.asList(player1, player2, player3, player4));
-        gameContext = new GameContext(model);
+        List<String> usernames = Arrays.asList("Ernestino", "Cosma", "Leopoldo", "Urbano");
+
+        GameModel model  = ServerBuilder.buildModel(config, crafting, faith, leaders, usernames, false, new Random(3));
+
+        Player player1 = model.getPlayerById("Ernestino");
+        Player player3 = model.getPlayerById("Leopoldo");
+        Player player2 = model.getPlayerById("Cosma");
+
+        List<Integer> leadersToDiscard = new ArrayList<>();
+        Map<ResourceSingle, Integer> chosenResources = new HashMap<>();
+
+        gameContext = new GameContext(model, false);
         gameContext.setCurrentPlayer(player1);
         actionQueue = new ActionQueue();
 

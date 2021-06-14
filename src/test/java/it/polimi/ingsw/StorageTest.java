@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.storage.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.ThrowingSupplier;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +23,11 @@ public class StorageTest {
 
     @Test
     public void containsBaseCupboardWithEmptyShelves(){
-        Storage s = new Storage();
+        Storage s = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
         Cupboard c = s.getCupboard();
         for(int i = 0; i < GameParameters.BASE_CUPBOARD_SHELF_NAMES.size(); i++){
             Shelf shelf = c.getShelfById(GameParameters.BASE_CUPBOARD_SHELF_NAMES.get(i));
@@ -32,21 +37,33 @@ public class StorageTest {
 
     @Test
     public void containsEmptyChest(){
-        Storage s = new Storage();
+        Storage s = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
         BaseStorage chest = s.getChest();
         assertEquals(chest.getAllResources().size(), 0);
     }
 
     @Test
     public void containsEmptyHand(){
-        Storage s = new Storage();
+        Storage s = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
         BaseStorage hand = s.getHand();
         assertEquals(hand.getAllResources().size(), 0);
     }
 
     @Test
     public void containsEmptyMarketBasket(){
-        Storage s = new Storage();
+        Storage s = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
         BaseStorage basket = s.getMarketBasket();
         assertEquals(basket.getAllResources().size(), 0);
     }
@@ -59,7 +76,11 @@ public class StorageTest {
         ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
         ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
 
-        Storage s = new Storage();
+        Storage s = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
         assertDoesNotThrow(()->s.getCupboard().addResource(s.getCupboard().getShelfById("BottomShelf"),gold, 3));
         assertDoesNotThrow(()->s.getCupboard().addResource(s.getCupboard().getShelfById("TopShelf"),shield, 1));
         assertDoesNotThrow(()->s.getChest().addResources(gold, 2));
@@ -79,13 +100,21 @@ public class StorageTest {
 
     @Test
     public void invalidDecorateTest(){
-        Storage s = new Storage();
+        Storage s = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
         assertThrows(NullPointerException.class, ()->s.decorate(null));
     }
 
     @Test
     public void validDecorateTest(){
-        Storage s = new Storage();
+        Storage s = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
         LeaderDecorator decorator = new LeaderDecorator(new Shelf("leader1", ResourceTypeSingleton.getInstance().getAnyResource(), 2), s.getCupboard());
         assertDoesNotThrow(()->s.decorate(decorator));
         assertDoesNotThrow(()->s.getCupboard().getShelfById("leader1"));
@@ -98,7 +127,11 @@ public class StorageTest {
         ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
         ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
 
-        Storage s = new Storage();
+        Storage s = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
         Shelf bottomShelf = s.getCupboard().getShelfById("BottomShelf");
         Shelf middleShelf = s.getCupboard().getShelfById("MiddleShelf");
 
@@ -130,7 +163,11 @@ public class StorageTest {
         ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
         ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
 
-        Storage s = new Storage();
+        Storage s = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
         Shelf bottomShelf = s.getCupboard().getShelfById("BottomShelf");
         Shelf middleShelf = s.getCupboard().getShelfById("MiddleShelf");
 
@@ -151,7 +188,11 @@ public class StorageTest {
         ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
         ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
 
-        Storage s = new Storage();
+        Storage s = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
         Shelf bottomShelf = s.getCupboard().getShelfById("BottomShelf");
         Shelf middleShelf = s.getCupboard().getShelfById("MiddleShelf");
 
@@ -171,7 +212,11 @@ public class StorageTest {
 
     @Test
     public void getChestById(){
-        Storage s = new Storage();
+        Storage s = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
         assertEquals(s.getChest(), s.getSpendableResourceContainerById("Chest"));
     }
 

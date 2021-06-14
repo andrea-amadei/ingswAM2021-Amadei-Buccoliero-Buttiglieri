@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 import it.polimi.ingsw.common.ActionQueue;
+import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.model.FaithPath;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
@@ -7,6 +8,8 @@ import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.StateMachine;
 import it.polimi.ingsw.model.fsm.states.MenuState;
 import it.polimi.ingsw.model.holder.FaithHolder;
+import it.polimi.ingsw.server.ServerBuilder;
+import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -26,16 +29,24 @@ public class StateTest {
     private ActionQueue actionQueue;
 
     @BeforeEach
-    public void init(){
+    public void init() throws ParserException {
         //set the gameContext with the DummyBuilder and Menu State as the initial state.
         //player1 is the current player
-        player1 = new Player("Alice", 0);
-        player2 = new Player("Bob", 1);
-        player3 = new Player("Carlo", 2);
+        String config = ResourceLoader.loadFile("cfg/config.json");
+        String crafting = ResourceLoader.loadFile("cfg/crafting.json");
+        String faith = ResourceLoader.loadFile("cfg/faith.json");
+        String leaders = ResourceLoader.loadFile("cfg/leaders.json");
 
-        GameModel model = new GameModel(Arrays.asList(player1, player2, player3));
+        List<String> usernames = Arrays.asList("Alice", "Bob", "Carlo");
+
+        GameModel model  = ServerBuilder.buildModel(config, crafting, faith, leaders, usernames, false, new Random(3));
+
+        player1 = model.getPlayerById("Alice");
+        player2 = model.getPlayerById("Bob");
+        player3 = model.getPlayerById("Carlo");
+
         actionQueue = new ActionQueue();
-        gameContext = new GameContext(model);
+        gameContext = new GameContext(model, false);
 
         stateMachine = new StateMachine(actionQueue, gameContext, new MenuState(gameContext));
         model.getFaithPath().setListener(stateMachine);
@@ -57,7 +68,7 @@ public class StateTest {
         assertEquals(FaithHolder.CheckpointStatus.INACTIVE, player3.getBoard().getFaithHolder().getPopeCardStatus(0));
         assertEquals(FaithHolder.CheckpointStatus.INACTIVE, player3.getBoard().getFaithHolder().getPopeCardStatus(1));
 
-        assertEquals(57, player1.getPoints());
+        assertEquals(29, player1.getPoints());
 
     }
 }

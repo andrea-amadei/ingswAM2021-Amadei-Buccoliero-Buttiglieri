@@ -15,13 +15,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ShopTest {
     @Test
     public void createEmptyShop(){
-        Shop s = new Shop();
+        Shop s = new Shop(3);
         assertThrows(NoSuchElementException.class, ()->s.getTopCard(1, FlagColor.BLUE));
     }
 
     @Test
     public void addCardLastRowLastCol(){
-        Shop s = new Shop();
+        Shop s = new Shop(3);
         Map<ResourceSingle, Integer> cardCost = new HashMap<>() {{
             put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
         }};
@@ -37,7 +37,7 @@ public class ShopTest {
 
     @Test
     public void addCardFirstRowFirstCol(){
-        Shop s = new Shop();
+        Shop s = new Shop(3);
         Map<ResourceSingle, Integer> cardCost = new HashMap<>() {{
             put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
         }};
@@ -53,7 +53,7 @@ public class ShopTest {
 
     @Test
     public void addCardSecondRowFirstCol(){
-        Shop s = new Shop();
+        Shop s = new Shop(3);
         Map<ResourceSingle, Integer> cardCost = new HashMap<>() {{
             put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
         }};
@@ -69,7 +69,7 @@ public class ShopTest {
 
     @Test
     public void getCardToInvalidPosition(){
-        Shop s = new Shop();
+        Shop s = new Shop(3);
         assertThrows(IllegalArgumentException.class, ()->s.getTopCard(4, FlagColor.BLUE));
         assertThrows(IllegalArgumentException.class, ()->s.getTopCard(0, FlagColor.BLUE));
         assertThrows(IllegalArgumentException.class, ()->s.getTopCard(-1, FlagColor.BLUE));
@@ -77,14 +77,14 @@ public class ShopTest {
 
     @Test
     public void addNullCard(){
-        Shop s = new Shop();
+        Shop s = new Shop(3);
         assertThrows(NullPointerException.class, ()->s.addCard(null));
     }
 
 
     @Test
     public void removeCardSecondRowFirstCol(){
-        Shop s = new Shop();
+        Shop s = new Shop(3);
         Map<ResourceSingle, Integer> cardCost = new HashMap<>() {{
             put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
         }};
@@ -101,7 +101,7 @@ public class ShopTest {
 
     @Test
     public void removeInvalidCard(){
-        Shop s = new Shop();
+        Shop s = new Shop(3);
         assertThrows(IllegalArgumentException.class, ()->s.removeCard(-1, FlagColor.GREEN));
         assertThrows(IllegalArgumentException.class, ()->s.removeCard(4, FlagColor.GREEN));
         assertThrows(NullPointerException.class, ()->s.removeCard(2, null));
@@ -109,7 +109,7 @@ public class ShopTest {
 
     @Test
     public void selectCard(){
-        Shop s = new Shop();
+        Shop s = new Shop(3);
         Map<ResourceSingle, Integer> cardCost = new HashMap<>() {{
             put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
         }};

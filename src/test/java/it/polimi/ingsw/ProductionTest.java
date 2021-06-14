@@ -31,7 +31,7 @@ public class ProductionTest {
         Crafting crafting = new Crafting(input, output, 1);
         UpgradableCrafting upgradableCrafting = new UpgradableCrafting(input, output, 1, 1);
 
-        Production production1 = new Production();
+        Production production1 = new Production(3);
         Production production2 = new Production(3, new ArrayList<>() {{add(crafting);}});
 
         assertEquals(production1.getAllBaseCrafting().size(), 1);
@@ -83,7 +83,7 @@ public class ProductionTest {
         ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
         ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
 
-        Production production = new Production();
+        Production production = new Production(3);
         production.setUpgradableCrafting(2,
                 new UpgradableCrafting(new HashMap<>(){{put(gold, 2);}}, new HashMap<>(){{put(servant, 2);}}, 0, 1
         ));

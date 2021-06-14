@@ -1,10 +1,17 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
+import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.holder.FaithHolder;
 import it.polimi.ingsw.model.leader.StorageAbility;
+import it.polimi.ingsw.model.production.Production;
+import it.polimi.ingsw.model.storage.BaseStorage;
 import it.polimi.ingsw.model.storage.Shelf;
+import it.polimi.ingsw.model.storage.Storage;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,7 +39,18 @@ public class StorageAbilityTests {
 
         Shelf shelf = new Shelf("buh", ResourceTypeSingleton.getInstance().getShieldResource(), 2);
         StorageAbility storageAbility = new StorageAbility(shelf);
-        Player player = new Player("Ernestino", 2);
+
+        Storage storage = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
+        Production production = new Production(3);
+        FaithHolder faithHolder = new FaithHolder(3);
+
+        Board b = new Board(storage, production, faithHolder);
+        Player player = new Player("Ernestino", 0, b);
+
         storageAbility.activate(player);
 
         assertTrue(player.getBoard().getStorage().getCupboard().contains(shelf));
