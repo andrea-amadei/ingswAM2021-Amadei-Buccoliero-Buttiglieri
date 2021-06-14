@@ -2,17 +2,19 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceType;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.GameParameters;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.actions.Action;
 import it.polimi.ingsw.model.actions.SelectCraftingAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.model.production.UpgradableCrafting;
+import it.polimi.ingsw.server.ServerBuilder;
+import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -20,6 +22,7 @@ import org.junit.jupiter.api.TestInstance;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,12 +34,17 @@ public class SelectCraftingActionTest {
     private final ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
 
     @BeforeEach
-    public void init() {
+    public void init() throws ParserException {
 
-        Player player1 = new Player("Ernestino", 0);
-        Player player2 = new Player("Letteria", 1);
-        GameModel model = new GameModel(Arrays.asList(player1, player2));
-        gameContext = new GameContext(model);
+        List<String> usernames = Arrays.asList("Ernestino", "Letteria");
+        String config = ResourceLoader.loadFile("cfg/config.json");
+        String crafting = ResourceLoader.loadFile("cfg/crafting.json");
+        String faith = ResourceLoader.loadFile("cfg/faith.json");
+        String leaders = ResourceLoader.loadFile("cfg/leaders.json");
+
+        GameModel model = ServerBuilder.buildModel(config, crafting, faith, leaders, usernames, false, new Random(3));
+
+        gameContext = new GameContext(model, false);
 
         HashMap<ResourceType, Integer> input = new HashMap<>();
         HashMap<ResourceType, Integer> output = new HashMap<>();
@@ -78,6 +86,7 @@ public class SelectCraftingActionTest {
             throw new RuntimeException();
         }
 
+        assertTrue(messages.size() > 0);
     }
 
     @Test

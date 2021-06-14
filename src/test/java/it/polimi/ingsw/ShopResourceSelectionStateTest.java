@@ -1,9 +1,9 @@
 package it.polimi.ingsw;
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
+import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.*;
 import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.actions.BackAction;
 import it.polimi.ingsw.model.actions.ConfirmAction;
 import it.polimi.ingsw.model.actions.SelectResourcesAction;
@@ -15,6 +15,8 @@ import it.polimi.ingsw.model.production.CraftingCard;
 import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.model.production.UpgradableCrafting;
 import it.polimi.ingsw.model.storage.ResourceContainer;
+import it.polimi.ingsw.server.ServerBuilder;
+import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -35,14 +37,17 @@ public class ShopResourceSelectionStateTest {
     private CraftingCard craftingCard1;
 
     @BeforeEach
-    public void init() {
+    public void init() throws ParserException {
 
-        Player player1 = new Player("Ernestino", 0);
-        Player player2 = new Player("Mariola", 1);
-        Player player3 = new Player("Augusta", 2);
-        GameModel model = new GameModel(Arrays.asList(player1, player2, player3), new Random(3));
+        List<String> usernames = Arrays.asList("Ernestino", "Mariola", "Augusta");
+        String config = ResourceLoader.loadFile("cfg/config.json");
+        String crafting = ResourceLoader.loadFile("cfg/crafting.json");
+        String faith = ResourceLoader.loadFile("cfg/faith.json");
+        String leaders = ResourceLoader.loadFile("cfg/leaders.json");
 
-        gameContext = new GameContext(model);
+        GameModel model  = ServerBuilder.buildModel(config, crafting, faith, leaders, usernames, false, new Random(3));
+
+        gameContext = new GameContext(model, false);
         gameContext.setCurrentPlayer(model.getPlayerById("Ernestino"));
         currentState = new ShopResourceSelectionState(gameContext);
 
@@ -69,9 +74,8 @@ public class ShopResourceSelectionStateTest {
 
     @Test
     public void successfulBack(){
-        List<Message> messages;
         try{
-            messages = currentState.handleAction(new BackAction("Ernestino"));
+            currentState.handleAction(new BackAction("Ernestino"));
         }catch(FSMTransitionFailedException e){
             throw new RuntimeException();
         }
@@ -82,14 +86,13 @@ public class ShopResourceSelectionStateTest {
 
     @Test
     public void successfulBackAfterOneResourceSelection(){
-        List<Message> messages1, messages2;
         try{
-            messages1 = currentState.handleAction(new SelectResourcesAction("Ernestino", "Chest", gold, 2));
+            currentState.handleAction(new SelectResourcesAction("Ernestino", "Chest", gold, 2));
         }catch(FSMTransitionFailedException e){
             throw new RuntimeException();
         }
         try{
-            messages2 = currentState.handleAction(new BackAction("Ernestino"));
+            currentState.handleAction(new BackAction("Ernestino"));
         }catch(FSMTransitionFailedException e){
             throw new RuntimeException();
         }
@@ -106,7 +109,7 @@ public class ShopResourceSelectionStateTest {
 
     @Test
     public void successfulBuyFromShop(){
-        List<Message> messages1, messages2, messages3;
+        List<Message> messages1, messages2;
         try{
             messages1 = currentState.handleAction(new SelectResourcesAction("Ernestino", "Chest", gold, 2));
         }catch(FSMTransitionFailedException e){
@@ -118,7 +121,7 @@ public class ShopResourceSelectionStateTest {
             throw new RuntimeException();
         }
         try{
-            messages3 = currentState.handleAction(new ConfirmAction("Ernestino"));
+            currentState.handleAction(new ConfirmAction("Ernestino"));
         }catch(FSMTransitionFailedException e){
             throw new RuntimeException();
         }
@@ -135,7 +138,7 @@ public class ShopResourceSelectionStateTest {
     @Test
     public void successfulBuyFromShopWithDiscounts(){
 
-        List<Message> messages2, messages3;
+        List<Message> messages2;
 
         try{
             messages2 = currentState.handleAction(new SelectResourcesAction("Ernestino", "Chest", servant, 2));
@@ -146,7 +149,7 @@ public class ShopResourceSelectionStateTest {
         gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getDiscountHolder().addDiscount(gold, 2);
 
         try{
-            messages3 = currentState.handleAction(new ConfirmAction("Ernestino"));
+            currentState.handleAction(new ConfirmAction("Ernestino"));
         }catch(FSMTransitionFailedException e){
             e.printStackTrace(System.out);
             throw new RuntimeException();
@@ -162,14 +165,12 @@ public class ShopResourceSelectionStateTest {
 
     @Test
     public void successfulBuyFromShopFreeCard(){
-        List<Message> messages3;
-
 
         gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getDiscountHolder().addDiscount(gold, 2);
         gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getDiscountHolder().addDiscount(servant, 2);
 
         try{
-            messages3 = currentState.handleAction(new ConfirmAction("Ernestino"));
+            currentState.handleAction(new ConfirmAction("Ernestino"));
         }catch(FSMTransitionFailedException e){
             e.printStackTrace(System.out);
             throw new RuntimeException();

@@ -1,16 +1,18 @@
 package it.polimi.ingsw;
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
+import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.actions.ConfirmAction;
 import it.polimi.ingsw.model.actions.MoveFromBasketToShelfAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
 import it.polimi.ingsw.model.fsm.states.BasketCollectState;
 import it.polimi.ingsw.model.fsm.states.MenuState;
+import it.polimi.ingsw.server.ServerBuilder;
+import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -32,14 +34,17 @@ public class BasketCollectStateTest {
     private final ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
 
     @BeforeEach
-    public void init() {
+    public void init() throws ParserException {
 
-        Player player1 = new Player("Ernestino", 0);
-        Player player2 = new Player("Ottolengo", 1);
-        Player player3 = new Player("Nunzio", 2);
-        GameModel model = new GameModel(Arrays.asList(player1, player2, player3), new Random(3));
+        List<String> usernames = Arrays.asList("Ernestino", "Ottolengo", "Nunzio");
+        String config = ResourceLoader.loadFile("cfg/config.json");
+        String crafting = ResourceLoader.loadFile("cfg/crafting.json");
+        String faith = ResourceLoader.loadFile("cfg/faith.json");
+        String leaders = ResourceLoader.loadFile("cfg/leaders.json");
 
-        gameContext = new GameContext(model);
+        GameModel model  = ServerBuilder.buildModel(config, crafting, faith, leaders, usernames, false, new Random(3));
+
+        gameContext = new GameContext(model, false);
         gameContext.setCurrentPlayer(model.getPlayerById("Ernestino"));
         currentState = new BasketCollectState(gameContext);
 

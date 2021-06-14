@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.common.ActionQueue;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
+import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.FlagColor;
 import it.polimi.ingsw.gamematerials.LevelFlag;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
@@ -14,11 +15,14 @@ import it.polimi.ingsw.model.fsm.State;
 import it.polimi.ingsw.model.fsm.StateMachine;
 import it.polimi.ingsw.model.fsm.states.*;
 import it.polimi.ingsw.model.holder.FaithHolder;
+import it.polimi.ingsw.server.ServerBuilder;
+import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,19 +42,25 @@ public class MenuStateTest {
     private final ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
 
     @BeforeEach
-    public void init() {
+    public void init() throws ParserException {
 
-        Player player1 = new Player("Ernestino", 0);
-        Player player2 = new Player("Trump", 1);
-        Player player3 = new Player("Biden", 2);
+        List<String> usernames = Arrays.asList("Ernestino", "Trump", "Biden");
+        String config = ResourceLoader.loadFile("cfg/config.json");
+        String crafting = ResourceLoader.loadFile("cfg/crafting.json");
+        String faith = ResourceLoader.loadFile("cfg/faith.json");
+        String leaders = ResourceLoader.loadFile("cfg/leaders.json");
 
-        model = new GameModel(Arrays.asList(player1, player2, player3), new Random(3));
-        gameContext = new GameContext(model);
+        model  = ServerBuilder.buildModel(config, crafting, faith, leaders, usernames, false, new Random(3));
+
+        gameContext = new GameContext(model, false);
         currentState = new MenuState(gameContext);
 
         actionQueue = new ActionQueue();
         stateMachine = new StateMachine(actionQueue, gameContext, currentState);
         model.getFaithPath().setListener(stateMachine);
+
+        Player player1 = model.getPlayerById("Ernestino");
+        Player player2 = model.getPlayerById("Trump");
 
         //Ernestino has leader card ID 1 and ID 2
         player1.getBoard().addLeaderCard(model.getLeaderCards().get(0));
@@ -250,7 +260,7 @@ public class MenuStateTest {
         gameContext.setPlayerMoved(true);
 
         //Ernestino is one faith point from activating the pope check
-        model.getFaithPath().executeMovement(5, model.getPlayerById("Ernestino"));
+        model.getFaithPath().executeMovement(7, model.getPlayerById("Ernestino"));
 
         try{
             currentState.handleAction(new DiscardLeaderAction("Ernestino", 2));
@@ -275,7 +285,7 @@ public class MenuStateTest {
         gameContext.setPlayerMoved(true);
 
         //Ernestino's first two pope checks are active
-        model.getFaithPath().executeMovement(11, model.getPlayerById("Ernestino"));
+        model.getFaithPath().executeMovement(23, model.getPlayerById("Ernestino"));
 
         Action popeAction = actionQueue.pop();
         stateMachine.executeAction(popeAction);

@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
+import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.GameModel;
@@ -12,9 +13,12 @@ import it.polimi.ingsw.model.fsm.State;
 import it.polimi.ingsw.model.fsm.states.MenuState;
 import it.polimi.ingsw.model.fsm.states.PreliminaryPickState;
 import it.polimi.ingsw.model.fsm.states.PreliminaryTidyState;
+import it.polimi.ingsw.server.ServerBuilder;
+import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,15 +41,22 @@ public class PreliminaryTidyStateTest {
     private GameModel model;
 
     @BeforeEach
-    public void init() {
+    public void init() throws ParserException {
 
-        player1  = new Player("Ernestino", 0);
-        player2 = new Player("Bartolomeo", 1);
-        player3  = new Player("Teofila", 2);
-        player4  = new Player("Ottone", 3);
-        model  = new GameModel(Arrays.asList(player1, player2, player3, player4), new Random(3));
-        gameContext = new GameContext(model);
+        List<String> usernames = Arrays.asList("Ernestino", "Bartolomeo", "Teofila", "Ottone");
+        String config = ResourceLoader.loadFile("cfg/config.json");
+        String crafting = ResourceLoader.loadFile("cfg/crafting.json");
+        String faith = ResourceLoader.loadFile("cfg/faith.json");
+        String leaders = ResourceLoader.loadFile("cfg/leaders.json");
+
+        model  = ServerBuilder.buildModel(config, crafting, faith, leaders, usernames, false, new Random(3));
+        gameContext = new GameContext(model, false);
         currentState = new PreliminaryTidyState(gameContext);
+
+        player1 = model.getPlayerById("Ernestino");
+        player2 = model.getPlayerById("Bartolomeo");
+        player3 = model.getPlayerById("Teofila");
+        player4 = model.getPlayerById("Ottone");
 
         //each player has 2 leader cards
         player1.getBoard().addLeaderCard(model.getLeaderCards().get(0));
