@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 public class FaithHolderTest {
     @Test
     public void faithHolderExceptionsTest() {
-        FaithHolder fh = new FaithHolder();
+        FaithHolder fh = new FaithHolder(3);
 
         assertThrows(IndexOutOfBoundsException.class, () -> fh.isPopeCardReached(-1));
         assertThrows(IndexOutOfBoundsException.class, () -> fh.isPopeCardActive(-1));
@@ -27,7 +27,7 @@ public class FaithHolderTest {
 
     @Test
     public void faithHolderGettersAndSettersTest() {
-        FaithHolder fh = new FaithHolder();
+        FaithHolder fh = new FaithHolder(3);
 
         assertEquals(fh.getFaithPoints(), 0);
         assertFalse(fh.isPopeCardReached(0));
