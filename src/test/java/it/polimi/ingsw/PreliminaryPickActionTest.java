@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.actions.PreliminaryPickAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.leader.LeaderCard;
-import it.polimi.ingsw.server.DummyBuilder;
 import it.polimi.ingsw.server.ServerBuilder;
 import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,7 +51,7 @@ public class PreliminaryPickActionTest {
         gameContext = new GameContext(model, false);
         gameContext.setCurrentPlayer(player1);
 
-        List<LeaderCard> allLeaders = DummyBuilder.buildLeaderCards();
+        List<LeaderCard> allLeaders = model.getLeaderCards();
         assert allLeaders != null;
 
         //giving 4 leaders to player 1

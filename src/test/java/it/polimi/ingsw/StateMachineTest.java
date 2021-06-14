@@ -11,7 +11,6 @@ import it.polimi.ingsw.model.fsm.State;
 import it.polimi.ingsw.model.fsm.StateMachine;
 import it.polimi.ingsw.model.fsm.states.MenuState;
 import it.polimi.ingsw.model.leader.LeaderCard;
-import it.polimi.ingsw.server.DummyBuilder;
 import it.polimi.ingsw.server.ServerBuilder;
 import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,7 +54,7 @@ public class StateMachineTest {
         gameContext.setCurrentPlayer(player1);
         actionQueue = new ActionQueue();
 
-        List<LeaderCard> allLeaders = DummyBuilder.buildLeaderCards();
+        List<LeaderCard> allLeaders = model.getLeaderCards();
         assert allLeaders != null;
 
         //giving 4 leaders to player 1

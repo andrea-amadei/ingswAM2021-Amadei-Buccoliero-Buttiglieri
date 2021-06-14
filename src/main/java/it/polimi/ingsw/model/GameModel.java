@@ -3,9 +3,6 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.model.lorenzo.Token;
 import it.polimi.ingsw.model.market.Market;
-import it.polimi.ingsw.model.production.CraftingCard;
-import it.polimi.ingsw.server.DummyBuilder;
-import it.polimi.ingsw.utils.Pair;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,34 +17,6 @@ public class GameModel {
     private final FaithPath faithPath;
     private final List<LeaderCard> leaderCards;
     private Deque<Token> lorenzoTokens;
-
-    /**
-     * Creates a new GameModel. This constructor creates a dummy game model.
-     * Kept for retro-compatibility with tests
-     * @param players the list of the players of the game
-     * @param seededRandom the seed to use
-     */
-    public GameModel(List<Player> players, Random seededRandom){
-
-        //TODO: Use the real Builder and not the Dummy one and check the correctness of players param
-        this.players = players;
-        market = new Market(seededRandom);
-        shop = new Shop();
-        for(CraftingCard card : DummyBuilder.buildCraftingCards())
-            shop.addCard(card);
-        List<FaithPathTile> tiles = DummyBuilder.buildFaithPathTiles();
-        List<FaithPathGroup> groupPoints = new ArrayList<>(){{
-            add(new FaithPathGroup(1, 3));
-            add(new FaithPathGroup(2, 6));
-        }};
-        faithPath = new FaithPath(groupPoints, tiles);
-        leaderCards = DummyBuilder.buildLeaderCards();
-        lorenzoTokens = new ArrayDeque<>();
-    }
-
-    public GameModel(List<Player> players){
-        this(players, new Random());
-    }
 
     /**
      * This constructor is used by the builder. The builder builds each component first and then
