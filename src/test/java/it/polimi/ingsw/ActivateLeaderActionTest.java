@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.exceptions.IllegalActionException;
+import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.*;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
@@ -10,6 +11,8 @@ import it.polimi.ingsw.model.actions.ActivateLeaderAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.leader.*;
 import it.polimi.ingsw.model.storage.Shelf;
+import it.polimi.ingsw.server.ServerBuilder;
+import it.polimi.ingsw.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -17,6 +20,7 @@ import org.junit.jupiter.api.TestInstance;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,11 +32,20 @@ public class ActivateLeaderActionTest {
     private final ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
 
     @BeforeEach
-    public void init(){
-        Player player1 = new Player("Ernestino", 0);
-        Player player2 = new Player("Ermenegildo", 1);
-        GameModel model = new GameModel(Arrays.asList(player1, player2));
-        gameContext = new GameContext(model);
+    public void init() throws ParserException {
+        List<String> usernames = Arrays.asList("Ernestino", "Ermenegildo");
+
+        String config = ResourceLoader.loadFile("cfg/config.json");
+        String crafting = ResourceLoader.loadFile("cfg/crafting.json");
+        String faith = ResourceLoader.loadFile("cfg/faith.json");
+        String leaders = ResourceLoader.loadFile("cfg/leaders.json");
+        GameModel model  = ServerBuilder.buildModel(config, crafting, faith, leaders, usernames, false, new Random(3));
+
+        gameContext = new GameContext(model, false);
+
+        Player player1 = model.getPlayerById("Ernestino");
+        Player player2 = model.getPlayerById("Ermenegildo");
+
         BaseFlag flag1 = new BaseFlag(FlagColor.PURPLE);
         Shelf shelf = new Shelf("ExtraShelf", gold, 1);
         SpecialAbility discountAbility = new DiscountAbility(4, servant);

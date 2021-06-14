@@ -4,10 +4,18 @@ import static org.junit.jupiter.api.Assertions.*;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceType;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
+import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.holder.FaithHolder;
 import it.polimi.ingsw.model.leader.CraftingAbility;
 import it.polimi.ingsw.model.production.Crafting;
+import it.polimi.ingsw.model.production.Production;
+import it.polimi.ingsw.model.storage.BaseStorage;
+import it.polimi.ingsw.model.storage.Shelf;
+import it.polimi.ingsw.model.storage.Storage;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -41,7 +49,19 @@ public class CraftingAbilityTests {
     public void activateMethodTest(){
         ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
         ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
-        Player player = new Player("Username", 0);
+
+        Storage storage = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
+        Production production = new Production(3);
+        FaithHolder faithHolder = new FaithHolder(3);
+
+        Board b = new Board(storage, production, faithHolder);
+        Player player = new Player("Username", 0, b);
+
+
         HashMap<ResourceType, Integer> input = new HashMap<>();
         HashMap<ResourceType, Integer> output = new HashMap<>();
         input.put(shield, 2);
