@@ -3,12 +3,15 @@ package it.polimi.ingsw.parser.raw;
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.gamematerials.MarbleColor;
+import it.polimi.ingsw.model.market.Marble;
+import it.polimi.ingsw.model.market.MarbleFactory;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.parser.RawObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RawMarket implements RawObject<Market> {
 
@@ -54,7 +57,9 @@ public class RawMarket implements RawObject<Market> {
             throw new IllegalRawConversionException("Absent or illegal field \"odd\" in storage");
 
         try {
-            return new Market(marbles, odd);
+            List<Marble> realMarbles = marbles.stream().map(MarbleFactory::createMarble).collect(Collectors.toList());
+            Marble realOdd = MarbleFactory.createMarble(odd);
+            return new Market(realMarbles, realOdd, 3, 4);
         } catch (IllegalArgumentException e) {
             throw new IllegalRawConversionException(e.getMessage());
         }

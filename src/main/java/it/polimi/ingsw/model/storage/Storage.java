@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.storage;
 
 import it.polimi.ingsw.exceptions.IllegalSelectionException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
-import it.polimi.ingsw.model.GameParameters;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,25 +22,6 @@ public class Storage {
     //the key is a resource container, the value is a map that represents the amount of resources for each resource type
     //selected from that container
     private Map<ResourceContainer, Map<ResourceSingle, Integer>> selectedResources;
-
-    /**
-     * A new empty storage is created. The cupboard is initialized with the parameters stated in GameParameters class.
-     * This constructor should only be used for tests, the builder uses the other one
-     */
-    public Storage(){
-        chest = new BaseStorage("chest");
-        hand = new BaseStorage("hand");
-        marketBasket = new BaseStorage("marketbasket");
-        List<Shelf> baseShelves = new ArrayList<>();
-        for(int i = 0; i < GameParameters.BASE_CUPBOARD_SHELF_NAMES.size(); i++){
-            baseShelves.add(new Shelf(GameParameters.BASE_CUPBOARD_SHELF_NAMES.get(i),
-                                      GameParameters.BASE_CUPBOARD_SHELF_TYPES.get(i),
-                                      GameParameters.BASE_CUPBOARD_SHELF_SIZES.get(i)));
-        }
-        cupboard = new BaseCupboard(baseShelves);
-        selectedResources = null;
-
-    }
 
     /**
      * A new empty storage is created.

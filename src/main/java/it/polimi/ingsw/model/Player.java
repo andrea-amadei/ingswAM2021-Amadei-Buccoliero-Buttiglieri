@@ -10,16 +10,6 @@ public class Player {
     private final Board board;
 
     /**
-     * Creates a new player. This constructor creates a new player with a default Board.
-     * It should only be used for tests.
-     * @param username the username of the player
-     * @param arrivalId the order in which the player logged in the match
-     */
-    public Player(String username, int arrivalId) {
-        this(username, arrivalId, new Board());
-    }
-
-    /**
      * Creates a new player. This constructor is used by the builder.
      * @param username the username of the player
      * @param arrivalId the order in which the player logged in the match

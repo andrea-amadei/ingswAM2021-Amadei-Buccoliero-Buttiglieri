@@ -5,7 +5,6 @@ import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
-import it.polimi.ingsw.model.GameParameters;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.parser.raw.RawStorage;

@@ -15,15 +15,6 @@ public class Shop {
     private final int levelAxisSize;
     private CraftingCard selectedCard;
 
-
-    /**
-     * Creates a new empty shop. Cards will be inserted during the setup of the game.
-     * This constructor should be only used for testing. The builder uses another constructor
-     */
-    public Shop(){
-        this(GameParameters.MAX_CARD_LEVEL);
-    }
-
     /**
      * Creates a new empty shop. Cards will be inserted during the setup of the game.
      * @param levelAxisSize the maximum level of flags

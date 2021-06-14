@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gamematerials;
 
-import it.polimi.ingsw.model.GameParameters;
 import it.polimi.ingsw.parser.SerializableObject;
 import it.polimi.ingsw.parser.raw.RawLevelFlag;
 import it.polimi.ingsw.server.Logger;

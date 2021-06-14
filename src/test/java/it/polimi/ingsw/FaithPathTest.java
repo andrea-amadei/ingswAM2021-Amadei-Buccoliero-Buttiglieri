@@ -1,10 +1,16 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.exceptions.InvalidFaithPathException;
+import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.actions.Action;
 import it.polimi.ingsw.model.actions.PopeCheckAction;
 import it.polimi.ingsw.model.fsm.InterruptListener;
+import it.polimi.ingsw.model.holder.FaithHolder;
+import it.polimi.ingsw.model.production.Production;
+import it.polimi.ingsw.model.storage.BaseStorage;
+import it.polimi.ingsw.model.storage.Shelf;
+import it.polimi.ingsw.model.storage.Storage;
 import it.polimi.ingsw.utils.Pair;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -147,7 +153,16 @@ class FaithPathTest {
         assertEquals(1, fp.getTotalGroups());
         assertEquals(3, fp.getTotalLength());
 
-        Player player = new Player("testPlayer", 0);
+        Storage storage = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
+        Production production = new Production(3);
+        FaithHolder faithHolder = new FaithHolder(3);
+
+        Board b = new Board(storage, production, faithHolder);
+        Player player = new Player("testPlayer", 0, b);
 
         assertEquals(0, player.getBoard().getFaithHolder().getFaithPoints());
         assertEquals(0, player.getPoints());
@@ -197,7 +212,16 @@ class FaithPathTest {
         DummyListener listener = new DummyListener();
 
         fp.setListener(listener);
-        Player p1 = new Player("Alice", 0);
+        Storage storage = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
+        Production production = new Production(3);
+        FaithHolder faithHolder = new FaithHolder(3);
+
+        Board b = new Board(storage, production, faithHolder);
+        Player p1 = new Player("Alice", 0, b);
         fp.executeMovement(6, p1);
         Field f = ((PopeCheckAction)listener.getAction()).getClass().getDeclaredField("newPopeCheckOrders");
         f.setAccessible(true);

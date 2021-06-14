@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.holder;
 
 import it.polimi.ingsw.exceptions.AlreadyReachedPopeCardException;
 import it.polimi.ingsw.exceptions.UsedUnreachedPopeCardException;
-import it.polimi.ingsw.model.GameParameters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,17 +17,6 @@ public class FaithHolder {
         UNREACHED,
         INACTIVE,
         ACTIVE
-    }
-
-    /**
-     * Creates a new instance of FaithHolder
-     */
-    public FaithHolder() {
-        faithPoints = 0;
-        checkpoints = new ArrayList<>(GameParameters.FAITH_CHECKPOINT_NUMBER);
-
-        for(int i = 0; i < GameParameters.FAITH_CHECKPOINT_NUMBER; i++)
-            checkpoints.add(CheckpointStatus.UNREACHED);
     }
 
     public FaithHolder(int checkpointsNumber){

@@ -26,14 +26,6 @@ public class Board {
     private final FaithHolder faithHolder;
     private final ConversionHolder conversionHolder;
 
-    /**
-     * Creates a new empty board. It contains a storage, the leader cards, a discount holder, a flag holder, a faith
-     * holder, a conversion holder and a production.
-     * This constructor should be used for test/mock creation only. The builder uses the other one
-     */
-    public Board(){
-        this(new Storage(), new Production(), new FaithHolder());
-    }
 
     /**
      * Creates a new empty board. It contains a storage, the leader cards, a discount holder, a flag holder, a faith

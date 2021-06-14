@@ -7,7 +7,6 @@ import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceType;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.model.GameParameters;
 import it.polimi.ingsw.model.actions.Action;
 import it.polimi.ingsw.model.actions.SelectCraftingAction;
 import it.polimi.ingsw.model.fsm.GameContext;

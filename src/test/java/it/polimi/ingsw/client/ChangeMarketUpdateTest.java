@@ -2,6 +2,9 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.model.ClientModel;
 import it.polimi.ingsw.client.updates.ChangeMarketUpdate;
 import it.polimi.ingsw.exceptions.ParserException;
+import it.polimi.ingsw.gamematerials.MarbleColor;
+import it.polimi.ingsw.model.market.Marble;
+import it.polimi.ingsw.model.market.MarbleFactory;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.parser.raw.RawMarket;
 import it.polimi.ingsw.utils.ResourceLoader;
@@ -12,6 +15,7 @@ import org.junit.jupiter.api.TestInstance;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -41,7 +45,21 @@ public class ChangeMarketUpdateTest {
 
     @Test
     public void correctApply(){
-        Market market1 = new Market(new Random(3));
+        List<Marble> marbles = Arrays.asList(
+                MarbleFactory.createMarble(MarbleColor.WHITE),
+                MarbleFactory.createMarble(MarbleColor.BLUE),
+                MarbleFactory.createMarble(MarbleColor.WHITE),
+                MarbleFactory.createMarble(MarbleColor.YELLOW),
+                MarbleFactory.createMarble(MarbleColor.PURPLE),
+                MarbleFactory.createMarble(MarbleColor.YELLOW),
+                MarbleFactory.createMarble(MarbleColor.WHITE),
+                MarbleFactory.createMarble(MarbleColor.GREY),
+                MarbleFactory.createMarble(MarbleColor.BLUE),
+                MarbleFactory.createMarble(MarbleColor.GREY),
+                MarbleFactory.createMarble(MarbleColor.RED),
+                MarbleFactory.createMarble(MarbleColor.WHITE)
+        );
+        Market market1 = new Market(marbles, MarbleFactory.createMarble(MarbleColor.PURPLE), 3, 4);
         RawMarket market = new RawMarket(market1);
         ChangeMarketUpdate update = new ChangeMarketUpdate(market);
         update.apply(clientModel);

@@ -7,7 +7,6 @@ import it.polimi.ingsw.gamematerials.MarbleColor;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.model.GameParameters;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.actions.BuyFromMarketAction;
 import it.polimi.ingsw.model.fsm.GameContext;

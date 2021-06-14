@@ -72,9 +72,4 @@ public class GameContextTest {
         assertThrows(NullPointerException.class, ()->context.setCurrentPlayer(null));
     }
 
-    @Test
-    public void nonPresentInGameSetCurrentPlayer(){
-        GameContext context = new GameContext(model, false);
-        assertThrows(IllegalArgumentException.class, ()->context.setCurrentPlayer(new Player("p1", 0)));
-    }
 }

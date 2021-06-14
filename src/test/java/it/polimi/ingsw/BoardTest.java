@@ -40,7 +40,7 @@ public class BoardTest {
     }
     @Test
     public void checkBoardInstantiation(){
-        assertDoesNotThrow((ThrowingSupplier<Board>) Board::new);
+        assertDoesNotThrow(() -> new Board(storage, production, faithHolder));
     }
 
     @Test

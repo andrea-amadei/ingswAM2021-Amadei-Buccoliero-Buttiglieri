@@ -2,6 +2,9 @@ package it.polimi.ingsw.payloads;
 import it.polimi.ingsw.client.network.ServerNetworkObject;
 import it.polimi.ingsw.client.updates.ChangeMarketUpdate;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
+import it.polimi.ingsw.gamematerials.MarbleColor;
+import it.polimi.ingsw.model.market.Marble;
+import it.polimi.ingsw.model.market.MarbleFactory;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.JSONSerializer;
@@ -11,6 +14,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,7 +27,21 @@ public class ChangeMarketUpdatePayloadComponentTest {
 
     @BeforeEach
     public void init(){
-        Market market = new Market(new Random(17));
+        List<Marble> marbles = Arrays.asList(
+                MarbleFactory.createMarble(MarbleColor.WHITE),
+                MarbleFactory.createMarble(MarbleColor.BLUE),
+                MarbleFactory.createMarble(MarbleColor.WHITE),
+                MarbleFactory.createMarble(MarbleColor.YELLOW),
+                MarbleFactory.createMarble(MarbleColor.PURPLE),
+                MarbleFactory.createMarble(MarbleColor.YELLOW),
+                MarbleFactory.createMarble(MarbleColor.WHITE),
+                MarbleFactory.createMarble(MarbleColor.GREY),
+                MarbleFactory.createMarble(MarbleColor.BLUE),
+                MarbleFactory.createMarble(MarbleColor.GREY),
+                MarbleFactory.createMarble(MarbleColor.RED),
+                MarbleFactory.createMarble(MarbleColor.WHITE)
+        );
+        Market market = new Market(marbles, MarbleFactory.createMarble(MarbleColor.PURPLE), 3, 4);
         rawMarket = new RawMarket(market);
     }
 
@@ -31,16 +50,18 @@ public class ChangeMarketUpdatePayloadComponentTest {
         PayloadComponent payload = PayloadFactory.changeMarket(rawMarket);
         String serialized = JSONSerializer.toJson(payload);
 
-        assertEquals("{\"type\":\"change_market\",\"group\":\"update\",\"market\":" +
-                "{\"marbles\":[\"WHITE\",\"RED\",\"PURPLE\",\"WHITE\",\"GREY\",\"YELLOW\",\"WHITE\"," +
-                "\"BLUE\",\"GREY\",\"WHITE\",\"BLUE\",\"YELLOW\"],\"odd\":\"PURPLE\"}}", serialized);
+        assertEquals("{\"type\":\"change_market\",\"group\":" +
+                "\"update\",\"market\":{\"marbles\":[\"WHITE\",\"BLUE\",\"WHITE\"," +
+                "\"YELLOW\",\"PURPLE\",\"YELLOW\",\"WHITE\",\"GREY\",\"BLUE\",\"GREY\",\"RED\"," +
+                "\"WHITE\"],\"odd\":\"PURPLE\"}}", serialized);
     }
 
     @Test
     public void correctlyDeserialized(){
-        String serialized = "{\"type\":\"change_market\",\"group\":\"update\",\"market\":" +
-                "{\"marbles\":[\"WHITE\",\"RED\",\"PURPLE\",\"WHITE\",\"GREY\",\"YELLOW\",\"WHITE\"," +
-                "\"BLUE\",\"GREY\",\"WHITE\",\"BLUE\",\"YELLOW\"],\"odd\":\"PURPLE\"}}";
+        String serialized = "{\"type\":\"change_market\",\"group\":" +
+                "\"update\",\"market\":{\"marbles\":[\"WHITE\",\"BLUE\",\"WHITE\"," +
+                "\"YELLOW\",\"PURPLE\",\"YELLOW\",\"WHITE\",\"GREY\",\"BLUE\",\"GREY\",\"RED\"," +
+                "\"WHITE\"],\"odd\":\"PURPLE\"}}";
         ServerNetworkObject serverNetworkObject = JSONParser.getServerNetworkObject(serialized);
 
         assertTrue(serverNetworkObject instanceof ChangeMarketUpdate);

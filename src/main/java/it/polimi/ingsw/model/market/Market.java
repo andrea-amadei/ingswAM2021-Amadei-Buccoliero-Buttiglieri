@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model.market;
 
-import it.polimi.ingsw.gamematerials.MarbleColor;
-import it.polimi.ingsw.model.GameParameters;
 import it.polimi.ingsw.parser.SerializableObject;
 import it.polimi.ingsw.parser.raw.RawMarket;
 import it.polimi.ingsw.server.Logger;
@@ -19,71 +17,6 @@ public class Market implements SerializableObject<RawMarket> {
     private final transient int rowSize;
     private final transient int colSize;
     private List<Marble> selectedMarbles;
-
-    /**
-     * A new market is created. Marbles are shuffled using the provided random seed.
-     * The selected marbles list is initially empty.
-     * @param seededRandom the random seed to be used for a controlled configuration (test only)
-     * @throws IllegalArgumentException if rows/columns dimension are inconsistent with the number of marbles.
-     *                                  If thrown it means that values in GameParameters are not valid
-     */
-    public Market(Random seededRandom){
-        List<Marble> marbles = new ArrayList<>();
-        selectedMarbles = new ArrayList<>();
-        rowSize = GameParameters.MARKET_ROWS;
-        colSize = GameParameters.MARKET_COLUMNS;
-        grid = new Marble[rowSize][colSize];
-
-        //create all marbles
-        for(MarbleColor color : MarbleColor.values()){
-            for(int i = 0; i < GameParameters.MARBLE_PER_COLOR.get(color); i++)
-                marbles.add(MarbleFactory.createMarble(color));
-        }
-
-        if(marbles.size() != rowSize * colSize + 1)
-            throw new IllegalArgumentException("Market dimension and marble count don't match");
-
-        Collections.shuffle(marbles, seededRandom);
-
-        //pick the odd one
-        oddOne = marbles.get(0);
-
-        //distribute the marbles
-        Iterator<Marble> marbleIterator = marbles.listIterator(1);
-        for(int i = 0; i < rowSize; i++)
-            for(int j = 0; j < colSize; j++)
-                grid[i][j] = marbleIterator.next();
-
-    }
-
-    /**
-     * A new market is created with the specified configuration.
-     * The selected marbles list is initially empty.
-     * This should only be used in test. The builder will use another constructor.
-     * @param grid an ordered list of all marbles to be added to the market
-     * @throws IllegalArgumentException if rows/columns dimension are inconsistent with the given number of marbles.
-     */
-    public Market(List<MarbleColor> grid, MarbleColor oddOne) {
-
-        selectedMarbles = new ArrayList<>();
-        this.rowSize = GameParameters.MARKET_ROWS;
-        this.colSize = GameParameters.MARKET_COLUMNS;
-        this.grid = new Marble[rowSize][colSize];
-
-        if(grid.size() != rowSize * colSize)
-            throw new IllegalArgumentException("The market grid must contain " + rowSize*colSize + "(" + rowSize + "*" + colSize
-                    + ") marbles, but only " + grid.size() + " were provided");
-
-        // add marbles to the grid
-        Iterator<MarbleColor> marbleIterator = grid.listIterator(0);
-
-        for(int i = 0; i < rowSize; i++)
-            for(int j = 0; j < colSize; j++)
-                this.grid[i][j] = MarbleFactory.createMarble(marbleIterator.next());
-
-        // add the odd one
-        this.oddOne = MarbleFactory.createMarble(oddOne);
-    }
 
     /**
      * A new market is created with the specified configuration.
@@ -113,15 +46,6 @@ public class Market implements SerializableObject<RawMarket> {
 
         // add the odd one
         this.oddOne = oddOne;
-    }
-
-
-    /**
-     * A new market is created. Marbles are shuffled randomly.
-     * The selected marbles list is initially empty.
-     */
-    public Market(){
-        this(new Random());
     }
 
     /**

@@ -20,6 +20,7 @@ import org.junit.jupiter.api.TestInstance;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -33,16 +34,8 @@ public class DisconnectionOnPreliminaryPickStateTest {
 
     @BeforeEach
     public void init() throws ParserException, IOException {
-        Player player1 = new Player("Naruto", 0);
-        Player player2 = new Player("Sasuke", 1);
-        Player player3 = new Player("Sakura", 2);
-        Player player4 = new Player("Gaara", 3);
-        List<String> playersNames = new ArrayList<>(){{
-            add(player1.getUsername());
-            add(player2.getUsername());
-            add(player3.getUsername());
-            add(player4.getUsername());
-        }};
+        List<String> playersNames = Arrays.asList("Naruto", "Sasuke", "Sakura", "Gaara");
+
 
         String configJSON = Files.readString(ResourceLoader.getPathFromResource("cfg/config.json"));
         String craftingJSON = Files.readString(ResourceLoader.getPathFromResource("cfg/crafting.json"));

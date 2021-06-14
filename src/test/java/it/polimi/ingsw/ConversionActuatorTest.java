@@ -2,10 +2,16 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
+import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.FaithPath;
 import it.polimi.ingsw.model.FaithPathTile;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.holder.FaithHolder;
 import it.polimi.ingsw.model.market.ConversionActuator;
+import it.polimi.ingsw.model.production.Production;
+import it.polimi.ingsw.model.storage.BaseStorage;
+import it.polimi.ingsw.model.storage.Shelf;
+import it.polimi.ingsw.model.storage.Storage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -52,7 +58,17 @@ public class ConversionActuatorTest {
 
     @Test
     public void addValidResourcesAndNoFaith(){
-        Player player = new Player("John", 2);
+        Storage storage = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
+        Production production = new Production(3);
+        FaithHolder faithHolder = new FaithHolder(3);
+
+        Board b = new Board(storage, production, faithHolder);
+        Player player = new Player("John", 2, b);
+
         ConversionActuator actuator = new ConversionActuator(Collections.singletonList(stone), 0);
         assertDoesNotThrow(()->actuator.actuateConversion(player, standardFaithPath));
 
@@ -65,7 +81,17 @@ public class ConversionActuatorTest {
 
     @Test
     public void addValidResourcesAndFaith(){
-        Player player = new Player("John", 2);
+        Storage storage = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
+        Production production = new Production(3);
+        FaithHolder faithHolder = new FaithHolder(3);
+
+        Board b = new Board(storage, production, faithHolder);
+        Player player = new Player("John", 2, b);
+
         ConversionActuator actuator = new ConversionActuator(Collections.singletonList(servant), 3);
         assertDoesNotThrow(()->actuator.actuateConversion(player, standardFaithPath));
 
@@ -78,7 +104,17 @@ public class ConversionActuatorTest {
 
     @Test
     public void addNoResourcesAndFaith(){
-        Player player = new Player("John", 2);
+        Storage storage = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
+        Production production = new Production(3);
+        FaithHolder faithHolder = new FaithHolder(3);
+
+        Board b = new Board(storage, production, faithHolder);
+        Player player = new Player("John", 2, b);
+
         ConversionActuator actuator = new ConversionActuator(new ArrayList<>(), 3);
         assertDoesNotThrow(()->actuator.actuateConversion(player, standardFaithPath));
 
@@ -90,7 +126,17 @@ public class ConversionActuatorTest {
 
     @Test
     public void addMultipleResources(){
-        Player player = new Player("John", 2);
+        Storage storage = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
+        Production production = new Production(3);
+        FaithHolder faithHolder = new FaithHolder(3);
+
+        Board b = new Board(storage, production, faithHolder);
+        Player player = new Player("John", 2, b);
+
         ConversionActuator actuator = new ConversionActuator(Arrays.asList(gold, stone, shield), 3);
         assertDoesNotThrow(()->actuator.actuateConversion(player, standardFaithPath));
 

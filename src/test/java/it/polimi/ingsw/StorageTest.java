@@ -3,10 +3,8 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.exceptions.IllegalSelectionException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
-import it.polimi.ingsw.model.GameParameters;
 import it.polimi.ingsw.model.storage.*;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.ThrowingSupplier;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,7 +16,10 @@ public class StorageTest {
 
     @Test
     public void createStorage(){
-        assertDoesNotThrow((ThrowingSupplier<Storage>) Storage::new);
+         new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
     }
 
     @Test

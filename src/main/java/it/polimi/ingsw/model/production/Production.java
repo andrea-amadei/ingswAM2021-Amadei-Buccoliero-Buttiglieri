@@ -2,14 +2,11 @@ package it.polimi.ingsw.model.production;
 
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.exceptions.NotReadyToCraftException;
-import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.FaithPath;
-import it.polimi.ingsw.model.GameParameters;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -34,28 +31,6 @@ public class Production {
 
     private Integer selectedIndex;
     private CraftingType selectedType;
-
-    /**
-     * Creates a new production instance.
-     * Set every crafting slot to empty.
-     * This constructor should only be used in testing. The builder will use the other one
-     */
-    public Production() {
-        baseCrafting = new ArrayList<>();
-        leaderCrafting = new ArrayList<>();
-        upgradableCrafting = new ArrayList<>(GameParameters.UPGRADABLE_CRAFTING_NUMBER);
-
-        for(int i=0; i < GameParameters.UPGRADABLE_CRAFTING_NUMBER; i++)
-            upgradableCrafting.add(null);
-
-        baseCrafting.add(new Crafting(new HashMap<>(){{
-            put(ResourceTypeSingleton.getInstance().getAnyResource(), 2);
-        }}, new HashMap<>(){{
-            put(ResourceTypeSingleton.getInstance().getAnyResource(), 1);
-        }}, 0));
-        selectedIndex = null;
-        selectedType = null;
-    }
 
     /**
      * Creates a new production instance.

@@ -3,11 +3,18 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.gamematerials.MarbleColor;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
+import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.holder.FaithHolder;
 import it.polimi.ingsw.model.leader.ConversionAbility;
 import it.polimi.ingsw.model.market.ConversionActuator;
+import it.polimi.ingsw.model.production.Production;
+import it.polimi.ingsw.model.storage.BaseStorage;
+import it.polimi.ingsw.model.storage.Shelf;
+import it.polimi.ingsw.model.storage.Storage;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,7 +48,17 @@ public class ConversionAbilityTests {
         ResourceSingle stone = ResourceTypeSingleton.getInstance().getStoneResource();
         ConversionActuator conversionActuator = new ConversionActuator(Collections.singletonList(stone), 2);
         ConversionAbility conversionAbility = new ConversionAbility(MarbleColor.BLUE, conversionActuator);
-        Player player = new Player("Username", 0);
+        Storage storage = new Storage(new BaseStorage("Chest"), new BaseStorage("Hand"), new BaseStorage("MarketBasket"),
+                Arrays.asList(new Shelf("BottomShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 3),
+                        new Shelf("MiddleShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 2),
+                        new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
+
+        Production production = new Production(3);
+        FaithHolder faithHolder = new FaithHolder(3);
+
+        Board b = new Board(storage, production, faithHolder);
+        Player player = new Player("Username", 0, b);
+
 
         conversionAbility.activate(player);
 
