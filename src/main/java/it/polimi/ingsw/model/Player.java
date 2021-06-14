@@ -29,9 +29,6 @@ public class Player {
         if(username == null)
             throw new NullPointerException();
 
-        if(username.length() < GameParameters.MIN_USERNAME_LENGTH || username.length() > GameParameters.MAX_USERNAME_LENGTH)
-            throw new IllegalArgumentException("Username length not valid");
-
         if(arrivalId < 0)
             throw new IllegalArgumentException("Arrival id cannot be negative");
 

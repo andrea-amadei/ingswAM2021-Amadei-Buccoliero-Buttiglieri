@@ -29,9 +29,8 @@ public class StorageTest {
                         new Shelf("TopShelf", ResourceTypeSingleton.getInstance().getAnyResource(), 1)));
 
         Cupboard c = s.getCupboard();
-        for(int i = 0; i < GameParameters.BASE_CUPBOARD_SHELF_NAMES.size(); i++){
-            Shelf shelf = c.getShelfById(GameParameters.BASE_CUPBOARD_SHELF_NAMES.get(i));
-            assertEquals(shelf.getAmount(), 0);
+        for(Shelf shelf : c.getShelves()){
+            assertEquals(0, shelf.getAmount());
         }
     }
 

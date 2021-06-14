@@ -78,7 +78,7 @@ public class BuyFromMarketActionTest {
         BuyFromMarketAction action = new BuyFromMarketAction("Paolo", false, 2);
         List<Marble> expectedMarbles = new ArrayList<>();
 
-        for(int i = 0; i < GameParameters.MARKET_ROWS; i++)
+        for(int i = 0; i < 3; i++)
             expectedMarbles.add(gameContext.getGameModel().getMarket().getMarble(i, 2));
         Collections.reverse(expectedMarbles);
         List<Message> messages;
@@ -97,7 +97,7 @@ public class BuyFromMarketActionTest {
         BuyFromMarketAction action = new BuyFromMarketAction("Genoveffa", false, 2);
         List<Marble> expectedMarbles = new ArrayList<>();
 
-        for(int i = 0; i < GameParameters.MARKET_ROWS; i++)
+        for(int i = 0; i < 3; i++)
             expectedMarbles.add(gameContext.getGameModel().getMarket().getMarble(i, 2));
         Collections.reverse(expectedMarbles);
         List<Message> messages;
@@ -116,7 +116,7 @@ public class BuyFromMarketActionTest {
         BuyFromMarketAction action = new BuyFromMarketAction("Genoveffa", true, 2);
         List<Marble> expectedMarbles = new ArrayList<>();
 
-        for(int i = 0; i < GameParameters.MARKET_COLUMNS; i++)
+        for(int i = 0; i < 4; i++)
             expectedMarbles.add(gameContext.getGameModel().getMarket().getMarble(2, i));
         Collections.reverse(expectedMarbles);
         List<Message> messages;

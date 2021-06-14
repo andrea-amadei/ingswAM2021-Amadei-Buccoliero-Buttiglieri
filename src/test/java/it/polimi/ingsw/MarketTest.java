@@ -50,7 +50,7 @@ public class MarketTest {
     @Test
     public void outOfBoundPickRow(){
         assertThrows(IndexOutOfBoundsException.class, ()->market.pickRow(-1));
-        assertThrows(IndexOutOfBoundsException.class, ()->market.pickRow(GameParameters.MARKET_ROWS));
+        assertThrows(IndexOutOfBoundsException.class, ()->market.pickRow(3));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class MarketTest {
     @Test
     public void outOfBoundPickCol(){
         assertThrows(IndexOutOfBoundsException.class, ()->market.pickCol(-1));
-        assertThrows(IndexOutOfBoundsException.class, ()->market.pickCol(GameParameters.MARKET_COLUMNS));
+        assertThrows(IndexOutOfBoundsException.class, ()->market.pickCol(4));
     }
     @Test
     public void validPickCol(){
@@ -93,8 +93,8 @@ public class MarketTest {
     @Test
     public void outOfBoundGetMarble(){
         assertThrows(IndexOutOfBoundsException.class, () -> market.getMarble(-1, 2));
-        assertThrows(IndexOutOfBoundsException.class, () -> market.getMarble(2, GameParameters.MARKET_COLUMNS));
-        assertThrows(IndexOutOfBoundsException.class, () -> market.getMarble(GameParameters.MARKET_ROWS, 2));
+        assertThrows(IndexOutOfBoundsException.class, () -> market.getMarble(2, 4));
+        assertThrows(IndexOutOfBoundsException.class, () -> market.getMarble(3, 2));
         assertThrows(IndexOutOfBoundsException.class, () -> market.getMarble(2, -1));
     }
 

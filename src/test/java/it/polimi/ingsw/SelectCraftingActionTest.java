@@ -120,7 +120,7 @@ public class SelectCraftingActionTest {
     @Test
     public void indexOutOfBound(){
         gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Letteria"));
-        Action action = new SelectCraftingAction("Letteria", Production.CraftingType.BASE, GameParameters.UPGRADABLE_CRAFTING_NUMBER);
+        Action action = new SelectCraftingAction("Letteria", Production.CraftingType.BASE, 3);
         assertThrows(IllegalActionException.class, ()-> action.execute(gameContext));
 
     }

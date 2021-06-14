@@ -79,7 +79,7 @@ public class GameUtilities {
         Player pickingPlayer = gameContext.getGameModel().getPlayerById(player);
 
         //checking if amount of leaders to discard is correct
-        if(leadersToDiscard.size()!= GameParameters.AMOUNT_OF_LEADERS_TO_DISCARD)
+        if(leadersToDiscard.size()!= gameContext.getGameConfig().getAmountOfLeadersToDiscard())
             throw new IllegalActionException("Must discard correct amount of leaders");
 
         //assessing the player is not discarding the same leader twice
@@ -118,21 +118,21 @@ public class GameUtilities {
         }
 
         switch (playerOrder){
-            case 0: if(amountOfResources!=GameParameters.FIRST_PLAYER_AMOUNT_OF_RESOURCES_ON_START)
+            case 0: if(amountOfResources!=gameContext.getGameConfig().getFirstPlayerAmountOfResourcesOnStart())
                 throw new IllegalActionException("First player must get the correct amount of resources on start");
-                faithPoints = GameParameters.FIRST_PLAYER_AMOUNT_OF_FAITH_POINTS_ON_START;
+                faithPoints = gameContext.getGameConfig().getFirstPlayerAmountOfFaithPointsOnStart();
                 break;
-            case 1: if(amountOfResources!=GameParameters.SECOND_PLAYER_AMOUNT_OF_RESOURCES_ON_START)
+            case 1: if(amountOfResources!=gameContext.getGameConfig().getSecondPlayerAmountOfResourcesOnStart())
                 throw new IllegalActionException("Second player must get the correct amount of resources on start");
-                faithPoints = GameParameters.SECOND_PLAYER_AMOUNT_OF_FAITH_POINTS_ON_START;
+                faithPoints = gameContext.getGameConfig().getSecondPlayerAmountOfFaithPointsOnStart();
                 break;
-            case 2: if(amountOfResources!=GameParameters.THIRD_PLAYER_AMOUNT_OF_RESOURCES_ON_START)
+            case 2: if(amountOfResources!=gameContext.getGameConfig().getThirdPlayerAmountOfResourcesOnStart())
                 throw new IllegalActionException("Third player must get the correct amount of resources on start");
-                faithPoints = GameParameters.THIRD_PLAYER_AMOUNT_OF_FAITH_POINTS_ON_START;
+                faithPoints = gameContext.getGameConfig().getThirdPlayerAmountOfFaithPointsOnStart();
                 break;
-            case 3: if(amountOfResources!=GameParameters.FOURTH_PLAYER_AMOUNT_OF_RESOURCES_ON_START)
+            case 3: if(amountOfResources!=gameContext.getGameConfig().getFourthPlayerAmountOfResourcesOnStart())
                 throw new IllegalActionException("Fourth player must get the correct amount of resources on start");
-                faithPoints = GameParameters.FOURTH_PLAYER_AMOUNT_OF_FAITH_POINTS_ON_START;
+                faithPoints = gameContext.getGameConfig().getFourthPlayerAmountOfFaithPointsOnStart();
         }
 
         //discard leaders
