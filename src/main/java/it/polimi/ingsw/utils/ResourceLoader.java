@@ -12,6 +12,15 @@ import java.util.stream.Collectors;
 public final class ResourceLoader {
     private ResourceLoader() { }
 
+    public static URL getResource(String fileName) {
+        URL resource = ResourceLoader.class.getProtectionDomain().getClassLoader().getResource(fileName);
+
+        if (resource == null)
+            throw new IllegalArgumentException("File not found! " + fileName);
+
+        return resource;
+    }
+
     public static Path getPathFromResource(String fileName) {
         URL resource = ResourceLoader.class.getProtectionDomain().getClassLoader().getResource(fileName);
 
