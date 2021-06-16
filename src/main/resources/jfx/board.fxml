@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import it.polimi.ingsw.client.gui.nodes.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.BoardGuiController">
+    <ResourceBox />
+    <FlagBox amount="1" flag="green" layoutY="550.0" level="3" />
+    <FlagBox amount="1" flag="blue" layoutY="600.0" level="3" />
+    <FlagBox amount="1" flag="purple" layoutY="650.0" level="3" />
+    <FlagBox amount="1" flag="yellow" layoutY="700.0" level="3" />
+
+    <HResourceContainer anyAccepted="true" containerJSON="{&quot;id&quot;:&quot;container&quot;,&quot;resources&quot;:{&quot;gold&quot;:2}}" layoutY="150.0" />
+    <VResourceContainer containerJSON="{&quot;id&quot;:&quot;container&quot;,&quot;resources&quot;:{&quot;stone&quot;:2}}" layoutY="250.0" />
+    <CraftingBox craftingJSON="{&quot;input&quot;:{&quot;shield&quot;:1},&quot;output&quot;:{&quot;stone&quot;:1, &quot;servant&quot;:1},&quot;faith_output&quot;:1}" layoutX="350.0" layoutY="350.0" level="1" />
+    <PointsBox layoutX="250.0" points="7" />
+    <FaithPath layoutX="400.0" layoutY="50.0" player1PositionsProperty="7" scaleX="0.8" scaleY="0.8" />
+
+    <GridPane layoutX="720.0" layoutY="360.0">
+        <columnConstraints>
+            <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
+            <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
+            <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: darkred;">
+            <AnchorPane prefHeight="76.0" prefWidth="76.0" style="-fx-background-color: lightyellow;" AnchorPane.leftAnchor="2.0" AnchorPane.topAnchor="2.0" />
+            <Label text="2" textFill="gold" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="20.0">
+                <font>
+                   <Font name="Times New Roman Bold" size="40.0" />
+                </font>
+            </Label>
+            <PointsBox points="7" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="10.0" />
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+        </AnchorPane>
+        <AnchorPane prefHeight="80.0" prefWidth="79.0" style="-fx-background-color: darkred;" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <AnchorPane prefHeight="76.0" prefWidth="76.0" style="-fx-background-color: lightgrey;" AnchorPane.leftAnchor="2.0" AnchorPane.topAnchor="2.0" />
+            <Label text="3" textFill="grey" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="10.0">
+                <font>
+                    <Font name="Times New Roman Bold" size="50.0" />
+                </font>
+            </Label>
+            <GridPane>
+                <columnConstraints>
+                    <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="38.0" />
+                    <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="38.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" />
+                    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" />
+                </rowConstraints>
+                <ImageView cache="true" cacheHint="SPEED" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@../assets/resources/faith.png" />
+                </ImageView>
+                <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Image url="@../assets/resources/faith.png" />
+                </ImageView>
+            </GridPane>
+        </AnchorPane>
+        <AnchorPane prefHeight="80.0" prefWidth="79.0" style="-fx-background-color: darkred;" GridPane.columnIndex="0" GridPane.rowIndex="2">
+            <AnchorPane prefHeight="76.0" prefWidth="76.0" style="-fx-background-color: lightgrey;" AnchorPane.leftAnchor="2.0" AnchorPane.topAnchor="2.0" />
+            <Label text="4" textFill="grey" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="10.0">
+                <font>
+                    <Font name="Times New Roman Bold" size="50.0" />
+                </font>
+            </Label>
+        </AnchorPane>
+    </GridPane>
+</AnchorPane>
