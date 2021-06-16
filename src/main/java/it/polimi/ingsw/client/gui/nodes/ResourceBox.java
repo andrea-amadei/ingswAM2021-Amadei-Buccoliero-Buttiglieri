@@ -29,7 +29,7 @@ public class ResourceBox extends HBox {
 
     @FXML
     public HBox box;
-    
+
     private final List<String> ACCEPTED_RESOURCES = new ArrayList<>(Arrays.asList("any", "faith", "gold", "servant", "shield", "stone"));
     private final List<String> RESOURCES_TEXTURE_PATH = new ArrayList<>(Arrays.asList(
             "assets/resources/any.png",
