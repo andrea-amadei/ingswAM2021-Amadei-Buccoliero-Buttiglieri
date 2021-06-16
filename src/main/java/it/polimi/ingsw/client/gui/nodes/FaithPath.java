@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.gui.nodes;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.model.FaithPathGroup;
 import it.polimi.ingsw.model.FaithPathTile;
+import it.polimi.ingsw.model.holder.FaithHolder;
 import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.raw.RawFaithPathGroup;
 import it.polimi.ingsw.parser.raw.RawFaithPathTile;
@@ -16,6 +17,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.control.Label;
 import javafx.scene.effect.*;
@@ -28,6 +30,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import org.controlsfx.control.spreadsheet.Grid;
+import org.controlsfx.glyphfont.Glyph;
 
 import java.io.IOException;
 import java.util.*;
@@ -40,10 +43,16 @@ public class FaithPath extends GridPane {
     public IntegerProperty player3PositionsProperty;
     public IntegerProperty player4PositionsProperty;
 
+    public ListProperty<FaithHolder.CheckpointStatus> player1CheckpointsStatusProperty;
+    public ListProperty<FaithHolder.CheckpointStatus> player2CheckpointsStatusProperty;
+    public ListProperty<FaithHolder.CheckpointStatus> player3CheckpointsStatusProperty;
+    public ListProperty<FaithHolder.CheckpointStatus> player4CheckpointsStatusProperty;
+
     private List<RawFaithPathTile> tiles;
     private List<RawFaithPathGroup> groups;
 
     private List<GridPane> grids;
+    private List<GridPane> checkGrids;
 
     private final int nRows;
     private final int nCols;
@@ -59,7 +68,8 @@ public class FaithPath extends GridPane {
     private final String TEXT_POINTS_COLOR = "gold";
     private final String TEXT_POPE_COLOR = "darkred";
 
-    private final List<String> PLAYER_COLORS = new ArrayList<>(Arrays.asList("#214dff", "#ff2021", "#089200", "#de8a00"));
+    private final List<String> PLAYER_COLORS = new ArrayList<>(Arrays.asList("#3568AA", "#892F96", "#3AA739", "#988330"));
+    private final List<Double> PLAYER_HUES = new ArrayList<>(Arrays.asList(-0.9d, -0.45d, 0.58d, 0.20d));
 
     private final List<Integer> PLAYER_ROW_INDEX = new ArrayList<>(Arrays.asList(   0, 1, 1, 0));
     private final List<Integer> PLAYER_COLUMN_INDEX = new ArrayList<>(Arrays.asList(0, 1, 0, 1));
@@ -94,6 +104,14 @@ public class FaithPath extends GridPane {
         player3PositionsProperty = new SimpleIntegerProperty(this, "player3PositionsProperty", -1);
         player4PositionsProperty = new SimpleIntegerProperty(this, "player4PositionsProperty", -1);
 
+        player1CheckpointsStatusProperty = new SimpleListProperty<>(this, "player1CheckpointsStatusProperty", FXCollections.observableList(
+                Arrays.asList(FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED)));
+        player2CheckpointsStatusProperty = new SimpleListProperty<>(this, "player2CheckpointsStatusProperty", FXCollections.observableList(
+                Arrays.asList(FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED)));
+        player3CheckpointsStatusProperty = new SimpleListProperty<>(this, "player3CheckpointsStatusProperty", FXCollections.observableList(
+                Arrays.asList(FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED)));
+        player4CheckpointsStatusProperty = new SimpleListProperty<>(this, "player4CheckpointsStatusProperty", FXCollections.observableList(
+                Arrays.asList(FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED)));
         setup();
         update();
     }
@@ -303,7 +321,6 @@ public class FaithPath extends GridPane {
                 label.setStyle("-fx-text-fill: " + TEXT_POINTS_COLOR + ";");
             else
                 label.setStyle("-fx-text-fill: " + TEXT_NEUTRAL_COLOR + ";");
-
             tile.getChildren().add(label);
 
             playerGrid = new GridPane();
@@ -323,6 +340,8 @@ public class FaithPath extends GridPane {
             pane.getChildren().add(tile);
         }
 
+        checkGrids = new ArrayList<>();
+
         for(Triplet<Integer, Integer, Integer> coord : checks) {
             tile = new AnchorPane();
             tile.setPrefHeight(80d);
@@ -340,8 +359,20 @@ public class FaithPath extends GridPane {
             points.setScaleY(1.2d);
             AnchorPane.setTopAnchor(points, 10d);
             AnchorPane.setLeftAnchor(points, 10d);
-
             tile.getChildren().add(points);
+
+            playerGrid = new GridPane();
+            for(i = 0; i < 2; i++)
+                playerGrid.getColumnConstraints().add(new ColumnConstraints(Double.NEGATIVE_INFINITY, 38d, Double.NEGATIVE_INFINITY));
+
+            for(i = 0; i < 2; i++)
+                playerGrid.getRowConstraints().add(new RowConstraints(Double.NEGATIVE_INFINITY, 38d, Double.NEGATIVE_INFINITY));
+
+            AnchorPane.setTopAnchor(playerGrid, 2d);
+            AnchorPane.setLeftAnchor(playerGrid, 2d);
+
+            checkGrids.add(playerGrid);
+            tile.getChildren().add(playerGrid);
 
             pane.getChildren().add(tile);
         }
@@ -350,7 +381,10 @@ public class FaithPath extends GridPane {
     public void update() {
         int i, j, k;
         ImageView imageView;
+        Label label;
         List<Integer> players = new ArrayList<>();
+        List<ListProperty<FaithHolder.CheckpointStatus>> playerChecks = new ArrayList<>();
+        Glyph glyph;
 
         if(getPlayer1PositionsProperty() >= 0)
             players.add(getPlayer1PositionsProperty());
@@ -360,6 +394,11 @@ public class FaithPath extends GridPane {
             players.add(getPlayer3PositionsProperty());
         if(getPlayer4PositionsProperty() >= 0)
             players.add(getPlayer4PositionsProperty());
+
+        playerChecks.add(player1CheckpointsStatusProperty);
+        playerChecks.add(player2CheckpointsStatusProperty);
+        playerChecks.add(player3CheckpointsStatusProperty);
+        playerChecks.add(player4CheckpointsStatusProperty);
 
         for(i = 0; i < grids.size(); i++) {
             grids.get(i).getChildren().clear();
@@ -377,21 +416,44 @@ public class FaithPath extends GridPane {
                     GridPane.setRowIndex(imageView, PLAYER_ROW_INDEX.get(k));
                     GridPane.setColumnIndex(imageView, PLAYER_COLUMN_INDEX.get(k));
 
-                    ColorAdjust monochrome = new ColorAdjust();
-                    monochrome.setSaturation(-1);
+                    ColorAdjust filter = new ColorAdjust();
+                    filter.setHue(PLAYER_HUES.get(j));
 
-                    Blend effect1 = new Blend(
-                            BlendMode.MULTIPLY,
-                            monochrome,
-                            new ColorInput(0, 0, 38d, 38d, Color.web(PLAYER_COLORS.get(j)))
-                    );
-
-                    imageView.setEffect(effect1);
+                    imageView.setEffect(filter);
                     imageView.setCache(true);
                     imageView.setCacheHint(CacheHint.SPEED);
 
                     k++;
                     grids.get(i).getChildren().add(imageView);
+                }
+            }
+        }
+
+        for(i = 0; i < checkGrids.size(); i++) {
+            checkGrids.get(i).getChildren().clear();
+            k = 0;
+
+            for(j = 0; j < playerChecks.size(); j++) {
+                if(playerChecks.get(j).get(i) != FaithHolder.CheckpointStatus.UNREACHED) {
+                    label = new Label();
+                    GridPane.setRowIndex(label, PLAYER_ROW_INDEX.get(k));
+                    GridPane.setColumnIndex(label, PLAYER_COLUMN_INDEX.get(k));
+                    label.setPrefWidth(38d);
+                    label.setAlignment(Pos.CENTER);
+
+                    if (playerChecks.get(j).get(i) == FaithHolder.CheckpointStatus.INACTIVE) {
+                        glyph = new Glyph("FontAwesome", "TIMES");
+                    } else {
+                        glyph = new Glyph("FontAwesome", "CHECK");
+                    }
+
+                    glyph.setScaleX(3);
+                    glyph.setScaleY(3);
+                    glyph.setStyle("-fx-text-fill: " + PLAYER_COLORS.get(j) + ";");
+                    label.setGraphic(glyph);
+
+                    k++;
+                    checkGrids.get(i).getChildren().add(label);
                 }
             }
         }
