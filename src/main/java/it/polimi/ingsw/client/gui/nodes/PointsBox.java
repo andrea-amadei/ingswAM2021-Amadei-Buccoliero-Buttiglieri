@@ -21,7 +21,7 @@ public class PointsBox extends StackPane {
 
         this.points = new SimpleIntegerProperty(this, "points", 0);
 
-        imageView.setImage(new Image(ResourceLoader.getStreamFromResource("assets/board/points.png")));
+        imageView.setImage(ResourceLoader.loadImage("assets/board/points.png"));
         update();
     }
 
@@ -30,7 +30,7 @@ public class PointsBox extends StackPane {
 
         this.points = new SimpleIntegerProperty(this, "points", points);
 
-        imageView.setImage(new Image(ResourceLoader.getStreamFromResource("assets/board/points.png")));
+        imageView.setImage(ResourceLoader.loadImage("assets/board/points.png"));
         update();
     }
 

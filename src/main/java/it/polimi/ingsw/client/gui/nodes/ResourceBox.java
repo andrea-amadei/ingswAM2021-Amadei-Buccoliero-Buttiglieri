@@ -113,7 +113,7 @@ public class ResourceBox extends HBox {
         if(!ACCEPTED_RESOURCES.contains(getResource()))
             throw new IllegalArgumentException("Invalid resource: " + resource);
 
-        imageView.setImage(new Image(ResourceLoader.getStreamFromResource(RESOURCES_TEXTURE_PATH.get(ACCEPTED_RESOURCES.indexOf(getResource())))));
+        imageView.setImage(ResourceLoader.loadImage(RESOURCES_TEXTURE_PATH.get(ACCEPTED_RESOURCES.indexOf(getResource()))));
     }
 
     /* PROPERTIES */

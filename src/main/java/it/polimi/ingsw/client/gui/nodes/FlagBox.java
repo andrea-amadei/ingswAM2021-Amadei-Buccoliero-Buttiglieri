@@ -134,7 +134,7 @@ public class FlagBox extends HBox {
 
         colorId = ACCEPTED_COLORS.indexOf(getFlag());
 
-        imageView.setImage(new Image(ResourceLoader.getStreamFromResource(FLAG_TEXTURE_PATH.get(colorId))));
+        imageView.setImage(ResourceLoader.loadImage(FLAG_TEXTURE_PATH.get(colorId)));
 
         if(getLevel() > 0) {
             levelLabel.setVisible(true);
