@@ -12,8 +12,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import org.controlsfx.glyphfont.Glyph;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,27 +28,13 @@ public class CraftingBox extends VBox {
 
     private final IntegerProperty level;
 
-    @FXML
     private Label levelLabel;
-
-    @FXML
     private VResourceContainer input;
-    @FXML
     private VResourceContainer output;
-    @FXML
     private ResourceBox faith;
 
     public CraftingBox() {
-        FXMLLoader fxmlLoader = new FXMLLoader(ResourceLoader.getResource("jfx/custom/CraftingBox.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            System.out.println(exception.getMessage());
-            throw new RuntimeException("Unable to load custom element '" + getClass().getSimpleName() + "': " + exception);
-        }
+        attachElements();
 
         String defaultJSON = "{\"input\":{\"any\":1},\"output\":{\"any\":1},\"faith_output\":0}";
         RawCrafting defaultRawCrafting;
@@ -69,6 +59,45 @@ public class CraftingBox extends VBox {
         this.rawCrafting.addListener((observableValue, oldValue, newValue) -> setCraftingJSON(newValue.toString()));
 
         update();
+    }
+
+    private void attachElements(){
+        levelLabel = new Label();
+        levelLabel.setText("Level: 1");
+        levelLabel.setFont(new Font(22d));
+
+        HBox hBox = new HBox();
+        hBox.setSpacing(20d);
+
+        input = new VResourceContainer();
+        input.setAnyAccepted(true);
+        input.setShowResourceIfZero(false);
+        input.setShowX(false);
+
+        Label label = new Label();
+        Glyph glyph = new Glyph();
+        glyph.setFontFamily("FontAwesome");
+        glyph.setIcon("ARROW_RIGHT");
+        glyph.setScaleX(1.5);
+        glyph.setScaleY(1.5);
+        label.setGraphic(glyph);
+
+        output = new VResourceContainer();
+        output.setAnyAccepted(true);
+        output.setShowResourceIfZero(false);
+        output.setShowX(false);
+
+        hBox.getChildren().addAll(input, label, output);
+
+        faith = new ResourceBox();
+        faith.setAlignment(Pos.BOTTOM_RIGHT);
+        faith.setResource("faith");
+        faith.setShowIfZero(false);
+        faith.setShowX(false);
+
+        this.getChildren().addAll(levelLabel, hBox, faith);
+        this.setSpacing(20d);
+
     }
 
     private void update() {

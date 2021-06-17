@@ -33,6 +33,7 @@ public class VResourceContainer extends VBox {
 
     public VResourceContainer() {
         box = this;
+        this.setSpacing(5d);
 
         this.containerJSON = new SimpleStringProperty(this, "containerJSON", "{\"id\":\"container\",\"resources\":{}}");
         this.rawStorage = new SimpleObjectProperty<>(this, "rawStorage", new RawStorage("container", new HashMap<>()));

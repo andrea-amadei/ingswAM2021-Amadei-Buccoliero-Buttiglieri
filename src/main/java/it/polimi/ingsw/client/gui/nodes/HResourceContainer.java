@@ -28,6 +28,7 @@ public class HResourceContainer extends HBox {
     public HResourceContainer() {
 
         box = this;
+        this.setSpacing(5d);
 
         this.containerJSON = new SimpleStringProperty(this, "containerJSON", "{\"id\":\"container\",\"resources\":{}}");
         this.rawStorage = new SimpleObjectProperty<>(this, "rawStorage", new RawStorage("container", new HashMap<>()));
