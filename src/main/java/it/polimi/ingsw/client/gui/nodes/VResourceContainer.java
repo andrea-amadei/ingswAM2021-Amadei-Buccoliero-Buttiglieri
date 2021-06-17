@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.gui.nodes;
 
+import it.polimi.ingsw.client.gui.FXMLCachedLoaders;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.parser.JSONParser;
@@ -28,21 +29,12 @@ public class VResourceContainer extends VBox {
 
     private final BooleanProperty anyAccepted;
 
-    @FXML
-    private VBox box;
+    private final VBox box;
 
     private final List<String> ACCEPTED_RESOURCES = new ArrayList<>(Arrays.asList("gold", "servant", "shield", "stone"));
 
     public VResourceContainer() {
-        FXMLLoader fxmlLoader = new FXMLLoader(ResourceLoader.getResource("jfx/custom/VResourceContainer.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException("Unable to load custom element '" + getClass().getSimpleName() + "': " + exception);
-        }
+        box = this;
 
         this.containerJSON = new SimpleStringProperty(this, "containerJSON", "{\"id\":\"container\",\"resources\":{}}");
         this.rawStorage = new SimpleObjectProperty<>(this, "rawStorage", new RawStorage("container", new HashMap<>()));

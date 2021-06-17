@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.gui.nodes;
 
+import it.polimi.ingsw.client.gui.FXMLCachedLoaders;
 import it.polimi.ingsw.utils.ResourceLoader;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
@@ -8,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,13 +23,10 @@ public class ResourceBox extends HBox {
     private final BooleanProperty showIfZero;
     private final BooleanProperty showX;
 
-    @FXML
     public ImageView imageView;
 
-    @FXML
     public Label label;
 
-    @FXML
     public HBox box;
 
     private final List<String> ACCEPTED_RESOURCES = new ArrayList<>(Arrays.asList("any", "faith", "gold", "servant", "shield", "stone"));
@@ -41,15 +40,7 @@ public class ResourceBox extends HBox {
     ));
 
     public ResourceBox() {
-        FXMLLoader fxmlLoader = new FXMLLoader(ResourceLoader.getResource("jfx/custom/ResourceBox.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException("Unable to load custom element '" + getClass().getSimpleName() + "': " + exception);
-        }
+        attachElements();
 
         this.resource = new SimpleStringProperty(this, "resource", "any");
         this.amount = new SimpleIntegerProperty(this, "amount", 0);
@@ -62,15 +53,7 @@ public class ResourceBox extends HBox {
     }
 
     public ResourceBox(String resource, int amount) {
-        FXMLLoader fxmlLoader = new FXMLLoader(ResourceLoader.getResource("jfx/custom/ResourceBox.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException("Unable to load custom element '" + getClass().getSimpleName() + "': " + exception);
-        }
+        attachElements();
 
         this.resource = new SimpleStringProperty(this, "resource", resource);
         this.amount = new SimpleIntegerProperty(this, "amount", amount);
@@ -84,15 +67,7 @@ public class ResourceBox extends HBox {
     }
 
     public ResourceBox(String resource, int amount, boolean showAmount, boolean showIfZero, boolean showX) {
-        FXMLLoader fxmlLoader = new FXMLLoader(ResourceLoader.getResource("jfx/custom/ResourceBox.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException("Unable to load custom element '" + getClass().getSimpleName() + "': " + exception);
-        }
+        attachElements();
 
         this.resource = new SimpleStringProperty(this, "resource", resource);
         this.amount = new SimpleIntegerProperty(this, "amount", amount);
@@ -103,6 +78,25 @@ public class ResourceBox extends HBox {
 
         updateLabel();
         updateResource();
+    }
+
+    private void attachElements(){
+        box = this;
+        imageView = new ImageView();
+        imageView.setFitHeight(40d);
+        imageView.setFitWidth(40d);
+        imageView.setPickOnBounds(true);
+        imageView.setPreserveRatio(true);
+
+        label = new Label();
+        label.setMinHeight(Double.NEGATIVE_INFINITY);
+        label.setMinWidth(Double.NEGATIVE_INFINITY);
+        label.setMaxHeight(Double.NEGATIVE_INFINITY);
+        label.setMaxWidth(Double.NEGATIVE_INFINITY);
+        label.setPrefHeight(40d);
+        label.setFont(new Font(22d));
+
+        this.getChildren().addAll(imageView, label);
     }
 
     private void updateLabel() {
