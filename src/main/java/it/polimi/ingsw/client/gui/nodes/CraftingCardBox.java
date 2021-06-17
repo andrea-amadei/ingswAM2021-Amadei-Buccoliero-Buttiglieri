@@ -57,7 +57,7 @@ public class CraftingCardBox extends VBox {
         }
 
         this.craftingCardJSON = new SimpleStringProperty(this, "craftingCardJSON", defaultJSON);
-        this.rawCraftingCard = new SimpleObjectProperty<>(this, "rawCrafting", defaultRawCraftingCard);
+        this.rawCraftingCard = new SimpleObjectProperty<>(this, "rawCraftingCard", defaultRawCraftingCard);
 
         this.craftingCardJSON.addListener((observableValue, oldValue, newValue) -> {
             try {
@@ -103,7 +103,7 @@ public class CraftingCardBox extends VBox {
     public RawCraftingCard getRawCraftingCard() {
         return rawCraftingCard.get();
     }
-
+    public String getCraftingCardJSON(){return craftingCardJSON.get();}
     //setters
     public void setCraftingCardJSON(String craftingCardJSON) {
         this.craftingCardJSON.set(craftingCardJSON);

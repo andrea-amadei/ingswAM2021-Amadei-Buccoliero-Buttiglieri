@@ -52,11 +52,14 @@ public class HResourceContainer extends HBox {
         this.anyAccepted = new SimpleBooleanProperty(this, "anyAccepted", false);
 
         this.containerJSON.addListener((observableValue, oldValue, newValue) -> {
-            try {
-                setRawStorage(JSONParser.parseToRaw(newValue, RawStorage.class));
-            } catch(IllegalRawConversionException | ParserException e) {
-                throw new IllegalArgumentException("Conversion from JSON to RawStorage failed unexpectedly");
-            }
+
+                try {
+                    setRawStorage(JSONParser.parseToRaw(newValue, RawStorage.class));
+                } catch (IllegalRawConversionException | ParserException e) {
+                    throw new IllegalArgumentException("Conversion from JSON to RawStorage failed unexpectedly");
+                }
+                System.out.println("Changed");
+
         });
 
         this.rawStorage.addListener((observableValue, oldValue, newValue) -> setContainerJSON(newValue.toString()));
