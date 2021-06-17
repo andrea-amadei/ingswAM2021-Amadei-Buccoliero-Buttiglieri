@@ -1,22 +1,13 @@
 package it.polimi.ingsw.client.gui.nodes;
 
-import it.polimi.ingsw.client.gui.FXMLCachedLoaders;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.raw.RawStorage;
-import it.polimi.ingsw.utils.ResourceLoader;
 import javafx.beans.property.*;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class HResourceContainer extends HBox {
     private final StringProperty containerJSON;
@@ -32,6 +23,7 @@ public class HResourceContainer extends HBox {
     private final HBox box;
 
     private final List<String> ACCEPTED_RESOURCES = new ArrayList<>(Arrays.asList("gold", "servant", "shield", "stone"));
+    private final Map<String, ResourceBox> resourceBoxes;
 
     public HResourceContainer() {
 
@@ -56,29 +48,45 @@ public class HResourceContainer extends HBox {
 
         });
 
+
         this.rawStorage.addListener((observableValue, oldValue, newValue) -> setContainerJSON(newValue.toString()));
 
+        resourceBoxes = new HashMap<>();
+        resourceBoxes.put("gold", new ResourceBox("gold", 0, true, true, true));
+        resourceBoxes.put("servant", new ResourceBox("servant", 0, true, true, true));
+        resourceBoxes.put("stone", new ResourceBox("stone", 0, true, true, true));
+        resourceBoxes.put("shield", new ResourceBox("shield", 0, true, true, true));
+        resourceBoxes.put("any", new ResourceBox("any", 0, true, true, true));
+
         update();
+
+
     }
 
     private void update() {
-        box.getChildren().clear();
-
         List<String> resources = new ArrayList<>(ACCEPTED_RESOURCES);
         int tot = 0;
 
         if(isAnyAccepted())
             resources.add("any");
 
+        List<ResourceBox> visibleNodes = new ArrayList<>();
         for(String resource : resources) {
             if(getRawStorage().getResources().containsKey(resource) && getRawStorage().getResources().get(resource) != 0) {
-                box.getChildren().add(new ResourceBox(resource, getRawStorage().getResources().get(resource), true, true, isShowX()));
+                ResourceBox toBeSeen = resourceBoxes.get(resource);
+                toBeSeen.setAmount(getRawStorage().getResources().get(resource));
+                toBeSeen.setShowX(isShowX());
+                visibleNodes.add(toBeSeen);
                 tot++;
             }
             else if(isShowResourceIfZero()) {
-                box.getChildren().add(new ResourceBox(resource, 0, true, true, isShowX()));
+                ResourceBox toBeSeen = resourceBoxes.get(resource);
+                toBeSeen.setAmount(0);
+                toBeSeen.setShowX(isShowX());
+                visibleNodes.add(toBeSeen);
             }
         }
+        box.getChildren().setAll(visibleNodes);
 
         box.setVisible(!isHideIfEmpty() || tot != 0);
     }
