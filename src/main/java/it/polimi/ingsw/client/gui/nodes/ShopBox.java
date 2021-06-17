@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.gui.nodes;
 
+import it.polimi.ingsw.client.gui.FXMLCachedLoaders;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.parser.JSONParser;
@@ -24,21 +25,12 @@ public class ShopBox extends GridPane {
 
     private final List<CraftingCardBox> craftingCardBoxes;
 
-    @FXML
+
     private GridPane grid;
     
 
     public ShopBox(){
-        FXMLLoader fxmlLoader = new FXMLLoader(ResourceLoader.getResource("jfx/custom/ShopBox.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            System.out.println(exception.getMessage());
-            throw new RuntimeException("Unable to load custom element '" + getClass().getSimpleName() + "': " + exception);
-        }
+        grid = this;
 
         rowNum = new SimpleIntegerProperty(this, "row count", 3);
         colNum = new SimpleIntegerProperty(this, "col count", 4);
