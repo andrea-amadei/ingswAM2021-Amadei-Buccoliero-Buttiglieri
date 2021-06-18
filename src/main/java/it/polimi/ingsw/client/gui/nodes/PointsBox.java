@@ -61,7 +61,9 @@ public class PointsBox extends StackPane {
     }
 
     public void setPoints(int points) {
-        this.points.set(points);
-        update();
+        if(pointsProperty().get() != points) {
+            this.points.set(points);
+            update();
+        }
     }
 }

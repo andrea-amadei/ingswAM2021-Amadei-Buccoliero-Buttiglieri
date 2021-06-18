@@ -172,12 +172,18 @@ public class CraftingBox extends VBox {
     }
 
     public void setRawCrafting(RawCrafting rawCrafting) {
-        this.rawCrafting.set(rawCrafting);
-        update();
+        if(!rawCraftingProperty().get().getInput().equals(rawCrafting.getInput())
+        || !rawCraftingProperty().get().getOutput().equals(rawCrafting.getOutput())
+        || rawCraftingProperty().get().getFaithOutput() != rawCrafting.getFaithOutput()) {
+            this.rawCrafting.set(rawCrafting);
+            update();
+        }
     }
 
     public void setLevel(int level) {
-        this.level.set(level);
-        update();
+        if(levelProperty().get() != level) {
+            this.level.set(level);
+            update();
+        }
     }
 }

@@ -71,10 +71,11 @@ public class ShopBox extends GridPane {
                 else{
                     if(craftingCardBoxes.get(i* colNum.get() + j) == null){
                         CraftingCardBox cardBox = new CraftingCardBox();
+                        cardBox.setRawCraftingCard(craftingCards.get(i* colNum.get() + j));
                         grid.add(cardBox, j, i);
                         craftingCardBoxes.set(i* colNum.get() + j, cardBox);
                     }else{
-                        if(!craftingCardBoxes.get(i* colNum.get() + j).getRawCraftingCard().equals(craftingCards.get(i* colNum.get() + j)))
+                        if(craftingCardBoxes.get(i* colNum.get() + j).getRawCraftingCard().getId() != craftingCards.get(i* colNum.get() + j).getId())
                             craftingCardBoxes.get(i* colNum.get() + j).setRawCraftingCard(craftingCards.get(i* colNum.get() + j));
                     }
                 }
@@ -91,8 +92,8 @@ public class ShopBox extends GridPane {
         return craftingCards;
     }
 
-    public void setCraftingCards(ObservableList<RawCraftingCard> craftingCards) {
-        this.craftingCards.set(craftingCards);
+    public void setCraftingCards(List<RawCraftingCard> craftingCards) {
+        this.craftingCards.set(FXCollections.observableArrayList(craftingCards));
     }
 
     public int getRowNum() {

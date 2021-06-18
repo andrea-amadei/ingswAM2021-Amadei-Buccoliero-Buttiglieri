@@ -162,27 +162,37 @@ public class ResourceBox extends HBox {
 
     /* SETTERS */
     public void setResource(String resource) {
-        resourceProperty().set(resource);
-        updateResource();
+        if(!resourceProperty().get().equals(resource)) {
+            resourceProperty().set(resource);
+            updateResource();
+        }
     }
 
     public void setAmount(int amount) {
-        amountProperty().set(amount);
-        updateLabel();
+        if(amountProperty().get() != amount) {
+            amountProperty().set(amount);
+            updateLabel();
+        }
     }
 
     public void setShowAmount(boolean showAmount) {
-        showAmountProperty().set(showAmount);
-        updateLabel();
+        if(showAmountProperty().get() != showAmount) {
+            showAmountProperty().set(showAmount);
+            updateLabel();
+        }
     }
 
     public void setShowIfZero(boolean showIfZero) {
-        showIfZeroProperty().set(showIfZero);
-        updateLabel();
+        if(showIfZeroProperty().get() != showIfZero) {
+            showIfZeroProperty().set(showIfZero);
+            updateLabel();
+        }
     }
 
     public void setShowX(boolean showX) {
-        showXProperty().set(showX);
-        updateLabel();
+        if(showXProperty().get() != showX) {
+            showXProperty().set(showX);
+            updateLabel();
+        }
     }
 }

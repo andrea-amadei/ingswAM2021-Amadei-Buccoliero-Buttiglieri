@@ -152,27 +152,37 @@ public class HResourceContainer extends HBox {
     }
 
     public void setRawStorage(RawStorage rawStorage) {
-        this.rawStorage.set(rawStorage);
-        update();
+        if(!rawStorageProperty().get().getResources().equals(rawStorage.getResources())) {
+            this.rawStorage.set(rawStorage);
+            update();
+        }
     }
 
     public void setHideIfEmpty(boolean hideIfEmpty) {
-        this.hideIfEmpty.set(hideIfEmpty);
-        update();
+        if(hideIfEmptyProperty().get() != hideIfEmpty) {
+            this.hideIfEmpty.set(hideIfEmpty);
+            update();
+        }
     }
 
     public void setShowResourceIfZero(boolean showResourceIfZero) {
-        this.showResourceIfZero.set(showResourceIfZero);
-        update();
+        if(showResourceIfZeroProperty().get() != showResourceIfZero) {
+            this.showResourceIfZero.set(showResourceIfZero);
+            update();
+        }
     }
 
     public void setShowX(boolean showX) {
-        this.showX.set(showX);
-        update();
+        if(showXProperty().get() != showX) {
+            this.showX.set(showX);
+            update();
+        }
     }
 
     public void setAnyAccepted(boolean anyAccepted) {
-        this.anyAccepted.set(anyAccepted);
-        update();
+        if(anyAcceptedProperty().get() != anyAccepted) {
+            this.anyAccepted.set(anyAccepted);
+            update();
+        }
     }
 }

@@ -158,7 +158,9 @@ public class CraftingCardBox extends VBox {
     }
 
     public void setRawCraftingCard(RawCraftingCard rawCraftingCard) {
-        this.rawCraftingCard.set(rawCraftingCard);
-        update();
+        if(rawCraftingCardProperty().get().getId() != rawCraftingCard.getId()) {
+            this.rawCraftingCard.set(rawCraftingCard);
+            update();
+        }
     }
 }

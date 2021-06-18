@@ -204,32 +204,44 @@ public class FlagBox extends HBox {
 
     /* SETTERS */
     public void setFlag(String flag) {
-        flagProperty().set(flag);
-        updateFlag();
+        if(!flagProperty().get().equals(flag)) {
+            flagProperty().set(flag);
+            updateFlag();
+        }
     }
 
     public void setLevel(int level) {
-        this.level.set(level);
-        updateFlag();
+        if(levelProperty().get() != level) {
+            this.level.set(level);
+            updateFlag();
+        }
     }
 
     public void setAmount(int amount) {
-        amountProperty().set(amount);
-        updateLabel();
+        if(amountProperty().get() != amount) {
+            amountProperty().set(amount);
+            updateLabel();
+        }
     }
 
     public void setShowAmount(boolean showAmount) {
-        showAmountProperty().set(showAmount);
-        updateLabel();
+        if(showAmountProperty().get() != showAmount) {
+            showAmountProperty().set(showAmount);
+            updateLabel();
+        }
     }
 
     public void setShowIfZero(boolean showIfZero) {
-        showIfZeroProperty().set(showIfZero);
-        updateLabel();
+        if(showIfZeroProperty().get() != showIfZero) {
+            showIfZeroProperty().set(showIfZero);
+            updateLabel();
+        }
     }
 
     public void setShowX(boolean showX) {
-        showXProperty().set(showX);
-        updateLabel();
+        if(showXProperty().get() != showX) {
+            showXProperty().set(showX);
+            updateLabel();
+        }
     }
 }
