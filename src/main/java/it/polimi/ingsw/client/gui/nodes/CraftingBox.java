@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.parser.JSONParser;
+import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.parser.raw.RawCrafting;
 import it.polimi.ingsw.parser.raw.RawStorage;
 import it.polimi.ingsw.utils.ResourceLoader;
@@ -34,7 +35,7 @@ public class CraftingBox extends VBox {
     private ResourceBox faith;
 
     public CraftingBox() {
-        attachElements();
+
 
         String defaultJSON = "{\"input\":{\"any\":1},\"output\":{\"any\":1},\"faith_output\":0}";
         RawCrafting defaultRawCrafting;
@@ -57,22 +58,66 @@ public class CraftingBox extends VBox {
         });
 
         this.rawCrafting.addListener((observableValue, oldValue, newValue) -> setCraftingJSON(newValue.toString()));
+        attachElements();
+    }
 
-        update();
+    public CraftingBox(RawCrafting rawCrafting){
+        String defaultJSON = JSONSerializer.toJson(rawCrafting);
+
+        this.craftingJSON = new SimpleStringProperty(this, "craftingJSON", defaultJSON);
+        this.rawCrafting = new SimpleObjectProperty<>(this, "rawCrafting", rawCrafting);
+        this.level = new SimpleIntegerProperty(this, "level", 0);
+
+        this.craftingJSON.addListener((observableValue, oldValue, newValue) -> {
+            try {
+                setRawCrafting(JSONParser.parseToRaw(newValue, RawCrafting.class));
+            } catch (ParserException | IllegalRawConversionException e) {
+                throw new IllegalArgumentException("Conversion from JSON to RawCrafting failed unexpectedly");
+            }
+        });
+
+        this.rawCrafting.addListener((observableValue, oldValue, newValue) -> setCraftingJSON(newValue.toString()));
+        attachElements();
+
     }
 
     private void attachElements(){
+        RawStorage inputStorage;
+        boolean inputStorageVisible;
+
+        RawStorage outputStorage;
+        boolean outputStorageVisible;
+
+        int faithValue = getRawCrafting().getFaithOutput();
+
+        if(getRawCrafting().getInput().size() == 0) {
+            inputStorage = new RawStorage("input", new HashMap<>() {{ put("any", 1); }});
+            inputStorageVisible = false;
+        }
+        else {
+            inputStorage = new RawStorage("input", getRawCrafting().getInput());
+            inputStorageVisible = true;
+        }
+
+        if(getRawCrafting().getOutput().size() == 0) {
+            outputStorage = new RawStorage("output", new HashMap<>() {{ put("any", 1); }});
+            outputStorageVisible = false;
+        }
+        else {
+            outputStorage = new RawStorage("output", getRawCrafting().getOutput());
+            outputStorageVisible = true;
+        }
+
         levelLabel = new Label();
-        levelLabel.setText("Level: 1");
+        levelLabel.setText("Level: " + levelProperty().get());
         levelLabel.setFont(new Font(22d));
+        levelLabel.setVisible(getLevel() > 0);
 
         HBox hBox = new HBox();
         hBox.setSpacing(20d);
 
-        input = new VResourceContainer();
-        input.setAnyAccepted(true);
-        input.setShowResourceIfZero(false);
-        input.setShowX(false);
+        input = new VResourceContainer(inputStorage, false, false, true, true);
+        input.setVisible(inputStorageVisible);
 
         Label label = new Label();
         Glyph glyph = new Glyph();
@@ -82,18 +127,12 @@ public class CraftingBox extends VBox {
         glyph.setScaleY(1.5);
         label.setGraphic(glyph);
 
-        output = new VResourceContainer();
-        output.setAnyAccepted(true);
-        output.setShowResourceIfZero(false);
-        output.setShowX(false);
-
+        output = new VResourceContainer(outputStorage, false, false, true, true);
+        output.setVisible(outputStorageVisible);
         hBox.getChildren().addAll(input, label, output);
 
-        faith = new ResourceBox();
+        faith = new ResourceBox("faith", faithValue, true, false, true);
         faith.setAlignment(Pos.BOTTOM_RIGHT);
-        faith.setResource("faith");
-        faith.setShowIfZero(false);
-        faith.setShowX(false);
 
         this.getChildren().addAll(levelLabel, hBox, faith);
         this.setSpacing(20d);

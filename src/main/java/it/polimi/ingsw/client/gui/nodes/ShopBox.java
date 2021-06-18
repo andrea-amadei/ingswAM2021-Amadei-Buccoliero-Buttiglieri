@@ -44,9 +44,8 @@ public class ShopBox extends GridPane {
                 } catch (ParserException | IllegalRawConversionException e) {
                     e.printStackTrace();
                 }
-                CraftingCardBox cardBox = new CraftingCardBox();
-                cardBox.setRawCraftingCard(defaultCards.get(i* colNum.get() + j));
-                craftingCardBoxes.add(new CraftingCardBox());
+                CraftingCardBox cardBox = new CraftingCardBox(defaultCards.get(i* colNum.get() + j));
+                craftingCardBoxes.add(cardBox);
                 grid.add(cardBox, j, i);
             }
         }
@@ -70,8 +69,7 @@ public class ShopBox extends GridPane {
                 //  -if the cardBox is not null, we need to update it
                 else{
                     if(craftingCardBoxes.get(i* colNum.get() + j) == null){
-                        CraftingCardBox cardBox = new CraftingCardBox();
-                        cardBox.setRawCraftingCard(craftingCards.get(i* colNum.get() + j));
+                        CraftingCardBox cardBox = new CraftingCardBox(craftingCards.get(i* colNum.get() + j));
                         grid.add(cardBox, j, i);
                         craftingCardBoxes.set(i* colNum.get() + j, cardBox);
                     }else{
@@ -94,6 +92,7 @@ public class ShopBox extends GridPane {
 
     public void setCraftingCards(List<RawCraftingCard> craftingCards) {
         this.craftingCards.set(FXCollections.observableArrayList(craftingCards));
+        update();
     }
 
     public int getRowNum() {

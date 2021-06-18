@@ -40,21 +40,16 @@ public class ResourceBox extends HBox {
     ));
 
     public ResourceBox() {
-        attachElements();
-
         this.resource = new SimpleStringProperty(this, "resource", "any");
         this.amount = new SimpleIntegerProperty(this, "amount", 0);
         this.showAmount = new SimpleBooleanProperty(this, "showAmount", true);
         this.showIfZero = new SimpleBooleanProperty(this, "showIfZero", true);
         this.showX = new SimpleBooleanProperty(this, "showX", true);
 
-        updateLabel();
-        updateResource();
+        attachElements();
     }
 
     public ResourceBox(String resource, int amount) {
-        attachElements();
-
         this.resource = new SimpleStringProperty(this, "resource", resource);
         this.amount = new SimpleIntegerProperty(this, "amount", amount);
 
@@ -62,13 +57,10 @@ public class ResourceBox extends HBox {
         this.showIfZero = new SimpleBooleanProperty(this, "showIfZero", true);
         this.showX = new SimpleBooleanProperty(this, "showX", true);
 
-        updateLabel();
-        updateResource();
+        attachElements();
     }
 
     public ResourceBox(String resource, int amount, boolean showAmount, boolean showIfZero, boolean showX) {
-        attachElements();
-
         this.resource = new SimpleStringProperty(this, "resource", resource);
         this.amount = new SimpleIntegerProperty(this, "amount", amount);
 
@@ -76,25 +68,32 @@ public class ResourceBox extends HBox {
         this.showIfZero = new SimpleBooleanProperty(this, "showIfZero", showIfZero);
         this.showX = new SimpleBooleanProperty(this, "showX", showX);
 
-        updateLabel();
-        updateResource();
+        attachElements();
     }
 
     private void attachElements(){
         box = this;
-        imageView = new ImageView();
+        if(!ACCEPTED_RESOURCES.contains(getResource()))
+            throw new IllegalArgumentException("Invalid resource: " + resource);
+        imageView = new ImageView(ResourceLoader.loadImage(RESOURCES_TEXTURE_PATH.get(ACCEPTED_RESOURCES.indexOf(getResource()))));
+
         imageView.setFitHeight(40d);
         imageView.setFitWidth(40d);
         imageView.setPickOnBounds(true);
         imageView.setPreserveRatio(true);
 
-        label = new Label();
+        if(isShowX())
+            label = new Label("X " + getAmount());
+        else
+            label = new Label(String.valueOf(getAmount()));
         label.setMinHeight(Double.NEGATIVE_INFINITY);
         label.setMinWidth(Double.NEGATIVE_INFINITY);
         label.setMaxHeight(Double.NEGATIVE_INFINITY);
         label.setMaxWidth(Double.NEGATIVE_INFINITY);
         label.setPrefHeight(40d);
         label.setFont(new Font(22d));
+
+        box.setVisible(isShowIfZero() || getAmount() != 0);
 
         this.getChildren().addAll(imageView, label);
     }

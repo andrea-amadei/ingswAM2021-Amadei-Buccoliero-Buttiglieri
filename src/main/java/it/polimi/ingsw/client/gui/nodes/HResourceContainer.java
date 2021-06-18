@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.gui.nodes;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.parser.JSONParser;
+import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.parser.raw.RawStorage;
 import javafx.beans.property.*;
 import javafx.scene.layout.HBox;
@@ -26,7 +27,6 @@ public class HResourceContainer extends HBox {
     private final Map<String, ResourceBox> resourceBoxes;
 
     public HResourceContainer() {
-
         box = this;
         this.setSpacing(5d);
 
@@ -39,29 +39,55 @@ public class HResourceContainer extends HBox {
         this.anyAccepted = new SimpleBooleanProperty(this, "anyAccepted", false);
 
         this.containerJSON.addListener((observableValue, oldValue, newValue) -> {
+            try {
+                setRawStorage(JSONParser.parseToRaw(newValue, RawStorage.class));
+            } catch(IllegalRawConversionException | ParserException e) {
+                throw new IllegalArgumentException("Conversion from JSON to RawStorage failed unexpectedly");
+            }
+        });
 
-                try {
-                    setRawStorage(JSONParser.parseToRaw(newValue, RawStorage.class));
-                } catch (IllegalRawConversionException | ParserException e) {
-                    throw new IllegalArgumentException("Conversion from JSON to RawStorage failed unexpectedly");
-                }
-                System.out.println("Changed");
+        this.rawStorage.addListener((observableValue, oldValue, newValue) -> setContainerJSON(newValue.toString()));
 
+        resourceBoxes = new HashMap<>();
+        resourceBoxes.put("gold", new ResourceBox("gold", 0, true, showResourceIfZero.get(), true));
+        resourceBoxes.put("servant", new ResourceBox("servant", 0, true, showResourceIfZero.get(), true));
+        resourceBoxes.put("stone", new ResourceBox("stone", 0, true, showResourceIfZero.get(), true));
+        resourceBoxes.put("shield", new ResourceBox("shield", 0, true, showResourceIfZero.get(), true));
+        resourceBoxes.put("any", new ResourceBox("any", 0, true, showResourceIfZero.get(), true));
+        update();
+
+    }
+    public HResourceContainer(RawStorage rawStorage, boolean hideIfEmpty, boolean showResourceIfZero, boolean showX, boolean anyAccepted){
+        box = this;
+        this.setSpacing(5d);
+        this.containerJSON = new SimpleStringProperty(this, "containerJSON", JSONSerializer.toJson(rawStorage));
+        this.rawStorage = new SimpleObjectProperty<>(this, "rawStorage", rawStorage);
+
+        this.hideIfEmpty = new SimpleBooleanProperty(this, "hideIfEmpty", hideIfEmpty);
+        this.showResourceIfZero = new SimpleBooleanProperty(this, "showResourceIfZero", showResourceIfZero);
+        this.showX = new SimpleBooleanProperty(this, "showX", showX);
+        this.anyAccepted = new SimpleBooleanProperty(this, "anyAccepted", anyAccepted);
+
+        this.containerJSON.addListener((observableValue, oldValue, newValue) -> {
+
+            try {
+                setRawStorage(JSONParser.parseToRaw(newValue, RawStorage.class));
+            } catch (IllegalRawConversionException | ParserException e) {
+                throw new IllegalArgumentException("Conversion from JSON to RawStorage failed unexpectedly");
+            }
         });
 
 
         this.rawStorage.addListener((observableValue, oldValue, newValue) -> setContainerJSON(newValue.toString()));
 
         resourceBoxes = new HashMap<>();
-        resourceBoxes.put("gold", new ResourceBox("gold", 0, true, true, true));
-        resourceBoxes.put("servant", new ResourceBox("servant", 0, true, true, true));
-        resourceBoxes.put("stone", new ResourceBox("stone", 0, true, true, true));
-        resourceBoxes.put("shield", new ResourceBox("shield", 0, true, true, true));
-        resourceBoxes.put("any", new ResourceBox("any", 0, true, true, true));
+        resourceBoxes.put("gold", new ResourceBox("gold", 0, true, showResourceIfZero, true));
+        resourceBoxes.put("servant", new ResourceBox("servant", 0, true, showResourceIfZero, true));
+        resourceBoxes.put("stone", new ResourceBox("stone", 0, true, showResourceIfZero, true));
+        resourceBoxes.put("shield", new ResourceBox("shield", 0, true, showResourceIfZero, true));
+        resourceBoxes.put("any", new ResourceBox("any", 0, true, showResourceIfZero, true));
 
         update();
-
-
     }
 
     private void update() {
@@ -87,6 +113,7 @@ public class HResourceContainer extends HBox {
                 visibleNodes.add(toBeSeen);
             }
         }
+
         box.getChildren().setAll(visibleNodes);
 
         box.setVisible(!isHideIfEmpty() || tot != 0);
@@ -148,7 +175,7 @@ public class HResourceContainer extends HBox {
 
     public void setContainerJSON(String containerJSON) {
         this.containerJSON.set(containerJSON);
-        update();
+        //update();
     }
 
     public void setRawStorage(RawStorage rawStorage) {

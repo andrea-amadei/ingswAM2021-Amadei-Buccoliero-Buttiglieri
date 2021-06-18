@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.gui.FXMLCachedLoaders;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.parser.JSONParser;
+import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.parser.raw.RawStorage;
 import it.polimi.ingsw.utils.ResourceLoader;
 import javafx.beans.property.*;
@@ -54,11 +55,44 @@ public class VResourceContainer extends VBox {
         this.rawStorage.addListener((observableValue, oldValue, newValue) -> setContainerJSON(newValue.toString()));
 
         resourceBoxes = new HashMap<>();
-        resourceBoxes.put("gold", new ResourceBox("gold", 0, true, true, true));
-        resourceBoxes.put("servant", new ResourceBox("servant", 0, true, true, true));
-        resourceBoxes.put("stone", new ResourceBox("stone", 0, true, true, true));
-        resourceBoxes.put("shield", new ResourceBox("shield", 0, true, true, true));
-        resourceBoxes.put("any", new ResourceBox("any", 0, true, true, true));
+        resourceBoxes.put("gold", new ResourceBox("gold", 0, true, showResourceIfZero.get(), true));
+        resourceBoxes.put("servant", new ResourceBox("servant", 0, true, showResourceIfZero.get(), true));
+        resourceBoxes.put("stone", new ResourceBox("stone", 0, true, showResourceIfZero.get(), true));
+        resourceBoxes.put("shield", new ResourceBox("shield", 0, true, showResourceIfZero.get(), true));
+        resourceBoxes.put("any", new ResourceBox("any", 0, true, showResourceIfZero.get(), true));
+        update();
+    }
+
+    public VResourceContainer(RawStorage rawStorage, boolean hideIfEmpty, boolean showResourceIfZero, boolean showX, boolean anyAccepted){
+        box = this;
+        this.setSpacing(5d);
+        this.containerJSON = new SimpleStringProperty(this, "containerJSON", JSONSerializer.toJson(rawStorage));
+        this.rawStorage = new SimpleObjectProperty<>(this, "rawStorage", rawStorage);
+
+        this.hideIfEmpty = new SimpleBooleanProperty(this, "hideIfEmpty", hideIfEmpty);
+        this.showResourceIfZero = new SimpleBooleanProperty(this, "showResourceIfZero", showResourceIfZero);
+        this.showX = new SimpleBooleanProperty(this, "showX", showX);
+        this.anyAccepted = new SimpleBooleanProperty(this, "anyAccepted", anyAccepted);
+
+        this.containerJSON.addListener((observableValue, oldValue, newValue) -> {
+
+            try {
+                setRawStorage(JSONParser.parseToRaw(newValue, RawStorage.class));
+            } catch (IllegalRawConversionException | ParserException e) {
+                throw new IllegalArgumentException("Conversion from JSON to RawStorage failed unexpectedly");
+            }
+        });
+
+
+        this.rawStorage.addListener((observableValue, oldValue, newValue) -> setContainerJSON(newValue.toString()));
+
+        resourceBoxes = new HashMap<>();
+        resourceBoxes.put("gold", new ResourceBox("gold", 0, true, showResourceIfZero, true));
+        resourceBoxes.put("servant", new ResourceBox("servant", 0, true, showResourceIfZero, true));
+        resourceBoxes.put("stone", new ResourceBox("stone", 0, true, showResourceIfZero, true));
+        resourceBoxes.put("shield", new ResourceBox("shield", 0, true, showResourceIfZero, true));
+        resourceBoxes.put("any", new ResourceBox("any", 0, true, showResourceIfZero, true));
+
         update();
     }
 
@@ -149,7 +183,6 @@ public class VResourceContainer extends VBox {
 
     public void setContainerJSON(String containerJSON) {
         this.containerJSON.set(containerJSON);
-        update();
     }
 
     public void setRawStorage(RawStorage rawStorage) {
