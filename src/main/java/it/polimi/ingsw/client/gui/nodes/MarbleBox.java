@@ -27,10 +27,15 @@ public class MarbleBox extends ImageView {
         attachElements();
     }
 
+    public MarbleBox(String color){
+        this.color = new SimpleStringProperty(this, "color", color.toLowerCase());
+        attachElements();
+    }
+
     private void attachElements(){
         setImage(ResourceLoader.loadImage(marbleImagePaths.get(color.get())));
-        this.setFitWidth(35d);
-        this.setFitHeight(35d);
+        this.setFitWidth(40d);
+        this.setFitHeight(40d);
         this.setPreserveRatio(true);
         this.setPickOnBounds(true);
     }

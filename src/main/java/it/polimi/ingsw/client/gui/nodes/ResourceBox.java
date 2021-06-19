@@ -81,7 +81,6 @@ public class ResourceBox extends HBox {
         imageView.setFitWidth(40d);
         imageView.setPickOnBounds(true);
         imageView.setPreserveRatio(true);
-
         if(isShowX())
             label = new Label("X " + getAmount());
         else
@@ -92,6 +91,7 @@ public class ResourceBox extends HBox {
         label.setMaxWidth(Double.NEGATIVE_INFINITY);
         label.setPrefHeight(40d);
         label.setFont(new Font(22d));
+        label.setVisible(isShowAmount());
 
         box.setVisible(isShowIfZero() || getAmount() != 0);
 
