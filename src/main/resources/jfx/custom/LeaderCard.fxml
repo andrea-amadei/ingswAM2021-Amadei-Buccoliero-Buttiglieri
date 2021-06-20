@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import it.polimi.ingsw.client.gui.nodes.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<fx:root alignment="TOP_CENTER" prefHeight="548.0" prefWidth="343.0" style="-fx-background-color: #94B015;" type="VBox" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <Label alignment="CENTER" text="Leader Card (id: 5)">
+      <VBox.margin>
+         <Insets />
+      </VBox.margin>
+      <font>
+         <Font size="22.0" />
+      </font>
+   </Label>
+    <HBox>
+        <FlagBox />
+        <FlagBox />
+        <HResourceContainer prefHeight="40.0" prefWidth="0.0" />
+      <VBox.margin>
+         <Insets top="20.0" />
+      </VBox.margin>
+    </HBox>
+   <Region VBox.vgrow="ALWAYS" />
+    <HBox>
+        <Region HBox.hgrow="ALWAYS" />
+        <ConversionAbilityBox>
+         <padding>
+            <Insets left="60.0" />
+         </padding>
+         <HBox.margin>
+            <Insets top="20.0" />
+         </HBox.margin></ConversionAbilityBox>
+        <Region HBox.hgrow="ALWAYS" />
+      <VBox.margin>
+         <Insets />
+      </VBox.margin>
+    </HBox>
+
+    <HBox>
+        <Region HBox.hgrow="ALWAYS" />
+        <CraftingAbilityBox>
+         <HBox.margin>
+            <Insets top="20.0" />
+         </HBox.margin></CraftingAbilityBox>
+        <Region HBox.hgrow="ALWAYS" />
+    </HBox>
+    <HBox>
+        <Region HBox.hgrow="ALWAYS" />
+        <DiscountAbilityBox>
+         <HBox.margin>
+            <Insets top="20.0" />
+         </HBox.margin></DiscountAbilityBox>
+        <Region HBox.hgrow="ALWAYS" />
+    </HBox>
+    <HBox>
+        <Region HBox.hgrow="ALWAYS" />
+        <StorageAbilityBox>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin></StorageAbilityBox>
+        <Region HBox.hgrow="ALWAYS" />
+      <VBox.margin>
+         <Insets top="20.0" />
+      </VBox.margin>
+    </HBox>
+    <Region VBox.vgrow="ALWAYS" />
+    <PointsBox>
+      <VBox.margin>
+         <Insets top="20.0" />
+      </VBox.margin></PointsBox>
+
+</fx:root>

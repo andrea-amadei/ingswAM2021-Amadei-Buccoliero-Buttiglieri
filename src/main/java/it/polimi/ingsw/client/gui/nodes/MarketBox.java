@@ -8,10 +8,13 @@ import it.polimi.ingsw.utils.ResourceLoader;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -82,7 +85,9 @@ public class MarketBox extends VBox {
                 .orElse(0);
 
         for(int i = 0; i < maxOptionLength; i++){
-            optionsGrid.add(new Label(String.valueOf(i + 1)), 0, i+1);
+            Label label = new Label(String.valueOf(i + 1));
+            label.setFont(new Font("Algerian", 22d));
+            optionsGrid.add(label, 0, i+1);
         }
 
         //add all the selected marbles
@@ -112,6 +117,7 @@ public class MarketBox extends VBox {
         this.rowNum.set(rowNum);
         this.colNum.set(colNum);
 
+        //setting up the graphical elements (default value)
         oddMarbleBox = new MarbleBox();
         marketGrid.add(oddMarbleBox, 0, 0);
         graphicGrid = new MarbleBox[rowNum][colNum];
@@ -120,6 +126,20 @@ public class MarketBox extends VBox {
                 graphicGrid[i][j] = new MarbleBox();
                 marketGrid.add(graphicGrid[i][j], j, i + 1);
             }
+        }
+
+        //adding horizontal buttons
+        for(int i = 0; i < colNum; i++){
+            Button selectButton = new Button();
+            marketGrid.add(selectButton, i, rowNum + 1);
+            GridPane.setHalignment(selectButton, HPos.CENTER);
+        }
+
+        //adding vertical buttons
+        for(int i = 0; i < rowNum; i++){
+            Button selectButton = new Button();
+            marketGrid.add(selectButton, colNum, i + 1);
+            GridPane.setHalignment(selectButton, HPos.CENTER);
         }
     }
 

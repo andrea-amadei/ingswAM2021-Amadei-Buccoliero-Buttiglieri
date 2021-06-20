@@ -29,9 +29,7 @@ public class CraftingCardBox extends VBox {
 
 
     public CraftingCardBox(){
-
-
-        String defaultJSON = "{\"id\":1,\"color\":\"GREEN\",\"level\":1,\"points\":1,\"cost\":{\"shield\":2},\"crafting\":{\"input\":{\"stone\":1},\"output\":{},\"faith_output\":1}}";
+        String defaultJSON = "{\"id\":1000,\"color\":\"GREEN\",\"level\":1,\"points\":1,\"cost\":{\"shield\":2},\"crafting\":{\"input\":{\"stone\":1},\"output\":{},\"faith_output\":1}}";
         RawCraftingCard defaultRawCraftingCard;
         try {
             defaultRawCraftingCard = JSONParser.parseToRaw(defaultJSON, RawCraftingCard.class);

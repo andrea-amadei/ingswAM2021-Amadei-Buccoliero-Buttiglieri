@@ -8,14 +8,20 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
-public class CraftingAbilityBox extends HBox {
+public class CraftingAbilityBox extends VBox {
 
     private final StringProperty craftingAbilityJSON;
     private final ObjectProperty<RawSpecialAbility> craftingAbility;
 
     private CraftingBox crafting;
+    private Label abilityTypeLabel;
+    private HBox hBox;
 
     public CraftingAbilityBox(){
         String json = "{\"type\":\"crafting\",\"crafting\":{\"input\":{\"shield\":1},\"output\":{\"any\":1},\"faith_output\":1}}";
@@ -36,9 +42,18 @@ public class CraftingAbilityBox extends HBox {
     }
 
     private void attachElements(){
+        this.setAlignment(Pos.CENTER);
+        abilityTypeLabel = new Label();
+        abilityTypeLabel.setText("Crafting Ability");
+        abilityTypeLabel.setFont(new Font("Arial", 18d));
+        abilityTypeLabel.setAlignment(Pos.CENTER);
+
+        hBox = new HBox();
+
         crafting = new CraftingBox(craftingAbility.get().getCrafting());
 
-        this.getChildren().addAll(crafting);
+        this.getChildren().addAll(abilityTypeLabel, hBox);
+        hBox.getChildren().add(crafting);
     }
 
     private void update(){

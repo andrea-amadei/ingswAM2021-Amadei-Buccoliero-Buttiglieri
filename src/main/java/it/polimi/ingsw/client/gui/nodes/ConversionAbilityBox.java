@@ -10,16 +10,19 @@ import javafx.beans.property.StringProperty;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConversionAbilityBox extends HBox {
+public class ConversionAbilityBox extends VBox {
 
     private final StringProperty conversionAbilityJSON;
     private final SimpleObjectProperty<RawSpecialAbility> conversionAbility;
 
+    private Label abilityTypeLabel;
+    private HBox hBox;
     private MarbleBox marble;
     private List<ResourceBox> resources;
     private ResourceBox faith;
@@ -43,6 +46,13 @@ public class ConversionAbilityBox extends HBox {
     }
 
     private void attachElements(){
+        abilityTypeLabel = new Label();
+        abilityTypeLabel.setText("Conversion Ability");
+        abilityTypeLabel.setFont(new Font("Arial", 18d));
+        abilityTypeLabel.setAlignment(Pos.CENTER);
+
+        hBox = new HBox();
+
         marble = new MarbleBox(conversionAbility.get().getFrom().toString());
 
         Label label = new Label();
@@ -59,9 +69,10 @@ public class ConversionAbilityBox extends HBox {
 
         faith = new ResourceBox("faith", conversionAbility.get().getFaithOutput(), true, false, true);
 
-        this.getChildren().addAll(marble, label);
-        this.getChildren().addAll(resources);
-        this.getChildren().addAll(faith);
+        this.getChildren().addAll(abilityTypeLabel, hBox);
+        hBox.getChildren().addAll(marble, label);
+        hBox.getChildren().addAll(resources);
+        hBox.getChildren().addAll(faith);
     }
 
     private void update(){

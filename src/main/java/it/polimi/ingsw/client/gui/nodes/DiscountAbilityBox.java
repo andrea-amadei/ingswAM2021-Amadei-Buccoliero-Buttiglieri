@@ -11,13 +11,16 @@ import javafx.beans.property.StringProperty;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-public class DiscountAbilityBox extends HBox {
+public class DiscountAbilityBox extends VBox {
 
     private final StringProperty discountAbilityJSON;
     private final ObjectProperty<RawSpecialAbility> discountAbility;
 
+    private Label abilityTypeLabel;
+    private HBox hBox;
     private Label label;
     private ResourceBox resourceBox;
 
@@ -40,6 +43,13 @@ public class DiscountAbilityBox extends HBox {
     }
 
     private void attachElements(){
+        abilityTypeLabel = new Label();
+        abilityTypeLabel.setText("Discount Ability");
+        abilityTypeLabel.setFont(new Font("Arial", 18d));
+        abilityTypeLabel.setAlignment(Pos.CENTER);
+
+        hBox = new HBox();
+
         label = new Label();
         label.setAlignment(Pos.CENTER);
         label.setPrefHeight(43d);
@@ -50,7 +60,8 @@ public class DiscountAbilityBox extends HBox {
         resourceBox = new ResourceBox(discountAbility.get().getResource().toLowerCase(), 0, false, true, false);
         resourceBox.setAlignment(Pos.CENTER);
 
-        this.getChildren().addAll(label, resourceBox);
+        this.getChildren().addAll(abilityTypeLabel, hBox);
+        hBox.getChildren().addAll(label, resourceBox);
     }
 
     private void update(){
