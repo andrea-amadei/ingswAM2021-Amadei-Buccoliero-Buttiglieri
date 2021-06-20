@@ -39,14 +39,25 @@ public class ShopBox extends GridPane {
         craftingCardBoxes = new ArrayList<>();
         for(int i = 0; i < rowNum.get(); i++){
             for(int j = 0; j < colNum.get(); j++) {
-                try {
-                    defaultCards.add(JSONParser.parse("{\"id\":3,\"color\":\"BLUE\",\"level\":1,\"points\":1,\"cost\":{\"gold\":2},\"crafting\":{\"input\":{\"shield\":1},\"output\":{},\"faith_output\":1}}", RawCraftingCard.class).toRaw());
-                } catch (ParserException | IllegalRawConversionException e) {
-                    e.printStackTrace();
+                if(i == 1 && j == 2){
+                    try {
+                        defaultCards.add(JSONParser.parse("{\"id\":3,\"color\":\"BLUE\",\"level\":1,\"points\":1,\"cost\":{\"stone\":2, \"servant\":2},\"crafting\":{\"input\":{\"shield\":1},\"output\":{\"stone\":1},\"faith_output\":1}}", RawCraftingCard.class).toRaw());
+                    } catch (ParserException | IllegalRawConversionException e) {
+                        e.printStackTrace();
+                    }
+                    CraftingCardBox cardBox = new CraftingCardBox(defaultCards.get(i * colNum.get() + j));
+                    craftingCardBoxes.add(cardBox);
+                    grid.add(cardBox, j, i);
+                }else {
+                    try {
+                        defaultCards.add(JSONParser.parse("{\"id\":3,\"color\":\"BLUE\",\"level\":1,\"points\":1,\"cost\":{\"gold\":2, \"shield\":2, \"stone\":2, \"servant\":2},\"crafting\":{\"input\":{\"shield\":1},\"output\":{\"gold\":1, \"shield\":1, \"servant\":1, \"stone\":1},\"faith_output\":1}}", RawCraftingCard.class).toRaw());
+                    } catch (ParserException | IllegalRawConversionException e) {
+                        e.printStackTrace();
+                    }
+                    CraftingCardBox cardBox = new CraftingCardBox(defaultCards.get(i * colNum.get() + j));
+                    craftingCardBoxes.add(cardBox);
+                    grid.add(cardBox, j, i);
                 }
-                CraftingCardBox cardBox = new CraftingCardBox(defaultCards.get(i* colNum.get() + j));
-                craftingCardBoxes.add(cardBox);
-                grid.add(cardBox, j, i);
             }
         }
         craftingCards = new SimpleListProperty<>(this, "cards", FXCollections.observableArrayList(defaultCards));

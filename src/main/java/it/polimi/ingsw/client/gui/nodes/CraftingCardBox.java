@@ -76,7 +76,7 @@ public class CraftingCardBox extends VBox {
     private void attachElements(){
         RawCraftingCard initialRawCraftingCard = rawCraftingCardProperty().get();
         //cost
-        cost = new HResourceContainer(new RawStorage("cost", initialRawCraftingCard.getCost()), true, false, true, true);
+        cost = new HResourceContainer(new RawStorage("cost", initialRawCraftingCard.getCost()), true, false, false, true);
         cost.setAlignment(Pos.BASELINE_CENTER);
         cost.setStyle("-fx-border-color: #5B3A29; -fx-border-insets: 5; -fx-border-style: hidden hidden solid none; -fx-border-width: 2;");
         cost.setPadding(new Insets(0d, 0d, 5d, 0d));
@@ -102,7 +102,7 @@ public class CraftingCardBox extends VBox {
         rightFlagBox.setPrefWidth(39d);
         rightFlagBox.setPadding(new Insets(0d, 0d, 0d, 20d));
 
-        hBox.getChildren().addAll(leftFlagBox, region1, rightFlagBox);
+        //hBox.getChildren().addAll(leftFlagBox, region1, rightFlagBox);
 
         //crafting box
         craftingBox = new CraftingBox(initialRawCraftingCard.getCrafting());
@@ -116,14 +116,18 @@ public class CraftingCardBox extends VBox {
 
         //points box
         victoryPoints = new PointsBox(initialRawCraftingCard.getPoints());
-        victoryPoints.setPrefWidth(343d);
-        victoryPoints.setPadding(new Insets(0d, 0d, 5d, 0d));
+        //victoryPoints.setPrefWidth(343d);
+        //victoryPoints.setPadding(new Insets(0d, 0d, 5d, 0d));
+
+        hBox.getChildren().addAll(victoryPoints, leftFlagBox);
+        //hBox.setPrefWidth(1000);
+        hBox.setAlignment(Pos.BASELINE_CENTER);
 
         //putting it all together
-        this.getChildren().addAll(cost, hBox, craftingBox, region2, victoryPoints);
-        this.setPrefHeight(548d);
-        this.setPrefWidth(343d);
-        this.setSpacing(20d);
+        this.getChildren().addAll(cost, craftingBox, region2, hBox);
+        this.setPrefHeight(452);
+        this.setPrefWidth(255);
+        //this.setSpacing(20d);
         this.setStyle("-fx-border-color: #CB1704; -fx-border-insets: 5; -fx-border-width: 4; -fx-background-color: #fff0d0;");
     }
 

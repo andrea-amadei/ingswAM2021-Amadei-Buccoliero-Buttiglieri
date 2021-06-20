@@ -141,6 +141,8 @@ public class MarketBox extends VBox {
             marketGrid.add(selectButton, colNum, i + 1);
             GridPane.setHalignment(selectButton, HPos.CENTER);
         }
+
+        //this.setStyle("-fx-background-color: red");
     }
 
     //SETTERS
