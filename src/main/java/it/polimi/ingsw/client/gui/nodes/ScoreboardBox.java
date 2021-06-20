@@ -57,15 +57,17 @@ public class ScoreboardBox extends GridPane {
         }
 
         namesProperty = new SimpleListProperty<>(this, "namesProperty", FXCollections.observableList(Arrays.asList(
-                "Player 1", "Player 2" )));
+                "Player 1", "Player 2", "Player 3", "Player 4" )));
         pointsProperty = new SimpleListProperty<>(this, "pointsProperty", FXCollections.observableList(Arrays.asList(
-                0, 0 )));
+                0, 0, 0, 0 )));
         flagsProperty = new SimpleListProperty<>(this, "flagsProperty", FXCollections.observableList(Arrays.asList(
+                Collections.emptyList(),
+                Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList()
         )));
         disconnectedProperty = new SimpleListProperty<>(this, "disconnectedProperty", FXCollections.observableList(Arrays.asList(
-                false, false )));
+                false, false, false, false )));
 
         setup();
         update();
@@ -211,6 +213,11 @@ public class ScoreboardBox extends GridPane {
 
     public void setPointsProperty(ObservableList<Integer> pointsProperty) {
         this.pointsProperty.set(pointsProperty);
+        update();
+    }
+
+    public void setPlayerFlagsProperty(int playerIndex, List<RawLevelFlag> flags) {
+        this.getFlagsProperty().set(playerIndex, flags);
         update();
     }
 

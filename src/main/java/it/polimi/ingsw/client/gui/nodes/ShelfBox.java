@@ -32,12 +32,16 @@ public class ShelfBox extends GridPane {
     private List<ResourceBox> resources;
 
     public ShelfBox() {
-        acceptedResource = new SimpleStringProperty(this, "acceptedResourceProperty", "any");
-        size = new SimpleIntegerProperty(this, "sizeProperty", 1);
-        resource1 = new SimpleStringProperty(this, "resource1Property", "none");
-        resource2 = new SimpleStringProperty(this, "resource2Property", "none");
-        resource3 = new SimpleStringProperty(this, "resource3Property", "none");
-        name = new SimpleStringProperty(this, "name", "Shelf");
+        this("any", 3, "Shelf");
+    }
+
+    public ShelfBox(String acceptedResource, int size, String name) {
+        this.acceptedResource = new SimpleStringProperty(this, "acceptedResourceProperty", acceptedResource);
+        this.size = new SimpleIntegerProperty(this, "sizeProperty", size);
+        this.resource1 = new SimpleStringProperty(this, "resource1Property", "none");
+        this.resource2 = new SimpleStringProperty(this, "resource2Property", "none");
+        this.resource3 = new SimpleStringProperty(this, "resource3Property", "none");
+        this.name = new SimpleStringProperty(this, "name", name);
 
         setup();
         update();
@@ -69,7 +73,7 @@ public class ShelfBox extends GridPane {
         }
 
         label = new Label(getName());
-        label.setFont(new Font("Times New Roman", 22));
+        label.setFont(new Font("Times New Roman bold", 22));
         GridPane.setColumnIndex(label, 0);
         super.getChildren().add(label);
     }
