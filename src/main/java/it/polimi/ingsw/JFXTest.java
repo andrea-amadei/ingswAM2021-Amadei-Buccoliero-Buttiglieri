@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SceneAntialiasing;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCombination;
@@ -21,7 +22,7 @@ public class JFXTest extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(ResourceLoader.loadFXML("jfx/board.fxml").getFirst());
+        scene = new Scene(ResourceLoader.loadFXML("jfx/board.fxml").getFirst(), 1920, 1080, false, SceneAntialiasing.BALANCED);
         scene.getStylesheets().add(JFXTest.class.getProtectionDomain().getClassLoader().getResource("jfx/style.css").toExternalForm());
         stage.setScene(scene);
 
