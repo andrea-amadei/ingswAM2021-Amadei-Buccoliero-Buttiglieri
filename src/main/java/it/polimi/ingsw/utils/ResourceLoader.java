@@ -59,6 +59,7 @@ public final class ResourceLoader {
             FXMLLoader fxmlLoader = new FXMLLoader(ResourceLoader.class.getProtectionDomain().getClassLoader().getResource(fileName));
             return new Pair<>(fxmlLoader.load(), fxmlLoader.getController());
         } catch (Exception e) {
+            e.printStackTrace();
             throw new IllegalArgumentException("File not found! " + fileName);
         }
     }

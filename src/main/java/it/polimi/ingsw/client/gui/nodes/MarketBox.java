@@ -63,7 +63,6 @@ public class MarketBox extends VBox {
     }
 
     private void updateGrid(){
-        System.out.println("Updating grid!");
         //draw the odd marble
         oddMarbleBox.setColor(rawMarket.get().getOdd().name().toLowerCase());
         //draw the grid
@@ -77,7 +76,6 @@ public class MarketBox extends VBox {
     //called only if the options where empty and after an update they were updated.
     //the grid pane is empty when this method is called
     private void updateOptions(){
-        System.out.println("Updating options!");
         //add all the labels
         int maxOptionLength = conversionOptions.get().stream()
                 .mapToInt(List::size)
@@ -123,7 +121,7 @@ public class MarketBox extends VBox {
         graphicGrid = new MarbleBox[rowNum][colNum];
         for(int i = 0; i < rowNum; i++){
             for(int j = 0; j < colNum; j++){
-                graphicGrid[i][j] = new MarbleBox();
+                graphicGrid[i][j] = new MarbleBox("yellow");
                 marketGrid.add(graphicGrid[i][j], j, i + 1);
             }
         }
