@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root type="GridPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <columnConstraints>
+        <ColumnConstraints prefWidth="400" minWidth="-Infinity" maxWidth="-Infinity" />
+        <ColumnConstraints prefWidth="400" minWidth="-Infinity" maxWidth="-Infinity" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints prefHeight="40" minHeight="-Infinity" maxHeight="-Infinity" />
+        <RowConstraints prefHeight="40" minHeight="-Infinity" maxHeight="-Infinity" />
+        <RowConstraints prefHeight="40" minHeight="-Infinity" maxHeight="-Infinity" />
+    </rowConstraints>
+</fx:root>

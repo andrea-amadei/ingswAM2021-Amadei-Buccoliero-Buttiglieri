@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.gui.nodes;
 
+import it.polimi.ingsw.client.gui.FXMLCachedLoaders;
 import it.polimi.ingsw.utils.ResourceLoader;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
@@ -8,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,13 +23,10 @@ public class ResourceBox extends HBox {
     private final BooleanProperty showIfZero;
     private final BooleanProperty showX;
 
-    @FXML
     public ImageView imageView;
 
-    @FXML
     public Label label;
 
-    @FXML
     public HBox box;
 
     private final List<String> ACCEPTED_RESOURCES = new ArrayList<>(Arrays.asList("any", "faith", "gold", "servant", "shield", "stone"));
@@ -41,37 +40,16 @@ public class ResourceBox extends HBox {
     ));
 
     public ResourceBox() {
-        FXMLLoader fxmlLoader = new FXMLLoader(ResourceLoader.getResource("jfx/custom/ResourceBox.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException("Unable to load custom element '" + getClass().getSimpleName() + "': " + exception);
-        }
-
         this.resource = new SimpleStringProperty(this, "resource", "any");
         this.amount = new SimpleIntegerProperty(this, "amount", 0);
         this.showAmount = new SimpleBooleanProperty(this, "showAmount", true);
         this.showIfZero = new SimpleBooleanProperty(this, "showIfZero", true);
         this.showX = new SimpleBooleanProperty(this, "showX", true);
 
-        updateLabel();
-        updateResource();
+        attachElements();
     }
 
     public ResourceBox(String resource, int amount) {
-        FXMLLoader fxmlLoader = new FXMLLoader(ResourceLoader.getResource("jfx/custom/ResourceBox.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException("Unable to load custom element '" + getClass().getSimpleName() + "': " + exception);
-        }
-
         this.resource = new SimpleStringProperty(this, "resource", resource);
         this.amount = new SimpleIntegerProperty(this, "amount", amount);
 
@@ -79,21 +57,10 @@ public class ResourceBox extends HBox {
         this.showIfZero = new SimpleBooleanProperty(this, "showIfZero", true);
         this.showX = new SimpleBooleanProperty(this, "showX", true);
 
-        updateLabel();
-        updateResource();
+        attachElements();
     }
 
     public ResourceBox(String resource, int amount, boolean showAmount, boolean showIfZero, boolean showX) {
-        FXMLLoader fxmlLoader = new FXMLLoader(ResourceLoader.getResource("jfx/custom/ResourceBox.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException("Unable to load custom element '" + getClass().getSimpleName() + "': " + exception);
-        }
-
         this.resource = new SimpleStringProperty(this, "resource", resource);
         this.amount = new SimpleIntegerProperty(this, "amount", amount);
 
@@ -101,8 +68,34 @@ public class ResourceBox extends HBox {
         this.showIfZero = new SimpleBooleanProperty(this, "showIfZero", showIfZero);
         this.showX = new SimpleBooleanProperty(this, "showX", showX);
 
-        updateLabel();
-        updateResource();
+        attachElements();
+    }
+
+    private void attachElements(){
+        box = this;
+        if(!ACCEPTED_RESOURCES.contains(getResource()))
+            throw new IllegalArgumentException("Invalid resource: " + resource);
+        imageView = new ImageView(ResourceLoader.loadImage(RESOURCES_TEXTURE_PATH.get(ACCEPTED_RESOURCES.indexOf(getResource()))));
+
+        imageView.setFitHeight(40d);
+        imageView.setFitWidth(40d);
+        imageView.setPickOnBounds(true);
+        imageView.setPreserveRatio(true);
+        if(isShowX())
+            label = new Label("X " + getAmount());
+        else
+            label = new Label(String.valueOf(getAmount()));
+        label.setMinHeight(Double.NEGATIVE_INFINITY);
+        label.setMinWidth(Double.NEGATIVE_INFINITY);
+        label.setMaxHeight(Double.NEGATIVE_INFINITY);
+        label.setMaxWidth(Double.NEGATIVE_INFINITY);
+        label.setPrefHeight(40d);
+        label.setFont(new Font(22d));
+        label.setVisible(isShowAmount());
+
+        box.setVisible(isShowIfZero() || getAmount() != 0);
+
+        this.getChildren().addAll(imageView, label);
     }
 
     private void updateLabel() {
@@ -119,7 +112,7 @@ public class ResourceBox extends HBox {
         if(!ACCEPTED_RESOURCES.contains(getResource()))
             throw new IllegalArgumentException("Invalid resource: " + resource);
 
-        imageView.setImage(new Image(ResourceLoader.getStreamFromResource(RESOURCES_TEXTURE_PATH.get(ACCEPTED_RESOURCES.indexOf(getResource())))));
+        imageView.setImage(ResourceLoader.loadImage(RESOURCES_TEXTURE_PATH.get(ACCEPTED_RESOURCES.indexOf(getResource()))));
     }
 
     /* PROPERTIES */
@@ -168,27 +161,37 @@ public class ResourceBox extends HBox {
 
     /* SETTERS */
     public void setResource(String resource) {
-        resourceProperty().set(resource);
-        updateResource();
+        if(!resourceProperty().get().equals(resource)) {
+            resourceProperty().set(resource);
+            updateResource();
+        }
     }
 
     public void setAmount(int amount) {
-        amountProperty().set(amount);
-        updateLabel();
+        if(amountProperty().get() != amount) {
+            amountProperty().set(amount);
+            updateLabel();
+        }
     }
 
     public void setShowAmount(boolean showAmount) {
-        showAmountProperty().set(showAmount);
-        updateLabel();
+        if(showAmountProperty().get() != showAmount) {
+            showAmountProperty().set(showAmount);
+            updateLabel();
+        }
     }
 
     public void setShowIfZero(boolean showIfZero) {
-        showIfZeroProperty().set(showIfZero);
-        updateLabel();
+        if(showIfZeroProperty().get() != showIfZero) {
+            showIfZeroProperty().set(showIfZero);
+            updateLabel();
+        }
     }
 
     public void setShowX(boolean showX) {
-        showXProperty().set(showX);
-        updateLabel();
+        if(showXProperty().get() != showX) {
+            showXProperty().set(showX);
+            updateLabel();
+        }
     }
 }

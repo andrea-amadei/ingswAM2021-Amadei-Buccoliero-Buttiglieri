@@ -227,10 +227,10 @@ public class FaithPath extends GridPane {
         }
 
         for(i = 0; i < nCols; i++)
-                pane.getColumnConstraints().add(new ColumnConstraints(Double.NEGATIVE_INFINITY, 80d, Double.NEGATIVE_INFINITY));
+            pane.getColumnConstraints().add(new ColumnConstraints(Double.NEGATIVE_INFINITY, 80d, Double.NEGATIVE_INFINITY));
 
         for(i = 0; i < nRows; i++)
-                pane.getRowConstraints().add(new RowConstraints(Double.NEGATIVE_INFINITY, 80d, Double.NEGATIVE_INFINITY));
+            pane.getRowConstraints().add(new RowConstraints(Double.NEGATIVE_INFINITY, 80d, Double.NEGATIVE_INFINITY));
 
         grids = new ArrayList<>();
 
@@ -469,6 +469,7 @@ public class FaithPath extends GridPane {
 
     public void setPlayer1PositionsProperty(int player1PositionsProperty) {
         this.player1PositionsProperty.set(player1PositionsProperty);
+        update();
     }
 
     public int getPlayer2PositionsProperty() {
@@ -481,6 +482,7 @@ public class FaithPath extends GridPane {
 
     public void setPlayer2PositionsProperty(int player2PositionsProperty) {
         this.player2PositionsProperty.set(player2PositionsProperty);
+        update();
     }
 
     public int getPlayer3PositionsProperty() {
@@ -493,6 +495,7 @@ public class FaithPath extends GridPane {
 
     public void setPlayer3PositionsProperty(int player3PositionsProperty) {
         this.player3PositionsProperty.set(player3PositionsProperty);
+        update();
     }
 
     public int getPlayer4PositionsProperty() {
@@ -505,5 +508,59 @@ public class FaithPath extends GridPane {
 
     public void setPlayer4PositionsProperty(int player4PositionsProperty) {
         this.player4PositionsProperty.set(player4PositionsProperty);
+        update();
+    }
+
+    public ObservableList<FaithHolder.CheckpointStatus> getPlayer1CheckpointsStatusProperty() {
+        return player1CheckpointsStatusProperty.get();
+    }
+
+    public ListProperty<FaithHolder.CheckpointStatus> player1CheckpointsStatusPropertyProperty() {
+        return player1CheckpointsStatusProperty;
+    }
+
+    public void setPlayer1CheckpointsStatusProperty(ObservableList<FaithHolder.CheckpointStatus> player1CheckpointsStatusProperty) {
+        this.player1CheckpointsStatusProperty.set(player1CheckpointsStatusProperty);
+        update();
+    }
+
+    public ObservableList<FaithHolder.CheckpointStatus> getPlayer2CheckpointsStatusProperty() {
+        return player2CheckpointsStatusProperty.get();
+    }
+
+    public ListProperty<FaithHolder.CheckpointStatus> player2CheckpointsStatusPropertyProperty() {
+        return player2CheckpointsStatusProperty;
+    }
+
+    public void setPlayer2CheckpointsStatusProperty(ObservableList<FaithHolder.CheckpointStatus> player2CheckpointsStatusProperty) {
+        this.player2CheckpointsStatusProperty.set(player2CheckpointsStatusProperty);
+        update();
+    }
+
+    public ObservableList<FaithHolder.CheckpointStatus> getPlayer3CheckpointsStatusProperty() {
+        return player3CheckpointsStatusProperty.get();
+    }
+
+    public ListProperty<FaithHolder.CheckpointStatus> player3CheckpointsStatusPropertyProperty() {
+        return player3CheckpointsStatusProperty;
+    }
+
+    public void setPlayer3CheckpointsStatusProperty(ObservableList<FaithHolder.CheckpointStatus> player3CheckpointsStatusProperty) {
+        this.player3CheckpointsStatusProperty.set(player3CheckpointsStatusProperty);
+        update();
+    }
+
+    public ObservableList<FaithHolder.CheckpointStatus> getPlayer4CheckpointsStatusProperty() {
+        return player4CheckpointsStatusProperty.get();
+    }
+
+    public ListProperty<FaithHolder.CheckpointStatus> player4CheckpointsStatusPropertyProperty() {
+        return player4CheckpointsStatusProperty;
+    }
+
+    public void setPlayer4CheckpointsStatusProperty(ObservableList<FaithHolder.CheckpointStatus> player4CheckpointsStatusProperty) {
+        this.player4CheckpointsStatusProperty.set(player4CheckpointsStatusProperty);
+        update();
     }
 }
+
