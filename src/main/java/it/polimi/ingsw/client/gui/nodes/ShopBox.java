@@ -7,6 +7,7 @@ import it.polimi.ingsw.parser.raw.RawCraftingCard;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
@@ -34,25 +35,16 @@ public class ShopBox extends GridPane {
         craftingCardBoxes = new ArrayList<>();
         for(int i = 0; i < rowNum.get(); i++){
             for(int j = 0; j < colNum.get(); j++) {
-                if(i == 1 && j == 2){
-                    try {
-                        defaultCards.add(JSONParser.parse("{\"id\":3,\"color\":\"BLUE\",\"level\":1,\"points\":1,\"cost\":{\"stone\":2, \"servant\":2},\"crafting\":{\"input\":{\"shield\":1},\"output\":{\"stone\":1},\"faith_output\":1}}", RawCraftingCard.class).toRaw());
-                    } catch (ParserException | IllegalRawConversionException e) {
-                        e.printStackTrace();
-                    }
-                    CraftingCardBox cardBox = new CraftingCardBox(defaultCards.get(i * colNum.get() + j));
-                    craftingCardBoxes.add(cardBox);
-                    grid.add(cardBox, j, i);
-                }else {
-                    try {
-                        defaultCards.add(JSONParser.parse("{\"id\":3,\"color\":\"BLUE\",\"level\":1,\"points\":1,\"cost\":{\"gold\":2, \"shield\":2, \"stone\":2, \"servant\":2},\"crafting\":{\"input\":{\"shield\":1},\"output\":{\"gold\":1, \"shield\":1, \"servant\":1, \"stone\":1},\"faith_output\":1}}", RawCraftingCard.class).toRaw());
-                    } catch (ParserException | IllegalRawConversionException e) {
-                        e.printStackTrace();
-                    }
-                    CraftingCardBox cardBox = new CraftingCardBox(defaultCards.get(i * colNum.get() + j));
-                    craftingCardBoxes.add(cardBox);
-                    grid.add(cardBox, j, i);
+                try {
+                    defaultCards.add(JSONParser.parse("{\"id\":3,\"color\":\"BLUE\",\"level\":1,\"points\":1,\"cost\":{\"gold\":2, \"shield\":2, \"stone\":2, \"servant\":2},\"crafting\":{\"input\":{\"shield\":1},\"output\":{\"gold\":1, \"shield\":1, \"servant\":1, \"stone\":1},\"faith_output\":1}}", RawCraftingCard.class).toRaw());
+                } catch (ParserException | IllegalRawConversionException e) {
+                    e.printStackTrace();
                 }
+                CraftingCardBox cardBox = new CraftingCardBox(defaultCards.get(i * colNum.get() + j));
+                cardBox.setOnMouseClicked(this::handleCardSelection);
+                craftingCardBoxes.add(cardBox);
+                grid.add(cardBox, j, i);
+
             }
         }
         craftingCards = new SimpleListProperty<>(this, "cards", FXCollections.observableArrayList(defaultCards));
@@ -76,6 +68,7 @@ public class ShopBox extends GridPane {
                 else{
                     if(craftingCardBoxes.get(i* colNum.get() + j) == null){
                         CraftingCardBox cardBox = new CraftingCardBox(craftingCards.get(i* colNum.get() + j));
+                        cardBox.setOnMouseClicked(this::handleCardSelection);
                         grid.add(cardBox, j, i);
                         craftingCardBoxes.set(i* colNum.get() + j, cardBox);
                     }else{
@@ -85,6 +78,14 @@ public class ShopBox extends GridPane {
                 }
             }
         }
+    }
+
+    private void handleCardSelection(MouseEvent event){
+        CraftingCardBox cardBox = (CraftingCardBox) event.getSource();
+        int row = GridPane.getRowIndex(cardBox);
+        int col = GridPane.getColumnIndex(cardBox);
+
+        System.out.println("Selected (" + row + ", " + col + ")");
     }
 
 

@@ -6,11 +6,14 @@ import it.polimi.ingsw.gamematerials.MarbleColor;
 import it.polimi.ingsw.parser.raw.RawMarket;
 import it.polimi.ingsw.utils.ResourceLoader;
 import javafx.beans.property.*;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -36,6 +39,8 @@ public class MarketBox extends VBox {
 
     private MarbleBox[][] graphicGrid;
     private MarbleBox oddMarbleBox;
+    private final List<List<HBox>> selectableOptionBoxes;
+    private final List<Integer> selectedOptions;
 
     public MarketBox(){
         FXMLLoader fxmlLoader;
@@ -60,6 +65,8 @@ public class MarketBox extends VBox {
         rawMarket = new SimpleObjectProperty<>(this, "rawMarket", null);
         selectedMarbleColors = new SimpleObjectProperty<>(this, "selectedMarbles", new ArrayList<>());
         conversionOptions = new SimpleObjectProperty<>(this, "conversionOptions", new ArrayList<>());
+        selectableOptionBoxes = new ArrayList<>();
+        selectedOptions = new ArrayList<>();
     }
 
     private void updateGrid(){
@@ -93,11 +100,22 @@ public class MarketBox extends VBox {
             optionsGrid.add(new MarbleBox(selectedMarbleColorsProperty().get().get(i).name().toLowerCase()), i + 1, 0);
         }
 
-        //add all the options
+        //add all the options and store the selectable HBoxes
         for(int i = 0; i < conversionOptions.get().size(); i++){
+            selectableOptionBoxes.add(new ArrayList<>());
+            selectedOptions.add(0);
+
             for(int j = 0; j < conversionOptions.get().get(i).size(); j++) {
+                //add the selectable HBox with the associated listener
                 HBox cell = new HBox();
                 optionsGrid.add(cell, i + 1, j +1);
+                selectableOptionBoxes.get(i).add(cell);
+
+                cell.setOnMouseClicked(this::handleOptionSelection);
+
+                if(j == 0){
+                    cell.setStyle("-fx-background-color: red");
+                }
 
                 //add each resource in the option
                 ConversionOption currentOption = conversionOptions.get().get(i).get(j);
@@ -129,6 +147,7 @@ public class MarketBox extends VBox {
         //adding horizontal buttons
         for(int i = 0; i < colNum; i++){
             Button selectButton = new Button();
+            selectButton.setOnMouseClicked(this::handleRowOrColPick);
             marketGrid.add(selectButton, i, rowNum + 1);
             GridPane.setHalignment(selectButton, HPos.CENTER);
         }
@@ -136,6 +155,7 @@ public class MarketBox extends VBox {
         //adding vertical buttons
         for(int i = 0; i < rowNum; i++){
             Button selectButton = new Button();
+            selectButton.setOnMouseClicked(this::handleRowOrColPick);
             marketGrid.add(selectButton, colNum, i + 1);
             GridPane.setHalignment(selectButton, HPos.CENTER);
         }
@@ -157,6 +177,8 @@ public class MarketBox extends VBox {
             optionsGrid.setDisable(true);
             conversionOptionsProperty().set(conversionOptions);
             selectedMarbleColorsProperty().set(selectedMarbleColors);
+            selectedOptions.clear();
+            selectableOptionBoxes.clear();
         }
         //if the updated value is not empty and the old value is empty, update
         else if(!conversionOptions.isEmpty() && conversionOptionsProperty().get().isEmpty()){
@@ -166,6 +188,39 @@ public class MarketBox extends VBox {
             optionsGrid.setDisable(false);
             updateOptions();
         }
+    }
+
+    private void handleOptionSelection(MouseEvent event){
+        HBox sourceOption = (HBox) event.getSource();
+        int optionRow = GridPane.getRowIndex(sourceOption) - 1;
+        int optionCol = GridPane.getColumnIndex(sourceOption) - 1;
+
+        for(HBox hBox : selectableOptionBoxes.get(optionCol)){
+            if(hBox != sourceOption){
+                hBox.setStyle("");
+            }
+        }
+
+        sourceOption.setStyle("-fx-background-color: red");
+
+        selectedOptions.set(optionCol, optionRow);
+
+        System.out.println(selectedOptions);
+    }
+    
+    private void handleRowOrColPick(MouseEvent event){
+        Button button = (Button) event.getSource();
+        int buttonRow = GridPane.getRowIndex(button);
+        int buttonCol = GridPane.getColumnIndex(button);
+
+        boolean isRaw = !(buttonRow == rowNum.get() + 1);
+        int index;
+        if(isRaw)
+            index = buttonRow - 1;
+        else
+            index = buttonCol;
+
+        System.out.println(isRaw + " " + index);
     }
 
     //GETTERS

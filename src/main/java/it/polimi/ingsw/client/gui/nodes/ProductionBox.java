@@ -9,6 +9,7 @@ import it.polimi.ingsw.utils.ResourceLoader;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
@@ -99,6 +100,7 @@ public class ProductionBox extends GridPane {
         //add the new baseCraftingBoxes
         for(int i = baseCraftingBoxes.size(); i < baseRawCraftings.get().size(); i++){
             CraftingBox craftingBox = new CraftingBox(baseRawCraftings.get().get(i));
+            craftingBox.setOnMouseClicked(this::handleSelectCrafting);
             baseCraftingBoxes.add(craftingBox);
             slotBoxes.get(COL_NUM).getChildren().add(craftingBox);
         }
@@ -110,6 +112,7 @@ public class ProductionBox extends GridPane {
         for(int i = 0; i < upgradableRawCraftings.get().size(); i++){
             if(upgradableCraftingBoxes.get(i) == null && upgradableRawCraftings.get().get(i) != null) {
                 CraftingBox craftingBox = new CraftingBox(upgradableRawCraftings.get().get(i));
+                craftingBox.setOnMouseClicked(this::handleSelectCrafting);
                 craftingBox.setLevel(upgradableLevels.get().get(i));
                 upgradableCraftingBoxes.set(i, craftingBox);
                 slotBoxes.get(i).getChildren().add(craftingBox);
@@ -122,6 +125,7 @@ public class ProductionBox extends GridPane {
         for(int i =  leaderCraftingBoxes.size(); i < leaderRawCraftings.get().size(); i++){
             CraftingBox craftingBox = new CraftingBox(leaderRawCraftings.get().get(i));
             leaderCraftingBoxes.add(craftingBox);
+            craftingBox.setOnMouseClicked(this::handleSelectCrafting);
             slotBoxes.get(COL_NUM + i + 1).getChildren().add(craftingBox);
         }
 
@@ -168,6 +172,30 @@ public class ProductionBox extends GridPane {
             slotBoxes.get(selectedBox.get().getFirst() * COL_NUM + selectedBox.get().getSecond()).getChildren().get(0).setStyle("");
             selectedBox.set(null);
         }
+    }
+
+    private void handleSelectCrafting(MouseEvent event){
+        CraftingBox selectedBox = (CraftingBox) event.getSource();
+        Production.CraftingType type;
+        int index;
+
+        int row = GridPane.getRowIndex(selectedBox.getParent());
+        int col = GridPane.getColumnIndex(selectedBox.getParent());
+
+        if(row == 0) {
+            type = Production.CraftingType.UPGRADABLE;
+            index = col;
+        }
+        else if(row == 1 && col == 0) {
+            type = Production.CraftingType.BASE;
+            index = 0;
+        }
+        else {
+            type = Production.CraftingType.LEADER;
+            index = col - 1;
+        }
+
+        System.out.println("Type: " + type + ", index: " + index);
     }
 
     public List<RawCrafting> getUpgradableRawCraftings() {
