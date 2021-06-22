@@ -120,9 +120,7 @@ public class CraftingBox extends VBox {
         input.setVisible(inputStorageVisible);
 
         Label label = new Label();
-        Glyph glyph = new Glyph();
-        glyph.setFontFamily("FontAwesome");
-        glyph.setIcon("ARROW_RIGHT");
+        Glyph glyph = new Glyph("FontAwesome", "ARROW_RIGHT");
         glyph.setScaleX(1.5);
         glyph.setScaleY(1.5);
         label.setGraphic(glyph);
@@ -130,6 +128,7 @@ public class CraftingBox extends VBox {
         output = new VResourceContainer(outputStorage, false, false, true, true);
         output.setVisible(outputStorageVisible);
         hBox.getChildren().addAll(input, label, output);
+        hBox.setAlignment(Pos.CENTER);
 
         faith = new ResourceBox("faith", faithValue, true, false, true);
         faith.setAlignment(Pos.BOTTOM_RIGHT);
