@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<fx:root alignment="TOP_CENTER" prefHeight="548.0" prefWidth="343.0" style="-fx-background-color: #94B015;" type="VBox" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="TOP_CENTER" prefHeight="548.0" prefWidth="343.0" style="-fx-background-color: #94B015; -fx-border-width: 3; -fx-border-insets: 3; -fx-border-color: black;" type="VBox" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <Label alignment="CENTER" text="Leader Card (id: 5)">
       <VBox.margin>
          <Insets />

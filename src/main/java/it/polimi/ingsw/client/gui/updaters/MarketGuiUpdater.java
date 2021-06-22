@@ -12,6 +12,9 @@ public class MarketGuiUpdater implements Listener<ClientMarket> {
     public MarketGuiUpdater(MarketBox marketBox, ClientMarket clientMarket){
         this.marketBox = marketBox;
         this.marketBox.setup(clientMarket.getRowSize(), clientMarket.getColSize());
+        if(clientMarket.getMarket() != null){
+            update(clientMarket);
+        }
         clientMarket.addListener(this);
     }
 

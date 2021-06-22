@@ -12,6 +12,7 @@ public class ProductionGuiUpdater implements Listener<ClientProduction> {
     public ProductionGuiUpdater(ProductionBox productionBox, ClientProduction clientProduction){
         this.productionBox = productionBox;
         clientProduction.addListener(this);
+        update(clientProduction);
     }
 
     @Override
