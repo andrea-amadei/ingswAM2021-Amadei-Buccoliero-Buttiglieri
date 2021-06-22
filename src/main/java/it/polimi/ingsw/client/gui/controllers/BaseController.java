@@ -11,9 +11,6 @@ public abstract class BaseController {
     private GuiSceneManager sceneManager;
 
     public void init(ClientModel model, ServerHandler serverHandler, GuiSceneManager sceneManager) {
-        if(model == null || serverHandler == null || sceneManager == null)
-            throw new NullPointerException();
-
         this.model = model;
         this.serverHandler = serverHandler;
         this.sceneManager = sceneManager;
