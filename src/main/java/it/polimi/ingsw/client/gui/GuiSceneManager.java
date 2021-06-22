@@ -40,4 +40,8 @@ public class GuiSceneManager {
         stage.setScene(scenes.get(name));
         stage.show();
     }
+
+    public Scene getActiveScene() {
+        return stage.getScene();
+    }
 }
