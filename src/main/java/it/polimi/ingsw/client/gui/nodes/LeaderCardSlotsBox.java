@@ -3,6 +3,8 @@ package it.polimi.ingsw.client.gui.nodes;
 import it.polimi.ingsw.client.model.ClientLeaderCards;
 import it.polimi.ingsw.parser.raw.RawLeaderCard;
 import javafx.beans.property.*;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
@@ -52,6 +54,7 @@ public class LeaderCardSlotsBox extends HBox {
                 updatedLeaderCardsBox.add(leaderBoxes.get(i));
             }else{
                 LeaderCardBox newBox = new LeaderCardBox();
+                newBox.setOnMouseClicked(this::handleCardClick);
                 updatedLeaderCardsBox.add(newBox);
             }
         }
@@ -62,5 +65,18 @@ public class LeaderCardSlotsBox extends HBox {
         this.getChildren().setAll(updatedLeaderCardsBox);
 
         update();
+    }
+
+    private void handleCardClick(MouseEvent event){
+        LeaderCardBox selectedCard = (LeaderCardBox)event.getSource();
+        if(!selectedCard.isIsCovered()){
+            int index = leaderBoxes.indexOf(selectedCard);
+
+            if(event.getButton() == MouseButton.PRIMARY){
+                System.out.println("Activating card with index " + index);
+            }else if(event.getButton() == MouseButton.SECONDARY){
+                System.out.println("Discarding card with index " + index);
+            }
+        }
     }
 }
