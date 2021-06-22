@@ -1,19 +1,14 @@
 package it.polimi.ingsw.client.gui.nodes;
 
-import it.polimi.ingsw.client.gui.FXMLCachedLoaders;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.raw.RawCraftingCard;
-import it.polimi.ingsw.utils.ResourceLoader;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
