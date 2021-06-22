@@ -74,8 +74,6 @@ public class CupboardBox extends GridPane {
             leader.add(new ShelfBox("any", 2, "Leader " + (i + 1)));
             super.add(leader.get(i), 1, i);
         }
-
-        super.setStyle("-fx-background-color: red;");
     }
 
     private void update() {
