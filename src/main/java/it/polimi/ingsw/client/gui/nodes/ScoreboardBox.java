@@ -17,10 +17,8 @@ import javafx.scene.text.Font;
 import org.controlsfx.glyphfont.Glyph;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ScoreboardBox extends GridPane {
 
@@ -181,6 +179,15 @@ public class ScoreboardBox extends GridPane {
         }
     }
 
+    private List<RawLevelFlag> sortFlags(List<RawLevelFlag> flags) {
+        return flags.stream()
+                .sorted(
+                        Comparator.comparingInt(RawLevelFlag::getLevel)
+                                .thenComparing(x -> x.getColor().name())
+                )
+                .collect(Collectors.toList());
+    }
+
     public ObservableList<String> getNames() {
         return names.get();
     }
@@ -216,7 +223,9 @@ public class ScoreboardBox extends GridPane {
     }
 
     public void setFlags(ObservableList<List<RawLevelFlag>> flags) {
-        this.flags.set(flags);
+        for(int i = 0; i < flags.size(); i++)
+            setPlayerFlagsProperty(i, sortFlags(flags.get(i)));
+
         update();
     }
 
@@ -234,7 +243,12 @@ public class ScoreboardBox extends GridPane {
     }
 
     public void setPlayerFlagsProperty(int playerIndex, List<RawLevelFlag> flags) {
-        this.getFlags().set(playerIndex, flags);
+        this.getFlags().set(playerIndex, sortFlags(flags));
+        update();
+    }
+
+    public void setPlayerPointsProperty(int playerIndex, int points) {
+        this.getPoints().set(playerIndex, points);
         update();
     }
 }
