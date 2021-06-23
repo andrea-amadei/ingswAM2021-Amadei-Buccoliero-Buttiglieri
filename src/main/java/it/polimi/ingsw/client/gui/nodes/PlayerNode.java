@@ -22,6 +22,16 @@ public class PlayerNode extends AnchorPane {
 
     @FXML
     private CupboardBox cupboard;
+    @FXML
+    private HResourceContainer chest;
+    @FXML
+    private VResourceContainer hand;
+    @FXML
+    private VResourceContainer basket;
+    @FXML
+    private ProductionBox production;
+    @FXML
+    private LeaderCardSlotsBox leaders;
 
     public PlayerNode() {
         FXMLLoader fxmlLoader;
@@ -40,5 +50,29 @@ public class PlayerNode extends AnchorPane {
         } catch (IOException exception) {
             throw new RuntimeException("Unable to load custom element '" + getClass().getSimpleName() + "': " + exception);
         }
+    }
+
+    public CupboardBox getCupboard() {
+        return cupboard;
+    }
+
+    public HResourceContainer getChest() {
+        return chest;
+    }
+
+    public VResourceContainer getHand() {
+        return hand;
+    }
+
+    public VResourceContainer getBasket() {
+        return basket;
+    }
+
+    public ProductionBox getProduction() {
+        return production;
+    }
+
+    public LeaderCardSlotsBox getLeaders() {
+        return leaders;
     }
 }
