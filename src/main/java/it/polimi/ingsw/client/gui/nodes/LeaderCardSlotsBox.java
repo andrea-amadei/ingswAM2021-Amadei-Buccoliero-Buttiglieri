@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.gui.nodes;
 
+import it.polimi.ingsw.client.gui.beans.LeaderInteractionBean;
+import it.polimi.ingsw.client.gui.events.LeaderInteractionEvent;
 import it.polimi.ingsw.client.model.ClientLeaderCards;
 import it.polimi.ingsw.gamematerials.*;
 import it.polimi.ingsw.model.leader.*;
@@ -22,6 +24,7 @@ public class LeaderCardSlotsBox extends HBox {
     private final ObjectProperty<List<RawLeaderCard>> rawLeaderCards;
     private final IntegerProperty coveredCards;
     private final ObjectProperty<List<Boolean>> isActiveList;
+    private final BooleanProperty areControlsDisabled;
 
     private List<LeaderCardBox> leaderBoxes;
 
@@ -32,6 +35,7 @@ public class LeaderCardSlotsBox extends HBox {
         isActiveList = new SimpleObjectProperty<>(this, "isActiveList", new ArrayList<>());
 
         leaderBoxes = new ArrayList<>();
+        areControlsDisabled = new SimpleBooleanProperty(this, "areControlsDisabled", true);
 
         ClientLeaderCards clientLeaderCards = new ClientLeaderCards();
         clientLeaderCards.changeCoveredCardsNumber(2);
@@ -125,16 +129,40 @@ public class LeaderCardSlotsBox extends HBox {
         update();
     }
 
-    private void handleCardClick(MouseEvent event){
-        LeaderCardBox selectedCard = (LeaderCardBox)event.getSource();
-        if(!selectedCard.isIsCovered()){
-            int index = leaderBoxes.indexOf(selectedCard);
+    private void handleCardClick(MouseEvent event) {
+        if (!areControlsDisabled.get()) {
+            LeaderCardBox selectedCard = (LeaderCardBox) event.getSource();
+            if (!selectedCard.isIsCovered()) {
+                int index = leaderBoxes.indexOf(selectedCard);
+                boolean isActivate;
+                if (event.getButton() == MouseButton.PRIMARY) {
+                    isActivate = true;
+                } else if (event.getButton() == MouseButton.SECONDARY) {
+                    isActivate = false;
+                }
+                else
+                    return;
 
-            if(event.getButton() == MouseButton.PRIMARY){
-                System.out.println("Activating card with index " + index);
-            }else if(event.getButton() == MouseButton.SECONDARY){
-                System.out.println("Discarding card with index " + index);
+                LeaderInteractionBean bean = new LeaderInteractionBean();
+                bean.setActivate(isActivate);
+                bean.setIndex(index);
+                fireEvent(new LeaderInteractionEvent(bean));
             }
+
         }
     }
+
+    public boolean isAreControlsDisabled() {
+        return areControlsDisabled.get();
+    }
+
+    public BooleanProperty areControlsDisabledProperty() {
+        return areControlsDisabled;
+    }
+
+    public void setAreControlsDisabled(boolean areControlsDisabled) {
+        this.areControlsDisabled.set(areControlsDisabled);
+    }
 }
+
+

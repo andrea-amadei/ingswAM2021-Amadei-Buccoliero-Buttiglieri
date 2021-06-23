@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.gui.nodes;
 
+import it.polimi.ingsw.client.gui.beans.ShopSelectionBean;
+import it.polimi.ingsw.client.gui.events.ShopCardSelectionEvent;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.parser.JSONParser;
@@ -18,6 +20,7 @@ public class ShopBox extends GridPane {
     private final ListProperty<RawCraftingCard> craftingCards;
     private final IntegerProperty rowNum;
     private final IntegerProperty colNum;
+    private final BooleanProperty areControlsDisabled;
 
     private final List<CraftingCardBox> craftingCardBoxes;
 
@@ -30,6 +33,7 @@ public class ShopBox extends GridPane {
 
         rowNum = new SimpleIntegerProperty(this, "row count", 3);
         colNum = new SimpleIntegerProperty(this, "col count", 4);
+        areControlsDisabled = new SimpleBooleanProperty(this, "areControlsDisabled", true);
 
         List<RawCraftingCard> defaultCards = new ArrayList<>();
         craftingCardBoxes = new ArrayList<>();
@@ -41,7 +45,7 @@ public class ShopBox extends GridPane {
                     e.printStackTrace();
                 }
                 CraftingCardBox cardBox = new CraftingCardBox(defaultCards.get(i * colNum.get() + j));
-                cardBox.setOnMouseClicked(this::handleCardSelection);
+                cardBox.setOnMousePressed(this::handleCardSelection);
                 craftingCardBoxes.add(cardBox);
                 grid.add(cardBox, j, i);
 
@@ -68,7 +72,7 @@ public class ShopBox extends GridPane {
                 else{
                     if(craftingCardBoxes.get(i* colNum.get() + j) == null){
                         CraftingCardBox cardBox = new CraftingCardBox(craftingCards.get(i* colNum.get() + j));
-                        cardBox.setOnMouseClicked(this::handleCardSelection);
+                        cardBox.setOnMousePressed(this::handleCardSelection);
                         grid.add(cardBox, j, i);
                         craftingCardBoxes.set(i* colNum.get() + j, cardBox);
                     }else{
@@ -81,11 +85,16 @@ public class ShopBox extends GridPane {
     }
 
     private void handleCardSelection(MouseEvent event){
-        CraftingCardBox cardBox = (CraftingCardBox) event.getSource();
-        int row = GridPane.getRowIndex(cardBox);
-        int col = GridPane.getColumnIndex(cardBox);
+        if(!areControlsDisabled.get()) {
+            CraftingCardBox cardBox = (CraftingCardBox) event.getSource();
+            int row = GridPane.getRowIndex(cardBox);
+            int col = GridPane.getColumnIndex(cardBox);
 
-        System.out.println("Selected (" + row + ", " + col + ")");
+            ShopSelectionBean shopSelectionBean = new ShopSelectionBean();
+            shopSelectionBean.setCol(col);
+            shopSelectionBean.setRow(row);
+            this.fireEvent(new ShopCardSelectionEvent(shopSelectionBean));
+        }
     }
 
 
@@ -128,5 +137,17 @@ public class ShopBox extends GridPane {
 
     public List<CraftingCardBox> getCraftingCardBoxes() {
         return craftingCardBoxes;
+    }
+
+    public boolean isAreControlsDisabled() {
+        return areControlsDisabled.get();
+    }
+
+    public BooleanProperty areControlsDisabledProperty() {
+        return areControlsDisabled;
+    }
+
+    public void setAreControlsDisabled(boolean areControlsDisabled) {
+        this.areControlsDisabled.set(areControlsDisabled);
     }
 }
