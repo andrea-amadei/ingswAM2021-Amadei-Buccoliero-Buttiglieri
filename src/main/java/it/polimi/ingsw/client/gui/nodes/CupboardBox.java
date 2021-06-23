@@ -17,14 +17,19 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CupboardBox extends GridPane {
-    private ListProperty<String> baseResources;
-    private ListProperty<Integer> baseAmounts;
-    private ListProperty<String> leaderResources;
-    private ListProperty<String> leaderAccepted;
-    private ListProperty<Integer> leaderAmounts;
+    private final ListProperty<String> baseResources;
+    private final ListProperty<String> baseAccepted;
+    private final ListProperty<Integer> baseAmounts;
+
+    private final ListProperty<String> leaderResources;
+    private final ListProperty<String> leaderAccepted;
+    private final ListProperty<Integer> leaderAmounts;
 
     private List<ShelfBox> base;
     private List<ShelfBox> leader;
+
+    private final List<Integer> BASE_SIZES = Arrays.asList(1, 2, 3);
+    private final List<String> BASE_NAMES = Arrays.asList("Top", "Middle", "Bottom");
 
     public CupboardBox() {
         FXMLLoader fxmlLoader;
@@ -44,12 +49,9 @@ public class CupboardBox extends GridPane {
             throw new RuntimeException("Unable to load custom element '" + getClass().getSimpleName() + "': " + exception);
         }
 
-        baseResources = new SimpleListProperty<>(this, "baseResources", FXCollections.observableArrayList(
-                "gold", "gold", "gold"
-        ));
-        baseAmounts = new SimpleListProperty<>(this, "baseAmounts", FXCollections.observableArrayList(
-                0, 0, 0
-        ));
+        baseResources = new SimpleListProperty<>(this, "baseResources", FXCollections.observableArrayList());
+        baseAccepted = new SimpleListProperty<>(this, "baseAccepted", FXCollections.observableArrayList());
+        baseAmounts = new SimpleListProperty<>(this, "baseAmounts", FXCollections.observableArrayList());
 
         leaderResources = new SimpleListProperty<>(this, "leaderResources", FXCollections.observableArrayList());
         leaderAccepted = new SimpleListProperty<>(this, "leaderResources", FXCollections.observableArrayList());
@@ -61,11 +63,10 @@ public class CupboardBox extends GridPane {
 
     private void setup() {
         int i;
-        List<String> names = new ArrayList<>(Arrays.asList("Top", "Middle", "Bottom"));
 
         base = new ArrayList<>();
         for(i = 0; i < baseResources.size(); i++) {
-            base.add(new ShelfBox("any", i + 1, names.get(i)));
+            base.add(new ShelfBox("any", i + 1, BASE_NAMES.get(i)));
             super.add(base.get(i), 0, i);
         }
 
@@ -165,6 +166,15 @@ public class CupboardBox extends GridPane {
         leaderAccepted.add(acceptedResource);
         leaderAmounts.add(0);
         leaderResources.add("gold");
+        update();
+    }
+
+    public void addBaseShelf(String acceptedResource) {
+        base.add(new ShelfBox(acceptedResource, BASE_SIZES.get(base.size()), BASE_NAMES.get(base.size())));
+        super.add(base.get(base.size() - 1), 0, base.size() - 1);
+        baseAccepted.add(acceptedResource);
+        baseAmounts.add(0);
+        baseResources.add("gold");
         update();
     }
 
