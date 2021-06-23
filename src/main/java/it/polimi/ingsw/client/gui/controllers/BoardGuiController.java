@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.gui.controllers;
 import it.polimi.ingsw.client.gui.nodes.*;
 import it.polimi.ingsw.client.gui.updaters.FaithPathGuiUpdater;
 import it.polimi.ingsw.client.gui.updaters.MarketGuiUpdater;
+import it.polimi.ingsw.client.gui.updaters.PersonalDataGuiUpdater;
 import it.polimi.ingsw.client.gui.updaters.ShopGuiUpdater;
 import it.polimi.ingsw.client.model.ClientPlayer;
 import it.polimi.ingsw.client.model.ConversionOption;
@@ -30,6 +31,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class BoardGuiController extends BaseController {
     @FXML
@@ -40,13 +42,17 @@ public class BoardGuiController extends BaseController {
     public MarketBox market;
     @FXML
     public FaithPath faithPath;
-    @FXML
+
+
     public ScoreboardBox scoreboard;
 
     public PlayerNode currentPlayerNode;
     private Map<String, PlayerNode> playerNodes;
 
     public void initialize() {
+        scoreboard = new ScoreboardBox();
+        board.getChildren().add(scoreboard);
+
         List<List<ConversionOption>> testOptions = new ArrayList<>();
         testOptions.add(
                 new ArrayList<>(){{
@@ -112,6 +118,10 @@ public class BoardGuiController extends BaseController {
             playerNodes.put(p.getUsername(), playerNode);
         }
 
+        scoreboard.setNames(FXCollections.observableList(getModel().getPlayers().stream().map(ClientPlayer::getUsername).collect(Collectors.toList())));
+        AnchorPane.setLeftAnchor(scoreboard, 20d);
+        AnchorPane.setTopAnchor(scoreboard, 20d);
+
         // TODO: change to
         // setActivePlayer(getModel().getPersonalData().getUsername());
         setActivePlayer(getModel().getPlayers().get(0).getUsername());
@@ -124,6 +134,7 @@ public class BoardGuiController extends BaseController {
         System.out.println(getModel().getPlayers().size());
         for(int i = 0; i < getModel().getPlayers().size(); i++) {
             new FaithPathGuiUpdater(faithPath, getModel().getPlayers().get(i).getFaithPath(), i + 1);
+            new PersonalDataGuiUpdater(scoreboard, getModel().getPersonalData());
         }
     }
 

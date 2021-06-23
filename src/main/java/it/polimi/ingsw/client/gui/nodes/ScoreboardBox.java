@@ -1,12 +1,8 @@
 package it.polimi.ingsw.client.gui.nodes;
 
-import it.polimi.ingsw.gamematerials.FlagColor;
-import it.polimi.ingsw.gamematerials.LevelFlag;
 import it.polimi.ingsw.parser.raw.RawLevelFlag;
 import it.polimi.ingsw.utils.ResourceLoader;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,24 +24,30 @@ import java.util.List;
 
 public class ScoreboardBox extends GridPane {
 
-    public ListProperty<String> namesProperty;
-    public ListProperty<Integer> pointsProperty;
-    public ListProperty<List<RawLevelFlag>> flagsProperty;
-    public ListProperty<Boolean> disconnectedProperty;
+    private ListProperty<String> names;
+    private ListProperty<Integer> points;
+    private ListProperty<List<RawLevelFlag>> flags;
+    private ListProperty<Boolean> disconnected;
 
     @FXML
-    public GridPane pane;
+    private GridPane pane;
 
-    private List<Label> names;
+    private List<Label> nameLabels;
     private List<Button> buttons;
     private List<PointsBox> pointsBoxes;
     private List<GridPane> flagGrids;
-    private List<FlagBox> flags;
+    private List<FlagBox> flagBoxes;
 
     private final List<String> PLAYER_COLORS = new ArrayList<>(Arrays.asList("#3568AA", "#892F96", "#3AA739", "#988330"));
     private final int MAX_FLAGS = 8;
 
+    private int oldPlayerNumber;
+
     public ScoreboardBox() {
+        this(Arrays.asList("Player 1", "Player 2", "Player 3", "Player 4"));
+    }
+
+    public ScoreboardBox(List<String> playerNames) {
         FXMLLoader fxmlLoader = new FXMLLoader(ResourceLoader.getResource("jfx/custom/ScoreboardBox.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -56,32 +58,28 @@ public class ScoreboardBox extends GridPane {
             throw new RuntimeException("Unable to load custom element '" + getClass().getSimpleName() + "': " + exception);
         }
 
-        namesProperty = new SimpleListProperty<>(this, "namesProperty", FXCollections.observableList(Arrays.asList(
-                "Player 1", "Player 2", "Player 3", "Player 4" )));
-        pointsProperty = new SimpleListProperty<>(this, "pointsProperty", FXCollections.observableList(Arrays.asList(
+        names = new SimpleListProperty<>(this, "namesProperty", FXCollections.observableList(playerNames));
+        points = new SimpleListProperty<>(this, "pointsProperty", FXCollections.observableList(Arrays.asList(
                 0, 0, 0, 0 )));
-        flagsProperty = new SimpleListProperty<>(this, "flagsProperty", FXCollections.observableList(Arrays.asList(
+        flags = new SimpleListProperty<>(this, "flagsProperty", FXCollections.observableList(Arrays.asList(
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList()
         )));
-        disconnectedProperty = new SimpleListProperty<>(this, "disconnectedProperty", FXCollections.observableList(Arrays.asList(
+        disconnected = new SimpleListProperty<>(this, "disconnectedProperty", FXCollections.observableList(Arrays.asList(
                 false, false, false, false )));
 
         setup();
         update();
     }
 
-    public void setup() {
-        if(namesProperty.size() != pointsProperty.size() || namesProperty.size() != flagsProperty.size() || namesProperty.size() != disconnectedProperty.size())
-            throw new IllegalArgumentException("List properties must have the same size");
-
-        names = new ArrayList<>();
+    private void setup() {
+        nameLabels = new ArrayList<>();
         buttons = new ArrayList<>();
         pointsBoxes = new ArrayList<>();
         flagGrids = new ArrayList<>();
-        flags = new ArrayList<>();
+        flagBoxes = new ArrayList<>();
 
         Label label;
         Button button;
@@ -91,17 +89,17 @@ public class ScoreboardBox extends GridPane {
         Glyph glyph;
         int i, j;
 
-        for(i = 0; i < namesProperty.size(); i++) {
+        for(i = 0; i < names.size(); i++) {
             // USERNAME
             label = new Label();
             label.setFont(new Font("Times New Roman Bold", 24.0));
-            label.setText(namesProperty.get(i));
+            label.setText(names.get(i));
             label.setStyle("-fx-text-fill: " + PLAYER_COLORS.get(i) + ";");
             GridPane.setRowIndex(label, i);
             GridPane.setColumnIndex(label, 0);
 
             pane.getChildren().add(label);
-            names.add(label);
+            nameLabels.add(label);
 
             // BUTTON
             button = new Button();
@@ -120,7 +118,7 @@ public class ScoreboardBox extends GridPane {
             buttons.add(button);
 
             // POINTS BOX
-            pointsBox = new PointsBox(pointsProperty.get(i));
+            pointsBox = new PointsBox(points.get(i));
             pointsBox.setScaleX(0.7d);
             pointsBox.setScaleY(0.7d);
             GridPane.setRowIndex(pointsBox, i);
@@ -150,84 +148,93 @@ public class ScoreboardBox extends GridPane {
                 flagBox.setShowAmount(false);
 
                 gridPane.getChildren().add(flagBox);
-                flags.add(flagBox);
+                flagBoxes.add(flagBox);
             }
         }
+
+        oldPlayerNumber = getNames().size();
     }
 
-    public void update() {
-        if(namesProperty.size() != pointsProperty.size() || namesProperty.size() != flagsProperty.size() || namesProperty.size() != disconnectedProperty.size())
-            throw new IllegalArgumentException("List properties must have the same size");
+    private void update() {
+        if(names.size() != oldPlayerNumber) {
+            pane.getChildren().clear();
+            setup();
+        }
 
         int i, j;
 
-        for(i = 0; i < namesProperty.size(); i++) {
-            names.get(i).setText(namesProperty.get(i));
-            names.get(i).setDisable(disconnectedProperty.get(i));
-            pointsBoxes.get(i).setPoints(pointsProperty.get(i));
+        for(i = 0; i < names.size(); i++) {
+            nameLabels.get(i).setText(names.get(i));
+            nameLabels.get(i).setDisable(disconnected.get(i));
+            pointsBoxes.get(i).setPoints(points.get(i));
 
             for(j = 0; j < MAX_FLAGS; j++) {
-                if(j < flagsProperty.get(i).size()) {
-                    flags.get(i * MAX_FLAGS + j).setFlag(flagsProperty.get(i).get(j).getColor().name().toLowerCase());
-                    flags.get(i * MAX_FLAGS + j).setLevel(flagsProperty.get(i).get(j).getLevel());
-                    flags.get(i * MAX_FLAGS + j).setVisible(true);
+                if(j < flags.get(i).size()) {
+                    flagBoxes.get(i * MAX_FLAGS + j).setFlag(flags.get(i).get(j).getColor().name().toLowerCase());
+                    flagBoxes.get(i * MAX_FLAGS + j).setLevel(flags.get(i).get(j).getLevel());
+                    flagBoxes.get(i * MAX_FLAGS + j).setVisible(true);
                 }
                 else {
-                    flags.get(i * MAX_FLAGS + j).setVisible(false);
+                    flagBoxes.get(i * MAX_FLAGS + j).setVisible(false);
                 }
             }
         }
     }
 
-    public ObservableList<String> getNamesProperty() {
-        return namesProperty.get();
+    public ObservableList<String> getNames() {
+        return names.get();
     }
 
-    public ListProperty<String> namesPropertyProperty() {
-        return namesProperty;
+    public ListProperty<String> namesProperty() {
+        return names;
     }
 
-    public ObservableList<Integer> getPointsProperty() {
-        return pointsProperty.get();
+    public void setNames(ObservableList<String> names) {
+        this.names.set(names);
+        update();
     }
 
-    public ListProperty<Integer> pointsPropertyProperty() {
-        return pointsProperty;
+    public ObservableList<Integer> getPoints() {
+        return points.get();
     }
 
-    public ObservableList<List<RawLevelFlag>> getFlagsProperty() {
-        return flagsProperty.get();
+    public ListProperty<Integer> pointsProperty() {
+        return points;
     }
 
-    public ListProperty<List<RawLevelFlag>> flagsPropertyProperty() {
-        return flagsProperty;
+    public void setPoints(ObservableList<Integer> points) {
+        this.points.set(points);
+        update();
     }
 
-    public ObservableList<Boolean> getDisconnectedProperty() {
-        return disconnectedProperty.get();
+    public ObservableList<List<RawLevelFlag>> getFlags() {
+        return flags.get();
     }
 
-    public ListProperty<Boolean> disconnectedPropertyProperty() {
-        return disconnectedProperty;
+    public ListProperty<List<RawLevelFlag>> flagsProperty() {
+        return flags;
     }
 
-    public void setPointsProperty(ObservableList<Integer> pointsProperty) {
-        this.pointsProperty.set(pointsProperty);
+    public void setFlags(ObservableList<List<RawLevelFlag>> flags) {
+        this.flags.set(flags);
+        update();
+    }
+
+    public ObservableList<Boolean> getDisconnected() {
+        return disconnected.get();
+    }
+
+    public ListProperty<Boolean> disconnectedProperty() {
+        return disconnected;
+    }
+
+    public void setDisconnected(ObservableList<Boolean> disconnected) {
+        this.disconnected.set(disconnected);
         update();
     }
 
     public void setPlayerFlagsProperty(int playerIndex, List<RawLevelFlag> flags) {
-        this.getFlagsProperty().set(playerIndex, flags);
-        update();
-    }
-
-    public void setFlagsProperty(ObservableList<List<RawLevelFlag>> flagsProperty) {
-        this.flagsProperty.set(flagsProperty);
-        update();
-    }
-
-    public void setDisconnectedProperty(ObservableList<Boolean> disconnectedProperty) {
-        this.disconnectedProperty.set(disconnectedProperty);
+        this.getFlags().set(playerIndex, flags);
         update();
     }
 }
