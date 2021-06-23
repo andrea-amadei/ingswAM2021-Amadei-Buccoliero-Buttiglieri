@@ -10,7 +10,7 @@ import javafx.scene.layout.HBox;
 
 import java.util.*;
 
-public class HResourceContainer extends HBox {
+public class HResourceContainer extends HBox implements ResourceContainer {
     private final StringProperty containerJSON;
     private final ObjectProperty<RawStorage> rawStorage;
 

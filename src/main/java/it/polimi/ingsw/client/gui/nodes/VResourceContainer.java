@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.util.*;
 
-public class VResourceContainer extends VBox {
+public class VResourceContainer extends VBox implements ResourceContainer {
     private final StringProperty containerJSON;
     private final ObjectProperty<RawStorage> rawStorage;
 
