@@ -8,4 +8,5 @@
     <MarketBox fx:id="market" prefHeight="465" prefWidth="678" scaleX="0.8" scaleY="0.8" AnchorPane.leftAnchor="680" AnchorPane.topAnchor="175" />
     <FaithPath fx:id="faithPath" layoutX="560.0" layoutY="1.0" scaleX="0.7" scaleY="0.7" AnchorPane.leftAnchor="560.0" AnchorPane.topAnchor="1.0" />
     <ScoreboardBox fx:id="scoreboard" AnchorPane.leftAnchor="20" AnchorPane.topAnchor="20" />
+    <MenuBox hgap="10.0" vgap="10.0" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="220.0" />
 </AnchorPane>
