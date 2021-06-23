@@ -1,11 +1,9 @@
 package it.polimi.ingsw.client.gui.controllers;
 
 import it.polimi.ingsw.client.gui.nodes.*;
-import it.polimi.ingsw.client.gui.updaters.FaithPathGuiUpdater;
-import it.polimi.ingsw.client.gui.updaters.MarketGuiUpdater;
-import it.polimi.ingsw.client.gui.updaters.PersonalDataGuiUpdater;
-import it.polimi.ingsw.client.gui.updaters.ShopGuiUpdater;
+import it.polimi.ingsw.client.gui.updaters.*;
 import it.polimi.ingsw.client.model.ClientPlayer;
+import it.polimi.ingsw.client.model.ClientShelf;
 import it.polimi.ingsw.client.model.ConversionOption;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.ParserException;
@@ -52,60 +50,6 @@ public class BoardGuiController extends BaseController {
     public void initialize() {
         scoreboard = new ScoreboardBox();
         board.getChildren().add(scoreboard);
-
-        List<List<ConversionOption>> testOptions = new ArrayList<>();
-        testOptions.add(
-                new ArrayList<>(){{
-                    add(new ConversionOption(
-                            Arrays.asList("gold", "shield"), 0
-                    ));
-                }}
-        );
-        testOptions.add(
-                new ArrayList<>(){{
-                    add(new ConversionOption(
-                            Arrays.asList("servant"), 2
-                    ));
-                    add(new ConversionOption(
-                            Arrays.asList("stone", "shield"), 1
-                    ));
-                    add(new ConversionOption(
-                            Arrays.asList("stone", "shield"), 1
-                    ));
-                }}
-        );
-        testOptions.add(
-                new ArrayList<>(){{
-                    add(new ConversionOption(
-                            Arrays.asList("gold", "shield"), 0
-                    ));
-                }}
-        );
-        testOptions.add(
-                new ArrayList<>(){{
-                    add(new ConversionOption(
-                            Arrays.asList("gold", "shield"), 0
-                    ));
-                }}
-        );
-
-        List<MarbleColor> testSelectedMarbles = Arrays.asList(MarbleColor.BLUE, MarbleColor.YELLOW, MarbleColor.BLUE, MarbleColor.GREY);
-
-        market.setup(3, 4);
-        market.setRawMarket(new Market().toRaw());
-        market.updateConversions(testOptions, testSelectedMarbles);
-
-        scoreboard.setPlayerFlagsProperty(0, Arrays.asList(
-                new RawLevelFlag(new LevelFlag(FlagColor.BLUE, 1)),
-                new RawLevelFlag(new LevelFlag(FlagColor.GREEN, 1)),
-                new RawLevelFlag(new LevelFlag(FlagColor.YELLOW, 1)),
-                new RawLevelFlag(new LevelFlag(FlagColor.PURPLE, 1)),
-                new RawLevelFlag(new LevelFlag(FlagColor.BLUE, 2)),
-                new RawLevelFlag(new LevelFlag(FlagColor.GREEN, 2)),
-                new RawLevelFlag(new LevelFlag(FlagColor.YELLOW, 2))
-        ));
-
-
     }
 
     public void boardSetup() {
@@ -122,7 +66,7 @@ public class BoardGuiController extends BaseController {
         AnchorPane.setLeftAnchor(scoreboard, 20d);
         AnchorPane.setTopAnchor(scoreboard, 20d);
 
-        // TODO: change to
+        // TODO: change to:
         // setActivePlayer(getModel().getPersonalData().getUsername());
         setActivePlayer(getModel().getPlayers().get(0).getUsername());
 
@@ -135,7 +79,15 @@ public class BoardGuiController extends BaseController {
         for(int i = 0; i < getModel().getPlayers().size(); i++) {
             new FaithPathGuiUpdater(faithPath, getModel().getPlayers().get(i).getFaithPath(), i + 1);
             new PersonalDataGuiUpdater(scoreboard, getModel().getPersonalData());
+            new FlagHolderGuiUpdater(scoreboard, getModel().getPlayers().get(i).getFlagHolder(), i + 1);
+            new PlayerGuiUpdater(scoreboard, playerNodes.get(getModel().getPlayers().get(i).getUsername()).getCupboard(), getModel().getPlayers().get(i), i + 1);
+            new StorageGuiUpdater(playerNodes.get(getModel().getPlayers().get(i).getUsername()).getChest(), getModel().getPlayers().get(i).getChest());
+            new StorageGuiUpdater(playerNodes.get(getModel().getPlayers().get(i).getUsername()).getHand(), getModel().getPlayers().get(i).getHand());
+            new StorageGuiUpdater(playerNodes.get(getModel().getPlayers().get(i).getUsername()).getBasket(), getModel().getPlayers().get(i).getMarketBasket());
         }
+
+        // TODO: WHY DOESN'T IT WORK WITHOUT IT?
+        setActivePlayer(getModel().getPlayers().get(0).getUsername());
     }
 
     public void setActivePlayer(String username) {
