@@ -44,4 +44,8 @@ public class GuiSceneManager {
     public Scene getActiveScene() {
         return stage.getScene();
     }
+
+    public Stage getStage(){
+        return stage;
+    }
 }

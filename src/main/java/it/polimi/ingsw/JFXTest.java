@@ -39,6 +39,9 @@ public class JFXTest extends Application {
 
         GuiSceneManager sceneManager = new GuiSceneManager(stage);
 
+        stage.setFullScreen(true);
+        stage.setFullScreenExitHint("");
+
         GuiBuilder.createGameScene(sceneManager, model, null);
     }
 

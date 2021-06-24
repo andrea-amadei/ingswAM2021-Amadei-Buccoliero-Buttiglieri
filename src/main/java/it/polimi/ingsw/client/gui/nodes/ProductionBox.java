@@ -1,12 +1,16 @@
 package it.polimi.ingsw.client.gui.nodes;
 
 import it.polimi.ingsw.client.gui.FXMLCachedLoaders;
+import it.polimi.ingsw.client.gui.beans.CraftingSelectionBean;
+import it.polimi.ingsw.client.gui.events.CraftingSelectionEvent;
 import it.polimi.ingsw.client.model.ClientProduction;
 import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.parser.raw.RawCrafting;
 import it.polimi.ingsw.utils.Pair;
 import it.polimi.ingsw.utils.ResourceLoader;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.MouseEvent;
@@ -32,6 +36,8 @@ public class ProductionBox extends GridPane {
 
     private final ObjectProperty<Pair<Integer, Integer>> selectedBox;
 
+    private final BooleanProperty areControlsDisabled;
+
 
     private final List<StackPane> slotBoxes;
     private final List<CraftingBox> upgradableCraftingBoxes;
@@ -47,6 +53,7 @@ public class ProductionBox extends GridPane {
         baseRawCraftings = new SimpleObjectProperty<>(this, "baseRawCraftings", new ArrayList<>());
         leaderRawCraftings = new SimpleObjectProperty<>(this, "leaderRawCraftings", new ArrayList<>());
         selectedBox = new SimpleObjectProperty<>(this, "selectedBox", null);
+        areControlsDisabled = new SimpleBooleanProperty(this, "areControlsDisabled", true);
 
         slotBoxes = new ArrayList<>();
         upgradableCraftingBoxes = new ArrayList<>(Arrays.asList(null, null, null));
@@ -175,27 +182,31 @@ public class ProductionBox extends GridPane {
     }
 
     private void handleSelectCrafting(MouseEvent event){
-        CraftingBox selectedBox = (CraftingBox) event.getSource();
-        Production.CraftingType type;
-        int index;
+        if(!areControlsDisabled.get()) {
+            CraftingBox selectedBox = (CraftingBox) event.getSource();
+            Production.CraftingType type;
+            int index;
 
-        int row = GridPane.getRowIndex(selectedBox.getParent());
-        int col = GridPane.getColumnIndex(selectedBox.getParent());
+            int row = GridPane.getRowIndex(selectedBox.getParent());
+            int col = GridPane.getColumnIndex(selectedBox.getParent());
 
-        if(row == 0) {
-            type = Production.CraftingType.UPGRADABLE;
-            index = col;
-        }
-        else if(row == 1 && col == 0) {
-            type = Production.CraftingType.BASE;
-            index = 0;
-        }
-        else {
-            type = Production.CraftingType.LEADER;
-            index = col - 1;
+            if (row == 0) {
+                type = Production.CraftingType.UPGRADABLE;
+                index = col;
+            } else if (row == 1 && col == 0) {
+                type = Production.CraftingType.BASE;
+                index = 0;
+            } else {
+                type = Production.CraftingType.LEADER;
+                index = col - 1;
+            }
+            CraftingSelectionBean bean = new CraftingSelectionBean();
+            bean.setCraftingType(type);
+            bean.setIndex(index);
+
+            fireEvent(new CraftingSelectionEvent(bean));
         }
 
-        System.out.println("Type: " + type + ", index: " + index);
     }
 
     public List<RawCrafting> getUpgradableRawCraftings() {
@@ -228,5 +239,17 @@ public class ProductionBox extends GridPane {
 
     public ObjectProperty<List<RawCrafting>> leaderRawCraftingsProperty() {
         return leaderRawCraftings;
+    }
+
+    public boolean isAreControlsDisabled() {
+        return areControlsDisabled.get();
+    }
+
+    public BooleanProperty areControlsDisabledProperty() {
+        return areControlsDisabled;
+    }
+
+    public void setAreControlsDisabled(boolean areControlsDisabled) {
+        this.areControlsDisabled.set(areControlsDisabled);
     }
 }

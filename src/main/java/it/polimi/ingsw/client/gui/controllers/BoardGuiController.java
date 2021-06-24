@@ -1,9 +1,10 @@
 package it.polimi.ingsw.client.gui.controllers;
 
 import it.polimi.ingsw.client.gui.nodes.*;
-import it.polimi.ingsw.client.gui.updaters.*;
+import it.polimi.ingsw.client.gui.updaters.FaithPathGuiUpdater;
+import it.polimi.ingsw.client.gui.updaters.MarketGuiUpdater;
+import it.polimi.ingsw.client.gui.updaters.ShopGuiUpdater;
 import it.polimi.ingsw.client.model.ClientPlayer;
-import it.polimi.ingsw.client.model.ClientShelf;
 import it.polimi.ingsw.client.model.ConversionOption;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.ParserException;
@@ -29,7 +30,6 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.InputStream;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class BoardGuiController extends BaseController {
     @FXML
@@ -40,8 +40,7 @@ public class BoardGuiController extends BaseController {
     public MarketBox market;
     @FXML
     public FaithPath faithPath;
-
-
+    @FXML
     public ScoreboardBox scoreboard;
 
     public PlayerNode currentPlayerNode;
@@ -88,6 +87,9 @@ public class BoardGuiController extends BaseController {
 
         // TODO: WHY DOESN'T IT WORK WITHOUT IT?
         setActivePlayer(getModel().getPlayers().get(0).getUsername());
+
+        changeGlobalNodesControlsStatus(false);
+        changePlayerNodeControlsStatus(currentPlayerNode, false);
     }
 
     public void setActivePlayer(String username) {
@@ -95,14 +97,66 @@ public class BoardGuiController extends BaseController {
 
         if(currentPlayerNode == null) {
             currentPlayerNode = new PlayerNode();
-            pane.getChildren().add(1, currentPlayerNode);
+            pane.getChildren().add(0, currentPlayerNode);
         }
         else {
             currentPlayerNode = playerNodes.get(username);
-            pane.getChildren().set(1, currentPlayerNode);
+            pane.getChildren().set(0, currentPlayerNode);
         }
 
         currentPlayerNode.setLayoutX(14d);
         currentPlayerNode.setLayoutY(342d);
     }
+
+    private void changePlayerNodeControlsStatus(PlayerNode playerNode, boolean disable){
+        playerNode.setAreControlsDisable(disable);
+    }
+
+    private void changeGlobalNodesControlsStatus(boolean disable){
+        shop.setAreControlsDisabled(disable);
+        market.setAreControlsDisabled(disable);
+    }
+
+
+    private void onShopCardSelection(ShopCardSelectionEvent event){
+        ShopSelectionBean bean = event.getCardSelectionBean();
+        bean.setUpgradableSlotsCount(getModel().getPlayers().get(0).getProduction().getUpgradableCraftingNumber());
+        CustomDialog dialog = new ChooseCraftingDialog(getSceneManager().getStage(), bean, this::sendCardSelectionPayload);
+        dialog.openDialog();
+    }
+
+
+    private void sendCardSelectionPayload(ShopSelectionBean bean){
+        System.out.println("Selected card (" + bean.getRow() + ", " + bean.getCol() + ") and upgradable crafting " + bean.getUpgradableIndex());
+    }
+
+    private void sendConversionOptionPayload(ConversionSelectionEvent event){
+        System.out.println("Selected options: " + event.getBean().getSelectedConversions());
+    }
+
+    private void sendMarketPickPayload(MarketPickEvent event){
+        System.out.println("Market Pick: " + event.getBean().isRow() + " " + event.getBean().getIndex());
+    }
+
+    private void sendCraftingSelectionPayload(CraftingSelectionEvent event){
+        System.out.println("Crafting Selected: " + event.getBean().getCraftingType() + " " + event.getBean().getIndex());
+    }
+
+    private void sendLeaderInteractionPayload(LeaderInteractionEvent event){
+        boolean isActivate = event.getBean().isActivate();
+        int index = event.getBean().getIndex();
+
+        int id;
+        try {
+            id = getModel().getPlayers().get(0).getLeaderCards().getLeaderCards().get(index).getId();
+        }catch(RuntimeException e){
+            id = -1;
+        }
+
+        if(isActivate)
+            System.out.println("Activate Leader with id " + id + " (index: " + index + ")");
+        else
+            System.out.println("Discarded Leader with id " + id + " (index: " + index + ")");
+    }
+
 }

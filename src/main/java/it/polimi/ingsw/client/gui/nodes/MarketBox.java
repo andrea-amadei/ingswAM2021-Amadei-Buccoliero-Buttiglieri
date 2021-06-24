@@ -1,13 +1,16 @@
 package it.polimi.ingsw.client.gui.nodes;
 
 import it.polimi.ingsw.client.gui.FXMLCachedLoaders;
+import it.polimi.ingsw.client.gui.beans.ConversionSelectionBean;
+import it.polimi.ingsw.client.gui.beans.MarketPickBean;
+import it.polimi.ingsw.client.gui.events.ConversionSelectionEvent;
+import it.polimi.ingsw.client.gui.events.MarketPickEvent;
 import it.polimi.ingsw.client.model.ConversionOption;
 import it.polimi.ingsw.gamematerials.MarbleColor;
 import it.polimi.ingsw.parser.raw.RawMarket;
 import it.polimi.ingsw.utils.ResourceLoader;
 import javafx.beans.property.*;
-import javafx.event.Event;
-import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
@@ -36,11 +39,13 @@ public class MarketBox extends VBox {
     private final ObjectProperty<RawMarket> rawMarket;
     private final ObjectProperty<List<MarbleColor>> selectedMarbleColors;
     private final ObjectProperty<List<List<ConversionOption>>> conversionOptions;
+    private final BooleanProperty areControlsDisabled;
 
     private MarbleBox[][] graphicGrid;
     private MarbleBox oddMarbleBox;
     private final List<List<HBox>> selectableOptionBoxes;
     private final List<Integer> selectedOptions;
+    private final List<Button> buttons;
 
     public MarketBox(){
         FXMLLoader fxmlLoader;
@@ -65,8 +70,19 @@ public class MarketBox extends VBox {
         rawMarket = new SimpleObjectProperty<>(this, "rawMarket", null);
         selectedMarbleColors = new SimpleObjectProperty<>(this, "selectedMarbles", new ArrayList<>());
         conversionOptions = new SimpleObjectProperty<>(this, "conversionOptions", new ArrayList<>());
+        buttons = new ArrayList<>();
+
+        areControlsDisabled = new SimpleBooleanProperty(this, "areControlsDisabled", true);
+        areControlsDisabled.addListener((b, oldValue, newValue) -> {
+            for(Button btn : buttons){
+                btn.setDisable(newValue);
+                btn.setVisible(!newValue);
+            }
+        });
         selectableOptionBoxes = new ArrayList<>();
         selectedOptions = new ArrayList<>();
+
+        setup(3, 4);
     }
 
     private void updateGrid(){
@@ -111,7 +127,7 @@ public class MarketBox extends VBox {
                 optionsGrid.add(cell, i + 1, j +1);
                 selectableOptionBoxes.get(i).add(cell);
 
-                cell.setOnMouseClicked(this::handleOptionSelection);
+                cell.setOnMousePressed(this::handleOptionSelection);
 
                 if(j == 0){
                     cell.setStyle("-fx-background-color: red");
@@ -127,6 +143,11 @@ public class MarketBox extends VBox {
                 cell.getChildren().add(new ResourceBox("faith", currentOption.getFaithPoints(), true, false, false));
             }
         }
+
+        //add the button to confirm
+        Button confirmButton = new Button("OK");
+        confirmButton.setOnAction(this::handleOptionConfirm);
+        optionsGrid.add(confirmButton, 0, 0);
     }
 
     public void setup(int rowNum, int colNum){
@@ -147,16 +168,22 @@ public class MarketBox extends VBox {
         //adding horizontal buttons
         for(int i = 0; i < colNum; i++){
             Button selectButton = new Button();
-            selectButton.setOnMouseClicked(this::handleRowOrColPick);
+            selectButton.setOnMousePressed(this::handleRowOrColPick);
+            buttons.add(selectButton);
             marketGrid.add(selectButton, i, rowNum + 1);
+            selectButton.setDisable(areControlsDisabled.get());
+            selectButton.setVisible(!areControlsDisabled.get());
             GridPane.setHalignment(selectButton, HPos.CENTER);
         }
 
         //adding vertical buttons
         for(int i = 0; i < rowNum; i++){
             Button selectButton = new Button();
-            selectButton.setOnMouseClicked(this::handleRowOrColPick);
+            selectButton.setOnMousePressed(this::handleRowOrColPick);
+            buttons.add(selectButton);
             marketGrid.add(selectButton, colNum, i + 1);
+            selectButton.setDisable(areControlsDisabled.get());
+            selectButton.setVisible(!areControlsDisabled.get());
             GridPane.setHalignment(selectButton, HPos.CENTER);
         }
 
@@ -204,8 +231,12 @@ public class MarketBox extends VBox {
         sourceOption.setStyle("-fx-background-color: red");
 
         selectedOptions.set(optionCol, optionRow);
+    }
 
-        System.out.println(selectedOptions);
+    private void handleOptionConfirm(ActionEvent event){
+        ConversionSelectionBean bean = new ConversionSelectionBean();
+        bean.setSelectedConversions(selectedOptions);
+        fireEvent(new ConversionSelectionEvent(bean));
     }
     
     private void handleRowOrColPick(MouseEvent event){
@@ -220,7 +251,10 @@ public class MarketBox extends VBox {
         else
             index = buttonCol;
 
-        System.out.println(isRaw + " " + index);
+        MarketPickBean bean = new MarketPickBean();
+        bean.setIsRow(isRaw);
+        bean.setIndex(index);
+        fireEvent(new MarketPickEvent(bean));
     }
 
     //GETTERS
@@ -268,4 +302,15 @@ public class MarketBox extends VBox {
         return oddMarbleBox;
     }
 
+    public boolean isAreControlsDisabled() {
+        return areControlsDisabled.get();
+    }
+
+    public BooleanProperty areControlsDisabledProperty() {
+        return areControlsDisabled;
+    }
+
+    public void setAreControlsDisabled(boolean areControlsDisabled) {
+        this.areControlsDisabled.set(areControlsDisabled);
+    }
 }
