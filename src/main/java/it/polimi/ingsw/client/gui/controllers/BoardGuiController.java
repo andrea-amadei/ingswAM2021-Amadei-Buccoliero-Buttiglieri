@@ -1,21 +1,27 @@
 package it.polimi.ingsw.client.gui.controllers;
 
+import it.polimi.ingsw.client.gui.beans.ShopSelectionBean;
+import it.polimi.ingsw.client.gui.dialogs.ChooseCraftingDialog;
+import it.polimi.ingsw.client.gui.dialogs.CustomDialog;
+import it.polimi.ingsw.client.gui.events.*;
 import it.polimi.ingsw.client.gui.nodes.*;
-import it.polimi.ingsw.client.gui.updaters.FaithPathGuiUpdater;
-import it.polimi.ingsw.client.gui.updaters.MarketGuiUpdater;
-import it.polimi.ingsw.client.gui.updaters.ShopGuiUpdater;
+import it.polimi.ingsw.client.gui.updaters.*;
 import it.polimi.ingsw.client.model.ClientPlayer;
+import it.polimi.ingsw.client.model.ClientShelf;
 import it.polimi.ingsw.client.model.ConversionOption;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.FlagColor;
 import it.polimi.ingsw.gamematerials.LevelFlag;
 import it.polimi.ingsw.gamematerials.MarbleColor;
+import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.fsm.states.ConversionSelectionState;
 import it.polimi.ingsw.model.holder.FaithHolder;
 import it.polimi.ingsw.model.market.ConversionActuator;
 import it.polimi.ingsw.model.market.Market;
+import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.CraftingCard;
+import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.raw.*;
 import it.polimi.ingsw.utils.ResourceLoader;
@@ -30,6 +36,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class BoardGuiController extends BaseController {
     @FXML
@@ -40,7 +47,7 @@ public class BoardGuiController extends BaseController {
     public MarketBox market;
     @FXML
     public FaithPath faithPath;
-    @FXML
+
     public ScoreboardBox scoreboard;
 
     public PlayerNode currentPlayerNode;
@@ -49,6 +56,12 @@ public class BoardGuiController extends BaseController {
     public void initialize() {
         scoreboard = new ScoreboardBox();
         board.getChildren().add(scoreboard);
+
+        board.addEventFilter(ShopCardSelectionEvent.SHOP_CARD_SELECTION_EVENT, this::onShopCardSelection);
+        board.addEventFilter(ConversionSelectionEvent.CONVERSION_SELECTION_EVENT, this::sendConversionOptionPayload);
+        board.addEventFilter(MarketPickEvent.MARKET_PICK_EVENT, this::sendMarketPickPayload);
+        board.addEventFilter(CraftingSelectionEvent.CRAFTING_SELECTION_EVENT, this::sendCraftingSelectionPayload);
+        board.addEventFilter(LeaderInteractionEvent.LEADER_INTERACTION_EVENT, this::sendLeaderInteractionPayload);
     }
 
     public void boardSetup() {
@@ -70,7 +83,7 @@ public class BoardGuiController extends BaseController {
         setActivePlayer(getModel().getPlayers().get(0).getUsername());
 
         // TODO: ADD ALL GLOBAL UPDATERS
-        // new ShopGuiUpdater(shop, getModel().getShop());
+        new ShopGuiUpdater(shop, getModel().getShop());
         new MarketGuiUpdater(market, getModel().getMarket());
 
         // TODO: ADD ALL PLAYER SPECIFIC UPDATERS
@@ -83,29 +96,22 @@ public class BoardGuiController extends BaseController {
             new StorageGuiUpdater(playerNodes.get(getModel().getPlayers().get(i).getUsername()).getChest(), getModel().getPlayers().get(i).getChest());
             new StorageGuiUpdater(playerNodes.get(getModel().getPlayers().get(i).getUsername()).getHand(), getModel().getPlayers().get(i).getHand());
             new StorageGuiUpdater(playerNodes.get(getModel().getPlayers().get(i).getUsername()).getBasket(), getModel().getPlayers().get(i).getMarketBasket());
+            new ProductionGuiUpdater(playerNodes.get(getModel().getPlayers().get(i).getUsername()).getProduction(), getModel().getPlayers().get(i).getProduction());
         }
-
-        // TODO: WHY DOESN'T IT WORK WITHOUT IT?
-        setActivePlayer(getModel().getPlayers().get(0).getUsername());
 
         changeGlobalNodesControlsStatus(false);
         changePlayerNodeControlsStatus(currentPlayerNode, false);
     }
 
     public void setActivePlayer(String username) {
-        AnchorPane pane = ((AnchorPane) getSceneManager().getActiveScene().getRoot());
-
         if(currentPlayerNode == null) {
-            currentPlayerNode = new PlayerNode();
-            pane.getChildren().add(0, currentPlayerNode);
+            currentPlayerNode = playerNodes.get(username);
+            board.getChildren().add(0, currentPlayerNode);
         }
         else {
             currentPlayerNode = playerNodes.get(username);
-            pane.getChildren().set(0, currentPlayerNode);
+            board.getChildren().set(0, currentPlayerNode);
         }
-
-        currentPlayerNode.setLayoutX(14d);
-        currentPlayerNode.setLayoutY(342d);
     }
 
     private void changePlayerNodeControlsStatus(PlayerNode playerNode, boolean disable){
