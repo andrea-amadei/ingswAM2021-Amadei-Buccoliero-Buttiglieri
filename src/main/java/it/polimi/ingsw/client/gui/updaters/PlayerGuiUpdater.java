@@ -26,16 +26,22 @@ public class PlayerGuiUpdater implements Listener<ClientPlayer> {
 
     @Override
     public void update(ClientPlayer clientPlayer) {
-        Platform.runLater(() -> {
-            int i;
+        int i;
 
-            for(i = cupboardBox.getBaseResources().size(); i < clientPlayer.getCupboard().size(); i++)
-                cupboardBox.addBaseShelf(clientPlayer.getCupboard().get(i).getAcceptedType());
+        for(i = cupboardBox.getNBase(); i < clientPlayer.getCupboard().size(); i++) {
+            new ShelfGuiUpdater(cupboardBox.getBaseShelves().get(i), clientPlayer.getCupboard().get(i));
 
-            for(i = cupboardBox.getLeaderResources().size(); i < clientPlayer.getLeaderShelves().size(); i++)
-                cupboardBox.addLeaderShelf(clientPlayer.getLeaderShelves().get(i).getAcceptedType());
+            int fi = i;
+            Platform.runLater(() -> cupboardBox.addBaseShelf(clientPlayer.getCupboard().get(fi).getAcceptedType()));
+        }
 
-            scoreboardBox.setPlayerPointsProperty(playerNumber - 1, clientPlayer.getVictoryPoints());
-        });
+        for(i = cupboardBox.getNLeader(); i < clientPlayer.getLeaderShelves().size(); i++) {
+            new ShelfGuiUpdater(cupboardBox.getLeaderShelves().get(i), clientPlayer.getLeaderShelves().get(i));
+
+            int fi = i;
+            Platform.runLater(() -> cupboardBox.addLeaderShelf(clientPlayer.getLeaderShelves().get(fi).getAcceptedType()));
+        }
+
+        scoreboardBox.setPlayerPointsProperty(playerNumber - 1, clientPlayer.getVictoryPoints());
     }
 }
