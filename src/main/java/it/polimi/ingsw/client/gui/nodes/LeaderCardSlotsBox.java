@@ -116,7 +116,7 @@ public class LeaderCardSlotsBox extends HBox {
                 updatedLeaderCardsBox.add(leaderBoxes.get(i));
             }else{
                 LeaderCardBox newBox = new LeaderCardBox();
-                newBox.setOnMouseClicked(this::handleCardClick);
+                newBox.setOnMousePressed(this::handleCardClick);
                 updatedLeaderCardsBox.add(newBox);
             }
         }
