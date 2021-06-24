@@ -15,6 +15,8 @@ import it.polimi.ingsw.model.FaithPathTile;
 import it.polimi.ingsw.model.holder.FaithHolder;
 import it.polimi.ingsw.model.leader.*;
 import it.polimi.ingsw.model.market.ConversionActuator;
+import it.polimi.ingsw.model.market.Marble;
+import it.polimi.ingsw.model.market.MarbleFactory;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.CraftingCard;
@@ -48,7 +50,22 @@ public class CLITest {
                 "{\"tiles\":[{\"order\":0,\"x\":1,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":1,\"x\":2,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":2,\"x\":3,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":3,\"x\":3,\"y\":2,\"points\":1,\"pope_group\":0,\"pope_check\":false},{\"order\":4,\"x\":3,\"y\":3,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":5,\"x\":4,\"y\":3,\"points\":0,\"pope_group\":1,\"pope_check\":false},{\"order\":6,\"x\":5,\"y\":3,\"points\":1,\"pope_group\":1,\"pope_check\":false},{\"order\":7,\"x\":6,\"y\":3,\"points\":0,\"pope_group\":1,\"pope_check\":false},{\"order\":8,\"x\":7,\"y\":3,\"points\":0,\"pope_group\":1,\"pope_check\":true},{\"order\":9,\"x\":8,\"y\":3,\"points\":2,\"pope_group\":0,\"pope_check\":false},{\"order\":10,\"x\":8,\"y\":2,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":11,\"x\":8,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":12,\"x\":9,\"y\":1,\"points\":2,\"pope_group\":2,\"pope_check\":false},{\"order\":13,\"x\":10,\"y\":1,\"points\":0,\"pope_group\":2,\"pope_check\":false},{\"order\":14,\"x\":11,\"y\":1,\"points\":0,\"pope_group\":2,\"pope_check\":false},{\"order\":15,\"x\":12,\"y\":1,\"points\":3,\"pope_group\":2,\"pope_check\":false},{\"order\":16,\"x\":13,\"y\":1,\"points\":0,\"pope_group\":2,\"pope_check\":true},{\"order\":17,\"x\":13,\"y\":2,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":18,\"x\":13,\"y\":3,\"points\":3,\"pope_group\":0,\"pope_check\":false},{\"order\":19,\"x\":14,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":20,\"x\":15,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":21,\"x\":16,\"y\":3,\"points\":4,\"pope_group\":3,\"pope_check\":false},{\"order\":22,\"x\":17,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":23,\"x\":18,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":24,\"x\":19,\"y\":3,\"points\":4,\"pope_group\":3,\"pope_check\":true}],\"groups\":[{\"group\":1,\"points\":2},{\"group\":2,\"points\":3},{\"group\":3,\"points\":4}]}",
                 "{\"cards\":[{\"id\":1,\"name\":\"aaa\",\"points\":2,\"requirements\":[{\"type\":\"flag\",\"color\":\"YELLOW\",\"amount\":1},{\"type\":\"flag\",\"color\":\"GREEN\",\"amount\":1}],\"special_abilities\":[{\"type\":\"discount\",\"resource\":\"servant\",\"amount\":1}]},{\"id\":2,\"name\":\"aaa\",\"points\":2,\"requirements\":[{\"type\":\"flag\",\"color\":\"BLUE\",\"amount\":1},{\"type\":\"flag\",\"color\":\"PURPLE\",\"amount\":1}],\"special_abilities\":[{\"type\":\"discount\",\"resource\":\"shield\",\"amount\":1}]},{\"id\":3,\"name\":\"aaa\",\"points\":2,\"requirements\":[{\"type\":\"flag\",\"color\":\"GREEN\",\"amount\":1},{\"type\":\"flag\",\"color\":\"BLUE\",\"amount\":1}],\"special_abilities\":[{\"type\":\"discount\",\"resource\":\"stone\",\"amount\":1}]},{\"id\":4,\"name\":\"aaa\",\"points\":2,\"requirements\":[{\"type\":\"flag\",\"color\":\"YELLOW\",\"amount\":1},{\"type\":\"flag\",\"color\":\"PURPLE\",\"amount\":1}],\"special_abilities\":[{\"type\":\"discount\",\"resource\":\"gold\",\"amount\":1}]},{\"id\":5,\"name\":\"bbb\",\"points\":3,\"requirements\":[{\"type\":\"resource\",\"resource\":\"gold\",\"amount\":5}],\"special_abilities\":[{\"type\":\"storage\",\"storage_name\":\"leader_5\",\"accepted_types\":\"stone\",\"amount\":2}]},{\"id\":6,\"name\":\"bbb\",\"points\":3,\"requirements\":[{\"type\":\"resource\",\"resource\":\"stone\",\"amount\":5}],\"special_abilities\":[{\"type\":\"storage\",\"storage_name\":\"leader_6\",\"accepted_types\":\"servant\",\"amount\":2}]},{\"id\":7,\"name\":\"bbb\",\"points\":3,\"requirements\":[{\"type\":\"resource\",\"resource\":\"servant\",\"amount\":5}],\"special_abilities\":[{\"type\":\"storage\",\"storage_name\":\"leader_7\",\"accepted_types\":\"shield\",\"amount\":2}]},{\"id\":8,\"name\":\"bbb\",\"points\":3,\"requirements\":[{\"type\":\"resource\",\"resource\":\"shield\",\"amount\":5}],\"special_abilities\":[{\"type\":\"storage\",\"storage_name\":\"leader_8\",\"accepted_types\":\"gold\",\"amount\":2}]},{\"id\":9,\"name\":\"ccc\",\"points\":5,\"requirements\":[{\"type\":\"flag\",\"color\":\"YELLOW\",\"amount\":2},{\"type\":\"flag\",\"color\":\"BLUE\",\"amount\":1}],\"special_abilities\":[{\"type\":\"conversion\",\"from\":\"WHITE\",\"to\":[\"servant\"],\"faith_output\":0}]},{\"id\":10,\"name\":\"ccc\",\"points\":5,\"requirements\":[{\"type\":\"flag\",\"color\":\"GREEN\",\"amount\":2},{\"type\":\"flag\",\"color\":\"PURPLE\",\"amount\":1}],\"special_abilities\":[{\"type\":\"conversion\",\"from\":\"WHITE\",\"to\":[\"shield\"],\"faith_output\":0}]},{\"id\":11,\"name\":\"ccc\",\"points\":5,\"requirements\":[{\"type\":\"flag\",\"color\":\"BLUE\",\"amount\":2},{\"type\":\"flag\",\"color\":\"YELLOW\",\"amount\":1}],\"special_abilities\":[{\"type\":\"conversion\",\"from\":\"WHITE\",\"to\":[\"stone\"],\"faith_output\":0}]},{\"id\":12,\"name\":\"ccc\",\"points\":5,\"requirements\":[{\"type\":\"flag\",\"color\":\"PURPLE\",\"amount\":2},{\"type\":\"flag\",\"color\":\"GREEN\",\"amount\":1}],\"special_abilities\":[{\"type\":\"conversion\",\"from\":\"WHITE\",\"to\":[\"gold\"],\"faith_output\":0}]},{\"id\":13,\"name\":\"ddd\",\"points\":4,\"requirements\":[{\"type\":\"level_flag\",\"color\":\"YELLOW\",\"level\":2,\"amount\":1}],\"special_abilities\":[{\"type\":\"crafting\",\"crafting\":{\"input\":{\"shield\":1},\"output\":{\"any\":1},\"faith_output\":1}}]},{\"id\":14,\"name\":\"ddd\",\"points\":4,\"requirements\":[{\"type\":\"level_flag\",\"color\":\"BLUE\",\"level\":2,\"amount\":1}],\"special_abilities\":[{\"type\":\"crafting\",\"crafting\":{\"input\":{\"servant\":1},\"output\":{\"any\":1},\"faith_output\":1}}]},{\"id\":15,\"name\":\"ddd\",\"points\":4,\"requirements\":[{\"type\":\"level_flag\",\"color\":\"PURPLE\",\"level\":2,\"amount\":1}],\"special_abilities\":[{\"type\":\"crafting\",\"crafting\":{\"input\":{\"stone\":1},\"output\":{\"any\":1},\"faith_output\":1}}]},{\"id\":16,\"name\":\"ddd\",\"points\":4,\"requirements\":[{\"type\":\"level_flag\",\"color\":\"GREEN\",\"level\":2,\"amount\":1}],\"special_abilities\":[{\"type\":\"crafting\",\"crafting\":{\"input\":{\"gold\":1},\"output\":{\"any\":1},\"faith_output\":1}}]}]}");
 
-        model.getMarket().changeMarket(new RawMarket(new Market()));
+        List<Marble> marbles = Arrays.asList(
+                MarbleFactory.createMarble(MarbleColor.WHITE),
+                MarbleFactory.createMarble(MarbleColor.BLUE),
+                MarbleFactory.createMarble(MarbleColor.WHITE),
+                MarbleFactory.createMarble(MarbleColor.YELLOW),
+                MarbleFactory.createMarble(MarbleColor.PURPLE),
+                MarbleFactory.createMarble(MarbleColor.YELLOW),
+                MarbleFactory.createMarble(MarbleColor.WHITE),
+                MarbleFactory.createMarble(MarbleColor.GREY),
+                MarbleFactory.createMarble(MarbleColor.BLUE),
+                MarbleFactory.createMarble(MarbleColor.GREY),
+                MarbleFactory.createMarble(MarbleColor.RED),
+                MarbleFactory.createMarble(MarbleColor.WHITE)
+        );
+        Market myMarket = new Market(marbles, MarbleFactory.createMarble(MarbleColor.PURPLE), 3, 4);
+        model.getMarket().changeMarket(new RawMarket(myMarket));
 
         CliBuilder.createGameFrames(framework, model);
 
@@ -339,7 +356,22 @@ public class CLITest {
 
         // market
         ClientMarket clientMarket = new ClientMarket(3, 4);
-        clientMarket.changeMarket(new RawMarket(new Market()));
+        List<Marble> marbles = Arrays.asList(
+                MarbleFactory.createMarble(MarbleColor.WHITE),
+                MarbleFactory.createMarble(MarbleColor.BLUE),
+                MarbleFactory.createMarble(MarbleColor.WHITE),
+                MarbleFactory.createMarble(MarbleColor.YELLOW),
+                MarbleFactory.createMarble(MarbleColor.PURPLE),
+                MarbleFactory.createMarble(MarbleColor.YELLOW),
+                MarbleFactory.createMarble(MarbleColor.WHITE),
+                MarbleFactory.createMarble(MarbleColor.GREY),
+                MarbleFactory.createMarble(MarbleColor.BLUE),
+                MarbleFactory.createMarble(MarbleColor.GREY),
+                MarbleFactory.createMarble(MarbleColor.RED),
+                MarbleFactory.createMarble(MarbleColor.WHITE)
+        );
+        Market myMarket = new Market(marbles, MarbleFactory.createMarble(MarbleColor.PURPLE), 3, 4);
+        clientMarket.changeMarket(new RawMarket(myMarket));
         // new ConversionOption(Arrays.asList("gold", "shield"), 3)
         clientMarket.changePossibleConversions(
                 Arrays.asList(MarbleColor.WHITE, MarbleColor.RED, MarbleColor.GREY, MarbleColor.BLUE),
