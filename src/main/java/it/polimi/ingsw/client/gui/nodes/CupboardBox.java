@@ -26,9 +26,6 @@ public class CupboardBox extends GridPane {
     private List<ShelfBox> base;
     private List<ShelfBox> leader;
 
-    private int nBase = 0;
-    private int nLeader = 0;
-
     private final List<Integer> BASE_SIZES = Arrays.asList(1, 2, 3);
     private final List<String> BASE_NAMES = Arrays.asList("Top", "Middle", "Bottom");
 
@@ -103,18 +100,16 @@ public class CupboardBox extends GridPane {
         this.baseResources.set(baseResources);
     }
 
-    public void addBaseShelf(String acceptedResource) {
+    public void addBaseShelf(String acceptedResource, int nBase) {
         base.get(nBase).setAcceptedResource(acceptedResource);
         super.add(base.get(nBase), 0, nBase);
         baseAccepted.set(nBase, acceptedResource);
-        nBase++;
     }
 
-    public void addLeaderShelf(String acceptedResource) {
+    public void addLeaderShelf(String acceptedResource, int nLeader) {
         leader.get(nLeader).setAcceptedResource(acceptedResource);
         super.add(leader.get(nLeader), 1, nLeader);
         leaderAccepted.set(nLeader, acceptedResource);
-        nLeader++;
     }
 
     public List<ShelfBox> getBaseShelves() {
@@ -123,13 +118,5 @@ public class CupboardBox extends GridPane {
 
     public List<ShelfBox> getLeaderShelves() {
         return leader;
-    }
-
-    public int getNBase() {
-        return nBase;
-    }
-
-    public int getNLeader() {
-        return nLeader;
     }
 }

@@ -15,10 +15,16 @@ public class PlayerGuiUpdater implements Listener<ClientPlayer> {
     private final CupboardBox cupboardBox;
     private final int playerNumber;
 
+    private int nBase;
+    private int nLeader;
+
     public PlayerGuiUpdater(ScoreboardBox scoreboardBox, CupboardBox cupboardBox, ClientPlayer clientPlayer, int playerNumber) {
         this.scoreboardBox = scoreboardBox;
         this.cupboardBox = cupboardBox;
         this.playerNumber = playerNumber;
+
+        nBase = 0;
+        nLeader = 0;
 
         clientPlayer.addListener(this);
         update(clientPlayer);
@@ -28,18 +34,22 @@ public class PlayerGuiUpdater implements Listener<ClientPlayer> {
     public void update(ClientPlayer clientPlayer) {
         int i;
 
-        for(i = cupboardBox.getNBase(); i < clientPlayer.getCupboard().size(); i++) {
+        for(i = nBase; i < clientPlayer.getCupboard().size(); i++) {
             new ShelfGuiUpdater(cupboardBox.getBaseShelves().get(i), clientPlayer.getCupboard().get(i));
 
             int fi = i;
-            Platform.runLater(() -> cupboardBox.addBaseShelf(clientPlayer.getCupboard().get(fi).getAcceptedType()));
+            int fnBase = nBase;
+            Platform.runLater(() -> cupboardBox.addBaseShelf(clientPlayer.getCupboard().get(fi).getAcceptedType(), fnBase));
+            nBase++;
         }
 
-        for(i = cupboardBox.getNLeader(); i < clientPlayer.getLeaderShelves().size(); i++) {
+        for(i = nLeader; i < clientPlayer.getLeaderShelves().size(); i++) {
             new ShelfGuiUpdater(cupboardBox.getLeaderShelves().get(i), clientPlayer.getLeaderShelves().get(i));
 
             int fi = i;
-            Platform.runLater(() -> cupboardBox.addLeaderShelf(clientPlayer.getLeaderShelves().get(fi).getAcceptedType()));
+            int fnLeader = nLeader;
+            Platform.runLater(() -> cupboardBox.addLeaderShelf(clientPlayer.getLeaderShelves().get(fi).getAcceptedType(), fnLeader));
+            nLeader++;
         }
 
         scoreboardBox.setPlayerPointsProperty(playerNumber - 1, clientPlayer.getVictoryPoints());
