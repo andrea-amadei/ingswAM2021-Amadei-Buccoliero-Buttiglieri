@@ -64,12 +64,12 @@ public class ProductionBox extends GridPane {
 
     private void setup() {
 
-        //setting up the grid that will contain the craftings
+        //setting up the grid that will contain the crafting
         for(int i = 0; i < ROW_NUM; i++){
             for(int j = 0; j < COL_NUM; j++){
                 StackPane stackPane = new StackPane();
                 stackPane.setPrefHeight(220);
-                stackPane.setPrefWidth(204);
+                stackPane.setPrefWidth(220);
                 Region region = new Region();
                 stackPane.setStyle("-fx-border-color: black; -fx-border-insets: 10;");
                 stackPane.getChildren().add(region);
