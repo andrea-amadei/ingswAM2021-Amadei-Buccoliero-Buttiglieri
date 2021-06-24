@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="200.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <Label text="Choose slot of the production for the selected card" AnchorPane.leftAnchor="145.0" AnchorPane.topAnchor="40.0">
+        <font>
+          <Font name="Arial" size="14.0" />
+        </font>
+    </Label>
+    <ComboBox prefWidth="150.0" promptText="Select crafting index" AnchorPane.leftAnchor="210.0" AnchorPane.topAnchor="80.0" />
+    <Button mnemonicParsing="false" text="Confirm" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="155.0" />
+</AnchorPane>

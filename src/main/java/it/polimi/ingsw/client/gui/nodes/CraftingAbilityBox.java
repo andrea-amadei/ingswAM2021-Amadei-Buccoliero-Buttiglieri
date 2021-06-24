@@ -1,0 +1,88 @@
+package it.polimi.ingsw.client.gui.nodes;
+
+import it.polimi.ingsw.exceptions.IllegalRawConversionException;
+import it.polimi.ingsw.exceptions.ParserException;
+import it.polimi.ingsw.parser.JSONParser;
+import it.polimi.ingsw.parser.raw.RawSpecialAbility;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+
+public class CraftingAbilityBox extends VBox {
+
+    private final StringProperty craftingAbilityJSON;
+    private final ObjectProperty<RawSpecialAbility> craftingAbility;
+
+    private CraftingBox crafting;
+    private Label abilityTypeLabel;
+    private HBox hBox;
+
+    public CraftingAbilityBox(){
+        String json = "{\"type\":\"crafting\",\"crafting\":{\"input\":{\"shield\":1},\"output\":{\"any\":1},\"faith_output\":1}}";
+        try {
+            craftingAbility = new SimpleObjectProperty<>(this, "craftingAbility", JSONParser.parseToRaw(json, RawSpecialAbility.class));
+        } catch (ParserException | IllegalRawConversionException e) {
+            throw new IllegalArgumentException("Conversion from JSON failed.");
+        }
+        craftingAbilityJSON = new SimpleStringProperty(this, "craftingAbilityJSON", json);
+        attachElements();
+    }
+
+    public CraftingAbilityBox(RawSpecialAbility rawSpecialAbility){
+        craftingAbility = new SimpleObjectProperty<>(this, "craftingAbility", rawSpecialAbility);
+        craftingAbilityJSON = new SimpleStringProperty(this, "craftingAbilityJSON", rawSpecialAbility.toString());
+
+        attachElements();
+    }
+
+    private void attachElements(){
+        this.setAlignment(Pos.CENTER);
+        abilityTypeLabel = new Label();
+        abilityTypeLabel.setText("Crafting Ability");
+        abilityTypeLabel.setFont(new Font("Arial", 18d));
+        abilityTypeLabel.setAlignment(Pos.CENTER);
+
+        hBox = new HBox();
+
+        crafting = new CraftingBox(craftingAbility.get().getCrafting());
+
+        this.getChildren().addAll(abilityTypeLabel, hBox);
+        hBox.getChildren().add(crafting);
+    }
+
+    private void update(){
+        crafting.setRawCrafting(craftingAbility.get().getCrafting());
+    }
+
+    public String getCraftingAbilityJSON() {
+        return craftingAbilityJSON.get();
+    }
+
+    public StringProperty craftingAbilityJSONProperty() {
+        return craftingAbilityJSON;
+    }
+
+    public RawSpecialAbility getCraftingAbility() {
+        return craftingAbility.get();
+    }
+
+    public ObjectProperty<RawSpecialAbility> craftingAbilityProperty() {
+        return craftingAbility;
+    }
+
+    public CraftingBox getCrafting() {
+        return crafting;
+    }
+
+    public void setCraftingAbility(RawSpecialAbility craftingAbility) {
+        this.craftingAbility.set(craftingAbility);
+        if(!craftingAbility.getCrafting().equals(this.craftingAbility.get().getCrafting()))
+            update();
+    }
+}
