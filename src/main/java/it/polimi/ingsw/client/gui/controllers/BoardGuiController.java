@@ -30,6 +30,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -47,6 +48,10 @@ public class BoardGuiController extends BaseController {
     public MarketBox market;
     @FXML
     public FaithPath faithPath;
+    @FXML
+    public MenuBox buttons;
+    @FXML
+    public TextArea messages;
 
     public ScoreboardBox scoreboard;
 
@@ -90,7 +95,7 @@ public class BoardGuiController extends BaseController {
         System.out.println(getModel().getPlayers().size());
         for(int i = 0; i < getModel().getPlayers().size(); i++) {
             new FaithPathGuiUpdater(faithPath, getModel().getPlayers().get(i).getFaithPath(), i + 1);
-            new PersonalDataGuiUpdater(scoreboard, getModel().getPersonalData());
+            new PersonalDataGuiUpdater(messages, getModel().getPersonalData());
             new FlagHolderGuiUpdater(scoreboard, getModel().getPlayers().get(i).getFlagHolder(), i + 1);
             new PlayerGuiUpdater(scoreboard, playerNodes.get(getModel().getPlayers().get(i).getUsername()).getCupboard(), getModel().getPlayers().get(i), i + 1);
             new StorageGuiUpdater(playerNodes.get(getModel().getPlayers().get(i).getUsername()).getChest(), getModel().getPlayers().get(i).getChest());
