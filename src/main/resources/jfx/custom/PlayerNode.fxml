@@ -7,8 +7,8 @@
     <CupboardBox fx:id="cupboard" scaleX="0.9" scaleY="0.9" AnchorPane.leftAnchor="-26.0" AnchorPane.topAnchor="8.0" />
     <HResourceContainer fx:id="chest" layoutX="18.0" layoutY="191.0" prefWidth="299.0" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="191.0" />
     <VResourceContainer fx:id="hand" layoutX="429.0" layoutY="123.0" showX="false" AnchorPane.leftAnchor="429.0" AnchorPane.topAnchor="123.0" />
-    <VResourceContainer fx:id="basket" layoutX="561.0" layoutY="123.0" showX="false" hideIfEmpty="true" AnchorPane.leftAnchor="561.0" AnchorPane.topAnchor="123.0" />
+    <VResourceContainer fx:id="basket" hideIfEmpty="true" layoutX="561.0" layoutY="123.0" showX="false" AnchorPane.leftAnchor="561.0" AnchorPane.topAnchor="123.0" />
 
     <ProductionBox fx:id="production" layoutX="11.0" layoutY="298.0" AnchorPane.leftAnchor="11.0" />
-    <LeaderCardSlotsBox fx:id="leaders" layoutX="246.0" layoutY="244.0" scaleX="0.45" scaleY="0.6" />
+    <LeaderCardSlotsBox fx:id="leaders" layoutX="294.0" layoutY="244.0" scaleX="0.45" scaleY="0.6" />
 </fx:root>

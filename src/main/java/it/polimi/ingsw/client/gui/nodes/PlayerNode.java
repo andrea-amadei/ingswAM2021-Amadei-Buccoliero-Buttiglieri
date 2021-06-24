@@ -35,12 +35,6 @@ public class PlayerNode extends AnchorPane {
     @FXML
     private LeaderCardSlotsBox leaders;
 
-    @FXML
-    private ProductionBox production;
-
-    @FXML
-    private LeaderCardSlotsBox leaders;
-
     private final BooleanProperty areControlsDisable;
 
     public PlayerNode() {
