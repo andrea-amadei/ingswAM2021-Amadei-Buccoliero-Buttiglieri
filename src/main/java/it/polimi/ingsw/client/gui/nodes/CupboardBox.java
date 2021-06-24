@@ -19,14 +19,15 @@ import java.util.List;
 public class CupboardBox extends GridPane {
     private final ListProperty<String> baseResources;
     private final ListProperty<String> baseAccepted;
-    private final ListProperty<Integer> baseAmounts;
 
     private final ListProperty<String> leaderResources;
     private final ListProperty<String> leaderAccepted;
-    private final ListProperty<Integer> leaderAmounts;
 
     private List<ShelfBox> base;
     private List<ShelfBox> leader;
+
+    private int nBase = 0;
+    private int nLeader = 0;
 
     private final List<Integer> BASE_SIZES = Arrays.asList(1, 2, 3);
     private final List<String> BASE_NAMES = Arrays.asList("Top", "Middle", "Bottom");
@@ -49,16 +50,13 @@ public class CupboardBox extends GridPane {
             throw new RuntimeException("Unable to load custom element '" + getClass().getSimpleName() + "': " + exception);
         }
 
-        baseResources = new SimpleListProperty<>(this, "baseResources", FXCollections.observableArrayList());
+        baseResources = new SimpleListProperty<>(this, "baseResources", FXCollections.observableArrayList("none", "none", "none"));
         baseAccepted = new SimpleListProperty<>(this, "baseAccepted", FXCollections.observableArrayList());
-        baseAmounts = new SimpleListProperty<>(this, "baseAmounts", FXCollections.observableArrayList());
 
-        leaderResources = new SimpleListProperty<>(this, "leaderResources", FXCollections.observableArrayList());
+        leaderResources = new SimpleListProperty<>(this, "leaderResources", FXCollections.observableArrayList("none", "none", "none"));
         leaderAccepted = new SimpleListProperty<>(this, "leaderResources", FXCollections.observableArrayList());
-        leaderAmounts = new SimpleListProperty<>(this, "leaderResources", FXCollections.observableArrayList());
 
         setup();
-        update();
     }
 
     private void setup() {
@@ -66,47 +64,14 @@ public class CupboardBox extends GridPane {
 
         base = new ArrayList<>();
         for(i = 0; i < baseResources.size(); i++) {
-            base.add(new ShelfBox("any", i + 1, BASE_NAMES.get(i)));
-            super.add(base.get(i), 0, i);
+            base.add(new ShelfBox("any", BASE_SIZES.get(base.size()), BASE_NAMES.get(base.size())));
+            baseAccepted.add("any");
         }
 
         leader = new ArrayList<>();
         for(i = 0; i < leaderResources.size(); i++) {
-            leader.add(new ShelfBox("any", 2, "Leader " + (i + 1)));
-            super.add(leader.get(i), 1, i);
-        }
-    }
-
-    private void update() {
-        int i;
-
-        for(i = 0; i < base.size(); i++) {
-            if(baseAmounts.get(i) >= 1)
-                base.get(i).setResource1(baseResources.get(i));
-            else
-                base.get(i).setResource1("none");
-
-            if(baseAmounts.get(i) >= 2)
-                base.get(i).setResource2(baseResources.get(i));
-            else
-                base.get(i).setResource2("none");
-
-            if(baseAmounts.get(i) >= 3)
-                base.get(i).setResource3(baseResources.get(i));
-            else
-                base.get(i).setResource3("none");
-        }
-
-        for(i = 0; i < leader.size(); i++) {
-            if(leaderAmounts.get(i) >= 1)
-                leader.get(i).setResource1(leaderResources.get(i));
-            else
-                leader.get(i).setResource1("none");
-
-            if(leaderAmounts.get(i) >= 2)
-                leader.get(i).setResource2(leaderResources.get(i));
-            else
-                leader.get(i).setResource2("none");
+            leader.add(new ShelfBox("any", 2, "Leader " + (leader.size() + 1)));
+            leaderAccepted.add("any");
         }
     }
 
@@ -116,14 +81,6 @@ public class CupboardBox extends GridPane {
 
     public ListProperty<String> baseResourcesProperty() {
         return baseResources;
-    }
-
-    public ObservableList<Integer> getBaseAmounts() {
-        return baseAmounts.get();
-    }
-
-    public ListProperty<Integer> baseAmountsProperty() {
-        return baseAmounts;
     }
 
     public ObservableList<String> getLeaderResources() {
@@ -142,45 +99,37 @@ public class CupboardBox extends GridPane {
         return leaderAccepted;
     }
 
-    public ObservableList<Integer> getLeaderAmounts() {
-        return leaderAmounts.get();
-    }
-
-    public ListProperty<Integer> leaderAmountsProperty() {
-        return leaderAmounts;
-    }
-
     public void setBaseResources(ObservableList<String> baseResources) {
         this.baseResources.set(baseResources);
-        update();
-    }
-
-    public void setBaseAmounts(ObservableList<Integer> baseAmounts) {
-        this.baseAmounts.set(baseAmounts);
-        update();
-    }
-
-    public void addLeaderShelf(String acceptedResource) {
-        leader.add(new ShelfBox(acceptedResource, 2, "Leader " + (leader.size() + 1)));
-        super.add(leader.get(leader.size() - 1), 1, leader.size() - 1);
-        leaderAccepted.add(acceptedResource);
-        leaderAmounts.add(0);
-        leaderResources.add("gold");
-        update();
     }
 
     public void addBaseShelf(String acceptedResource) {
-        base.add(new ShelfBox(acceptedResource, BASE_SIZES.get(base.size()), BASE_NAMES.get(base.size())));
-        super.add(base.get(base.size() - 1), 0, base.size() - 1);
-        baseAccepted.add(acceptedResource);
-        baseAmounts.add(0);
-        baseResources.add("gold");
-        update();
+        base.get(nBase).setAcceptedResource(acceptedResource);
+        super.add(base.get(nBase), 0, nBase);
+        baseAccepted.set(nBase, acceptedResource);
+        nBase++;
     }
 
-    public void setLeaderShelf(int index, String resource, int amount) {
-        this.leaderResources.set(index, resource);
-        this.leaderAmounts.set(index, amount);
-        update();
+    public void addLeaderShelf(String acceptedResource) {
+        leader.get(nLeader).setAcceptedResource(acceptedResource);
+        super.add(leader.get(nLeader), 1, nLeader);
+        leaderAccepted.set(nLeader, acceptedResource);
+        nLeader++;
+    }
+
+    public List<ShelfBox> getBaseShelves() {
+        return base;
+    }
+
+    public List<ShelfBox> getLeaderShelves() {
+        return leader;
+    }
+
+    public int getNBase() {
+        return nBase;
+    }
+
+    public int getNLeader() {
+        return nLeader;
     }
 }
