@@ -13,6 +13,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -132,9 +133,9 @@ public class CraftingBox extends VBox {
 
         faith = new ResourceBox("faith", faithValue, true, false, true);
         faith.setAlignment(Pos.BOTTOM_RIGHT);
+        faith.setPadding(new Insets(20, 0, 0, 0));
 
         this.getChildren().addAll(levelLabel, hBox, faith);
-        this.setSpacing(20d);
 
     }
 
