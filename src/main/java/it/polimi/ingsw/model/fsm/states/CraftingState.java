@@ -12,7 +12,6 @@ import it.polimi.ingsw.model.actions.ConfirmAction;
 import it.polimi.ingsw.model.actions.SelectCraftingAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
-import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.*;
 
@@ -74,16 +73,15 @@ public class CraftingState extends State {
         if(confirmAction == null)
             throw new NullPointerException();
 
-        if(!getGameContext().getCurrentPlayer().getBoard().getProduction().isCraftingReady())
-            throw new FSMTransitionFailedException("Cannot activate production if no crafting is ready");
-
         List<Message> messages;
-
         try {
             messages = new ArrayList<>(confirmAction.execute(getGameContext()));
         } catch(IllegalActionException e) {
             throw new FSMTransitionFailedException(e.getMessage());
         }
+
+        if(!getGameContext().getCurrentPlayer().getBoard().getProduction().isCraftingReady())
+            throw new FSMTransitionFailedException("Cannot activate production if no crafting is ready");
 
         //activate production and retrieve all the associated payload components
         List<PayloadComponent> payload = new ArrayList<>(
