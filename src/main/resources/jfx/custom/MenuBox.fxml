@@ -4,14 +4,14 @@
 <?import javafx.scene.layout.*?>
 
 <fx:root type="GridPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-    <Button text="BACK" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-    <Button text="SELECT OUTPUT" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
-    <Button text="GO" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
-    <Button text="CRAFTING" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-    <Button text="MARKET" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-    <Button text="SHOP" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-    <Button text="PRELIMINARY PICK" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-    <Button text="COLLECT FROM BASKET" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+    <Button fx:id="backBtn" text="BACK" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+    <Button fx:id="selectOutputBtn" text="SELECT OUTPUT" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+    <Button fx:id="confirmButton" text="GO" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+    <Button fx:id="selectPlayCraftingBtn" text="CRAFTING" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+    <Button fx:id="selectPlayMarketBtn" text="MARKET" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+    <Button fx:id="selectPlayShopBtn" text="SHOP" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+    <Button fx:id="preliminaryPickBtn" text="PRELIMINARY PICK" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+    <Button fx:id="collectFromBasketBtn" text="COLLECT FROM BASKET" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
    <columnConstraints>
       <ColumnConstraints />
       <ColumnConstraints />
