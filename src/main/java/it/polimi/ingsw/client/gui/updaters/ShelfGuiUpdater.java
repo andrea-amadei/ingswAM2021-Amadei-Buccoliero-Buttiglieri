@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.gui.updaters;
 import it.polimi.ingsw.client.gui.nodes.ShelfBox;
 import it.polimi.ingsw.client.model.ClientShelf;
 import it.polimi.ingsw.client.observables.Listener;
+import javafx.application.Platform;
 
 import java.util.List;
 
@@ -47,5 +48,7 @@ public class ShelfGuiUpdater implements Listener<ClientShelf> {
             shelfBox.setResource3(resource);
         else
             shelfBox.setResource3("none");
+
+        shelfBox.setSelectedResources(clientShelf.getSelectedResources().values().stream().reduce(0, Integer::sum));
     }
 }

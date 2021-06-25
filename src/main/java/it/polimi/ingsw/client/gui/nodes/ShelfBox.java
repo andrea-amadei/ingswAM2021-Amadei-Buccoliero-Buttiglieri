@@ -20,13 +20,15 @@ import java.util.List;
 
 public class ShelfBox extends GridPane {
 
-    private StringProperty acceptedResource;
-    private IntegerProperty size;
-    private StringProperty resource1;
-    private StringProperty resource2;
-    private StringProperty resource3;
+    private final StringProperty acceptedResource;
+    private final IntegerProperty size;
+    private final StringProperty resource1;
+    private final StringProperty resource2;
+    private final StringProperty resource3;
 
-    private StringProperty name;
+    private final StringProperty name;
+
+    private final IntegerProperty selectedResources;
 
     private Label label;
     private List<ResourceBox> resources;
@@ -42,6 +44,7 @@ public class ShelfBox extends GridPane {
         this.resource2 = new SimpleStringProperty(this, "resource2Property", "none");
         this.resource3 = new SimpleStringProperty(this, "resource3Property", "none");
         this.name = new SimpleStringProperty(this, "name", name);
+        this.selectedResources = new SimpleIntegerProperty(this, "selectedResources", 0);
 
         setup();
         update();
@@ -172,6 +175,12 @@ public class ShelfBox extends GridPane {
 
                 break;
         }
+
+        for(int i = 0; i < 3; i++)
+            if(getSelectedResources() >= i + 1)
+                resources.get(i).setSelectedResources(1);
+            else
+                resources.get(i).setSelectedResources(0);
     }
 
     public String getAcceptedResource() {
@@ -222,6 +231,14 @@ public class ShelfBox extends GridPane {
         return name;
     }
 
+    public int getSelectedResources() {
+        return selectedResources.get();
+    }
+
+    public IntegerProperty selectedResourcesProperty() {
+        return selectedResources;
+    }
+
     public void setAcceptedResource(String acceptedResource) {
         this.acceptedResource.set(acceptedResource);
         update();
@@ -249,6 +266,11 @@ public class ShelfBox extends GridPane {
 
     public void setName(String name) {
         this.name.set(name);
+        update();
+    }
+
+    public void setSelectedResources(int selectedResources) {
+        this.selectedResources.set(selectedResources);
         update();
     }
 }
