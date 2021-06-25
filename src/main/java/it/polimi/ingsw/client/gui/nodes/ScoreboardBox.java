@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.gui.nodes;
 
+import it.polimi.ingsw.client.gui.events.SwitchPlayerEvent;
 import it.polimi.ingsw.parser.raw.RawLevelFlag;
 import it.polimi.ingsw.utils.ResourceLoader;
 import javafx.beans.property.ListProperty;
@@ -105,6 +106,11 @@ public class ScoreboardBox extends GridPane {
             button.setPrefWidth(60d);
             GridPane.setRowIndex(button, i);
             GridPane.setColumnIndex(button, 1);
+
+            int finalI = i;
+            button.setOnAction(e ->{
+                fireEvent(new SwitchPlayerEvent(names.get(finalI)));
+            });
 
             glyph = new Glyph("FontAwesome", "EYE");
             glyph.setScaleX(2);

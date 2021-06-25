@@ -52,6 +52,6 @@ public class PlayerGuiUpdater implements Listener<ClientPlayer> {
             nLeader++;
         }
 
-        scoreboardBox.setPlayerPointsProperty(playerNumber - 1, clientPlayer.getVictoryPoints());
+        Platform.runLater(()->scoreboardBox.setPlayerPointsProperty(playerNumber - 1, clientPlayer.getVictoryPoints()));
     }
 }
