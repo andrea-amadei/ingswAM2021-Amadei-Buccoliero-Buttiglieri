@@ -20,7 +20,7 @@ public abstract class CustomDialog extends Stage {
 
         this.initStyle(StageStyle.TRANSPARENT);
         this.initOwner(primaryStage);
-        this.initModality(Modality.APPLICATION_MODAL);
+        this.initModality(Modality.WINDOW_MODAL);
         this.setScene(new Scene(rootAnchorPane));
     }
 
