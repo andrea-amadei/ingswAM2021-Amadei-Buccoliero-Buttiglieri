@@ -11,7 +11,6 @@ import it.polimi.ingsw.model.actions.ConfirmTidyAction;
 import it.polimi.ingsw.model.actions.ResourcesMoveAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
-import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
