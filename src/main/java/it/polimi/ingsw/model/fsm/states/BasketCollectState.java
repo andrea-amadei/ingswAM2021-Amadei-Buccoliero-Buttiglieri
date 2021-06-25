@@ -147,7 +147,7 @@ public class BasketCollectState extends State {
         payload.add(new PossibleActionsPayloadComponent(
             new HashSet<>(){{
                 add(PossibleActions.MOVE_FROM_BASKET_TO_SHELF);
-                add(PossibleActions.END_MARKET_ACTION);
+                add(PossibleActions.CONFIRM);
             }}
         ));
         messages.add(new Message(Collections.singletonList(getGameContext().getCurrentPlayer().getUsername()), payload));
