@@ -63,6 +63,10 @@ public class CraftingResourceSelectionStateTest {
         assertDoesNotThrow(()-> gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getStorage()
                 .getCupboard().getShelfById("BottomShelf").addResources(gold, 3));
 
+        //Ernestino has 1 servant in his top shelf
+        assertDoesNotThrow(()-> gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getStorage()
+                .getCupboard().getShelfById("TopShelf").addResources(servant, 1));
+
         //Ernestino has crafting1
         assertDoesNotThrow(()-> gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getProduction()
                 .setUpgradableCrafting(0, crafting1));
@@ -77,6 +81,25 @@ public class CraftingResourceSelectionStateTest {
                         new HashMap<>(){{put(servant, 4);}}));
     }
 
+    //method "handleAction" throws NullPointerException" if parameter "backAction" is null
+    @Test
+    public void nullBackAction(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((BackAction)null));
+    }
+
+    //method "handleAction" throws NullPointerException" if parameter "selectResourcesAction" is null
+    @Test
+    public void nullSelectResourcesAction(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((SelectResourcesAction) null));
+    }
+
+    //method "handleAction" throws NullPointerException" if parameter "confirmAction" is null
+    @Test
+    public void nullConfirmAction(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((ConfirmAction)null));
+    }
+
+    //method "handleAction" successfully manages action "BackAction"
     @Test
     public void successfulBack(){
         try{
@@ -89,11 +112,13 @@ public class CraftingResourceSelectionStateTest {
         assertFalse(gameContext.hasPlayerMoved());
     }
 
+    //method "handleAction" throws FSMTransitionFailedException if the "BackAction" target is not the corrent player
     @Test
     public void backRequestFromInvalidPlayer(){
         assertThrows(FSMTransitionFailedException.class, ()-> currentState.handleAction(new BackAction("Brigitta")));
     }
 
+    //method "handleAction" successfully menages action "SelectResourcesAction"
     @Test
     public void successfulSelectResources(){
 
@@ -108,12 +133,14 @@ public class CraftingResourceSelectionStateTest {
         assertFalse(gameContext.hasPlayerMoved());
     }
 
+    //method "handleAction" throws FSMTransitionFailedException if trying to select non owned resources
     @Test
     public void invalidSelectResource(){
         assertThrows(FSMTransitionFailedException.class, ()-> currentState.handleAction(
                 new SelectResourcesAction("Ernestino", "BottomShelf", servant, 1)));
     }
 
+    //method "handleAction" successfully menages action "confirmAction" with crafting with undecided output
     @Test
     public void successfulConfirmWithUndecidedOutput(){
         List<Message> messages;
@@ -140,14 +167,68 @@ public class CraftingResourceSelectionStateTest {
         assertTrue(messages.size() > 0);
     }
 
-
+    //method "handleAction" throws FSMTransitionFailedException if it receives a "confirmAction" without having
+    //selected any resources
     @Test
     public void confirmWithNoSelectedResources(){
         assertThrows(FSMTransitionFailedException.class,
                 ()->currentState.handleAction(new ConfirmAction("Ernestino")));
     }
 
+    //method "handleAction" throws FSMTransitionFailedException if it receives a "confirmAction" with wrong resources
+    //selected
+    @Test
+    public void confirmWithWrongResourcesSelected(){
+        try{
+            currentState.handleAction(new SelectResourcesAction("Ernestino",
+                    "TopShelf", servant, 1));
+        }catch(FSMTransitionFailedException e){
+            throw new RuntimeException();
+        }
 
+        assertThrows(FSMTransitionFailedException.class,
+                ()->currentState.handleAction(new ConfirmAction("Ernestino")));
+    }
 
+    //method "handleAction" throws FSMTransitionFailedException if it receives a "confirmAction" with too few resource
+    //selected
+    @Test
+    public void confirmWithTooFewResourcesSelected(){
+        try{
+            currentState.handleAction(new SelectResourcesAction("Ernestino",
+                    "BottomShelf", gold, 1));
+        }catch(FSMTransitionFailedException e){
+            throw new RuntimeException();
+        }
+
+        assertThrows(FSMTransitionFailedException.class,
+                ()->currentState.handleAction(new ConfirmAction("Ernestino")));
+    }
+
+    //method "handleAction" throws FSMTransitionFailedException if it receives a "ConfirmAction" from the wrong player
+    @Test
+    public void confirmFromInvalidPlayer(){
+        assertThrows(FSMTransitionFailedException.class,
+                ()->currentState.handleAction(new ConfirmAction("Brigitta")));
+    }
+
+    //method "handleAction" throws FSMTransitionFailedException if it receives a "ConfirmAction" when no resources are
+    //selected
+    @Test
+    public void confirmWithNoSelectedCrafting(){
+        gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getProduction().resetCraftingSelection();
+
+        assertThrows(FSMTransitionFailedException.class,
+                ()->currentState.handleAction(new ConfirmAction("Ernestino")));
+    }
+
+    //method "onEntry" correctly sends messages
+    @Test
+    public void onEntrySendMessages(){
+        List<Message> messages;
+        messages = currentState.onEntry();
+
+        assertTrue(messages.size() > 0);
+    }
 
 }
