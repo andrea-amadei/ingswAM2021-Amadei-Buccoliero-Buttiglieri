@@ -3,14 +3,11 @@ package it.polimi.ingsw.model.actions;
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
-import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class SelectPlayAction implements Action {
 
@@ -68,8 +65,6 @@ public class SelectPlayAction implements Action {
     public List<Message> execute(GameContext gameContext) throws IllegalActionException {
         if(gameContext == null)
             throw new NullPointerException();
-
-        Player currentPlayer;
 
         if(!player.equals(gameContext.getCurrentPlayer().getUsername()))
             throw new IllegalActionException("It is not your turn");

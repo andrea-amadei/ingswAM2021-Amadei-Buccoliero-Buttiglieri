@@ -141,6 +141,7 @@ public class BasketCollectState extends State {
 
         if(!alreadyVisited){
             payload.add(new InfoPayloadComponent("Collect resources from the basket. When you are ready confirm"));
+            alreadyVisited = true;
         }
 
         payload.add(new PossibleActionsPayloadComponent(

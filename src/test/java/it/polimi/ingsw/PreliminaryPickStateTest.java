@@ -6,9 +6,13 @@ import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.actions.ActivateLeaderAction;
+import it.polimi.ingsw.model.actions.DisconnectPlayerAction;
 import it.polimi.ingsw.model.actions.PreliminaryPickAction;
+import it.polimi.ingsw.model.actions.ReconnectPlayerAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
+import it.polimi.ingsw.model.fsm.states.MenuState;
 import it.polimi.ingsw.model.fsm.states.PreliminaryPickState;
 import it.polimi.ingsw.model.fsm.states.PreliminaryTidyState;
 import it.polimi.ingsw.server.ServerBuilder;
@@ -79,6 +83,7 @@ public class PreliminaryPickStateTest {
 
     }
 
+    //correct pick by first player
     @Test
     public void firstPlayerPick(){
         gameContext.setCurrentPlayer(model.getPlayerById("Ernestino"));
@@ -104,6 +109,7 @@ public class PreliminaryPickStateTest {
         assertEquals(0, player1.getBoard().getStorage().getHand().totalAmountOfResources());
     }
 
+    //correct pick by second player
     @Test
     public void secondPlayerPick(){
         gameContext.setCurrentPlayer(model.getPlayerById("Bartolomeo"));
@@ -130,6 +136,7 @@ public class PreliminaryPickStateTest {
         assertEquals(1, player2.getBoard().getStorage().getHand().totalAmountOfResources());
     }
 
+    //correct pick by third player
     @Test
     public void thirdPlayerPick(){
         gameContext.setCurrentPlayer(model.getPlayerById("Teofila"));
@@ -156,6 +163,7 @@ public class PreliminaryPickStateTest {
         assertEquals(1, player3.getBoard().getStorage().getHand().totalAmountOfResources());
     }
 
+    //correct pick by fourth player
     @Test
     public void fourthPlayerPick(){
         gameContext.setCurrentPlayer(model.getPlayerById("Ottone"));
@@ -183,6 +191,7 @@ public class PreliminaryPickStateTest {
         assertEquals(2, player4.getBoard().getStorage().getHand().totalAmountOfResources());
     }
 
+    //method "handleAction" throws FSMTransitionFailedException if the pick is made by a player who is not the current player
     @Test
     public void wrongPlayerPick(){
         gameContext.setCurrentPlayer(model.getPlayerById("Bartolomeo"));
@@ -201,6 +210,7 @@ public class PreliminaryPickStateTest {
         )));
     }
 
+    //method "handleAction" throws FSMTransitionFailedException if the player picks too many resources
     @Test
     public void tooManyResourcesPick(){
         gameContext.setCurrentPlayer(model.getPlayerById("Ottone"));
@@ -221,6 +231,7 @@ public class PreliminaryPickStateTest {
         )));
     }
 
+    //method "handleAction" throws FSMTransitionFailedException if the player picks too few resources
     @Test
     public void tooFewResourcesPick(){
         gameContext.setCurrentPlayer(model.getPlayerById("Ottone"));
@@ -239,6 +250,7 @@ public class PreliminaryPickStateTest {
         )));
     }
 
+    //method "handleAction" throws FSMTransitionFailedException if the player tries to discard too may leader cards
     @Test
     public void tooManyLeadersPick(){
         gameContext.setCurrentPlayer(model.getPlayerById("Bartolomeo"));
@@ -257,6 +269,7 @@ public class PreliminaryPickStateTest {
                 "Bartolomeo", leaderToDiscard, resources)));
     }
 
+    //method "handleAction" throws FSMTransitionFailedException if the player tries to discard too few leader cards
     @Test
     public void tooFewLeadersPick(){
         gameContext.setCurrentPlayer(model.getPlayerById("Bartolomeo"));
@@ -273,6 +286,7 @@ public class PreliminaryPickStateTest {
                 "Bartolomeo", leaderToDiscard, resources)));
     }
 
+    //method "handleAction" throws FSMTransitionFailedException if the player tries to discard leader cards they do not own
     @Test
     public void invalidLeadersPick(){
         gameContext.setCurrentPlayer(model.getPlayerById("Bartolomeo"));
@@ -290,6 +304,7 @@ public class PreliminaryPickStateTest {
                 "Bartolomeo", leaderToDiscard, resources)));
     }
 
+    //method "handleAction" throws FSMTransitionFailedException if the player tries to discard the same leader card twice
     @Test
     public void discardingSameLeaderTwice(){
         gameContext.setCurrentPlayer(model.getPlayerById("Bartolomeo"));
@@ -306,6 +321,88 @@ public class PreliminaryPickStateTest {
         assertThrows(FSMTransitionFailedException.class, ()->currentState.handleAction(new PreliminaryPickAction(
                 "Bartolomeo", leaderToDiscard, resources)));
     }
+
+    //method "handleAction" throws NullPointerException if the parameter "preliminaryPickAction" is null
+    @Test
+    public void nullPreliminaryPickAction(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((PreliminaryPickAction) null));
+    }
+
+    //method "handleAction" throws NullPointerException if the parameter "disconnectPlayerAction" is null
+    @Test
+    public void nullDisconnectPlayerAction(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((DisconnectPlayerAction) null));
+    }
+
+    //method "handleAction" throws NullPointerException if the parameter "reconnectPlayerAction" is null
+    @Test
+    public void nullReconnectPlayerAction(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((ReconnectPlayerAction) null));
+    }
+
+    //a player successfully reconnects while current player is in the PreliminaryPickState
+    @Test
+    public void reconnection(){
+        gameContext.setCurrentPlayer(model.getPlayerById("Teofila"));
+        gameContext.getGameModel().getPlayerById("Ottone").setConnected(false);
+
+        try {
+            currentState.handleAction(new ReconnectPlayerAction("Ottone"));
+        } catch (FSMTransitionFailedException e) {
+            throw new RuntimeException();
+        }
+
+        assertTrue(gameContext.getGameModel().getPlayerById("Ottone").isConnected());
+    }
+
+   //a player reconnects when the game was in stall and therefore they become the next current player. They still need to
+    //be in the PreliminaryPickState
+   @Test
+   public void reconnectionFromStall(){
+       gameContext.setCurrentPlayer(model.getPlayerById("Ernestino"));
+
+       gameContext.getGameModel().getPlayerById("Ottone").setConnected(false);
+       gameContext.getGameModel().getPlayerById("Teofila").setConnected(false);
+       gameContext.getGameModel().getPlayerById("Ernestino").setConnected(false);
+       gameContext.getGameModel().getPlayerById("Bartolomeo").setConnected(false);
+
+       try {
+           currentState.handleAction(new ReconnectPlayerAction("Bartolomeo"));
+       } catch (FSMTransitionFailedException e) {
+           throw new RuntimeException();
+       }
+
+       assertEquals("Bartolomeo", gameContext.getCurrentPlayer().getUsername());
+       assertTrue(currentState.getNextState() instanceof PreliminaryPickState);
+   }
+
+    //a player reconnects when the game was in stall and therefore they become the next current player. They need to go to
+    //the MenuState
+    @Test
+    public void reconnectionFromStall2(){
+        gameContext.setCurrentPlayer(model.getPlayerById("Teofila"));
+
+        gameContext.getGameModel().getPlayerById("Ottone").setConnected(false);
+        gameContext.getGameModel().getPlayerById("Teofila").setConnected(false);
+        gameContext.getGameModel().getPlayerById("Ernestino").setConnected(false);
+        gameContext.getGameModel().getPlayerById("Bartolomeo").setConnected(false);
+
+        try {
+            currentState.handleAction(new ReconnectPlayerAction("Bartolomeo"));
+        } catch (FSMTransitionFailedException e) {
+            throw new RuntimeException();
+        }
+
+        assertEquals("Bartolomeo", gameContext.getCurrentPlayer().getUsername());
+        assertTrue(currentState.getNextState() instanceof MenuState);
+    }
+
+    //method "toString" returns the correct value
+    @Test
+    public void toStringTest(){
+        assertEquals("PreliminaryPickState", currentState.toString());
+    }
+
 
 
 }

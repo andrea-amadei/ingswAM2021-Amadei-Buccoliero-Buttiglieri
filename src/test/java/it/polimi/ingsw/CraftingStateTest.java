@@ -93,8 +93,18 @@ public class CraftingStateTest {
 
         //Ernestino has a base crafting with undecided output
 
+        //Alrigo has 1 base crafting
+        Map<ResourceType, Integer> input3 = new HashMap<>();
+        Map<ResourceType, Integer> output3 = new HashMap<>();
+        input3.put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
+        output3.put(ResourceTypeSingleton.getInstance().getStoneResource(), 1);
+        Crafting baseCrafting3 = new Crafting(input3, output3, 0);
+        assertDoesNotThrow(()-> gameContext.getGameModel().getPlayerById("Alrigo").getBoard().getProduction()
+                .addBaseCrafting(baseCrafting3));
+
     }
 
+    //method "handleAction" successfully manages action "BackAction"
     @Test
     public void successfulBack(){
         try{
@@ -107,32 +117,61 @@ public class CraftingStateTest {
         assertFalse(gameContext.hasPlayerMoved());
     }
 
+    //method "handleAction" throws NullPointerException if parameter "backAction" is null
+    @Test
+    public void nullBackAction(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((BackAction) null));
+    }
+
+    //method "handleAction" throws FSMTransitionFailedException if it receives a "BackAction" from a player who is not
+    //the current player
     @Test
     public void backRequestFromInvalidPlayer(){
         assertThrows(FSMTransitionFailedException.class, ()->currentState.handleAction(new BackAction("Alrigo")));
     }
 
-    //TODO: prevent player from choosing back action when resources are selected
-    /*
+    //method "handleAction" throws FSMTransitionFailedException if it receives a "BackAction" when crafting ready
     @Test
     public void backWhenCraftingReady(){
         assertDoesNotThrow(()-> gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getProduction()
         .selectCrafting(Production.CraftingType.UPGRADABLE, 0));
-        assertDoesNotThrow(()-> gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getStorage()
-        .addToSelection(gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getStorage().getCupboard()
-        .getShelfById("BottomShelf"), gold, 2));
+        gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getProduction().getCrafting(Production.CraftingType.UPGRADABLE, 0).setAllResourcesTransferred(true);
 
         assertThrows(FSMTransitionFailedException.class, ()-> currentState.handleAction(new BackAction("Ernestino")));
     }
 
-     */
+    //method "handleAction" throws NullPointerException if parameter "confirmAction" is null
+    @Test
+    public void nullConfirmAction(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((ConfirmAction) null));
+    }
 
+    //method "handleAction" throws FSMTransitionFailedException if it receives a "ConfirmAction" from a player who is not
+    //the current player
+    @Test
+    public void confirmRequestFromInvalidPlayer(){
+        gameContext.setCurrentPlayer(gameContext.getGameModel().getPlayerById("Ernestino"));
+        gameContext.getGameModel().getPlayerById("Alrigo").getBoard().getProduction().getCrafting(Production.CraftingType.BASE, 0).setAllResourcesTransferred(true);
+
+        assertThrows(FSMTransitionFailedException.class, ()->currentState.handleAction(new ConfirmAction("Alrigo")));
+    }
+
+    //method "handleAction" throws NullPointerException if parameter "confirmAction" is null
+    @Test
+    public void nullSelectCraftingAction(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((SelectCraftingAction) null));
+    }
+
+    //method "handleAction" throws FSMTransitionFailedException if it receives a "SelectCraftingAction" from a player who is not
+    //the current player
     @Test
     public void selectCraftingFromInvalidPlayer(){
         assertThrows(FSMTransitionFailedException.class, ()-> currentState.handleAction(new SelectCraftingAction("Geonna",
                 Production.CraftingType.UPGRADABLE, 0)));
     }
 
+    //method "handleAction" successfully selects a crafting if the request comes from the current player and the crafting is
+    //ad existing one
     @Test
     public void successfulSelectCrafting(){
         List<Message> messages;
@@ -149,6 +188,7 @@ public class CraftingStateTest {
         assertTrue(messages.size() > 0);
     }
 
+    //method "handleAction" successfully selects a crafting even when said crafting has an undecided output
     @Test
     public void successfulSelectCraftingWithUndecidedOutput(){
         List<Message> messages;
@@ -164,6 +204,7 @@ public class CraftingStateTest {
         assertTrue(messages.size() > 0);
     }
 
+    //method "handleAction" throws FSMTransitionFailedException if it receives a "ConfirmAction" when there are no selected crafting
     @Test
     public void activatingProductionWithNoSelectedCrafting(){
         assertThrows(FSMTransitionFailedException.class, ()-> currentState.handleAction(new ConfirmAction("Ernestino")));
@@ -175,9 +216,9 @@ public class CraftingStateTest {
 
     }
 
+    //method "handleAction" successfully activates production if all requirements are met
     @Test
     public void successfulActivateProduction(){
-
         //if the player is here, it means they already moved
         gameContext.setPlayerMoved(true);
         //crafting1 is set as selected, as well as all required resources
@@ -214,6 +255,31 @@ public class CraftingStateTest {
         assertTrue(gameContext.hasPlayerMoved());
         assertTrue(messages.size() > 0);
 
+    }
+
+    //method "onEntry" correctly sends messages
+    @Test
+    public void onEntryTest(){
+        List<Message> messages;
+        messages = currentState.onEntry();
+
+        assertTrue(messages.size() > 0);
+    }
+
+    //method "onEntry" correctly sends messages when crafting ready
+    @Test
+    public void onEntryTestWhenCraftingReady(){
+        gameContext.getCurrentPlayer().getBoard().getProduction().getCrafting(Production.CraftingType.UPGRADABLE, 0).setAllResourcesTransferred(true);
+        List<Message> messages;
+        messages = currentState.onEntry();
+
+        assertTrue(messages.size() > 0);
+    }
+
+    //method "toString" returns the correct value
+    @Test
+    public void toStringTest(){
+        assertEquals("CraftingState", currentState.toString());
     }
 
 }

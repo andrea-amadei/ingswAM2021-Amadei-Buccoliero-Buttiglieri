@@ -33,7 +33,7 @@ public class ShopResourceSelectionStateTest {
 
     private final ResourceSingle gold = ResourceTypeSingleton.getInstance().getGoldResource();
     private final ResourceSingle servant = ResourceTypeSingleton.getInstance().getServantResource();
-    private final ResourceSingle shield = ResourceTypeSingleton.getInstance().getServantResource();
+    private final ResourceSingle shield = ResourceTypeSingleton.getInstance().getShieldResource();
     private CraftingCard craftingCard1;
 
     @BeforeEach
@@ -55,6 +55,8 @@ public class ShopResourceSelectionStateTest {
                 .getChest().addResources(gold, 5));
         assertDoesNotThrow(()-> gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getStorage()
                 .getChest().addResources(servant, 7));
+        assertDoesNotThrow(()-> gameContext.getGameModel().getPlayerById("Ernestino").getBoard().getStorage()
+                .getChest().addResources(shield, 1));
 
         LevelFlag levelFlagOfCard1 = new LevelFlag(FlagColor.YELLOW, 1);
         HashMap<ResourceSingle, Integer> costOfCard1 = new HashMap<>();
@@ -72,6 +74,13 @@ public class ShopResourceSelectionStateTest {
         assertDoesNotThrow(()-> gameContext.getCurrentPlayer().getBoard().getProduction().selectCrafting(Production.CraftingType.BASE, 0));
     }
 
+    //method "handleAction" throws NullPointerException if parameter "backAction" is null
+    @Test
+    public void nullBackAction(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((BackAction) null));
+    }
+
+    //method "handleAction" successfully manages action "backAction" when the player has not previously selected any resources
     @Test
     public void successfulBack(){
         try{
@@ -84,6 +93,7 @@ public class ShopResourceSelectionStateTest {
         assertFalse(gameContext.hasPlayerMoved());
     }
 
+    //method "handleAction" successfully manages action "backAction" and unselects previously selected resources
     @Test
     public void successfulBackAfterOneResourceSelection(){
         try{
@@ -102,11 +112,77 @@ public class ShopResourceSelectionStateTest {
         assertNull(gameContext.getCurrentPlayer().getBoard().getStorage().getSelection());
     }
 
+    //method "handleAction" throws FSMTransitionFailedException if the back request comes from a player who is not the current player
     @Test
     public void backRequestFromInvalidPlayer(){
         assertThrows(FSMTransitionFailedException.class, ()->currentState.handleAction(new BackAction("Augusta")));
     }
 
+    //method "handleAction" throws NullPointerException if parameter "selectResourceAction" is null
+    @Test
+    public void nullSelectResourcesAction(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((SelectResourcesAction) null));
+    }
+
+    //method "handleAction" throws NullPointerException if parameter "confirmAction" is null
+    @Test
+    public void nullConfirmAction(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((ConfirmAction) null));
+    }
+
+    //method "handleAction" throws FSMTransitionFailedException if the confirm request comes from a player who is not the current player
+    @Test
+    public void confirmRequestFromInvalidPlayer(){
+        assertThrows(FSMTransitionFailedException.class, ()->currentState.handleAction(new ConfirmAction("Augusta")));
+    }
+
+    //method "handleAction" throws FSMTransitionFailedException if the player has not selected any crafting slot
+    @Test
+    public void nonExistentProductionSlot(){
+        gameContext.getCurrentPlayer().getBoard().getProduction().resetCraftingSelection();
+        assertThrows(FSMTransitionFailedException.class, ()->currentState.handleAction(new ConfirmAction("Ernestino")));
+    }
+
+    //method "handleAction" throws FSMTransitionFailedException if the player has selected the wrong resources
+    @Test
+    public void wrongResourcesSelected(){
+        try{
+            currentState.handleAction(new SelectResourcesAction("Ernestino", "Chest", shield, 1));
+        }catch(FSMTransitionFailedException e){
+            throw new RuntimeException();
+        }
+
+        assertThrows(FSMTransitionFailedException.class, ()-> currentState.handleAction(new ConfirmAction("Ernestino")));
+    }
+
+    //method "handleAction" triggers the end sequence when a player is buying their seventh card
+    @Test
+    public void endTrigger(){
+        for(int i = 0; i<=5; i++)
+            gameContext.getCurrentPlayer().getBoard().getFlagHolder().addFlag(new LevelFlag(FlagColor.BLUE, 1));
+
+        try{
+            currentState.handleAction(new SelectResourcesAction("Ernestino", "Chest", gold, 2));
+        }catch(FSMTransitionFailedException e){
+            throw new RuntimeException();
+        }
+
+        try{
+            currentState.handleAction(new SelectResourcesAction("Ernestino", "Chest", servant, 2));
+        }catch(FSMTransitionFailedException e){
+            throw new RuntimeException();
+        }
+
+        try{
+            currentState.handleAction(new ConfirmAction("Ernestino"));
+        }catch(FSMTransitionFailedException e){
+            throw new RuntimeException();
+        }
+
+        assertTrue(gameContext.hasCountdownStarted());
+    }
+
+    //method "handleAction" successfully manages action "confirmAction", effectively buying from the shop
     @Test
     public void successfulBuyFromShop(){
         List<Message> messages1, messages2;
@@ -135,6 +211,7 @@ public class ShopResourceSelectionStateTest {
         assertEquals(craftingCard1.getCrafting(), gameContext.getCurrentPlayer().getBoard().getProduction().getUpgradableCrafting(0));
     }
 
+    //method "handleAction" successfully manages action "confirmAction", effectively buying from the shop and applying the correct discounts
     @Test
     public void successfulBuyFromShopWithDiscounts(){
 
@@ -163,6 +240,8 @@ public class ShopResourceSelectionStateTest {
         assertEquals(craftingCard1.getCrafting(), gameContext.getCurrentPlayer().getBoard().getProduction().getUpgradableCrafting(0));
     }
 
+    //method "handleAction" successfully manages action "confirmAction", effectively buying from the shop and applying
+    // the correct discounts, even when said discounts result in the selected card being free
     @Test
     public void successfulBuyFromShopFreeCard(){
 
@@ -183,8 +262,8 @@ public class ShopResourceSelectionStateTest {
         assertEquals(craftingCard1.getCrafting(), gameContext.getCurrentPlayer().getBoard().getProduction().getUpgradableCrafting(0));
     }
 
-
-
+    //method "handleAction" throws FSMTransitionFailedException if the player tries to buy a card without selecting
+    // all the resources needed to buy it
     @Test
     public void failedBuyDueToInsufficientFunds(){
         try{
@@ -196,6 +275,7 @@ public class ShopResourceSelectionStateTest {
         assertThrows(FSMTransitionFailedException.class, ()-> currentState.handleAction(new ConfirmAction("Ernestino")));
     }
 
+    //method "handleAction" successfully selects resources if said resources are owned by the player
     @Test
     public void successfulResourceSelect(){
         List<Message> messages1;
@@ -216,8 +296,24 @@ public class ShopResourceSelectionStateTest {
         assertEquals(expectedSelected,gameContext.getCurrentPlayer().getBoard().getStorage().getSelection());
     }
 
+    //method "handleAction" throws FSMTransitionFailedException if the player tries to select resources they do not own
     @Test
     public void selectingNonOwnedResources(){
         assertThrows(FSMTransitionFailedException.class, ()-> currentState.handleAction(new SelectResourcesAction("Ernestino", "Chest", gold, 8)));
+    }
+
+    //method "onEntry" correctly sends messages
+    @Test
+    public void onEntryTest(){
+        List<Message> messages;
+        messages = currentState.onEntry();
+
+        assertTrue(messages.size() > 0);
+    }
+
+    //method "toString" returns the correct value
+    @Test
+    public void toStringTest(){
+        assertEquals("ShopResourceSelectionState", currentState.toString());
     }
 }

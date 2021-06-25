@@ -1,11 +1,13 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.actions.BackAction;
 import it.polimi.ingsw.model.actions.ConfirmTidyAction;
 import it.polimi.ingsw.model.actions.ResourcesMoveAction;
 import it.polimi.ingsw.model.fsm.*;
@@ -60,24 +62,40 @@ public class ResourceTidyingStateTest {
         currentState = new ResourceTidyingState(gameContext);
     }
 
+    //method "handleAction" successfully moves resources to the player's hand if said resources is owned by the player
     @Test
     public void validMoveToHand(){
         assertDoesNotThrow(() -> currentState.handleAction(new ResourcesMoveAction("Genoveffa", "LeaderShelf1", "Hand", shield, 1)));
         assertEquals(currentState, currentState.getNextState());
     }
 
+    //method "handleAction" throws NullPointerException if parameter "resourcesMoveAction" is null
+    @Test
+    public void nullResourcesMoveAction(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((ResourcesMoveAction) null));
+    }
+
+    //method "handleAction" throws NullPointerException if parameter "confirmTidyAction" is null
+    @Test
+    public void nullConfirmTidyAction(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((ConfirmTidyAction) null));
+    }
+
+    //method "handleAction" throws FSMTransitionFailedException if the player tries to move a resource they do not own
     @Test
     public void invalidMoveToHand(){
         assertThrows(FSMTransitionFailedException.class, () -> currentState.handleAction(new ResourcesMoveAction("Genoveffa", "LeaderShelf1", "Hand", gold, 1)));
         assertNull(currentState.getNextState());
     }
 
+    //method "handleAction" successfully manages action "confirmTidyAction" if hand is empty
     @Test
     public void validConfirmTidy(){
         assertDoesNotThrow(() -> currentState.handleAction(new ConfirmTidyAction("Genoveffa")));
         assertTrue(currentState.getNextState() instanceof BasketCollectState);
     }
 
+    //this test makes sure a player cannot under any circumstances confirm tidying while still having something in their hand
     @Test
     public void confirmTidyWithoutEmptyHand(){
         assertDoesNotThrow(() -> currentState.handleAction(new ResourcesMoveAction("Genoveffa", "LeaderShelf1", "Hand", shield, 1)));
@@ -94,6 +112,15 @@ public class ResourceTidyingStateTest {
 
         assertDoesNotThrow(() -> currentState.handleAction(new ConfirmTidyAction("Genoveffa")));
         assertTrue(currentState.getNextState() instanceof BasketCollectState);
+    }
+
+    //method "onEntry" correctly sends messages
+    @Test
+    public void onEntryTest(){
+        List<Message> messages;
+        messages = currentState.onEntry();
+
+        assertTrue(messages.size() > 0);
     }
 
 
