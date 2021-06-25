@@ -6,6 +6,8 @@ import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.JSONSerializer;
 import it.polimi.ingsw.parser.raw.RawStorage;
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 import javafx.scene.layout.HBox;
 
 import java.util.*;
@@ -17,9 +19,9 @@ public class HResourceContainer extends HBox implements ResourceContainer {
     private final BooleanProperty hideIfEmpty;
     private final BooleanProperty showResourceIfZero;
     private final BooleanProperty showX;
-
     private final BooleanProperty anyAccepted;
 
+    private final MapProperty<String, Integer> selectedResources;
 
     private final HBox box;
 
@@ -37,6 +39,8 @@ public class HResourceContainer extends HBox implements ResourceContainer {
         this.showResourceIfZero = new SimpleBooleanProperty(this, "showResourceIfZero", true);
         this.showX = new SimpleBooleanProperty(this, "showX", true);
         this.anyAccepted = new SimpleBooleanProperty(this, "anyAccepted", false);
+
+        this.selectedResources = new SimpleMapProperty<>(this, "selectedResources", FXCollections.emptyObservableMap());
 
         this.containerJSON.addListener((observableValue, oldValue, newValue) -> {
             try {
@@ -67,6 +71,8 @@ public class HResourceContainer extends HBox implements ResourceContainer {
         this.showResourceIfZero = new SimpleBooleanProperty(this, "showResourceIfZero", showResourceIfZero);
         this.showX = new SimpleBooleanProperty(this, "showX", showX);
         this.anyAccepted = new SimpleBooleanProperty(this, "anyAccepted", anyAccepted);
+
+        this.selectedResources = new SimpleMapProperty<>(this, "selectedResources", FXCollections.emptyObservableMap());
 
         this.containerJSON.addListener((observableValue, oldValue, newValue) -> {
 
@@ -114,6 +120,10 @@ public class HResourceContainer extends HBox implements ResourceContainer {
             }
         }
 
+        for(String resource : resourceBoxes.keySet()) {
+            resourceBoxes.get(resource).setSelectedResources(getSelectedResources().getOrDefault(resource, 0));
+        }
+
         box.getChildren().setAll(visibleNodes);
 
         box.setVisible(!isHideIfEmpty() || tot != 0);
@@ -144,6 +154,10 @@ public class HResourceContainer extends HBox implements ResourceContainer {
         return anyAccepted;
     }
 
+    public MapProperty<String, Integer> selectedResourcesProperty() {
+        return selectedResources;
+    }
+
 
     /* GETTERS */
     public String getContainerJSON() {
@@ -168,6 +182,10 @@ public class HResourceContainer extends HBox implements ResourceContainer {
 
     public boolean isAnyAccepted() {
         return anyAccepted.get();
+    }
+
+    public ObservableMap<String, Integer> getSelectedResources() {
+        return selectedResources.get();
     }
 
 
@@ -211,5 +229,10 @@ public class HResourceContainer extends HBox implements ResourceContainer {
             this.anyAccepted.set(anyAccepted);
             update();
         }
+    }
+
+    public void setSelectedResources(ObservableMap<String, Integer> selectedResources) {
+        this.selectedResources.set(selectedResources);
+        update();
     }
 }

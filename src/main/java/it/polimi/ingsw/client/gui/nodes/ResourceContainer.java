@@ -2,8 +2,10 @@ package it.polimi.ingsw.client.gui.nodes;
 
 import it.polimi.ingsw.parser.raw.RawStorage;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.MapProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableMap;
 
 public interface ResourceContainer {
     /* PROPERTIES */
@@ -13,6 +15,7 @@ public interface ResourceContainer {
     BooleanProperty showResourceIfZeroProperty();
     BooleanProperty showXProperty();
     BooleanProperty anyAcceptedProperty();
+    MapProperty<String, Integer> selectedResourcesProperty();
 
     /* GETTERS */
     String getContainerJSON();
@@ -21,6 +24,7 @@ public interface ResourceContainer {
     boolean isShowResourceIfZero();
     boolean isShowX();
     boolean isAnyAccepted();
+    ObservableMap<String, Integer> getSelectedResources();
 
     /* SETTERS */
     void setContainerJSON(String containerJSON);
@@ -29,4 +33,5 @@ public interface ResourceContainer {
     void setShowResourceIfZero(boolean showResourceIfZero);
     void setShowX(boolean showX);
     void setAnyAccepted(boolean anyAccepted);
+    void setSelectedResources(ObservableMap<String, Integer> selectedResources);
 }
