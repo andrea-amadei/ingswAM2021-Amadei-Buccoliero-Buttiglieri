@@ -57,6 +57,26 @@ public class BasketCollectStateTest {
                 .getCupboard().getShelfById("MiddleShelf").addResources(servant, 1));
     }
 
+    //method "handleAction" throws NullPointerException if parameter "moveFromBasketToShelfAction" is null
+    @Test
+    public void nullMoveFromBasketToShelfAction(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((MoveFromBasketToShelfAction) null));
+    }
+
+    //method "handleAction" throws FSMTransitionFailedException if the player tries to collect resources they do not own
+    @Test
+    public void wrongResources(){
+        assertThrows(FSMTransitionFailedException.class, ()-> currentState.handleAction(new MoveFromBasketToShelfAction("Ernestino",
+                servant, 1, "MiddleShelf")));
+    }
+
+    //method "handleAction" throws NullPointerException if parameter "confirmAction" is null
+    @Test
+    public void nullConfirmAction(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((ConfirmAction) null));
+    }
+
+    //method "handleAction" correctly moves all resources in market basket to a player's shelves
     @Test
     public void moveAllResourcesToShelf(){
         List<Message> messages, messages1;
@@ -86,7 +106,8 @@ public class BasketCollectStateTest {
     }
 
 
-
+    //method "handleAction" correctly moves some resources in market basket to a player's shelf. Then faith points are
+    // assigned to other players
     @Test
     public void moveSomeResourcesToShelfAndConfirm(){
         List<Message> messages, messages1;
@@ -114,6 +135,7 @@ public class BasketCollectStateTest {
 
     }
 
+    //After having moved resources, action "confirm" is handled correctly
     @Test
     public void moveAllResourcesAndConfirm(){
         List<Message> messages, messages1, messages2;
@@ -138,11 +160,14 @@ public class BasketCollectStateTest {
                 .getFaithHolder().getFaithPoints());
     }
 
+    //method "handleAction" throws FSMTransitionFailedException if the action "confirm" comes from a player who is not the current player
     @Test
     public void confirmFromWrongPlayer(){
         assertThrows(FSMTransitionFailedException.class, ()-> currentState.handleAction(new ConfirmAction("Nunzio")));
     }
 
+    //method "handleAction" correctly handles action "confirm" even if the player has not collected any resource from the
+    // market basket. Then faith points are assigned to other players
     @Test
     public void confirmWithoutTidying(){
         List<Message> messages;
@@ -170,5 +195,21 @@ public class BasketCollectStateTest {
         assertEquals(3, gameContext.getGameModel().getPlayerById("Nunzio").getBoard()
                 .getFaithHolder().getFaithPoints());
     }
+
+    //method "onEntry" correctly sends messages
+    @Test
+    public void onEntryTest(){
+        List<Message> messages;
+        messages = currentState.onEntry();
+
+        assertTrue(messages.size() > 0);
+    }
+
+    //method "toString" returns the correct value
+    @Test
+    public void toStringTest(){
+        assertEquals("BasketCollectState", currentState.toString());
+    }
+
 
 }
