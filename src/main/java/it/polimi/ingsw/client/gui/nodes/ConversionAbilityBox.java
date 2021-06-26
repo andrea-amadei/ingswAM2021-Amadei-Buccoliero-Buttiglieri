@@ -17,13 +17,11 @@ import javafx.scene.text.Font;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConversionAbilityBox extends VBox {
+public class ConversionAbilityBox extends HBox {
 
     private final StringProperty conversionAbilityJSON;
     private final SimpleObjectProperty<RawSpecialAbility> conversionAbility;
 
-    private Label abilityTypeLabel;
-    private HBox hBox;
     private MarbleBox marble;
     private List<ResourceBox> resources;
     private ResourceBox faith;
@@ -47,12 +45,7 @@ public class ConversionAbilityBox extends VBox {
     }
 
     private void attachElements(){
-        abilityTypeLabel = new Label();
-        abilityTypeLabel.setText("Conversion Ability");
-        abilityTypeLabel.setFont(new Font("Arial", 18d));
-        abilityTypeLabel.setAlignment(Pos.CENTER);
-
-        hBox = new HBox();
+        this.setPrefHeight(40d);
 
         marble = new MarbleBox(conversionAbility.get().getFrom().toString());
 
@@ -61,29 +54,36 @@ public class ConversionAbilityBox extends VBox {
         label.setText("=");
         label.setPrefHeight(40d);
         label.setPrefWidth(40d);
-        label.setFont(new Font("Times new roman bold", 40d));
+        label.setFont(new Font("Times new roman bold", 30d));
 
         resources = new ArrayList<>();
         for(String s : conversionAbility.get().getTo()) {
-            ResourceBox resourceBox = new ResourceBox(s.toLowerCase(), 1, false, false, false);
+            ResourceBox resourceBox = new ResourceBox(s.toLowerCase(), 0, false, true, false);
             resourceBox.setPadding(new Insets(-10,0, 0, 0));
             resources.add(resourceBox);
         }
 
         faith = new ResourceBox("faith", conversionAbility.get().getFaithOutput(), true, false, true);
 
-        this.getChildren().addAll(abilityTypeLabel, hBox);
-        hBox.getChildren().addAll(marble, label);
-        hBox.getChildren().addAll(resources);
-        hBox.getChildren().addAll(faith);
+        if(conversionAbility.get().getFaithOutput() > 0)
+            this.getChildren().add(faith);
+
+        this.getChildren().addAll(marble, label);
+        this.getChildren().addAll(resources);
     }
 
     private void update(){
         marble.setColor(conversionAbility.get().getFrom().toString());
         resources = new ArrayList<>();
         for(String s : conversionAbility.get().getTo()){
-            resources.add(new ResourceBox(s.toLowerCase(), 1, false, false, false));
+            resources.add(new ResourceBox(s.toLowerCase(), 0, false, true, false));
         }
+
+        if(conversionAbility.get().getFaithOutput() > 0 && !this.getChildren().contains(faith))
+            this.getChildren().add(faith);
+        else if(conversionAbility.get().getFaithOutput() == 0)
+            this.getChildren().remove(faith);
+
         faith.setAmount(conversionAbility.get().getFaithOutput());
     }
 

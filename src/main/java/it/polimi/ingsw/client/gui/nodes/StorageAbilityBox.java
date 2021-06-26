@@ -19,12 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class StorageAbilityBox extends VBox {
+public class StorageAbilityBox extends HBox {
 
     private final StringProperty storageAbilityJSON;
     private final ObjectProperty<RawSpecialAbility> storageAbility;
 
-    private HBox hBox;
     private List<Label> dashes;
     private List<ResourceBox> resources;
     private Glyph dash;
@@ -51,8 +50,7 @@ public class StorageAbilityBox extends VBox {
         Label label;
         ResourceBox resourceBox;
 
-        hBox = new HBox();
-        hBox.setSpacing(10d);
+        this.setSpacing(10d);
 
         dash = new Glyph("FontAwesome", "MINUS");
 
@@ -65,16 +63,14 @@ public class StorageAbilityBox extends VBox {
                 label.setPrefHeight(40d);
                 label.setGraphic(dash);
 
-                hBox.getChildren().add(label);
+                this.getChildren().add(label);
                 dashes.add(label);
             }
 
             resourceBox = new ResourceBox(storageAbility.get().getAcceptedTypes(), 0, false, true, false);
-            hBox.getChildren().add(resourceBox);
+            this.getChildren().add(resourceBox);
             resources.add(resourceBox);
         }
-
-        this.getChildren().add(hBox);
     }
 
     private void update(){
@@ -98,13 +94,13 @@ public class StorageAbilityBox extends VBox {
             resources.get(i).setResource(storageAbility.get().getAcceptedTypes());
         }
 
-        hBox.getChildren().clear();
+        this.getChildren().clear();
 
         for(i = resources.size(); i < storageAbility.get().getAmount(); i++) {
             if(i != 0)
-                hBox.getChildren().add(dashes.get(i - 1));
+                this.getChildren().add(dashes.get(i - 1));
 
-            hBox.getChildren().add(resources.get(i));
+            this.getChildren().add(resources.get(i));
         }
     }
 
