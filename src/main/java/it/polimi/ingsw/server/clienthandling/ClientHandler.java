@@ -166,6 +166,7 @@ public class ClientHandler implements Runnable{
             serverManager.addMatch(match);
         }catch(IllegalArgumentException e){
             sendPayload(new TextSetupPayloadComponent(e.getMessage()));
+            return;
         }
 
         this.currentMatch = match;
