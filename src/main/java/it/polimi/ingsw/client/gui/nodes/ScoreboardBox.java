@@ -111,11 +111,6 @@ public class ScoreboardBox extends GridPane {
             else
                 label.setStyle("-fx-background-color: " + PLAYER_COLORS.get(i) + "; -fx-text-fill: white;");
 
-            if(getSpectatedPlayer() - 1 == i)
-                label.setGraphic(glyph);
-            else
-                label.setGraphic(null);
-
             GridPane.setRowIndex(label, i);
             GridPane.setColumnIndex(label, 0);
 
@@ -192,15 +187,7 @@ public class ScoreboardBox extends GridPane {
             else
                 nameLabels.get(i).setStyle("-fx-background-color: " + PLAYER_COLORS.get(i) + "; -fx-text-fill: white;");
 
-            Glyph glyph = new Glyph("FontAwesome", "EYE");
-            glyph.setScaleX(2);
-            glyph.setScaleY(2);
-            glyph.setStyle("-fx-text-fill: " + PLAYER_COLORS.get(i) + ";");
-
-            if(getSpectatedPlayer() - 1 == i)
-                nameLabels.get(i).setGraphic(glyph);
-            else
-                nameLabels.get(i).setGraphic(null);
+            buttons.get(i).setDisable(getSpectatedPlayer() - 1 == i);
 
             for(j = 0; j < MAX_FLAGS; j++) {
                 if(j < flags.get(i).size()) {

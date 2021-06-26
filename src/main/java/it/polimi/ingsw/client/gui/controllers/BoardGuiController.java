@@ -132,12 +132,12 @@ public class BoardGuiController extends BaseController {
         if(currentPlayerNode == null) {
             currentPlayerNode = playerNodes.get(username);
             board.getChildren().add(0, currentPlayerNode);
-            scoreboard.setSpectatedPlayer(getModel().getPlayers().indexOf(getModel().getPlayerByName(username)));
+            scoreboard.setSpectatedPlayer(getModel().getPlayers().indexOf(getModel().getPlayerByName(username)) + 1);
         }
         else {
             currentPlayerNode = playerNodes.get(username);
             board.getChildren().set(0, currentPlayerNode);
-            scoreboard.setSpectatedPlayer(getModel().getPlayers().indexOf(getModel().getPlayerByName(username)));
+            scoreboard.setSpectatedPlayer(getModel().getPlayers().indexOf(getModel().getPlayerByName(username)) + 1);
         }
     }
 

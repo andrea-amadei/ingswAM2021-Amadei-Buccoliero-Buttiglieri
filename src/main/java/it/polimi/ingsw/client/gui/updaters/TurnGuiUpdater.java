@@ -23,7 +23,7 @@ public class TurnGuiUpdater implements Listener<ClientModel> {
     public void update(ClientModel clientModel) {
         Platform.runLater(() -> {
             menuBox.fireEvent(new ChangedCurrentPlayerEvent(clientModel.getCurrentPlayer().getUsername()));
-            scoreboardBox.setCurrentPlayer(clientModel.getPlayers().indexOf(clientModel.getCurrentPlayer()));
+            scoreboardBox.setCurrentPlayer(clientModel.getPlayers().indexOf(clientModel.getCurrentPlayer()) + 1);
         });
     }
 }
