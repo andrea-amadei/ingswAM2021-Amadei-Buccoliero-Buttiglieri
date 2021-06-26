@@ -62,6 +62,10 @@ public class ClientFaithPath implements Observable<ClientFaithPath> {
         return faithPoints;
     }
 
+    public synchronized int getLorenzoFaith() {
+        return lorenzoFaith;
+    }
+
     @Override
     public synchronized void addListener(Listener<ClientFaithPath> listener) {
         listeners.add(listener);

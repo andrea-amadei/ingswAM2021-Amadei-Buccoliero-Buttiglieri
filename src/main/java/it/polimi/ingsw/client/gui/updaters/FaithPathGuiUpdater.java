@@ -25,6 +25,10 @@ public class FaithPathGuiUpdater implements Listener<ClientFaithPath> {
     @Override
     public void update(ClientFaithPath clientFaithPath) {
         switch(playerNumber) {
+            case 0:
+                Platform.runLater(() -> faithPathElement.setLorenzoPositionProperty(clientFaithPath.getLorenzoFaith()));
+                break;
+
             case 1:
                 Platform.runLater(() -> {
                     faithPathElement.setPlayer1PositionsProperty(clientFaithPath.getFaithPoints());

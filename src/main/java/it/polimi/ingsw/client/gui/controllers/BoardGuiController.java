@@ -126,6 +126,8 @@ public class BoardGuiController extends BaseController {
             new LeaderCardsGuiUpdater(playerNodes.get(getModel().getPlayers().get(i).getUsername()).getLeaders(), getModel().getPlayers().get(i).getLeaderCards());
         }
 
+        if(getModel().getPlayers().size() == 1)
+            new FaithPathGuiUpdater(faithPath, getModel().getPlayers().get(0).getFaithPath(), 0);
     }
 
     public void setActivePlayer(String username) {
