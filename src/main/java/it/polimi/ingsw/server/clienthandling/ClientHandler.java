@@ -170,6 +170,9 @@ public class ClientHandler implements Runnable{
 
         this.currentMatch = match;
         sendPayload(new SetGameNameSetupPayloadComponent(matchName));
+        if(playerCount > 1) {
+            sendPayload(new TextSetupPayloadComponent("You created the game! Waiting for other players..."));
+        }
     }
 
     public synchronized void joinMatch(String matchName){
