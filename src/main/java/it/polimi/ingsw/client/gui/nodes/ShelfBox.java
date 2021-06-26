@@ -157,7 +157,7 @@ public class ShelfBox extends GridPane {
                     resources.get(1).setOpacity(0.3d);
                 }
                 else {
-                    resources.get(1).setResource(getResource1());
+                    resources.get(1).setResource(getResource2());
                     resources.get(1).setOpacity(1d);
                 }
 
@@ -186,7 +186,7 @@ public class ShelfBox extends GridPane {
                     resources.get(1).setOpacity(0.3d);
                 }
                 else {
-                    resources.get(1).setResource(getResource1());
+                    resources.get(1).setResource(getResource2());
                     resources.get(1).setOpacity(1d);
                 }
 
@@ -195,7 +195,7 @@ public class ShelfBox extends GridPane {
                     resources.get(2).setOpacity(0.3d);
                 }
                 else {
-                    resources.get(2).setResource(getResource1());
+                    resources.get(2).setResource(getResource3());
                     resources.get(2).setOpacity(1d);
                 }
 
