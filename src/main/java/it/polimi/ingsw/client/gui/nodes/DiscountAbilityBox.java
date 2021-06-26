@@ -19,7 +19,6 @@ public class DiscountAbilityBox extends VBox {
     private final StringProperty discountAbilityJSON;
     private final ObjectProperty<RawSpecialAbility> discountAbility;
 
-    private Label abilityTypeLabel;
     private HBox hBox;
     private Label label;
     private ResourceBox resourceBox;
@@ -42,25 +41,17 @@ public class DiscountAbilityBox extends VBox {
         attachElements();
     }
 
-    private void attachElements(){
-        abilityTypeLabel = new Label();
-        abilityTypeLabel.setText("Discount Ability");
-        abilityTypeLabel.setFont(new Font("Arial", 18d));
-        abilityTypeLabel.setAlignment(Pos.CENTER);
-
+    private void attachElements() {
         hBox = new HBox();
 
         label = new Label();
-        label.setAlignment(Pos.CENTER);
-        label.setPrefHeight(43d);
-        label.setPrefWidth(30d);
         label.setText("- " + discountAbility.get().getAmount());
-        label.setFont(new Font("Arial", 24d));
+        label.setFont(new Font("Times new roman bold", 35));
+        label.prefHeight(40d);
 
         resourceBox = new ResourceBox(discountAbility.get().getResource().toLowerCase(), 0, false, true, false);
-        resourceBox.setAlignment(Pos.CENTER);
 
-        this.getChildren().addAll(abilityTypeLabel, hBox);
+        this.getChildren().add(hBox);
         hBox.getChildren().addAll(label, resourceBox);
     }
 
