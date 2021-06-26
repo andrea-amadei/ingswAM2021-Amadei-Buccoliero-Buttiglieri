@@ -1,6 +1,10 @@
 package it.polimi.ingsw.client.gui.nodes;
 
 import it.polimi.ingsw.client.gui.FXMLCachedLoaders;
+import it.polimi.ingsw.client.gui.beans.ResourceContainerBean;
+import it.polimi.ingsw.client.gui.beans.ResourceSelectionBean;
+import it.polimi.ingsw.client.gui.events.ResourceSelectionEvent;
+import it.polimi.ingsw.client.gui.events.ResourceTransferEvent;
 import it.polimi.ingsw.client.model.ClientLeaderCards;
 import it.polimi.ingsw.gamematerials.*;
 import it.polimi.ingsw.model.leader.*;
@@ -8,6 +12,7 @@ import it.polimi.ingsw.model.market.ConversionActuator;
 import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.storage.Shelf;
 import it.polimi.ingsw.parser.raw.RawLeaderCard;
+import it.polimi.ingsw.utils.Pair;
 import it.polimi.ingsw.utils.ResourceLoader;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -15,13 +20,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 
+import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
+import java.util.List;
 
 public class PlayerNode extends AnchorPane {
 
+    public enum ContainerType{BASE, LEADER, HAND, CHEST, MARKET}
     @FXML
     private CupboardBox cupboard;
     @FXML
@@ -57,9 +63,15 @@ public class PlayerNode extends AnchorPane {
 
         areControlsDisable = new SimpleBooleanProperty(this, "areControlsDisable", true);
         areControlsDisable.addListener((b, oldValue, newValue) -> setControlsStatus(newValue));
+
+        setupListeners();
     }
 
     public void setControlsStatus(boolean disable){
+        cupboard.setAreControlsDisabled(disable);
+        chest.setAreControlsDisabled(disable);
+        hand.setAreControlsDisabled(disable);
+        basket.setAreControlsDisabled(disable);
         production.setAreControlsDisabled(disable);
         leaders.setAreControlsDisabled(disable);
     }
@@ -98,5 +110,74 @@ public class PlayerNode extends AnchorPane {
 
     public LeaderCardSlotsBox getLeaders() {
         return leaders;
+    }
+
+    private void setupListeners() {
+        for(ShelfBox s : cupboard.getBaseShelves()){
+            s.setResourceSelectionCallback(this::handleResourceSelection);
+            s.setStartResourceTransferCallback(this::handleResourceTransfer);
+        }
+        for(ShelfBox s : cupboard.getLeaderShelves()){
+            s.setResourceSelectionCallback(this::handleResourceSelection);
+            s.setStartResourceTransferCallback(this::handleResourceTransfer);
+        }
+
+        chest.setResourceSelectionCallback(this::handleResourceSelection);
+        hand.setStartResourceTransferCallback(this::handleResourceTransfer);
+
+        basket.setStartResourceTransferCallback(this::handleResourceTransfer);
+    }
+
+    private void handleResourceSelection(ResourceSelectionBean bean){
+        Pair<ContainerType, Integer> containerInfo = getContainerInfo(bean.getSource());
+        Set<ContainerType> acceptedTypes = Set.of(ContainerType.BASE, ContainerType.CHEST, ContainerType.LEADER);
+        if(containerInfo.getFirst() != null && acceptedTypes.contains(containerInfo.getFirst())){
+            bean.setSourceType(containerInfo.getFirst());
+            bean.setIndex(containerInfo.getSecond());
+
+            fireEvent(new ResourceSelectionEvent(bean));
+            //System.out.println("Fired resource selection: " + containerInfo.getFirst() + " " + containerInfo.getSecond());
+        }
+    }
+
+    private void handleResourceTransfer(ResourceContainerBean bean){
+        Pair<ContainerType, Integer> containerInfo = getContainerInfo(bean.getSource());
+        Set<ContainerType> acceptedTypes = Set.of(ContainerType.BASE, ContainerType.HAND, ContainerType.LEADER, ContainerType.MARKET);
+        if(containerInfo.getFirst() != null && acceptedTypes.contains(containerInfo.getFirst())){
+            bean.setSourceType(containerInfo.getFirst());
+            bean.setIndex(containerInfo.getSecond());
+
+            fireEvent(new ResourceTransferEvent(bean));
+            //System.out.println("Fired start resource transfer: " + containerInfo.getFirst() + " " + containerInfo.getSecond());
+        }
+    }
+
+    private Pair<ContainerType, Integer> getContainerInfo(Object source){
+        int index = -1;
+        ContainerType containerType = null;
+        for(int i = 0; i < cupboard.getBaseShelves().size(); i++){
+            if(cupboard.getBaseShelves().get(i).equals(source)){
+                index = i;
+                containerType = ContainerType.BASE;
+            }
+        }
+        for(int i = 0; i < cupboard.getLeaderShelves().size(); i++){
+            if(cupboard.getLeaderShelves().get(i).equals(source)) {
+                index = i;
+                containerType = ContainerType.LEADER;
+            }
+        }
+        if(chest.equals(source)){
+            containerType = ContainerType.CHEST;
+        }
+
+        if(hand.equals(source)){
+            containerType = ContainerType.HAND;
+        }
+        if(basket.equals(source)){
+            containerType = ContainerType.MARKET;
+        }
+
+        return new Pair<>(containerType, index);
     }
 }

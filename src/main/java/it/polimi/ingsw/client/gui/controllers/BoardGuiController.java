@@ -1,23 +1,23 @@
 package it.polimi.ingsw.client.gui.controllers;
 
-import it.polimi.ingsw.client.gui.beans.PreliminaryPickBean;
-import it.polimi.ingsw.client.gui.beans.ShopSelectionBean;
-import it.polimi.ingsw.client.gui.dialogs.ChooseCraftingDialog;
-import it.polimi.ingsw.client.gui.dialogs.CustomDialog;
-import it.polimi.ingsw.client.gui.dialogs.PreliminaryPickDialog;
+import it.polimi.ingsw.client.gui.beans.*;
+import it.polimi.ingsw.client.gui.dialogs.*;
 import it.polimi.ingsw.client.gui.events.*;
 import it.polimi.ingsw.client.gui.nodes.*;
 import it.polimi.ingsw.client.gui.updaters.*;
+import it.polimi.ingsw.client.model.ClientBaseStorage;
 import it.polimi.ingsw.client.model.ClientPlayer;
+import it.polimi.ingsw.client.model.ClientShelf;
 import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
 import it.polimi.ingsw.common.payload_components.groups.actions.*;
-import it.polimi.ingsw.model.actions.SelectPlayAction;
+import it.polimi.ingsw.parser.raw.RawStorage;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class BoardGuiController extends BaseController {
@@ -46,6 +46,7 @@ public class BoardGuiController extends BaseController {
         board.getChildren().add(scoreboard);
 
         board.addEventFilter(ConfirmEvent.CONFIRM_EVENT, this::sendConfirmPayload);
+        board.addEventFilter(BackEvent.BACK_EVENT, this::sendBackPayload);
         board.addEventFilter(PreliminaryPickEvent.PRELIMINARY_PICK_EVENT_EVENT, this::onPreliminaryPickPressed);
         board.addEventFilter(ShopCardSelectionEvent.SHOP_CARD_SELECTION_EVENT, this::onShopCardSelection);
         board.addEventFilter(ConversionSelectionEvent.CONVERSION_SELECTION_EVENT, this::sendConversionOptionPayload);
@@ -55,6 +56,9 @@ public class BoardGuiController extends BaseController {
         board.addEventFilter(ChangedCurrentPlayerEvent.CHANGED_CURRENT_PLAYER_EVENT, this::onChangedCurrentPlayer);
         board.addEventFilter(SwitchPlayerEvent.SWITCH_PLAYER_EVENT, this::onSwitchedShownPlayer);
         board.addEventFilter(SelectPlayEvent.SELECT_PLAY_EVENT_EVENT, this::sendSelectPlayPayload);
+        board.addEventFilter(ResourceSelectionEvent.RESOURCE_SELECTION_EVENT, this::sendResourceSelectionPayload);
+        board.addEventFilter(ResourceTransferEvent.RESOURCE_TRANSFER_EVENT, this::onStartResourceTransfer);
+        board.addEventFilter(OutputSelectionEvent.OUTPUT_SELECTION_EVENT, this::onStartOutputSelection);
     }
 
     public void boardSetup() {
@@ -76,6 +80,14 @@ public class BoardGuiController extends BaseController {
         if(getServerHandler() == null) {
             getModel().getPersonalData().setPossibleActions(Set.of(PossibleActions.PRELIMINARY_PICK, PossibleActions.CONFIRM_TIDY));
             getModel().setCurrentPlayer(getModel().getPlayers().get(0));
+            getModel().getPlayers().get(0).getCupboard().get(1).changeResources(new RawStorage("delta", new HashMap<>(){{put("gold", 2);}}));
+            getModel().getPlayers().get(0).getCupboard().get(2).changeResources(new RawStorage("delta", new HashMap<>(){{put("shield", 1);}}));
+            getModel().getPlayers().get(0).getCupboard().get(0).changeResources(new RawStorage("delta", new HashMap<>(){{put("servant", 1);}}));
+            getModel().getPlayers().get(0).addLeaderShelf(new ClientShelf("Leader1", "servant", 2));
+            getModel().getPlayers().get(0).getLeaderShelves().get(0).changeResources(new RawStorage("delta", new HashMap<>(){{put("servant", 1);}}));
+            getModel().getPlayers().get(0).getHand().changeResources(new RawStorage("delta", new HashMap<>(){{put("gold", 2);put("servant", 1);}}));
+            getModel().getPlayers().get(0).getMarketBasket().changeResources(new RawStorage("delta", new HashMap<>(){{put("gold", 2);put("servant", 1);}}));
+            getModel().getPlayers().get(1).getCupboard().get(2).changeResources(new RawStorage("delta", new HashMap<>(){{put("shield", 1);}}));
         }
         // show the self board
         // TODO: change to:
@@ -137,6 +149,20 @@ public class BoardGuiController extends BaseController {
         buttons.setAreControlsDisabled(disable);
     }
 
+    private String getIdFromContainerBean(ResourceContainerBean containerBean){
+        if(containerBean.getSourceType().equals(PlayerNode.ContainerType.HAND))
+            return getModel().getPlayerByName(ownedUsername).getHand().getStorage().getId();
+        if(containerBean.getSourceType().equals(PlayerNode.ContainerType.CHEST))
+            return getModel().getPlayerByName(ownedUsername).getChest().getStorage().getId();
+        if(containerBean.getSourceType().equals(PlayerNode.ContainerType.MARKET))
+            return getModel().getPlayerByName(ownedUsername).getMarketBasket().getStorage().getId();
+        if(containerBean.getSourceType().equals(PlayerNode.ContainerType.BASE))
+            return getModel().getPlayerByName(ownedUsername).getCupboard().get(containerBean.getIndex()).getStorage().getId();
+        if(containerBean.getSourceType().equals(PlayerNode.ContainerType.LEADER))
+            return getModel().getPlayerByName(ownedUsername).getLeaderShelves().get(containerBean.getIndex()).getStorage().getId();
+        return null;
+    }
+
 
     //UI-Related event handlers
     private void onShopCardSelection(ShopCardSelectionEvent event){
@@ -149,6 +175,76 @@ public class BoardGuiController extends BaseController {
     private void onPreliminaryPickPressed(PreliminaryPickEvent evt){
         CustomDialog preliminaryDialog = new PreliminaryPickDialog(getSceneManager().getStage(), this::sendPreliminaryPickPayload);
         preliminaryDialog.openDialog();
+    }
+
+    private void onStartResourceTransfer(ResourceTransferEvent evt){
+        String id = getIdFromContainerBean(evt.getBean());
+
+        List<ClientShelf> baseShelves = getModel().getPlayerByName(ownedUsername).getCupboard();
+        List<ClientShelf> leaderShelves = getModel().getPlayerByName(ownedUsername).getLeaderShelves();
+        ClientBaseStorage hand = getModel().getPlayerByName(ownedUsername).getHand();
+        ClientBaseStorage marketBasket = getModel().getPlayerByName(ownedUsername).getMarketBasket();
+
+        if(id != null){
+            //the source can only be the hand, a shelf or the market basket
+            Map<String, Integer> possibleResources;
+            List<String> destinationsId = new ArrayList<>();
+            if(evt.getBean().getSourceType().equals(PlayerNode.ContainerType.HAND)){
+                possibleResources = hand.getStorage().getResources();
+                destinationsId.addAll(baseShelves.stream().map(s -> s.getStorage().getId()).collect(Collectors.toList()));
+                List<String> extendedLeaderIds = new ArrayList<>();
+                for(int i = 0; i < leaderShelves.size(); i++){
+                    extendedLeaderIds.add(leaderShelves.get(i).getStorage().getId() + "$Leader " + (i + 1));
+                }
+                destinationsId.addAll(extendedLeaderIds);
+            }else if(evt.getBean().getSourceType().equals(PlayerNode.ContainerType.MARKET)){
+                possibleResources = marketBasket.getStorage().getResources();
+                destinationsId.addAll(baseShelves.stream().map(s -> s.getStorage().getId()).collect(Collectors.toList()));
+
+                List<String> extendedLeaderIds = new ArrayList<>();
+                for(int i = 0; i < leaderShelves.size(); i++){
+                    extendedLeaderIds.add(leaderShelves.get(i).getStorage().getId() + "$Leader " + (i + 1));
+                }
+                destinationsId.addAll(extendedLeaderIds);
+
+            }else if(evt.getBean().getSourceType().equals(PlayerNode.ContainerType.BASE)){
+                possibleResources = baseShelves.get(evt.getBean().getIndex()).getStorage().getResources();
+                destinationsId.addAll(baseShelves.stream().map(s -> s.getStorage().getId()).filter(x -> !x.equals(id)).collect(Collectors.toList()));
+                List<String> extendedLeaderIds = new ArrayList<>();
+                for(int i = 0; i < leaderShelves.size(); i++){
+                    extendedLeaderIds.add(leaderShelves.get(i).getStorage().getId() + "$Leader " + (i + 1));
+                }
+                destinationsId.addAll(extendedLeaderIds);
+
+            }else if(evt.getBean().getSourceType().equals(PlayerNode.ContainerType.LEADER)){
+                possibleResources = leaderShelves.get(evt.getBean().getIndex()).getStorage().getResources();
+                destinationsId.addAll(baseShelves.stream().map(s -> s.getStorage().getId()).collect(Collectors.toList()));
+                List<String> extendedLeaderIds = new ArrayList<>();
+                for(int i = 0; i < leaderShelves.size(); i++){
+                    if(!leaderShelves.get(i).getStorage().getId().equals(id))
+                        extendedLeaderIds.add(leaderShelves.get(i).getStorage().getId() + "$Leader " + (i + 1));
+                }
+                destinationsId.addAll(extendedLeaderIds);
+            }else{
+                return;
+            }
+
+            if(!possibleResources.isEmpty()){
+                //distinguish between transfer action and collect from basket action
+
+                Consumer<ResourceTransferBean> consumer = (evt.getBean().getSourceType().equals(PlayerNode.ContainerType.MARKET)) ? this::sendCollectFromBasket : this::sendResourcesTransferPayload;
+                ResourceTransferBean transferBean = new ResourceTransferBean();
+                transferBean.setSourceId(id);
+                CustomDialog resourceTransferDialog = new ResourcesTransferDialog(getSceneManager().getStage(), destinationsId, possibleResources,
+                                                                                  transferBean, consumer);
+                resourceTransferDialog.openDialog();
+            }
+        }
+    }
+
+    private void onStartOutputSelection(OutputSelectionEvent event){
+        CustomDialog dialog = new OutputSelectionDialog(getSceneManager().getStage(), event.getBean(), this::sendOutputSelectionPayload);
+        dialog.openDialog();
     }
 
     private void onChangedCurrentPlayer(ChangedCurrentPlayerEvent event){
@@ -177,7 +273,7 @@ public class BoardGuiController extends BaseController {
     //Action sending events
     private void sendCardSelectionPayload(ShopSelectionBean bean){
         if(getServerHandler() != null){
-            getServerHandler().sendPayload(new SelectCardFromShopActionPayloadComponent(ownedUsername, bean.getRow(), bean.getCol(), bean.getUpgradableIndex()));
+            getServerHandler().sendPayload(new SelectCardFromShopActionPayloadComponent(ownedUsername, bean.getRow(), bean.getCol(), bean.getUpgradableIndex() -1));
         }
         System.out.println("Selected card (" + bean.getRow() + ", " + bean.getCol() + ") and upgradable crafting " + bean.getUpgradableIndex());
     }
@@ -203,13 +299,46 @@ public class BoardGuiController extends BaseController {
         System.out.println("Crafting Selected: " + event.getBean().getCraftingType() + " " + event.getBean().getIndex());
     }
 
+    private void sendResourceSelectionPayload(ResourceSelectionEvent selectionEvent){
+        String id = getIdFromContainerBean(selectionEvent.getBean());
+        String resource = selectionEvent.getBean().getResource();
+        int amount = selectionEvent.getBean().getAmount();
+        if(id != null){
+            if(getServerHandler() != null){
+                getServerHandler().sendPayload(new SelectResourcesActionPayloadComponent(ownedUsername, id, resource, amount));
+            }
+            System.out.println("Select resources " + id + " " + resource + " " + amount);
+        }
+    }
+
+    private void sendResourcesTransferPayload(ResourceTransferBean bean){
+        if(getServerHandler() != null){
+            getServerHandler().sendPayload(new ResourcesMoveActionPayloadComponent(ownedUsername, bean.getSourceId(), bean.getTargetDestination(), bean.getChoseResource(), bean.getAmountToTransfer()));
+        }
+        System.out.println("Resources move" + bean);
+    }
+
+    private void sendCollectFromBasket(ResourceTransferBean bean){
+        if(getServerHandler() != null){
+            getServerHandler().sendPayload(new MoveFromBasketToShelfActionPayloadComponent(ownedUsername,  bean.getChoseResource(), bean.getAmountToTransfer(), bean.getTargetDestination()));
+        }
+        System.out.println("Collect from basket: " + bean);
+    }
+
+    private void sendOutputSelectionPayload(OutputSelectionBean bean){
+        if(getServerHandler() != null){
+            getServerHandler().sendPayload(new SelectCraftingOutputActionPayloadComponent(ownedUsername, bean.getSelection()));
+        }
+        System.out.println("Output selection: " + bean.getSelection());
+    }
+
     private void sendLeaderInteractionPayload(LeaderInteractionEvent event){
         boolean isActivate = event.getBean().isActivate();
         int index = event.getBean().getIndex();
 
         int id;
         try {
-            id = getModel().getPlayers().get(0).getLeaderCards().getLeaderCards().get(index).getId();
+            id = getModel().getPlayerByName(ownedUsername).getLeaderCards().getLeaderCards().get(index).getId();
         }catch(RuntimeException e){
             id = -1;
         }
@@ -253,6 +382,12 @@ public class BoardGuiController extends BaseController {
         if(getServerHandler() != null)
             getServerHandler().sendPayload(new SelectPlayActionPayloadComponent(ownedUsername, event.getPlay()));
         System.out.println("Selected play: " + event.getPlay());
+    }
+
+    private void sendBackPayload(BackEvent event){
+        if(getServerHandler() != null)
+            getServerHandler().sendPayload(new BackActionPayloadComponent(ownedUsername));
+        System.out.println("Back");
     }
 
 }

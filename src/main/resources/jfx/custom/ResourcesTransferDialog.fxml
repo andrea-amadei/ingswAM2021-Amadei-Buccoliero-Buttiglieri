@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="354.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label text="Destination storage" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="120.0" />
+      <ComboBox prefWidth="121.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="173.0" />
+      <ComboBox prefWidth="121.0" AnchorPane.leftAnchor="248.0" AnchorPane.topAnchor="173.0" />
+      <ComboBox prefWidth="121.0" AnchorPane.leftAnchor="451.0" AnchorPane.topAnchor="173.0" />
+      <Label text="Resource to transfer" AnchorPane.leftAnchor="248.0" AnchorPane.topAnchor="120.0" />
+      <Label text="Amount" AnchorPane.leftAnchor="451.0" AnchorPane.topAnchor="120.0" />
+      <Button mnemonicParsing="false" text="Confirm" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="50.0" />
+   </children>
+</AnchorPane>
