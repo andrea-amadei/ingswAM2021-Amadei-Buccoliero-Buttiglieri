@@ -219,6 +219,7 @@ public class BoardGuiController extends BaseController {
                     extendedLeaderIds.add(leaderShelves.get(i).getStorage().getId() + "$Leader " + (i + 1));
                 }
                 destinationsId.addAll(extendedLeaderIds);
+                destinationsId.add(hand.getStorage().getId());
 
             }else if(evt.getBean().getSourceType().equals(PlayerNode.ContainerType.LEADER)){
                 possibleResources = leaderShelves.get(evt.getBean().getIndex()).getStorage().getResources();
@@ -229,6 +230,7 @@ public class BoardGuiController extends BaseController {
                         extendedLeaderIds.add(leaderShelves.get(i).getStorage().getId() + "$Leader " + (i + 1));
                 }
                 destinationsId.addAll(extendedLeaderIds);
+                destinationsId.add(hand.getStorage().getId());
             }else{
                 return;
             }
@@ -270,6 +272,7 @@ public class BoardGuiController extends BaseController {
 
     private void onSwitchedShownPlayer(SwitchPlayerEvent event){
         setActivePlayer(event.getUsername());
+        changeGlobalNodesControlsStatus(!event.getUsername().equals(ownedUsername));
     }
 
 
