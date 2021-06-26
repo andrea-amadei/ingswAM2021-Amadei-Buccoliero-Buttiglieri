@@ -7,6 +7,7 @@ import it.polimi.ingsw.parser.raw.RawSpecialAbility;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -58,13 +59,15 @@ public class ConversionAbilityBox extends VBox {
         Label label = new Label();
         label.setAlignment(Pos.CENTER);
         label.setText("=");
-        label.setPrefHeight(39d);
-        label.setPrefWidth(35d);
-        label.setFont(new Font("Arial", 36d));
+        label.setPrefHeight(40d);
+        label.setPrefWidth(40d);
+        label.setFont(new Font("Times new roman bold", 40d));
 
         resources = new ArrayList<>();
-        for(String s : conversionAbility.get().getTo()){
-            resources.add(new ResourceBox(s.toLowerCase(), 1, false, false, false));
+        for(String s : conversionAbility.get().getTo()) {
+            ResourceBox resourceBox = new ResourceBox(s.toLowerCase(), 1, false, false, false);
+            resourceBox.setPadding(new Insets(-10,0, 0, 0));
+            resources.add(resourceBox);
         }
 
         faith = new ResourceBox("faith", conversionAbility.get().getFaithOutput(), true, false, true);
