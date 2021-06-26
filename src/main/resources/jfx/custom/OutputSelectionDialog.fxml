@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import it.polimi.ingsw.client.gui.nodes.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="354.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <OutputSelectorBox AnchorPane.leftAnchor="194.0" AnchorPane.topAnchor="97.0" />
+    <Button mnemonicParsing="false" text="Confirm" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="50.0" />
+   <Label text="Select all resources for the output of the selected crafting" AnchorPane.leftAnchor="164.0" AnchorPane.topAnchor="45.0" />
+</AnchorPane>
