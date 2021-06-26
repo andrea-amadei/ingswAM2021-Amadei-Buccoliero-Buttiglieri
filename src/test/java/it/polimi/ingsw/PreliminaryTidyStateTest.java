@@ -6,8 +6,7 @@ import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.actions.ConfirmTidyAction;
-import it.polimi.ingsw.model.actions.ResourcesMoveAction;
+import it.polimi.ingsw.model.actions.*;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
 import it.polimi.ingsw.model.fsm.states.MenuState;
@@ -87,6 +86,7 @@ public class PreliminaryTidyStateTest {
 
     }
 
+    //first player successfully goes through preliminaryTidy state
     @Test
     public void firstPlayer(){
         gameContext.setCurrentPlayer(model.getPlayerById("Ernestino"));
@@ -102,6 +102,7 @@ public class PreliminaryTidyStateTest {
         assertSame(gameContext.getCurrentPlayer(), player2);
     }
 
+    //second player successfully goes through preliminaryTidy state
     @Test
     public void secondPlayer(){
         gameContext.setCurrentPlayer(model.getPlayerById("Bartolomeo"));
@@ -126,6 +127,7 @@ public class PreliminaryTidyStateTest {
         assertEquals(0, player2.getBoard().getStorage().getHand().totalAmountOfResources());
     }
 
+    //third player successfully goes through preliminaryTidy state
     @Test
     public void thirdPlayer(){
         gameContext.setCurrentPlayer(model.getPlayerById("Teofila"));
@@ -150,6 +152,7 @@ public class PreliminaryTidyStateTest {
         assertEquals(0, player3.getBoard().getStorage().getHand().totalAmountOfResources());
     }
 
+    //fourth player successfully goes through preliminaryTidy state
     @Test
     public void fourthPlayer(){
         gameContext.setCurrentPlayer(model.getPlayerById("Ottone"));
@@ -181,6 +184,7 @@ public class PreliminaryTidyStateTest {
         assertEquals(0, player4.getBoard().getStorage().getHand().totalAmountOfResources());
     }
 
+    //method "handleAction" throws FSMTransitionFailedException if a player tries to confirm without having emptied their hand first
     @Test
     public void confirmWithoutEmptyHand(){
         gameContext.setCurrentPlayer(model.getPlayerById("Ottone"));
@@ -197,6 +201,7 @@ public class PreliminaryTidyStateTest {
                 new ConfirmTidyAction("Ottone")));
     }
 
+    //method "handleAction" throws FSMTransitionFailedException if a player tries to move a resource they do not own
     @Test
     public void movingNonExistentResources(){
         gameContext.setCurrentPlayer(model.getPlayerById("Ottone"));
@@ -205,6 +210,7 @@ public class PreliminaryTidyStateTest {
                 "Ottone", "Hand", "MiddleShelf", gold, 1)));
     }
 
+    //method "handleAction" throws FSMTransitionFailedException if the confirm request comes from a player who is not the current player
     @Test
     public void confirmFromWrongPlayer(){
         gameContext.setCurrentPlayer(model.getPlayerById("Teofila"));
@@ -222,12 +228,13 @@ public class PreliminaryTidyStateTest {
                 "Ottone")));
     }
 
+    //method "handleAction" successfully manages the disconnection of a player who is not the current player
     @Test
     public void lastPlayerDisconnected(){
         //last player is disconnected
         model.getPlayers().get(3).setConnected(false);
 
-        //current player is third player
+        //current player is the third player
         gameContext.setCurrentPlayer(model.getPlayerById("Teofila"));
 
         //third player moves her resource to her middle shelf
@@ -249,13 +256,14 @@ public class PreliminaryTidyStateTest {
         assertSame(gameContext.getCurrentPlayer(), player1);
     }
 
+    //method "handleAction" successfully manages the disconnection two players whose turns are after the current player
     @Test
     public void twoPlayersDisconnected(){
         //second and third player are disconnected
         model.getPlayers().get(1).setConnected(false);
         model.getPlayers().get(2).setConnected(false);
 
-        //current player is first player
+        //current player is the first player
         gameContext.setCurrentPlayer(model.getPlayerById("Ernestino"));
 
         //first player confirms tidy
@@ -270,6 +278,7 @@ public class PreliminaryTidyStateTest {
         assertSame(gameContext.getCurrentPlayer(), player4);
     }
 
+    //method "handleAction" successfully manages the disconnection of every player but one
     @Test
     public void onlyOnePlayerConnected(){
         //second, third and fourth player are disconnected
@@ -277,7 +286,7 @@ public class PreliminaryTidyStateTest {
         model.getPlayers().get(2).setConnected(false);
         model.getPlayers().get(3).setConnected(false);
 
-        //current player is first player
+        //current player is the first player
         gameContext.setCurrentPlayer(model.getPlayerById("Ernestino"));
 
         //first player confirms tidy
@@ -292,6 +301,117 @@ public class PreliminaryTidyStateTest {
         assertSame(gameContext.getCurrentPlayer(), player1);
     }
 
+    //method "handleAction" successfully manages the reconnection of a player who is not the current player
+    @Test
+    public void playerReconnects(){
+        //third player is disconnected
+        model.getPlayers().get(2).setConnected(false);
 
+        //current player is the first player
+        gameContext.setCurrentPlayer(model.getPlayerById("Ernestino"));
+
+        try {
+            currentState.handleAction(new ReconnectPlayerAction("Teofila"));
+        } catch (FSMTransitionFailedException e) {
+            throw new RuntimeException();
+        }
+
+        assertTrue(gameContext.getGameModel().getPlayerById("Teofila").isConnected());
+    }
+
+    //method "handleAction" successfully manages the reconnection of a player, after the game was stalling
+    @Test
+    public void reconnectionAfterStall(){
+        //current player is the second player
+        gameContext.setCurrentPlayer(model.getPlayerById("Bartolomeo"));
+
+        //all player are disconnected
+        model.getPlayers().get(0).setConnected(false);
+        model.getPlayers().get(1).setConnected(false);
+        model.getPlayers().get(2).setConnected(false);
+        model.getPlayers().get(3).setConnected(false);
+
+        //fourth player reconnects
+        try {
+            currentState.handleAction(new ReconnectPlayerAction("Ottone"));
+        } catch (FSMTransitionFailedException e) {
+            throw new RuntimeException();
+        }
+
+        assertEquals("Ottone", gameContext.getCurrentPlayer().getUsername());
+        assertTrue(currentState.getNextState() instanceof PreliminaryPickState);
+    }
+
+    //method "handleAction" successfully manages the reconnection of a player, after the game was stalling.
+    //The reconnecting player comes before the old current player, therefore next state is set to MenuState
+    @Test
+    public void reconnectionAfterStall1(){
+        //current player is the second player
+        gameContext.setCurrentPlayer(model.getPlayerById("Bartolomeo"));
+
+        //all player are disconnected
+        model.getPlayers().get(0).setConnected(false);
+        model.getPlayers().get(1).setConnected(false);
+        model.getPlayers().get(2).setConnected(false);
+        model.getPlayers().get(3).setConnected(false);
+
+        //first player reconnects
+        try {
+            currentState.handleAction(new ReconnectPlayerAction("Ernestino"));
+        } catch (FSMTransitionFailedException e) {
+            throw new RuntimeException();
+        }
+
+        assertEquals("Ernestino", gameContext.getCurrentPlayer().getUsername());
+        assertTrue(currentState.getNextState() instanceof MenuState);
+    }
+
+    //method "handleAction" successfully manages the reconnection of a player, after the game was stalling.
+    //The reconnecting player is the old current player, therefore next state is set to this.
+    @Test
+    public void reconnectionAfterStall2(){
+        //current player is the second player
+        gameContext.setCurrentPlayer(model.getPlayerById("Bartolomeo"));
+
+        //all player are disconnected
+        model.getPlayers().get(0).setConnected(false);
+        model.getPlayers().get(1).setConnected(false);
+        model.getPlayers().get(2).setConnected(false);
+        model.getPlayers().get(3).setConnected(false);
+
+        //second player reconnects
+        try {
+            currentState.handleAction(new ReconnectPlayerAction("Bartolomeo"));
+        } catch (FSMTransitionFailedException e) {
+            throw new RuntimeException();
+        }
+
+        assertEquals("Bartolomeo", gameContext.getCurrentPlayer().getUsername());
+        assertTrue(currentState.getNextState() instanceof PreliminaryTidyState);
+    }
+
+    //method "handleAction" throws NullPointerException if the parameter "resourcesMoveAction" is null
+    @Test
+    public void nullResourcesMoveAction(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((ResourcesMoveAction) null));
+    }
+
+    //method "handleAction" throws NullPointerException if the parameter "confirmTidyAction" is null
+    @Test
+    public void nullConfirmTidyAction(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((ConfirmTidyAction) null));
+    }
+
+    //method "handleAction" throws NullPointerException if the parameter "disconnectPlayerAction" is null
+    @Test
+    public void nullDisconnectAction(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((DisconnectPlayerAction) null));
+    }
+
+    //method "toString" returns the correct value
+    @Test
+    public void toStringTest(){
+        assertEquals("PreliminaryTidyState", currentState.toString());
+    }
 
 }
