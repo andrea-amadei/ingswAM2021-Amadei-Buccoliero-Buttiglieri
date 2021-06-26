@@ -2,10 +2,7 @@ package it.polimi.ingsw.client.gui.nodes;
 
 import it.polimi.ingsw.client.gui.FXMLCachedLoaders;
 import it.polimi.ingsw.utils.ResourceLoader;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +19,8 @@ public class CupboardBox extends GridPane {
 
     private final ListProperty<String> leaderResources;
     private final ListProperty<String> leaderAccepted;
+
+    private final BooleanProperty areControlsDisabled;
 
     private List<ShelfBox> base;
     private List<ShelfBox> leader;
@@ -52,6 +51,8 @@ public class CupboardBox extends GridPane {
 
         leaderResources = new SimpleListProperty<>(this, "leaderResources", FXCollections.observableArrayList("none", "none", "none"));
         leaderAccepted = new SimpleListProperty<>(this, "leaderResources", FXCollections.observableArrayList());
+
+        areControlsDisabled = new SimpleBooleanProperty(this, "areControlsDisabled", true);
 
         setup();
     }
@@ -118,5 +119,12 @@ public class CupboardBox extends GridPane {
 
     public List<ShelfBox> getLeaderShelves() {
         return leader;
+    }
+
+    public void setAreControlsDisabled(boolean disabled){
+        for(ShelfBox s : base)
+            s.setAreControlsDisabled(disabled);
+        for(ShelfBox s : leader)
+            s.setAreControlsDisabled(disabled);
     }
 }

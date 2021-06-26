@@ -94,6 +94,8 @@ public class SelectCraftingOutputAction implements Action {
     public void checkFormat() {
         if(player == null || conversion == null)
             throw new NullPointerException();
+        if(conversion.values().stream().anyMatch(v -> v <= 0))
+            throw new IllegalArgumentException();
     }
 
     public Map<ResourceSingle, Integer> getConversion() {

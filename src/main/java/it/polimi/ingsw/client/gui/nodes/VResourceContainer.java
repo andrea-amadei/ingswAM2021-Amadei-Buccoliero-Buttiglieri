@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.gui.nodes;
 
 import it.polimi.ingsw.client.gui.FXMLCachedLoaders;
+import it.polimi.ingsw.client.gui.beans.ResourceContainerBean;
+import it.polimi.ingsw.client.gui.beans.ResourceSelectionBean;
 import it.polimi.ingsw.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.parser.JSONParser;
@@ -14,10 +16,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class VResourceContainer extends VBox implements ResourceContainer {
     private final StringProperty containerJSON;
@@ -27,6 +31,7 @@ public class VResourceContainer extends VBox implements ResourceContainer {
     private final BooleanProperty showResourceIfZero;
     private final BooleanProperty showX;
     private final BooleanProperty anyAccepted;
+    private final BooleanProperty areControlsDisabled;
 
     private final MapProperty<String, Integer> selectedResources;
 
@@ -35,37 +40,11 @@ public class VResourceContainer extends VBox implements ResourceContainer {
     private final List<String> ACCEPTED_RESOURCES = new ArrayList<>(Arrays.asList("gold", "servant", "shield", "stone"));
     private final Map<String, ResourceBox> resourceBoxes;
 
+    private Consumer<ResourceSelectionBean> resourceSelectionCallback;
+    private Consumer<ResourceContainerBean> startResourceTransferCallback;
+
     public VResourceContainer() {
-        box = this;
-        this.setSpacing(5d);
-
-        this.containerJSON = new SimpleStringProperty(this, "containerJSON", "{\"id\":\"container\",\"resources\":{}}");
-        this.rawStorage = new SimpleObjectProperty<>(this, "rawStorage", new RawStorage("container", new HashMap<>()));
-
-        this.hideIfEmpty = new SimpleBooleanProperty(this, "hideIfEmpty", false);
-        this.showResourceIfZero = new SimpleBooleanProperty(this, "showResourceIfZero", true);
-        this.showX = new SimpleBooleanProperty(this, "showX", true);
-        this.anyAccepted = new SimpleBooleanProperty(this, "anyAccepted", false);
-
-        this.selectedResources = new SimpleMapProperty<>(this, "selectedResources", FXCollections.emptyObservableMap());
-
-        this.containerJSON.addListener((observableValue, oldValue, newValue) -> {
-            try {
-                setRawStorage(JSONParser.parseToRaw(newValue, RawStorage.class));
-            } catch(IllegalRawConversionException | ParserException e) {
-                throw new IllegalArgumentException("Conversion from JSON to RawStorage failed unexpectedly");
-            }
-        });
-
-        this.rawStorage.addListener((observableValue, oldValue, newValue) -> setContainerJSON(newValue.toString()));
-
-        resourceBoxes = new HashMap<>();
-        resourceBoxes.put("gold", new ResourceBox("gold", 0, true, showResourceIfZero.get(), true));
-        resourceBoxes.put("servant", new ResourceBox("servant", 0, true, showResourceIfZero.get(), true));
-        resourceBoxes.put("stone", new ResourceBox("stone", 0, true, showResourceIfZero.get(), true));
-        resourceBoxes.put("shield", new ResourceBox("shield", 0, true, showResourceIfZero.get(), true));
-        resourceBoxes.put("any", new ResourceBox("any", 0, true, showResourceIfZero.get(), true));
-        update();
+        this(new RawStorage("container", new HashMap<>()), false, true, true, false);
     }
 
     public VResourceContainer(RawStorage rawStorage, boolean hideIfEmpty, boolean showResourceIfZero, boolean showX, boolean anyAccepted){
@@ -80,6 +59,7 @@ public class VResourceContainer extends VBox implements ResourceContainer {
         this.anyAccepted = new SimpleBooleanProperty(this, "anyAccepted", anyAccepted);
 
         this.selectedResources = new SimpleMapProperty<>(this, "selectedResources", FXCollections.emptyObservableMap());
+        this.areControlsDisabled = new SimpleBooleanProperty(this, "areControlsDisabled", true);
 
         this.containerJSON.addListener((observableValue, oldValue, newValue) -> {
 
@@ -99,6 +79,35 @@ public class VResourceContainer extends VBox implements ResourceContainer {
         resourceBoxes.put("stone", new ResourceBox("stone", 0, true, showResourceIfZero, true));
         resourceBoxes.put("shield", new ResourceBox("shield", 0, true, showResourceIfZero, true));
         resourceBoxes.put("any", new ResourceBox("any", 0, true, showResourceIfZero, true));
+
+        for(String res : resourceBoxes.keySet()){
+            if(!res.equals("any")) {
+                ResourceBox b = resourceBoxes.get(res);
+                b.setOnMousePressed(evt -> {
+                    if(!areControlsDisabled.get()) {
+                        if (evt.getButton().equals(MouseButton.PRIMARY)) {
+                            ResourceSelectionBean bean = new ResourceSelectionBean();
+                            bean.setSource(this);
+                            bean.setResource(res);
+                            bean.setAmount(1);
+                            if (resourceSelectionCallback != null)
+                                resourceSelectionCallback.accept(bean);
+                        }
+                    }
+                });
+            }
+        }
+
+        this.setOnMousePressed(evt -> {
+            if(!areControlsDisabled.get()) {
+                if (evt.getButton().equals(MouseButton.SECONDARY)) {
+                    ResourceContainerBean bean = new ResourceContainerBean();
+                    bean.setSource(this);
+                    if (startResourceTransferCallback != null)
+                        startResourceTransferCallback.accept(bean);
+                }
+            }
+        });
 
         update();
     }
@@ -136,6 +145,15 @@ public class VResourceContainer extends VBox implements ResourceContainer {
         box.getChildren().setAll(visibleNodes);
 
         box.setVisible(!isHideIfEmpty() || tot != 0);
+    }
+
+    /* CALLBACKS */
+    public void setResourceSelectionCallback(Consumer<ResourceSelectionBean> handler){
+        this.resourceSelectionCallback = handler;
+    }
+
+    public void setStartResourceTransferCallback(Consumer<ResourceContainerBean> handler){
+        this.startResourceTransferCallback = handler;
     }
 
     /* PROPERTIES */
@@ -240,5 +258,9 @@ public class VResourceContainer extends VBox implements ResourceContainer {
     public void setSelectedResources(ObservableMap<String, Integer> selectedResources) {
         this.selectedResources.set(selectedResources);
         update();
+    }
+
+    public void setAreControlsDisabled(boolean disabled){
+        this.areControlsDisabled.set(disabled);
     }
 }

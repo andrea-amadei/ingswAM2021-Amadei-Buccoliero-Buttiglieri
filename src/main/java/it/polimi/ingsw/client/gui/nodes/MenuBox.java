@@ -16,17 +16,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.*;
 
-public class MenuBox extends GridPane {
+public class MenuBox extends VBox {
 
     @FXML
     private Button backBtn;
-
-    @FXML
-    private Button selectOutputBtn;
 
     @FXML
     private Button confirmButton;
@@ -44,8 +42,7 @@ public class MenuBox extends GridPane {
     private Button preliminaryPickBtn;
 
     @FXML
-    private Button collectFromBasketBtn;
-
+    private GridPane grid;
 
     private final SetProperty<PossibleActions> possibleActions;
     private final BooleanProperty areControlsDisabled;
@@ -71,49 +68,39 @@ public class MenuBox extends GridPane {
         }
 
         possibleActions = new SimpleSetProperty<>(this, "possibleActions", FXCollections.observableSet());
-        btns = new ArrayList<>(Arrays.asList(backBtn, selectOutputBtn, confirmButton, selectPlayCraftingBtn, selectPlayMarketBtn, selectPlayShopBtn, preliminaryPickBtn, collectFromBasketBtn));
+        btns = new ArrayList<>(Arrays.asList(backBtn, confirmButton, selectPlayCraftingBtn, selectPlayMarketBtn, selectPlayShopBtn, preliminaryPickBtn));
         areControlsDisabled = new SimpleBooleanProperty(this, "AreControlsDisabled", true);
         //setting up events and bindings
 
         backBtn.setOnAction(e -> fireEvent(new BackEvent()));
-        backBtn.visibleProperty().bind(Bindings.createBooleanBinding(()-> possibleActions.contains(PossibleActions.BACK) && !areControlsDisabled.get(), possibleActions));
+        //backBtn.visibleProperty().bind(Bindings.createBooleanBinding(()-> possibleActions.contains(PossibleActions.BACK) && !areControlsDisabled.get(), possibleActions));
         backBtn.disableProperty().bind(Bindings.createBooleanBinding(()->!(possibleActions.contains(PossibleActions.BACK) && !areControlsDisabled.get()), possibleActions));
 
-        selectOutputBtn.setOnAction(e -> fireEvent(new SelectOutputEvent()));
-        selectOutputBtn.visibleProperty().bind(Bindings.createBooleanBinding(()-> possibleActions.contains(PossibleActions.SELECT_OUTPUTS) && !areControlsDisabled.get(), possibleActions));
-        selectOutputBtn.disableProperty().bind(Bindings.createBooleanBinding(()->!possibleActions.contains(PossibleActions.SELECT_OUTPUTS) || areControlsDisabled.get(), possibleActions));
 
         confirmButton.setOnAction(e -> fireEvent(new ConfirmEvent()));
-        confirmButton.visibleProperty().bind(Bindings.createBooleanBinding(()-> (possibleActions.contains(PossibleActions.CONFIRM) || possibleActions.contains(PossibleActions.CONFIRM_TIDY)) && !areControlsDisabled.get(), possibleActions));
+        //confirmButton.visibleProperty().bind(Bindings.createBooleanBinding(()-> (possibleActions.contains(PossibleActions.CONFIRM) || possibleActions.contains(PossibleActions.CONFIRM_TIDY)) && !areControlsDisabled.get(), possibleActions));
         confirmButton.disableProperty().bind(Bindings.createBooleanBinding(()->!(possibleActions.contains(PossibleActions.CONFIRM) || possibleActions.contains(PossibleActions.CONFIRM_TIDY)) || areControlsDisabled.get(), possibleActions));
 
         selectPlayCraftingBtn.setOnAction(e -> fireEvent(new SelectPlayEvent(SelectPlayAction.Play.CRAFTING)));
-        selectPlayCraftingBtn.visibleProperty().bind(Bindings.createBooleanBinding(()-> possibleActions.contains(PossibleActions.SELECT_PLAY) && !areControlsDisabled.get(), possibleActions));
+        //selectPlayCraftingBtn.visibleProperty().bind(Bindings.createBooleanBinding(()-> possibleActions.contains(PossibleActions.SELECT_PLAY) && !areControlsDisabled.get(), possibleActions));
         selectPlayCraftingBtn.disableProperty().bind(Bindings.createBooleanBinding(()->!possibleActions.contains(PossibleActions.SELECT_PLAY) || areControlsDisabled.get(), possibleActions));
 
         selectPlayMarketBtn.setOnAction(e -> fireEvent(new SelectPlayEvent(SelectPlayAction.Play.MARKET)));
-        selectPlayMarketBtn.visibleProperty().bind(Bindings.createBooleanBinding(()-> possibleActions.contains(PossibleActions.SELECT_PLAY) && !areControlsDisabled.get(), possibleActions));
+        //selectPlayMarketBtn.visibleProperty().bind(Bindings.createBooleanBinding(()-> possibleActions.contains(PossibleActions.SELECT_PLAY) && !areControlsDisabled.get(), possibleActions));
         selectPlayMarketBtn.disableProperty().bind(Bindings.createBooleanBinding(()->!possibleActions.contains(PossibleActions.SELECT_PLAY) || areControlsDisabled.get(), possibleActions));
 
         selectPlayShopBtn.setOnAction(e -> fireEvent(new SelectPlayEvent(SelectPlayAction.Play.SHOP)));
-        selectPlayShopBtn.visibleProperty().bind(Bindings.createBooleanBinding(()-> possibleActions.contains(PossibleActions.SELECT_PLAY) && !areControlsDisabled.get(), possibleActions));
+        //selectPlayShopBtn.visibleProperty().bind(Bindings.createBooleanBinding(()-> possibleActions.contains(PossibleActions.SELECT_PLAY) && !areControlsDisabled.get(), possibleActions));
         selectPlayShopBtn.disableProperty().bind(Bindings.createBooleanBinding(()->!possibleActions.contains(PossibleActions.SELECT_PLAY) || areControlsDisabled.get(), possibleActions));
 
         preliminaryPickBtn.setOnAction(e -> fireEvent(new PreliminaryPickEvent()));
-        preliminaryPickBtn.visibleProperty().bind(Bindings.createBooleanBinding(()-> possibleActions.contains(PossibleActions.PRELIMINARY_PICK) && !areControlsDisabled.get(), possibleActions));
+        //preliminaryPickBtn.visibleProperty().bind(Bindings.createBooleanBinding(()-> possibleActions.contains(PossibleActions.PRELIMINARY_PICK) && !areControlsDisabled.get(), possibleActions));
         preliminaryPickBtn.disableProperty().bind(Bindings.createBooleanBinding(()->!possibleActions.contains(PossibleActions.PRELIMINARY_PICK) || areControlsDisabled.get(), possibleActions));
 
-        collectFromBasketBtn.setOnAction(e -> fireEvent(new CollectFromBasketEvent()));
-        collectFromBasketBtn.visibleProperty().bind(Bindings.createBooleanBinding(()-> possibleActions.contains(PossibleActions.MOVE_FROM_BASKET_TO_SHELF) && !areControlsDisabled.get(), possibleActions));
-        collectFromBasketBtn.disableProperty().bind(Bindings.createBooleanBinding(()->!possibleActions.contains(PossibleActions.MOVE_FROM_BASKET_TO_SHELF) || areControlsDisabled.get(), possibleActions));
     }
 
     public Button getBackBtn() {
         return backBtn;
-    }
-
-    public Button getSelectOutputBtn() {
-        return selectOutputBtn;
     }
 
     public Button getConfirmButton() {
@@ -134,10 +121,6 @@ public class MenuBox extends GridPane {
 
     public Button getPreliminaryPickBtn() {
         return preliminaryPickBtn;
-    }
-
-    public Button getCollectFromBasketBtn() {
-        return collectFromBasketBtn;
     }
 
     public void setPossibleActions(Set<PossibleActions> possibleActions){
