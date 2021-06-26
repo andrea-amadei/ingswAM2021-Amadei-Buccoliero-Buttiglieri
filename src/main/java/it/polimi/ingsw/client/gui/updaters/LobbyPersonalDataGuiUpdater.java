@@ -41,6 +41,7 @@ public class LobbyPersonalDataGuiUpdater implements Listener<PersonalData> {
         TextField match = (TextField) scene.lookup("#match");
 
         Button setUsername = (Button) scene.lookup("#set_username");
+        Button reconnectBtn = (Button) scene.lookup("#reconnectBtn");
         Button createMatch = (Button) scene.lookup("#create_match");
         Button joinMatch = (Button) scene.lookup("#join_match");
 
@@ -57,14 +58,19 @@ public class LobbyPersonalDataGuiUpdater implements Listener<PersonalData> {
                 username.setText(personalData.getUsername());
                 username.setDisable(true);
                 setUsername.setDisable(true);
+                reconnectBtn.setDisable(true);
 
                 createMatch.setDisable(false);
                 joinMatch.setDisable(false);
                 match.setDisable(false);
             }
 
-            if(!personalData.getGameName().equals("Unknown"))
+            if(!personalData.getGameName().equals("Unknown")) {
                 match.setText(personalData.getGameName());
+                match.setDisable(true);
+                joinMatch.setDisable(true);
+                reconnectBtn.setDisable(true);
+            }
 
             if(personalData.isGameStarted()) {
                 start.setDisable(false);
@@ -73,6 +79,7 @@ public class LobbyPersonalDataGuiUpdater implements Listener<PersonalData> {
                 match.setDisable(true);
                 createMatch.setDisable(true);
                 joinMatch.setDisable(true);
+                reconnectBtn.setDisable(true);
 
                 nPlayers.setDisable(true);
                 nPlayers.setVisible(false);
