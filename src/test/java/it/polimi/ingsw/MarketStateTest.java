@@ -55,6 +55,13 @@ public class MarketStateTest {
         currentState = new MarketState(gameContext);
     }
 
+    //method "handleAction" throws NullPointerException if the parameter "buyFromMarketAction" is null
+    @Test
+    public void nullBuyFromMarket(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((BuyFromMarketAction) null));
+    }
+
+    //method "handleAction" successfully manages a "buyFromMarket" action
     @Test
     public void validBuyFromMarketTransition(){
         List<Message> messages;
@@ -68,7 +75,7 @@ public class MarketStateTest {
         assertTrue(currentState.getNextState() instanceof ConversionSelectionState);
     }
 
-
+    //method "handleAction" throws FSMTransitionFailedException if the player tries to buy a non existent row or col
     @Test
     public void invalidBuyFromMarketTransition(){
         assertThrows(FSMTransitionFailedException.class, ()->currentState.handleAction(new BuyFromMarketAction("Genoveffa", true, 5)));
@@ -76,9 +83,9 @@ public class MarketStateTest {
         assertEquals(new ArrayList<>(), gameContext.getGameModel().getMarket().getSelectedMarbles());
     }
 
+    //method "handleAction" successfully manages a "back" action
     @Test
     public void validGoBackRequest(){
-
         try{
             currentState.handleAction(new BackAction("Genoveffa"));
         }catch(FSMTransitionFailedException e){
@@ -89,10 +96,32 @@ public class MarketStateTest {
         assertFalse(gameContext.hasPlayerMoved());
     }
 
+    //method "handleAction" throws FSMTransitionFailedException if the back request comes from a player who is not the current player
     @Test
     public void invalidGoBackRequest(){
         assertThrows(FSMTransitionFailedException.class, ()->currentState.handleAction(new BackAction("Paolo")));
         assertNull(currentState.getNextState());
+    }
+
+    //method "handleAction" throws NullPointerException if the parameter "backAction" is null
+    @Test
+    public void nullBack(){
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((BackAction) null));
+    }
+
+    //method "onEntry" successfully sends messages
+    @Test
+    public void onEntryTest(){
+        List<Message> messages;
+        messages = currentState.onEntry();
+
+        assertTrue(messages.size() > 0);
+    }
+
+    //method "toString" returns the correct value
+    @Test
+    public void toStringTest(){
+        assertEquals("MarketState", currentState.toString());
     }
 
 }
