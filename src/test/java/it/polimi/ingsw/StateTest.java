@@ -1,11 +1,20 @@
 package it.polimi.ingsw;
 import it.polimi.ingsw.common.ActionQueue;
+import it.polimi.ingsw.common.Message;
+import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.model.FaithPath;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.actions.DisconnectPlayerAction;
+import it.polimi.ingsw.model.actions.EndGameAction;
+import it.polimi.ingsw.model.actions.PopeCheckAction;
+import it.polimi.ingsw.model.actions.ReconnectPlayerAction;
 import it.polimi.ingsw.model.fsm.GameContext;
+import it.polimi.ingsw.model.fsm.State;
 import it.polimi.ingsw.model.fsm.StateMachine;
+import it.polimi.ingsw.model.fsm.states.BasketCollectState;
+import it.polimi.ingsw.model.fsm.states.EndTurnState;
 import it.polimi.ingsw.model.fsm.states.MenuState;
 import it.polimi.ingsw.model.holder.FaithHolder;
 import it.polimi.ingsw.server.ServerBuilder;
@@ -27,6 +36,7 @@ public class StateTest {
     private Player player2;
     private Player player3;
     private ActionQueue actionQueue;
+    private State currentState;
 
     @BeforeEach
     public void init() throws ParserException {
@@ -71,4 +81,96 @@ public class StateTest {
         assertEquals(29, player1.getPoints());
 
     }
+
+    //testing disconnection on state "BasketCollectState", since it does not override.
+    //current player disconnects
+    @Test
+    public void disconnectOnBasketCollectState(){
+        currentState = new BasketCollectState(gameContext);
+        try {
+            currentState.handleAction(new DisconnectPlayerAction("Alice"));
+        } catch (FSMTransitionFailedException e) {
+            throw new RuntimeException();
+        }
+
+        assertFalse(gameContext.getGameModel().getPlayerById("Alice").isConnected());
+        assertTrue(currentState.getNextState() instanceof EndTurnState);
+    }
+
+    //player who is not the current player disconnects
+    @Test
+    public void disconnectOnBasketCollectState1(){
+        currentState = new BasketCollectState(gameContext);
+        try {
+            currentState.handleAction(new DisconnectPlayerAction("Bob"));
+        } catch (FSMTransitionFailedException e) {
+            throw new RuntimeException();
+        }
+
+        assertFalse(gameContext.getGameModel().getPlayerById("Bob").isConnected());
+    }
+
+    //testing reconnection on state "BasketCollectState", since it does not override.
+    @Test
+    public void reconnectionOnBasketCollectState(){
+        currentState = new BasketCollectState(gameContext);
+        gameContext.getGameModel().getPlayerById("Bob").setConnected(false);
+
+        try {
+            currentState.handleAction(new ReconnectPlayerAction("Bob"));
+        } catch (FSMTransitionFailedException e) {
+            throw new RuntimeException();
+        }
+
+        assertTrue(gameContext.getGameModel().getPlayerById("Bob").isConnected());
+    }
+
+    //cannot create a State with null parameter "gameContext", demonstrated with BasketCollectState
+    @Test
+    public void nullGameContext(){
+        assertThrows(NullPointerException.class, ()-> new BasketCollectState(null));
+    }
+
+    @Test
+    public void nullSetListener(){
+        currentState = new BasketCollectState(gameContext);
+
+        assertThrows(NullPointerException.class, ()-> currentState.setListener(null));
+    }
+
+    @Test
+    public void nullLaunchInterrupt(){
+        currentState = new BasketCollectState(gameContext);
+
+        assertThrows(NullPointerException.class, ()-> currentState.launchInterrupt(null, 1));
+    }
+
+    @Test
+    public void nullEndGame(){
+        currentState = new BasketCollectState(gameContext);
+
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((EndGameAction) null));
+    }
+
+    @Test
+    public void nullPopeCheck(){
+        currentState = new BasketCollectState(gameContext);
+
+        assertThrows(NullPointerException.class, ()-> currentState.handleAction((PopeCheckAction) null));
+    }
+
+    @Test
+    public void endGameOnBasketCollectState(){
+        List<Message> messages;
+        currentState = new BasketCollectState(gameContext);
+
+        try {
+            messages = currentState.handleAction(new EndGameAction());
+        } catch (FSMTransitionFailedException e) {
+            throw new RuntimeException();
+        }
+
+        assertTrue(messages.size() > 0);
+    }
+
 }
