@@ -111,7 +111,7 @@ public class BoardGuiController extends BaseController {
         new ShopGuiUpdater(shop, getModel().getShop());
         new MarketGuiUpdater(market, getModel().getMarket());
         new MenuGuiUpdater(buttons, getModel().getPersonalData());
-        new TurnGuiUpdater(buttons, getModel());
+        new TurnGuiUpdater(buttons, scoreboard, getModel());
         new PersonalDataGuiUpdater(messages, getSceneManager().getStage(), getModel().getPersonalData());
 
         // TODO: ADD ALL PLAYER SPECIFIC UPDATERS
@@ -132,10 +132,12 @@ public class BoardGuiController extends BaseController {
         if(currentPlayerNode == null) {
             currentPlayerNode = playerNodes.get(username);
             board.getChildren().add(0, currentPlayerNode);
+            scoreboard.setSpectatedPlayer(getModel().getPlayers().indexOf(getModel().getPlayerByName(username)));
         }
         else {
             currentPlayerNode = playerNodes.get(username);
             board.getChildren().set(0, currentPlayerNode);
+            scoreboard.setSpectatedPlayer(getModel().getPlayers().indexOf(getModel().getPlayerByName(username)));
         }
     }
 

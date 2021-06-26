@@ -3,7 +3,9 @@ package it.polimi.ingsw.client.gui.nodes;
 import it.polimi.ingsw.client.gui.events.SwitchPlayerEvent;
 import it.polimi.ingsw.parser.raw.RawLevelFlag;
 import it.polimi.ingsw.utils.ResourceLoader;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,6 +29,8 @@ public class ScoreboardBox extends GridPane {
     private ListProperty<Integer> points;
     private ListProperty<List<RawLevelFlag>> flags;
     private ListProperty<Boolean> disconnected;
+    private IntegerProperty currentPlayer;
+    private IntegerProperty spectatedPlayer;
 
     @FXML
     private GridPane pane;
@@ -68,6 +72,8 @@ public class ScoreboardBox extends GridPane {
         )));
         disconnected = new SimpleListProperty<>(this, "disconnectedProperty", FXCollections.observableList(Arrays.asList(
                 false, false, false, false )));
+        currentPlayer = new SimpleIntegerProperty(this, "currentPlayer", 1);
+        spectatedPlayer = new SimpleIntegerProperty(this, "spectatedPlayer", 1);
 
         setup();
         update();
@@ -89,11 +95,27 @@ public class ScoreboardBox extends GridPane {
         int i, j;
 
         for(i = 0; i < names.size(); i++) {
+            // GLYPH
+            glyph = new Glyph("FontAwesome", "EYE");
+            glyph.setScaleX(2);
+            glyph.setScaleY(2);
+            glyph.setStyle("-fx-text-fill: " + PLAYER_COLORS.get(i) + ";");
+
             // USERNAME
             label = new Label();
             label.setFont(new Font("Times New Roman Bold", 24.0));
             label.setText(names.get(i));
-            label.setStyle("-fx-text-fill: " + PLAYER_COLORS.get(i) + ";");
+
+            if(getCurrentPlayer() - 1 != i)
+                label.setStyle("-fx-text-fill: " + PLAYER_COLORS.get(i) + "; -fx-background-color: transparent;");
+            else
+                label.setStyle("-fx-background-color: " + PLAYER_COLORS.get(i) + "; -fx-text-fill: white;");
+
+            if(getSpectatedPlayer() - 1 == i)
+                label.setGraphic(glyph);
+            else
+                label.setGraphic(null);
+
             GridPane.setRowIndex(label, i);
             GridPane.setColumnIndex(label, 0);
 
@@ -106,17 +128,10 @@ public class ScoreboardBox extends GridPane {
             button.setPrefWidth(60d);
             GridPane.setRowIndex(button, i);
             GridPane.setColumnIndex(button, 1);
+            button.setGraphic(glyph);
 
             int finalI = i;
-            button.setOnAction(e ->{
-                fireEvent(new SwitchPlayerEvent(names.get(finalI)));
-            });
-
-            glyph = new Glyph("FontAwesome", "EYE");
-            glyph.setScaleX(2);
-            glyph.setScaleY(2);
-            glyph.setStyle("-fx-text-fill: " + PLAYER_COLORS.get(i) + ";");
-            button.setGraphic(glyph);
+            button.setOnAction(e -> fireEvent(new SwitchPlayerEvent(names.get(finalI))));
 
             pane.getChildren().add(button);
             buttons.add(button);
@@ -172,6 +187,21 @@ public class ScoreboardBox extends GridPane {
             nameLabels.get(i).setDisable(disconnected.get(i));
             pointsBoxes.get(i).setPoints(points.get(i));
 
+            if(getCurrentPlayer() - 1 != i)
+                nameLabels.get(i).setStyle("-fx-text-fill: " + PLAYER_COLORS.get(i) + "; -fx-background-color: transparent;");
+            else
+                nameLabels.get(i).setStyle("-fx-background-color: " + PLAYER_COLORS.get(i) + "; -fx-text-fill: white;");
+
+            Glyph glyph = new Glyph("FontAwesome", "EYE");
+            glyph.setScaleX(2);
+            glyph.setScaleY(2);
+            glyph.setStyle("-fx-text-fill: " + PLAYER_COLORS.get(i) + ";");
+
+            if(getSpectatedPlayer() - 1 == i)
+                nameLabels.get(i).setGraphic(glyph);
+            else
+                nameLabels.get(i).setGraphic(null);
+
             for(j = 0; j < MAX_FLAGS; j++) {
                 if(j < flags.get(i).size()) {
                     flagBoxes.get(i * MAX_FLAGS + j).setFlag(flags.get(i).get(j).getColor().name().toLowerCase());
@@ -200,6 +230,14 @@ public class ScoreboardBox extends GridPane {
 
     public ListProperty<String> namesProperty() {
         return names;
+    }
+
+    public int getCurrentPlayer() {
+        return currentPlayer.get();
+    }
+
+    public IntegerProperty currentPlayerProperty() {
+        return currentPlayer;
     }
 
     public void setNames(ObservableList<String> names) {
@@ -243,6 +281,14 @@ public class ScoreboardBox extends GridPane {
         return disconnected;
     }
 
+    public int getSpectatedPlayer() {
+        return spectatedPlayer.get();
+    }
+
+    public IntegerProperty spectatedPlayerProperty() {
+        return spectatedPlayer;
+    }
+
     public void setDisconnected(ObservableList<Boolean> disconnected) {
         this.disconnected.set(disconnected);
         update();
@@ -255,6 +301,16 @@ public class ScoreboardBox extends GridPane {
 
     public void setPlayerPointsProperty(int playerIndex, int points) {
         this.getPoints().set(playerIndex, points);
+        update();
+    }
+
+    public void setCurrentPlayer(int currentPlayer) {
+        this.currentPlayer.set(currentPlayer);
+        update();
+    }
+
+    public void setSpectatedPlayer(int spectatedPlayer) {
+        this.spectatedPlayer.set(spectatedPlayer);
         update();
     }
 }
