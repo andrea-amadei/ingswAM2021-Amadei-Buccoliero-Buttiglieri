@@ -15,6 +15,9 @@ import it.polimi.ingsw.utils.Triplet;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Class implements interface Action. This action informs the state machine that the game is ended.
+ */
 public class EndGameAction implements Action{
     /**
      * Calls the appropriate method of the handler
