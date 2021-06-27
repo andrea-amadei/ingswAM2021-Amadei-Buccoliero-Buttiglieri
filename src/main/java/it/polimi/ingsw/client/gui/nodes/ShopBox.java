@@ -23,6 +23,9 @@ public class ShopBox extends GridPane {
     private final BooleanProperty areControlsDisabled;
 
     private final List<CraftingCardBox> craftingCardBoxes;
+    private final String defaultStyle;
+    private Integer selectedRow = null;
+    private Integer selectedCol = null;
 
 
     private GridPane grid;
@@ -34,6 +37,8 @@ public class ShopBox extends GridPane {
         rowNum = new SimpleIntegerProperty(this, "row count", 3);
         colNum = new SimpleIntegerProperty(this, "col count", 4);
         areControlsDisabled = new SimpleBooleanProperty(this, "areControlsDisabled", true);
+
+        defaultStyle = new CraftingCardBox().getStyle();
 
         List<RawCraftingCard> defaultCards = new ArrayList<>();
         craftingCardBoxes = new ArrayList<>();
@@ -109,6 +114,35 @@ public class ShopBox extends GridPane {
     public void setCraftingCards(List<RawCraftingCard> craftingCards) {
         this.craftingCards.set(FXCollections.observableArrayList(craftingCards));
         update();
+    }
+
+    public void setSelectedCard(Integer selRow, Integer selCol){
+        //get the old selected box and the new selected box
+        CraftingCardBox oldSelectedBox = this.selectedRow != null ? craftingCardBoxes.get(colNum.get() * this.selectedRow + this.selectedCol) : null;
+
+        //get the new selected card box
+        CraftingCardBox newSelectedBox = selRow != null ? craftingCardBoxes.get(colNum.get() * selRow + selCol) : null;
+
+        //if there was a selected card and now there is not, we just restore the selected card style
+        if(selRow == null && this.selectedRow != null){
+            if(oldSelectedBox != null)
+                oldSelectedBox.setStyle(defaultStyle);
+        }
+
+        //if there is a selected card different from the previously selected card, then we update the style
+        else if(selRow != null && (!selRow.equals(this.selectedRow) || !selCol.equals(this.selectedCol))){
+            //if the previous selected card was not null restore the default style
+            if(this.selectedRow != null && this.selectedCol != null) {
+                if(oldSelectedBox != null)
+                    oldSelectedBox.setStyle(defaultStyle);
+            }
+
+            if(newSelectedBox != null) {
+                newSelectedBox.setStyle(defaultStyle + "-fx-background-color: red");
+            }
+        }
+        this.selectedRow = selRow;
+        this.selectedCol = selCol;
     }
 
     public int getRowNum() {
