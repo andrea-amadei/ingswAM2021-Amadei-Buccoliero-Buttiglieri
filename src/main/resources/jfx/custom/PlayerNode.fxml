@@ -10,5 +10,5 @@
     <VResourceContainer fx:id="basket" hideIfEmpty="true" layoutX="561.0" layoutY="123.0" showX="false" AnchorPane.leftAnchor="561.0" AnchorPane.topAnchor="123.0" />
 
     <ProductionBox fx:id="production" layoutX="11.0" layoutY="298.0" AnchorPane.leftAnchor="11.0" />
-    <LeaderCardSlotsBox fx:id="leaders" AnchorPane.leftAnchor="671.0" AnchorPane.topAnchor="368.0" />
+    <LeaderCardSlotsBox fx:id="leaders" AnchorPane.leftAnchor="671.0" AnchorPane.topAnchor="310.0" />
 </fx:root>

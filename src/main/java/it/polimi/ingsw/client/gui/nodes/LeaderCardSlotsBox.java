@@ -43,8 +43,8 @@ public class LeaderCardSlotsBox extends HBox {
         scale = new Scale();
         this.getTransforms().add(scale);
 
-        scale.setX(0.45);
-        scale.setY(0.6);
+        scale.setX(0.75);
+        scale.setY(0.75);
 
         ClientLeaderCards clientLeaderCards = new ClientLeaderCards();
         clientLeaderCards.changeCoveredCardsNumber(2);

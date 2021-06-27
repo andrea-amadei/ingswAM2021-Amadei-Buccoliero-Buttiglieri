@@ -40,8 +40,8 @@ public class LeaderCardBox extends VBox {
 
         //setting up  the VBox
         this.setAlignment(Pos.TOP_CENTER);
-        this.setPrefHeight(548d);
-        this.setPrefWidth(343d);
+        this.setPrefHeight(550d);
+        this.setPrefWidth(200d);
         this.setStyle("-fx-background-color: #adadad; -fx-border-color: black; -fx-border-insets: 3; -fx-border-width: 3");
         update();
     }
