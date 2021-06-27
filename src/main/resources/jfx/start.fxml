@@ -6,7 +6,6 @@
 <?import javafx.scene.text.*?>
 <?import org.controlsfx.glyphfont.*?>
 
-
 <AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.LobbyGuiController">
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -130,6 +129,14 @@
                                     </Label>
                                  </children>
                               </VBox>
+                              <Button fx:id="reconnectBtn" mnemonicParsing="false" onAction="#reconnectButtonAction" prefHeight="46.0" prefWidth="150.0" text="Reconnect" GridPane.columnIndex="3" GridPane.halignment="CENTER">
+                                 <graphic>
+                                    <Glyph fontFamily="FontAwesome" icon="CHECK" scaleX="1.5" scaleY="1.5" />
+                                 </graphic>
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Button>
                            </children>
                         </GridPane>
                         <TextArea fx:id="messages" editable="false" prefHeight="207.0" prefWidth="1520.0">

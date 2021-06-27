@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.fsm.states;
 import it.polimi.ingsw.common.ActionQueue;
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
-import it.polimi.ingsw.common.payload_components.groups.updates.AddLeaderCardUpdatePayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.updates.SetInitialConfigurationUpdatePayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.gamematerials.FlagColor;
@@ -22,7 +21,6 @@ import it.polimi.ingsw.parser.raw.RawStorage;
 import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.*;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class SetupState extends State {

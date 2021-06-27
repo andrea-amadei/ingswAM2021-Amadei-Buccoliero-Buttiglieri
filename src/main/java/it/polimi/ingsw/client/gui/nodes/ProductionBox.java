@@ -138,10 +138,10 @@ public class ProductionBox extends GridPane {
             craftingBox.setOnMouseClicked(this::handleSelectCrafting);
             slotBoxes.get(COL_NUM + i + 1).getChildren().add(craftingBox);
         }
-
+        //update readiness
+        updateCraftingReady(clientProduction.getBaseCraftingsReady(), clientProduction.getUpgradableCraftingsReady(), clientProduction.getLeaderCraftingsReady());
         //update selection
         updateSelection(clientProduction.getSelectedType(), clientProduction.getSelectedCraftingIndex());
-
         update();
     }
 
@@ -173,7 +173,6 @@ public class ProductionBox extends GridPane {
             if(selectedBox.get() == null || (!selectedBox.get().getFirst().equals(row) || !selectedBox.get().getSecond().equals(col))) {
                 StackPane selectedStackPane = slotBoxes.get(row * COL_NUM + col);
                 selectedStackPane.getChildren().get(0).setStyle("-fx-background-color: red");
-                System.out.println();
             }
             selectedBox.set(new Pair<>(row, col));
         }
@@ -184,6 +183,23 @@ public class ProductionBox extends GridPane {
         }
     }
 
+    private void updateCraftingReady(List<Boolean> baseReady, List<Boolean> upgradableReady, List<Boolean> leaderReady){
+        //set the base crafting readiness
+        StackPane baseStackPane = slotBoxes.get(COL_NUM);
+        baseStackPane.getChildren().get(0).setStyle((baseReady.get(0)) ? "-fx-background-color: #2c2cea" : "");
+
+        //set the upgradable crafting row
+        for(int i = 0; i < upgradableReady.size(); i++){
+            StackPane upgradableStackPane = slotBoxes.get(i);
+            upgradableStackPane.getChildren().get(0).setStyle((upgradableReady.get(i)) ? "-fx-background-color: #2c2cea" : "");
+        }
+
+        //set the leader upgradable row
+        for(int i = 0; i < leaderReady.size(); i++){
+            StackPane leaderStackPane = slotBoxes.get(COL_NUM + i + 1);
+            leaderStackPane.getChildren().get(0).setStyle((leaderReady.get(i)) ? "-fx-background-color: #2c2cea" : "");
+        }
+    }
     private void handleSelectCrafting(MouseEvent event){
         if(!areControlsDisabled.get()) {
             if(event.getButton().equals(MouseButton.PRIMARY)) {

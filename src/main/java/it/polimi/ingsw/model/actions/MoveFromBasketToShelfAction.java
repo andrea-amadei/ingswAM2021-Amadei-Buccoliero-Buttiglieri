@@ -2,11 +2,9 @@ package it.polimi.ingsw.model.actions;
 
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
-import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.IllegalCupboardException;
-import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
@@ -20,7 +18,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * action moves resources from a player's basket to one of their shelves
+ * Class implements interface Action. This action moves resources from a player's basket to one of their shelves.
  */
 public class MoveFromBasketToShelfAction implements Action{
 
@@ -144,14 +142,26 @@ public class MoveFromBasketToShelfAction implements Action{
             throw new IllegalArgumentException("Amount cannot be negative or zero");
     }
 
+    /**
+     * returns the resource to move.
+     * @return the resource to move
+     */
     public ResourceSingle getResourceToMove() {
         return resourceToMove;
     }
 
+    /**
+     * returns the amount of resources to move.
+     * @return the amount of resources to move
+     */
     public int getAmount() {
         return amount;
     }
 
+    /**
+     * returns the ID of the shelf to move the resource to.
+     * @return the ID of the destination shelf
+     */
     public String getShelfID() {
         return shelfID;
     }

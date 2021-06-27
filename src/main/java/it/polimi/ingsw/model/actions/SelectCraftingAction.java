@@ -4,7 +4,6 @@ import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
-import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
@@ -15,14 +14,24 @@ import it.polimi.ingsw.utils.PayloadFactory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
 
+/**
+ * Class implements interface Action. This action allows the player to select a crafting from their production, to later
+ * activate it.
+ */
 public class SelectCraftingAction implements Action {
 
     private final String player;
     private final Production.CraftingType craftingType;
     private final int index;
 
+    /**
+     * creates a new SelectCraftingAction.
+     *
+     * @param player the player who performs the action.
+     * @param craftingType the type of the crafting to select (base, upgradable or leader).
+     * @param index the index of the crafting.
+     */
     public SelectCraftingAction(String player, Production.CraftingType craftingType, int index) {
         this.player = player;
         this.craftingType = craftingType;
@@ -59,7 +68,6 @@ public class SelectCraftingAction implements Action {
         if(gameContext == null)
             throw new NullPointerException();
 
-        GameModel model = gameContext.getGameModel();
         Player currentPlayer;
         List<PayloadComponent> payload = new ArrayList<>();
 
@@ -75,8 +83,6 @@ public class SelectCraftingAction implements Action {
         } catch (IndexOutOfBoundsException e) {
             throw new IllegalActionException(e.getMessage());
         }
-
-
 
         Crafting crafting;
         try{
@@ -129,10 +135,18 @@ public class SelectCraftingAction implements Action {
             throw new IllegalArgumentException("Index must be positive");
     }
 
+    /**
+     * returns the type of the selected crafting.
+     * @return the type of the selected crafting.
+     */
     public Production.CraftingType getCraftingType() {
         return craftingType;
     }
 
+    /**
+     * returns the index of the selected crafting.
+     * @return the index of the selected crafting.
+     */
     public int getIndex() {
         return index;
     }

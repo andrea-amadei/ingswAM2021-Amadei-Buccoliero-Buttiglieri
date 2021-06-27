@@ -14,6 +14,10 @@ import it.polimi.ingsw.utils.PayloadFactory;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Class implements interface Action. This action allows the player to discard a leader card, receiving the right
+ * amount of faith points afterwards.
+ */
 public class DiscardLeaderAction implements Action{
 
     private final String player;
@@ -128,6 +132,10 @@ public class DiscardLeaderAction implements Action{
             throw new IllegalArgumentException("Leader ID cannot be negative or zero");
     }
 
+    /**
+     * returns the ID of the discarded leader card
+     * @return the ID of the discarded leader card
+     */
     public int getLeaderID() {
         return leaderID;
     }

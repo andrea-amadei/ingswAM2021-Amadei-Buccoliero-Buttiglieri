@@ -19,6 +19,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Class implements interface Action. This action allows the player to select the card they intend to buy from the shop.
+ * The player also has to select the slot of their production where they intend to put the card.
+ */
 public class SelectCardFromShopAction implements Action{
 
     private final String player;
@@ -161,14 +165,26 @@ public class SelectCardFromShopAction implements Action{
 
     }
 
+    /**
+     * returns the row of the shop grid where the card is.
+     * @return the row of the shop grid where the card is
+     */
     public int getRow() {
         return row;
     }
 
+    /**
+     * returns the column of the shop grid where the card is.
+     * @return the colums of the shop grid where the card is.
+     */
     public int getCol() {
         return col;
     }
 
+    /**
+     * returns the index of the production slot where the player wants to put the card.
+     * @return the index of the production slot where the player wants to put the card.
+     */
     public int getUpgradableCraftingId() {
         return upgradableCraftingId;
     }

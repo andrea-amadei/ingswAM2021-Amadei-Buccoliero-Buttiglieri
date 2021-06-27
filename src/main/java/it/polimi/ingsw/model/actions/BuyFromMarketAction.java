@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.actions;
 
 import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
-import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.GameModel;
@@ -18,9 +17,11 @@ import it.polimi.ingsw.utils.PayloadFactory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+/**
+ * Class implements interface Action. This action allows the player to buy a row or column from the market.
+ */
 public class BuyFromMarketAction implements Action{
 
     private final String player;
@@ -147,9 +148,17 @@ public class BuyFromMarketAction implements Action{
             throw new IndexOutOfBoundsException();
     }
 
+    /**
+     * return the index of the chosen row or column
+     * @return the index of the chosen row or column
+     */
     public int getIndex() {
         return index;
     }
 
+    /**
+     * return true if a row has been chosen, false if a column has been chosen
+     * @return true if a row has been chosen, false if a column has been chosen
+     */
     public boolean getIsRow(){return isRow;}
 }

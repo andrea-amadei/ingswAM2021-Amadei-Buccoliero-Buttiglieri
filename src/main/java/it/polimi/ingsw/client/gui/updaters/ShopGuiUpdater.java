@@ -24,7 +24,10 @@ public class ShopGuiUpdater implements Listener<ClientShop> {
 
     @Override
     public void update(ClientShop clientShop) {
-        Platform.runLater(()-> shopBox.setCraftingCards(fromGridToList(clientShop.getGrid())));
+        Platform.runLater(()-> {
+            shopBox.setCraftingCards(fromGridToList(clientShop.getGrid()));
+            shopBox.setSelectedCard(clientShop.getSelectedCardRow(), clientShop.getSelectedCardCol());
+        });
     }
 
     private List<RawCraftingCard> fromGridToList(RawCraftingCard[][] rawCraftingCards){

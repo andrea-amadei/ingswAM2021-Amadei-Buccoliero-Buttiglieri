@@ -10,6 +10,9 @@ import it.polimi.ingsw.model.fsm.GameContext;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Class implements interface Action. This action manages the reconnection of a player, informing the state machine.
+ */
 public class ReconnectPlayerAction implements Action{
 
     private final String target;
