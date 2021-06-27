@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Class implements interface Action. This action performs the automated moves of "Lorenzo il Magnifico", only in
+ * single player mode.
+ */
 public class LorenzoMoveAction implements Action {
 
     /**
