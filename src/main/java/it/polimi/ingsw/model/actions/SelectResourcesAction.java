@@ -6,7 +6,6 @@ import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.IllegalSelectionException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
-import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
@@ -19,6 +18,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Class implements interface Action. This action allows the player to select resources from their storages.
+ */
 public class SelectResourcesAction implements Action{
 
     private final String player;
@@ -127,14 +129,26 @@ public class SelectResourcesAction implements Action{
             throw new IllegalArgumentException("Amount must be positive");
     }
 
+    /**
+     * returns the ID of the container to select resource from.
+     * @return the ID of the container to select resources from.
+     */
     public String getContainerId() {
         return containerId;
     }
 
+    /**
+     * returns the resources to select.
+     * @return the resources to select.
+     */
     public ResourceSingle getResource() {
         return resource;
     }
 
+    /**
+     * returns the amount of resources to select.
+     * @return the amount of resources to select.
+     */
     public int getAmount() {
         return amount;
     }

@@ -16,6 +16,11 @@ import it.polimi.ingsw.utils.PayloadFactory;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Class implements interface Action. This action allows the player to activate a leader card, checking if
+ * the player meets the requirements to activate the card and, if that is the case, adding its special
+ * abilities to the player's abilities.
+ */
 public class ActivateLeaderAction implements Action{
 
     private final String player;
@@ -109,6 +114,10 @@ public class ActivateLeaderAction implements Action{
         return player;
     }
 
+    /**
+     * Checks if all attributes are set and have meaningful values.
+     * In case they are not, this throws the appropriate RuntimeException.
+     */
     @Override
     public void checkFormat() {
         if(player == null)
@@ -117,6 +126,10 @@ public class ActivateLeaderAction implements Action{
             throw new IllegalArgumentException("Leader ID cannot be negative or zero");
     }
 
+    /**
+     * returns the leader ID
+     * @return the leader ID
+     */
     public int getLeaderID() {
         return leaderID;
     }

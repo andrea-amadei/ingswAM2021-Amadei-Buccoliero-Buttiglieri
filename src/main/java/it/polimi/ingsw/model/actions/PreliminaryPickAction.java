@@ -11,6 +11,11 @@ import it.polimi.ingsw.utils.GameUtilities;
 
 import java.util.*;
 
+/**
+ * Class implements interface Action. This action allows the player to make their preliminary picks, before the
+ * game officially starts. Every player must discard the assigned amount of leader cards and chose the assigned
+ * amount of resources.
+ */
 public class PreliminaryPickAction implements Action{
 
     private final String player;
@@ -95,10 +100,18 @@ public class PreliminaryPickAction implements Action{
                 throw new IllegalArgumentException("Amount of chosen resources cannot be negative");
     }
 
+    /**
+     * returns the list of integers representing the indexes of leader cards to discard
+     * @return the list of leader cards to discard
+     */
     public List<Integer> getLeadersToDiscard() {
         return leadersToDiscard;
     }
 
+    /**
+     * returns the map of resources and amounts chosen by a player
+     * @return the map of resources and amounts chosen by a player
+     */
     public Map<ResourceSingle, Integer> getChosenResources() {
         return chosenResources;
     }

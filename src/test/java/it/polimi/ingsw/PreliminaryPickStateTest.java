@@ -403,6 +403,4 @@ public class PreliminaryPickStateTest {
         assertEquals("PreliminaryPickState", currentState.toString());
     }
 
-
-
 }

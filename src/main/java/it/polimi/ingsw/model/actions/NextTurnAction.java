@@ -9,6 +9,10 @@ import it.polimi.ingsw.model.fsm.GameContext;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class implements interface Action. This action manages the change of the current player, after they finish
+ * their turn.
+ */
 public class NextTurnAction implements Action{
     /**
      * Calls the appropriate method of the handler

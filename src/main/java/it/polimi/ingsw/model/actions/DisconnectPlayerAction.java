@@ -23,6 +23,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Class implements interface Action. This action notifies the disconnection of a player and makes the right changes
+ * to the model.
+ */
 public class DisconnectPlayerAction implements Action{
 
     private final String target;
@@ -122,6 +126,10 @@ public class DisconnectPlayerAction implements Action{
 
     }
 
+    /**
+     * returns the target of the disconnection
+     * @return the target of the disconnection
+     */
     public String getTarget() {
         return target;
     }

@@ -10,6 +10,9 @@ import it.polimi.ingsw.model.fsm.GameContext;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class implements interface Action. This action allows the player to undo their last move, when possible.
+ */
 public class BackAction implements Action {
 
     private final String player;
