@@ -5,7 +5,6 @@ import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
-import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.fsm.ActionHandler;
 import it.polimi.ingsw.model.fsm.GameContext;
@@ -15,11 +14,21 @@ import it.polimi.ingsw.utils.ForegroundColor;
 
 import java.util.*;
 
+/**
+ * Class implements interface Action. This action allows the player to chose an output for their selected crafting,
+ * provided it had an undecided output.
+ */
 public class SelectCraftingOutputAction implements Action {
 
     private final String player;
     private final Map<ResourceSingle, Integer> conversion;
 
+    /**
+     * creates a new SelectCraftingOutputAction.
+     *
+     * @param player the player who performs the action.
+     * @param conversion the selected output.
+     */
     public SelectCraftingOutputAction(String player, Map<ResourceSingle, Integer> conversion) {
         this.player = player;
         this.conversion = conversion;
@@ -41,12 +50,19 @@ public class SelectCraftingOutputAction implements Action {
         return handler.handleAction(this);
     }
 
+    /**
+     * Selects the output of a crafting with undecided output. The amount of resources that form the output must
+     * be valid, otherwise an IllegalActionException is thrown.
+     *
+     * @param gameContext the current context of the game.
+     * @return the messages to send to the clients.
+     * @throws IllegalActionException iff the action cannot be performed.
+     */
     @Override
     public List<Message> execute(GameContext gameContext) throws IllegalActionException {
         if(gameContext == null)
             throw new NullPointerException();
 
-        GameModel model = gameContext.getGameModel();
         Player currentPlayer;
         Crafting crafting;
 
@@ -98,6 +114,10 @@ public class SelectCraftingOutputAction implements Action {
             throw new IllegalArgumentException();
     }
 
+    /**
+     * returns the chosen output.
+     * @return the chosen output.
+     */
     public Map<ResourceSingle, Integer> getConversion() {
         return conversion;
     }
