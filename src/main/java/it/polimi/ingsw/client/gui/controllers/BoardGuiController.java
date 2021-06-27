@@ -89,32 +89,17 @@ public class BoardGuiController extends BaseController {
             getModel().getPlayers().get(0).getMarketBasket().changeResources(new RawStorage("delta", new HashMap<>(){{put("gold", 2);put("servant", 1);}}));
             getModel().getPlayers().get(1).getCupboard().get(2).changeResources(new RawStorage("delta", new HashMap<>(){{put("shield", 1);}}));
         }
-        // show the self board
-        // TODO: change to:
-        // setActivePlayer(getModel().getPersonalData().getUsername());
-        String selfUsername = getModel().getPersonalData().getUsername();
-        if(selfUsername == null || selfUsername.equals("Unknown"))
-            selfUsername = getModel().getPlayers().get(0).getUsername();
-        setActivePlayer(selfUsername);
 
-        ownedUsername = selfUsername;
+        ownedUsername = getServerHandler().getUsername();
+        setActivePlayer(getServerHandler().getUsername());
 
-        /*getModel().setCurrentPlayer(getModel().getPlayers().get(1));
-        getModel().getPlayers().get(1).getLeaderCards().changeCoveredCardsNumber(2);
-        try {
-            getModel().getPlayers().get(1).getLeaderCards().addLeaderCard(JSONParser.parseToRaw("{\"id\":2,\"name\":\"aaa\",\"points\":2,\"requirements\":[{\"type\":\"flag\",\"color\":\"BLUE\",\"amount\":1},{\"type\":\"flag\",\"color\":\"PURPLE\",\"amount\":1}],\"special_abilities\":[{\"type\":\"discount\",\"resource\":\"shield\",\"amount\":1}]}", RawLeaderCard.class));
-        } catch (ParserException | IllegalRawConversionException e) {
-            e.printStackTrace();
-        }*/
 
-        // TODO: ADD ALL GLOBAL UPDATERS
         new ShopGuiUpdater(shop, getModel().getShop());
         new MarketGuiUpdater(market, getModel().getMarket());
         new MenuGuiUpdater(buttons, getModel().getPersonalData());
         new TurnGuiUpdater(buttons, scoreboard, getModel());
         new PersonalDataGuiUpdater(messages, getSceneManager().getStage(), getModel().getPersonalData());
 
-        // TODO: ADD ALL PLAYER SPECIFIC UPDATERS
         for(int i = 0; i < getModel().getPlayers().size(); i++) {
             new FaithPathGuiUpdater(faithPath, getModel().getPlayers().get(i).getFaithPath(), i + 1);
             new FlagHolderGuiUpdater(scoreboard, getModel().getPlayers().get(i).getFlagHolder(), i + 1);
@@ -254,18 +239,12 @@ public class BoardGuiController extends BaseController {
     }
 
     private void onChangedCurrentPlayer(ChangedCurrentPlayerEvent event){
-        String selfUsername = getModel().getPersonalData().getUsername();
 
-        //TODO: remove this, we only use it for testing without connection to server
-        if(selfUsername == null || selfUsername.equals("Unknown")){
-            selfUsername = getModel().getPlayers().get(0).getUsername();
-        }
-
-        if(selfUsername.equals(event.getUsername())){
-            changePlayerNodeControlsStatus(playerNodes.get(selfUsername), false);
+        if(ownedUsername.equals(event.getUsername())){
+            changePlayerNodeControlsStatus(playerNodes.get(ownedUsername), false);
             changeGlobalNodesControlsStatus(false);
         }else{
-            changePlayerNodeControlsStatus(playerNodes.get(selfUsername), true);
+            changePlayerNodeControlsStatus(playerNodes.get(ownedUsername), true);
             changeGlobalNodesControlsStatus(true);
         }
     }

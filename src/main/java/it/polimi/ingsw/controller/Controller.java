@@ -70,7 +70,11 @@ public class Controller extends Thread{
 
         for(Message m : messages){
             for(String target : m.getTargets()){
-                    messageDictionary.get(target).addAll(m.getPayloadComponents());
+                    if(!messageDictionary.containsKey(target))
+                        Logger.log("Unknown target: " + target, Logger.Severity.ERROR);
+                    else {
+                        messageDictionary.get(target).addAll(m.getPayloadComponents());
+                    }
                 }
         }
         for(Map.Entry<String, List<PayloadComponent>> entry : messageDictionary.entrySet()){
