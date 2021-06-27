@@ -196,7 +196,7 @@ public class ProductionBox extends GridPane {
 
         //set the leader upgradable row
         for(int i = 0; i < leaderReady.size(); i++){
-            StackPane leaderStackPane = slotBoxes.get(ROW_NUM + i + 1);
+            StackPane leaderStackPane = slotBoxes.get(COL_NUM + i + 1);
             leaderStackPane.getChildren().get(0).setStyle((leaderReady.get(i)) ? "-fx-background-color: #2c2cea" : "");
         }
     }
