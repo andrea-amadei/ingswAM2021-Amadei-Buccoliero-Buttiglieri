@@ -20,8 +20,11 @@ import it.polimi.ingsw.utils.PayloadFactory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
 
+/**
+ * Class implements interface Action. This action allows the player to select the conversions they want to apply
+ * to the resources they just bought from the market.
+ */
 public class SelectConversionsAction implements Action{
 
     private final String player;
@@ -161,6 +164,10 @@ public class SelectConversionsAction implements Action{
             throw new IllegalArgumentException("Actuator choices can't be negative");
     }
 
+    /**
+     * returns the actuator chosen by the player.
+     * @return the actuator chosen by the player.
+     */
     public List<Integer> getActuatorsChoice() {
         return actuatorsChoice;
     }
