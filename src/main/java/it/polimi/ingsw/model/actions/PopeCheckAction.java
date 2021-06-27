@@ -17,6 +17,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Class implements interface Action. This action manages the triggering of a pope check and gives players
+ * the correct amount of faith points depending on their position on the faith path.
+ */
 public class PopeCheckAction implements Action{
 
     private final List<Integer> newPopeCheckOrders;
