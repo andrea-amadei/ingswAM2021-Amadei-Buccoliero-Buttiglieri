@@ -5,7 +5,6 @@ import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.exceptions.IllegalCupboardException;
-import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.Player;
@@ -21,8 +20,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Transfers resources from origin to destination. If transfer cannot be applied, nothing changes.
- * Origin and destination can only be hand or shelves.
+ * Class implements interface Action. This action transfers resources from origin to destination. If transfer cannot
+ * be applied, nothing changes.
+ * Origin and destination can only be the player's hand or shelves.
  */
 public class ResourcesMoveAction implements Action{
 
@@ -214,18 +214,34 @@ public class ResourcesMoveAction implements Action{
             throw new IllegalArgumentException("Amount of resources to move cannot be negative or zero");
     }
 
+    /**
+     * returns the origin storage.
+     * @return the origin storage.
+     */
     public String getOrigin() {
         return origin;
     }
 
+    /**
+     * returns the destination storage.
+     * @return the destination storage.
+     */
     public String getDestination() {
         return destination;
     }
 
+    /**
+     * returns the resources to move.
+     * @return the resources to move.
+     */
     public ResourceSingle getResourceToMove() {
         return resourceToMove;
     }
 
+    /**
+     * returns the amount of resources to move.
+     * @return the amount of resources to move.
+     */
     public int getAmount() {
         return amount;
     }
