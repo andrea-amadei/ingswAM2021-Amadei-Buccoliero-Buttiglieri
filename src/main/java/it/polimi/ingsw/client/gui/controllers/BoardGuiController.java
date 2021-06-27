@@ -251,7 +251,7 @@ public class BoardGuiController extends BaseController {
 
     private void onSwitchedShownPlayer(SwitchPlayerEvent event){
         setActivePlayer(event.getUsername());
-        changeGlobalNodesControlsStatus(!event.getUsername().equals(ownedUsername));
+        changeGlobalNodesControlsStatus(!getModel().getCurrentPlayer().getUsername().equals(ownedUsername) || !event.getUsername().equals(ownedUsername));
     }
 
 
