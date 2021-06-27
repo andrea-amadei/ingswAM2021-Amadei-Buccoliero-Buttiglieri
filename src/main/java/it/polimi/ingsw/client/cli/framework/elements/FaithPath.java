@@ -191,7 +191,10 @@ public class FaithPath implements MutablePositionedElement {
                 fg = ForegroundColor.BLACK_BRIGHT;
             }
 
-            if(i.getOrder() == getActiveTile()) {
+            if(i.getOrder() == getActiveTile() && i.getOrder() == getLorenzoTile()) {
+                fg = ForegroundColor.PURPLE;
+            }
+            else if(i.getOrder() == getActiveTile()) {
                 fg = ForegroundColor.BLUE_BRIGHT;
             }
             else if(i.getOrder() == getLorenzoTile()) {
