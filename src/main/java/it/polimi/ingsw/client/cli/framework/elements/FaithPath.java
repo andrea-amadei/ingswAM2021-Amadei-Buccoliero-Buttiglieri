@@ -21,6 +21,7 @@ public class FaithPath implements MutablePositionedElement {
     private List<RawFaithPathTile> tiles;
     private List<RawFaithPathGroup> groups;
     private int activeTile;
+    private int lorenzoTile;
 
     public FaithPath(String name, int row, int column, List<RawFaithPathTile> tiles, List<RawFaithPathGroup> groups) {
         if(name == null)
@@ -40,6 +41,7 @@ public class FaithPath implements MutablePositionedElement {
         setTiles(tiles);
         setGroups(groups);
         setActiveTile(0);
+        setLorenzoTile(-1);
     }
 
     @Override
@@ -135,6 +137,14 @@ public class FaithPath implements MutablePositionedElement {
         this.activeTile = activeTile;
     }
 
+    public int getLorenzoTile() {
+        return lorenzoTile;
+    }
+
+    public void setLorenzoTile(int lorenzoTile) {
+        this.lorenzoTile = lorenzoTile;
+    }
+
     @Override
     public void draw(OutputHandler outputHandler) throws UnableToDrawElementException {
         int maxHeight = getTiles().stream().max(Comparator.comparing(RawFaithPathTile::getY)).orElseThrow().getY() * 3;
@@ -183,6 +193,9 @@ public class FaithPath implements MutablePositionedElement {
 
             if(i.getOrder() == getActiveTile()) {
                 fg = ForegroundColor.BLUE_BRIGHT;
+            }
+            else if(i.getOrder() == getLorenzoTile()) {
+                fg = ForegroundColor.RED;
             }
 
             outputHandler.setBackgroundColorRectangle(

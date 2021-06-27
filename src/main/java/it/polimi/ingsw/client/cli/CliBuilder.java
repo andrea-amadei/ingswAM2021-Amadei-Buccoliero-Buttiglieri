@@ -23,7 +23,7 @@ public final class CliBuilder {
             frame = new Frame("player_" + (i + 1));
             player = model.getPlayers().get(i);
 
-            new FaithPathCliUpdater(player.getFaithPath(), frame);
+            new FaithPathCliUpdater(player.getFaithPath(), frame, false);
 
             new DiscountHolderCliUpdater(player.getDiscountHolder(), frame);
             new FlagHolderCliUpdater(player.getFlagHolder(), frame);
@@ -44,6 +44,9 @@ public final class CliBuilder {
 
             framework.addFrame(frame);
         }
+
+        if(model.getPlayers().size() == 1)
+            new FaithPathCliUpdater(model.getPlayers().get(0).getFaithPath(), framework.getFrame("player_1"), true);
 
         frame = new Frame("global");
         new MarketCliUpdater(model.getMarket(), frame);

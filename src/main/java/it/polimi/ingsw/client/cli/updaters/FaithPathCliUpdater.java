@@ -17,18 +17,21 @@ public class FaithPathCliUpdater implements Listener<ClientFaithPath> {
     public static final int STARTING_COLUMN = 36;
 
     private final Frame frame;
-    private ClientFaithPath faithPath;
+    private final ClientFaithPath faithPath;
 
     private FaithPath faithPathElement;
     private Group group;
     private List<FixedTextBox> checks;
 
-    public FaithPathCliUpdater(ClientFaithPath faithPath, Frame frame) {
+    private final boolean singlePLayer;
+
+    public FaithPathCliUpdater(ClientFaithPath faithPath, Frame frame, boolean singlePlayer) {
         if(frame == null || faithPath == null)
             throw new NullPointerException();
 
         this.frame = frame;
         this.faithPath = faithPath;
+        this.singlePLayer = singlePlayer;
 
         faithPath.addListener(this);
 
@@ -37,6 +40,18 @@ public class FaithPathCliUpdater implements Listener<ClientFaithPath> {
     }
 
     public void setup(ClientFaithPath faithPath) {
+        if(singlePLayer) {
+            faithPathElement = (FaithPath) frame.getElement("faith_path");
+            group = (Group) frame.getElement("pope_checks");
+
+            checks = new ArrayList<>();
+            for(int i = 0; i < faithPath.getCheckpointStatus().size(); i++) {
+                checks.add((FixedTextBox) group.getElement("check_" + (i + 1)));
+            }
+
+            return;
+        }
+
         faithPathElement = new FaithPath("faith_path", STARTING_ROW, STARTING_COLUMN, faithPath.getTiles(), faithPath.getFaithGroups());
 
         group = new Group("pope_checks");
@@ -62,6 +77,9 @@ public class FaithPathCliUpdater implements Listener<ClientFaithPath> {
     @Override
     public void update(ClientFaithPath clientFaithPath) {
         faithPathElement.setActiveTile(clientFaithPath.getFaithPoints());
+
+        if(singlePLayer)
+            faithPathElement.setLorenzoTile(clientFaithPath.getLorenzoFaith());
 
         for(int i = 0; i < faithPath.getCheckpointStatus().size(); i++) {
             if(faithPath.getCheckpointStatus().get(i) == FaithHolder.CheckpointStatus.UNREACHED) {
