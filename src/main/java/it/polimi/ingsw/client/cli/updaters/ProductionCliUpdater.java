@@ -120,6 +120,8 @@ public class ProductionCliUpdater implements Listener<ClientProduction> {
 
             if(clientProduction.getSelectedType() == Production.CraftingType.UPGRADABLE && clientProduction.getSelectedCraftingIndex() == i)
                 bg = BackgroundColor.GREEN;
+            else if(clientProduction.getUpgradableCraftingsReady().get(i))
+                bg = BackgroundColor.RED_BRIGHT;
             else
                 bg = BackgroundColor.BLACK;
 
@@ -179,6 +181,8 @@ public class ProductionCliUpdater implements Listener<ClientProduction> {
 
             if(clientProduction.getSelectedType() == Production.CraftingType.BASE && clientProduction.getSelectedCraftingIndex() == i)
                 bg = BackgroundColor.GREEN;
+            else if(clientProduction.getBaseCraftingsReady().get(i))
+                bg = BackgroundColor.RED_BRIGHT;
             else
                 bg = BackgroundColor.BLACK;
 
@@ -223,6 +227,8 @@ public class ProductionCliUpdater implements Listener<ClientProduction> {
 
             if(clientProduction.getSelectedType() == Production.CraftingType.LEADER && clientProduction.getSelectedCraftingIndex() == i)
                 bg = BackgroundColor.GREEN;
+            else if(clientProduction.getLeaderCraftingsReady().get(i))
+                bg = BackgroundColor.RED_BRIGHT;
             else
                 bg = BackgroundColor.BLACK;
 
