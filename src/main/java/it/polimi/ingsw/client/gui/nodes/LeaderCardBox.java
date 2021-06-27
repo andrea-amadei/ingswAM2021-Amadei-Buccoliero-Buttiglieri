@@ -131,7 +131,6 @@ public class LeaderCardBox extends VBox {
                         break;
                     case "conversion":
                         ConversionAbilityBox conversionAbilityBox = new ConversionAbilityBox(specialAbility);
-                        conversionAbilityBox.setPadding(new Insets(60, 0, 0, 0));
                         abilityContainer.getChildren().add(conversionAbilityBox);
                         break;
                     case "storage":
