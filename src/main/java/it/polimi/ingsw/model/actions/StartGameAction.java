@@ -9,7 +9,12 @@ import it.polimi.ingsw.model.fsm.GameContext;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class implements interface Action. This action manages the start of tha game.
+ */
 public class StartGameAction implements Action{
+
+
     /**
      * Calls the appropriate method of the handler
      *
