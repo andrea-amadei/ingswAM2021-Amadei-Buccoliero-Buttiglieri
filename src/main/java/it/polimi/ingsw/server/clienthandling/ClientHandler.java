@@ -88,7 +88,11 @@ public class ClientHandler implements Runnable{
                         sendPayload(new ErrorPayloadComponent("Invalid request"));
                         continue;
                     }
-                    currentMatch.getActionQueue().addAction((Action)clientNetworkObject, ActionQueue.Priority.CLIENT_ACTION.ordinal());
+                    if(!((Action) clientNetworkObject).getSender().equals(username)){
+                        sendPayload(new ErrorPayloadComponent("Sender doesn't match the username"));
+                    }else {
+                        currentMatch.getActionQueue().addAction((Action) clientNetworkObject, ActionQueue.Priority.CLIENT_ACTION.ordinal());
+                    }
                 }else if(clientNetworkObject instanceof Ping){
                     if(username != null) {
                         disconnectionManager.ack(username);
