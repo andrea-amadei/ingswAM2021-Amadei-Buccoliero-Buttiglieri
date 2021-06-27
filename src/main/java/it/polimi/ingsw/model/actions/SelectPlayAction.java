@@ -9,6 +9,10 @@ import it.polimi.ingsw.model.fsm.GameContext;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class implements interface Action. This action allows the player to chose their move, they can get resources from
+ * the market, buy a card from the shop or activate the production.
+ */
 public class SelectPlayAction implements Action {
 
     public enum Play {
@@ -93,6 +97,10 @@ public class SelectPlayAction implements Action {
 
     }
 
+    /**
+     * returns the chosen play.
+     * @return the chosen play.
+     */
     public Play getPlay() {
         return play;
     }
