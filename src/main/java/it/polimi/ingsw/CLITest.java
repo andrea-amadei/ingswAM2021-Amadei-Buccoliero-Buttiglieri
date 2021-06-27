@@ -124,7 +124,7 @@ public class CLITest {
         faithPath.getCheckpointStatus().set(0, FaithHolder.CheckpointStatus.ACTIVE);
         faithPath.getCheckpointStatus().set(1, FaithHolder.CheckpointStatus.INACTIVE);
         faithPath.addFaithPoints(3);
-        FaithPathCliUpdater faithPathCliUpdater = new FaithPathCliUpdater(faithPath, frame);
+        FaithPathCliUpdater faithPathCliUpdater = new FaithPathCliUpdater(faithPath, frame, false);
 
         // discount holder
         ClientDiscountHolder discountHolder = new ClientDiscountHolder();
