@@ -46,7 +46,7 @@ public class LeaderCardSlotsBox extends HBox {
         scale.setX(0.75);
         scale.setY(0.75);
 
-        ClientLeaderCards clientLeaderCards = new ClientLeaderCards();
+        /*ClientLeaderCards clientLeaderCards = new ClientLeaderCards();
         clientLeaderCards.changeCoveredCardsNumber(2);
         clientLeaderCards.addLeaderCard(
                 new RawLeaderCard(
@@ -94,7 +94,7 @@ public class LeaderCardSlotsBox extends HBox {
                 )
         );
 
-        updateLeaderSlots(clientLeaderCards);
+        updateLeaderSlots(clientLeaderCards);*/
 
     }
 
