@@ -13,6 +13,7 @@ import javafx.beans.property.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.transform.Scale;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +26,7 @@ public class LeaderCardSlotsBox extends HBox {
     private final IntegerProperty coveredCards;
     private final ObjectProperty<List<Boolean>> isActiveList;
     private final BooleanProperty areControlsDisabled;
+    private final Scale scale;
 
     private List<LeaderCardBox> leaderBoxes;
 
@@ -37,7 +39,14 @@ public class LeaderCardSlotsBox extends HBox {
         leaderBoxes = new ArrayList<>();
         areControlsDisabled = new SimpleBooleanProperty(this, "areControlsDisabled", true);
 
-        /*ClientLeaderCards clientLeaderCards = new ClientLeaderCards();
+        //set initial scale
+        scale = new Scale();
+        this.getTransforms().add(scale);
+
+        scale.setX(0.45);
+        scale.setY(0.6);
+
+        ClientLeaderCards clientLeaderCards = new ClientLeaderCards();
         clientLeaderCards.changeCoveredCardsNumber(2);
         clientLeaderCards.addLeaderCard(
                 new RawLeaderCard(
@@ -85,7 +94,7 @@ public class LeaderCardSlotsBox extends HBox {
                 )
         );
 
-        updateLeaderSlots(clientLeaderCards);*/
+        updateLeaderSlots(clientLeaderCards);
 
     }
 
