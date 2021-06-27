@@ -166,10 +166,14 @@ public class ClientHandler implements Runnable{
             serverManager.addMatch(match);
         }catch(IllegalArgumentException e){
             sendPayload(new TextSetupPayloadComponent(e.getMessage()));
+            return;
         }
 
         this.currentMatch = match;
         sendPayload(new SetGameNameSetupPayloadComponent(matchName));
+        if(playerCount > 1) {
+            sendPayload(new TextSetupPayloadComponent("You created the game! Waiting for other players..."));
+        }
     }
 
     public synchronized void joinMatch(String matchName){

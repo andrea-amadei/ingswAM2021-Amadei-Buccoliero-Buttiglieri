@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="354.0" prefWidth="623.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <Label text="Choose the leaders to discard and the resources to take" AnchorPane.leftAnchor="145.0" AnchorPane.topAnchor="40.0">
+        <font>
+            <Font name="Arial" size="14.0" />
+        </font>
+    </Label>
+    <Button mnemonicParsing="false" text="Confirm" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="289.0" />
+   <VBox prefHeight="179.0" prefWidth="100.0" spacing="30.0" AnchorPane.leftAnchor="73.0" AnchorPane.topAnchor="95.0">
+      <children>
+         <CheckBox mnemonicParsing="false" text="Leader 1" />
+         <CheckBox mnemonicParsing="false" text="Leader 2" />
+         <CheckBox mnemonicParsing="false" text="Leader 3" />
+         <CheckBox mnemonicParsing="false" text="Leader 4" />
+      </children>
+   </VBox>
+   <VBox prefWidth="243.0" spacing="20.0" AnchorPane.leftAnchor="319.0" AnchorPane.topAnchor="95.0">
+      <children>
+         <HBox>
+            <children>
+               <Label text="Gold" />
+               <Region HBox.hgrow="ALWAYS" />
+               <ComboBox prefWidth="150.0" />
+            </children>
+         </HBox>
+         <HBox>
+            <children>
+               <Label text="Servant" />
+               <Region HBox.hgrow="ALWAYS" />
+               <ComboBox prefWidth="150.0" />
+            </children>
+         </HBox>
+         <HBox layoutX="10.0" layoutY="55.0">
+            <children>
+               <Label text="Stone" />
+               <Region HBox.hgrow="ALWAYS" />
+               <ComboBox prefWidth="150.0" />
+            </children>
+         </HBox>
+         <HBox>
+            <children>
+               <Label text="Shield" />
+               <Region HBox.hgrow="ALWAYS" />
+               <ComboBox prefWidth="150.0" />
+            </children>
+         </HBox>
+      </children>
+   </VBox>
+</AnchorPane>

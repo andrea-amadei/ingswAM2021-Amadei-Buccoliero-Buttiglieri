@@ -10,17 +10,23 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import org.controlsfx.glyphfont.Glyph;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class StorageAbilityBox extends VBox {
+public class StorageAbilityBox extends HBox {
 
     private final StringProperty storageAbilityJSON;
     private final ObjectProperty<RawSpecialAbility> storageAbility;
 
-    private Label label;
-    private ResourceBox resource;
+    private List<Label> dashes;
+    private List<ResourceBox> resources;
+    private Glyph dash;
 
     public StorageAbilityBox(){
         String json = "{\"type\":\"storage\",\"storage_name\":\"leader_8\",\"accepted_types\":\"gold\",\"amount\":2}";
@@ -40,20 +46,62 @@ public class StorageAbilityBox extends VBox {
         attachElements();
     }
 
-    private void attachElements(){
-        label = new Label();
-        label.setText("Storage ability");
-        label.setFont(new Font("Arial", 18));
-        label.setAlignment(Pos.CENTER);
+    private void attachElements() {
+        Label label;
+        ResourceBox resourceBox;
 
-        resource = new ResourceBox(storageAbility.get().getAcceptedTypes(), storageAbility.get().getAmount(), true, true, true);
+        this.setSpacing(10d);
 
-        this.getChildren().addAll(label, resource);
+        dash = new Glyph("FontAwesome", "MINUS");
+
+        dashes = new ArrayList<>();
+        resources = new ArrayList<>();
+
+        for(int i = 0; i < storageAbility.get().getAmount(); i++) {
+            if(i != 0) {
+                label = new Label();
+                label.setPrefHeight(40d);
+                label.setGraphic(dash);
+
+                this.getChildren().add(label);
+                dashes.add(label);
+            }
+
+            resourceBox = new ResourceBox(storageAbility.get().getAcceptedTypes(), 0, false, true, false);
+            this.getChildren().add(resourceBox);
+            resources.add(resourceBox);
+        }
     }
 
     private void update(){
-        resource.setResource(storageAbility.get().getAcceptedTypes());
-        resource.setAmount(storageAbility.get().getAmount());
+        int i;
+        Label label;
+        ResourceBox resourceBox;
+
+        for(i = dashes.size(); i < storageAbility.get().getAmount() - 1; i++) {
+            label = new Label();
+            label.setPrefHeight(40d);
+            label.setGraphic(dash);
+            dashes.add(label);
+        }
+
+        for(i = resources.size(); i < storageAbility.get().getAmount(); i++) {
+            resourceBox = new ResourceBox(storageAbility.get().getAcceptedTypes(), 0, false, true, false);
+            resources.add(resourceBox);
+        }
+
+        for(i = 0; i < resources.size(); i++) {
+            resources.get(i).setResource(storageAbility.get().getAcceptedTypes());
+        }
+
+        this.getChildren().clear();
+
+        for(i = resources.size(); i < storageAbility.get().getAmount(); i++) {
+            if(i != 0)
+                this.getChildren().add(dashes.get(i - 1));
+
+            this.getChildren().add(resources.get(i));
+        }
     }
 
     public String getStorageAbilityJSON() {
@@ -70,14 +118,6 @@ public class StorageAbilityBox extends VBox {
 
     public ObjectProperty<RawSpecialAbility> storageAbilityProperty() {
         return storageAbility;
-    }
-
-    public Label getLabel() {
-        return label;
-    }
-
-    public ResourceBox getResource() {
-        return resource;
     }
 
     public void setStorageAbility(RawSpecialAbility storageAbility) {

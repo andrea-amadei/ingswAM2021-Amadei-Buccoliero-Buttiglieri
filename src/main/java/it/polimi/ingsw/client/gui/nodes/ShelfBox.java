@@ -1,13 +1,13 @@
 package it.polimi.ingsw.client.gui.nodes;
 
+import it.polimi.ingsw.client.gui.beans.ResourceContainerBean;
+import it.polimi.ingsw.client.gui.beans.ResourceSelectionBean;
 import it.polimi.ingsw.utils.ResourceLoader;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -17,19 +17,27 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class ShelfBox extends GridPane {
 
-    private StringProperty acceptedResource;
-    private IntegerProperty size;
-    private StringProperty resource1;
-    private StringProperty resource2;
-    private StringProperty resource3;
+    private final StringProperty acceptedResource;
+    private final IntegerProperty size;
+    private final StringProperty resource1;
+    private final StringProperty resource2;
+    private final StringProperty resource3;
 
-    private StringProperty name;
+    private final StringProperty name;
+
+    private final IntegerProperty selectedResources;
+
+    private final BooleanProperty areControlsDisabled;
 
     private Label label;
     private List<ResourceBox> resources;
+
+    private Consumer<ResourceSelectionBean> resourceSelectionCallback;
+    private Consumer<ResourceContainerBean> startResourceTransferCallback;
 
     public ShelfBox() {
         this("any", 3, "Shelf");
@@ -42,7 +50,8 @@ public class ShelfBox extends GridPane {
         this.resource2 = new SimpleStringProperty(this, "resource2Property", "none");
         this.resource3 = new SimpleStringProperty(this, "resource3Property", "none");
         this.name = new SimpleStringProperty(this, "name", name);
-
+        this.selectedResources = new SimpleIntegerProperty(this, "selectedResources", 0);
+        this.areControlsDisabled = new SimpleBooleanProperty(this, "areControlsDisabled", true);
         setup();
         update();
     }
@@ -76,6 +85,26 @@ public class ShelfBox extends GridPane {
         label.setFont(new Font("Times New Roman bold", 22));
         GridPane.setColumnIndex(label, 0);
         super.getChildren().add(label);
+
+        this.setOnMousePressed(evt ->{
+            if(!areControlsDisabled.get()) {
+                if (!resource1Property().get().equals("none")) {
+                    if (evt.getButton().equals(MouseButton.PRIMARY)) {
+                        ResourceSelectionBean bean = new ResourceSelectionBean();
+                        bean.setSource(this);
+                        bean.setResource(resource1Property().get());
+                        bean.setAmount(1);
+                        if (resourceSelectionCallback != null)
+                            resourceSelectionCallback.accept(bean);
+                    } else if (evt.getButton().equals(MouseButton.SECONDARY)) {
+                        ResourceContainerBean bean = new ResourceContainerBean();
+                        bean.setSource(this);
+                        if (startResourceTransferCallback != null)
+                            startResourceTransferCallback.accept(bean);
+                    }
+                }
+            }
+        });
     }
 
     public void update() {
@@ -128,7 +157,7 @@ public class ShelfBox extends GridPane {
                     resources.get(1).setOpacity(0.3d);
                 }
                 else {
-                    resources.get(1).setResource(getResource1());
+                    resources.get(1).setResource(getResource2());
                     resources.get(1).setOpacity(1d);
                 }
 
@@ -157,7 +186,7 @@ public class ShelfBox extends GridPane {
                     resources.get(1).setOpacity(0.3d);
                 }
                 else {
-                    resources.get(1).setResource(getResource1());
+                    resources.get(1).setResource(getResource2());
                     resources.get(1).setOpacity(1d);
                 }
 
@@ -166,12 +195,27 @@ public class ShelfBox extends GridPane {
                     resources.get(2).setOpacity(0.3d);
                 }
                 else {
-                    resources.get(2).setResource(getResource1());
+                    resources.get(2).setResource(getResource3());
                     resources.get(2).setOpacity(1d);
                 }
 
                 break;
         }
+
+        for(int i = 0; i < 3; i++)
+            if(getSelectedResources() >= i + 1)
+                resources.get(i).setSelectedResources(1);
+            else
+                resources.get(i).setSelectedResources(0);
+    }
+
+    /* CALLBACKS */
+    public void setResourceSelectionCallback(Consumer<ResourceSelectionBean> handler){
+        this.resourceSelectionCallback = handler;
+    }
+
+    public void setStartResourceTransferCallback(Consumer<ResourceContainerBean> handler){
+        this.startResourceTransferCallback = handler;
     }
 
     public String getAcceptedResource() {
@@ -222,6 +266,14 @@ public class ShelfBox extends GridPane {
         return name;
     }
 
+    public int getSelectedResources() {
+        return selectedResources.get();
+    }
+
+    public IntegerProperty selectedResourcesProperty() {
+        return selectedResources;
+    }
+
     public void setAcceptedResource(String acceptedResource) {
         this.acceptedResource.set(acceptedResource);
         update();
@@ -250,5 +302,14 @@ public class ShelfBox extends GridPane {
     public void setName(String name) {
         this.name.set(name);
         update();
+    }
+
+    public void setSelectedResources(int selectedResources) {
+        this.selectedResources.set(selectedResources);
+        update();
+    }
+
+    public void setAreControlsDisabled(boolean disabled){
+        this.areControlsDisabled.set(disabled);
     }
 }

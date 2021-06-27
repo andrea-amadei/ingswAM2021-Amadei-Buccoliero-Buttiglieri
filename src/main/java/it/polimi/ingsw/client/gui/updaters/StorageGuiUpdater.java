@@ -7,6 +7,7 @@ import it.polimi.ingsw.client.model.ClientPlayer;
 import it.polimi.ingsw.client.observables.Listener;
 import it.polimi.ingsw.model.storage.BaseStorage;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 
 public class StorageGuiUpdater implements Listener<ClientBaseStorage> {
 
@@ -21,6 +22,9 @@ public class StorageGuiUpdater implements Listener<ClientBaseStorage> {
 
     @Override
     public void update(ClientBaseStorage clientBaseStorage) {
-        Platform.runLater(() -> resourceContainer.setRawStorage(clientBaseStorage.getStorage()));
+        Platform.runLater(() -> {
+            resourceContainer.setRawStorage(clientBaseStorage.getStorage());
+            resourceContainer.setSelectedResources(FXCollections.observableMap(clientBaseStorage.getSelectedResources()));
+        });
     }
 }

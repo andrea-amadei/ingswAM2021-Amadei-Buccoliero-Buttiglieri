@@ -38,15 +38,16 @@ import java.util.stream.Collectors;
 
 public class FaithPath extends GridPane {
 
-    public IntegerProperty player1PositionsProperty;
-    public IntegerProperty player2PositionsProperty;
-    public IntegerProperty player3PositionsProperty;
-    public IntegerProperty player4PositionsProperty;
+    private IntegerProperty player1PositionsProperty;
+    private IntegerProperty player2PositionsProperty;
+    private IntegerProperty player3PositionsProperty;
+    private IntegerProperty player4PositionsProperty;
+    private IntegerProperty lorenzoPositionProperty;
 
-    public ListProperty<FaithHolder.CheckpointStatus> player1CheckpointsStatusProperty;
-    public ListProperty<FaithHolder.CheckpointStatus> player2CheckpointsStatusProperty;
-    public ListProperty<FaithHolder.CheckpointStatus> player3CheckpointsStatusProperty;
-    public ListProperty<FaithHolder.CheckpointStatus> player4CheckpointsStatusProperty;
+    private ListProperty<FaithHolder.CheckpointStatus> player1CheckpointsStatusProperty;
+    private ListProperty<FaithHolder.CheckpointStatus> player2CheckpointsStatusProperty;
+    private ListProperty<FaithHolder.CheckpointStatus> player3CheckpointsStatusProperty;
+    private ListProperty<FaithHolder.CheckpointStatus> player4CheckpointsStatusProperty;
 
     private List<RawFaithPathTile> tiles;
     private List<RawFaithPathGroup> groups;
@@ -68,8 +69,10 @@ public class FaithPath extends GridPane {
     private final String TEXT_POINTS_COLOR = "gold";
     private final String TEXT_POPE_COLOR = "darkred";
 
-    private final List<String> PLAYER_COLORS = new ArrayList<>(Arrays.asList("#3568AA", "#892F96", "#3AA739", "#988330"));
-    private final List<Double> PLAYER_HUES = new ArrayList<>(Arrays.asList(-0.9d, -0.45d, 0.58d, 0.20d));
+    private final List<String> PLAYER_COLORS = new ArrayList<>(Arrays.asList("#3568AA", "#892F96", "#3AA739", "#988330", ""));
+    private final List<Double> PLAYER_HUES = new ArrayList<>(Arrays.asList(-0.9d, -0.45d, 0.58d, 0.20d, 0d));
+    private final List<Double> PLAYER_BRIGHTNESS = new ArrayList<>(Arrays.asList(0d, 0d, 0d, 0d, -0.3d));
+    private final List<Double> PLAYER_SATURATION = new ArrayList<>(Arrays.asList(0d, 0d, 0d, 0d, -1d));
 
     private final List<Integer> PLAYER_ROW_INDEX = new ArrayList<>(Arrays.asList(   0, 1, 1, 0));
     private final List<Integer> PLAYER_COLUMN_INDEX = new ArrayList<>(Arrays.asList(0, 1, 0, 1));
@@ -103,6 +106,7 @@ public class FaithPath extends GridPane {
         player2PositionsProperty = new SimpleIntegerProperty(this, "player2PositionsProperty", -1);
         player3PositionsProperty = new SimpleIntegerProperty(this, "player3PositionsProperty", -1);
         player4PositionsProperty = new SimpleIntegerProperty(this, "player4PositionsProperty", -1);
+        lorenzoPositionProperty = new SimpleIntegerProperty(this, "lorenzoPositionProperty", -1);
 
         player1CheckpointsStatusProperty = new SimpleListProperty<>(this, "player1CheckpointsStatusProperty", FXCollections.observableList(
                 Arrays.asList(FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED)));
@@ -147,7 +151,7 @@ public class FaithPath extends GridPane {
     }
 
     private void setup() {
-        int i, j;
+        int i;
 
         int[][] positions = new int[nCols][nRows];
 
@@ -394,6 +398,8 @@ public class FaithPath extends GridPane {
             players.add(getPlayer3PositionsProperty());
         if(getPlayer4PositionsProperty() >= 0)
             players.add(getPlayer4PositionsProperty());
+        if(getLorenzoPositionProperty() >= 0)
+            players.add(getLorenzoPositionProperty());
 
         playerChecks.add(player1CheckpointsStatusProperty);
         playerChecks.add(player2CheckpointsStatusProperty);
@@ -416,8 +422,13 @@ public class FaithPath extends GridPane {
                     GridPane.setRowIndex(imageView, PLAYER_ROW_INDEX.get(k));
                     GridPane.setColumnIndex(imageView, PLAYER_COLUMN_INDEX.get(k));
 
+                    if(j == 1 && getLorenzoPositionProperty() >= 0)
+                        j = 4;
+
                     ColorAdjust filter = new ColorAdjust();
                     filter.setHue(PLAYER_HUES.get(j));
+                    filter.setBrightness(PLAYER_BRIGHTNESS.get(j));
+                    filter.setSaturation(PLAYER_SATURATION.get(j));
 
                     imageView.setEffect(filter);
                     imageView.setCache(true);
@@ -508,6 +519,19 @@ public class FaithPath extends GridPane {
 
     public void setPlayer4PositionsProperty(int player4PositionsProperty) {
         this.player4PositionsProperty.set(player4PositionsProperty);
+        update();
+    }
+
+    public int getLorenzoPositionProperty() {
+        return lorenzoPositionProperty.get();
+    }
+
+    public IntegerProperty lorenzoPositionPropertyProperty() {
+        return lorenzoPositionProperty;
+    }
+
+    public void setLorenzoPositionProperty(int lorenzoPositionProperty) {
+        this.lorenzoPositionProperty.set(lorenzoPositionProperty);
         update();
     }
 

@@ -38,6 +38,8 @@ public class GuiSceneManager {
             throw new IllegalArgumentException("The selected scene doesn't exists");
 
         stage.setScene(scenes.get(name));
+        stage.setFullScreen(true);
+        stage.setFullScreenExitHint("");
         stage.show();
     }
 

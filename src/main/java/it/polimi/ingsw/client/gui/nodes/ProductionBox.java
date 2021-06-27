@@ -2,7 +2,9 @@ package it.polimi.ingsw.client.gui.nodes;
 
 import it.polimi.ingsw.client.gui.FXMLCachedLoaders;
 import it.polimi.ingsw.client.gui.beans.CraftingSelectionBean;
+import it.polimi.ingsw.client.gui.beans.OutputSelectionBean;
 import it.polimi.ingsw.client.gui.events.CraftingSelectionEvent;
+import it.polimi.ingsw.client.gui.events.OutputSelectionEvent;
 import it.polimi.ingsw.client.model.ClientProduction;
 import it.polimi.ingsw.model.production.Production;
 import it.polimi.ingsw.parser.raw.RawCrafting;
@@ -13,6 +15,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -183,28 +186,38 @@ public class ProductionBox extends GridPane {
 
     private void handleSelectCrafting(MouseEvent event){
         if(!areControlsDisabled.get()) {
-            CraftingBox selectedBox = (CraftingBox) event.getSource();
-            Production.CraftingType type;
-            int index;
+            if(event.getButton().equals(MouseButton.PRIMARY)) {
+                CraftingBox selectedBox = (CraftingBox) event.getSource();
+                Production.CraftingType type;
+                int index;
 
-            int row = GridPane.getRowIndex(selectedBox.getParent());
-            int col = GridPane.getColumnIndex(selectedBox.getParent());
+                int row = GridPane.getRowIndex(selectedBox.getParent());
+                int col = GridPane.getColumnIndex(selectedBox.getParent());
 
-            if (row == 0) {
-                type = Production.CraftingType.UPGRADABLE;
-                index = col;
-            } else if (row == 1 && col == 0) {
-                type = Production.CraftingType.BASE;
-                index = 0;
-            } else {
-                type = Production.CraftingType.LEADER;
-                index = col - 1;
+                if (row == 0) {
+                    type = Production.CraftingType.UPGRADABLE;
+                    index = col;
+                } else if (row == 1 && col == 0) {
+                    type = Production.CraftingType.BASE;
+                    index = 0;
+                } else {
+                    type = Production.CraftingType.LEADER;
+                    index = col - 1;
+                }
+                CraftingSelectionBean bean = new CraftingSelectionBean();
+                bean.setCraftingType(type);
+                bean.setIndex(index);
+
+                fireEvent(new CraftingSelectionEvent(bean));
+            }else if(event.getButton().equals(MouseButton.SECONDARY)){
+                CraftingBox selectedBox = (CraftingBox) event.getSource();
+                RawCrafting rawCrafting = selectedBox.getRawCrafting();
+                if(rawCrafting.getOutput().containsKey("any")){
+                    OutputSelectionBean bean = new OutputSelectionBean();
+                    bean.setAmount(rawCrafting.getOutput().get("any"));
+                    fireEvent(new OutputSelectionEvent(bean));
+                }
             }
-            CraftingSelectionBean bean = new CraftingSelectionBean();
-            bean.setCraftingType(type);
-            bean.setIndex(index);
-
-            fireEvent(new CraftingSelectionEvent(bean));
         }
 
     }

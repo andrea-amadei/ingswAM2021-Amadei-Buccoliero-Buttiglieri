@@ -129,7 +129,7 @@ public class SetupState extends State {
 
         //shuffling the cards
         List<LeaderCard> leaderCards = getGameContext().getGameModel().getLeaderCards();
-        Collections.shuffle(leaderCards, new Random(3));
+        Collections.shuffle(leaderCards, new Random(1));
 
         int i = 0;
         List<PayloadComponent> specificPlayer;

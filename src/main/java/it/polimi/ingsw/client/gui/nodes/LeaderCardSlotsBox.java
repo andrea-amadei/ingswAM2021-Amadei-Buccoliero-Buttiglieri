@@ -37,7 +37,7 @@ public class LeaderCardSlotsBox extends HBox {
         leaderBoxes = new ArrayList<>();
         areControlsDisabled = new SimpleBooleanProperty(this, "areControlsDisabled", true);
 
-        ClientLeaderCards clientLeaderCards = new ClientLeaderCards();
+        /*ClientLeaderCards clientLeaderCards = new ClientLeaderCards();
         clientLeaderCards.changeCoveredCardsNumber(2);
         clientLeaderCards.addLeaderCard(
                 new RawLeaderCard(
@@ -85,7 +85,8 @@ public class LeaderCardSlotsBox extends HBox {
                 )
         );
 
-        updateLeaderSlots(clientLeaderCards);
+        updateLeaderSlots(clientLeaderCards);*/
+
     }
 
     private void update(){
