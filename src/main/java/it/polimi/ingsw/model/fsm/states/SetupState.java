@@ -23,6 +23,11 @@ import it.polimi.ingsw.utils.PayloadFactory;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Extends State and represents a concrete state of the state machine.
+ * In this state the game has left the lobby as all players are in game. The model is created and messages
+ * are sent to the clients. Players do not have choices.
+ */
 public class SetupState extends State {
     /**
      * A new State is created with the provided game context. The nextState and the interruptListener
@@ -160,6 +165,12 @@ public class SetupState extends State {
         return messages;
     }
 
+    /**
+     * The game starts.
+     * @param startGameAction the action that starts the game.
+     * @return the list of messages to send to the clients.
+     * @throws FSMTransitionFailedException iff the action cannot be performed.
+     */
     @Override
     public List<Message> handleAction(StartGameAction startGameAction) throws FSMTransitionFailedException {
         setNextState(new PreliminaryPickState(getGameContext()));
