@@ -8,6 +8,7 @@ import it.polimi.ingsw.client.cli.framework.OutputHandler;
 import it.polimi.ingsw.client.cli.framework.elements.*;
 import it.polimi.ingsw.client.cli.updaters.*;
 import it.polimi.ingsw.client.model.*;
+import it.polimi.ingsw.configurator.ConfiguratorMain;
 import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.exceptions.UnableToDrawElementException;
 import it.polimi.ingsw.gamematerials.*;
@@ -46,6 +47,8 @@ public class App {
             ServerMain.main(Arrays.copyOfRange(args, 1, args.length));
         else if(args[0].equalsIgnoreCase("client"))
             ClientMain.main(Arrays.copyOfRange(args, 1, args.length));
+        else if(args[0].equalsIgnoreCase("configurator"))
+            ConfiguratorMain.main(Arrays.copyOfRange(args, 1, args.length));
         else
             System.out.println("Unexpected argument " + args[0] + ". Please use 'client' or 'server'");
     }
