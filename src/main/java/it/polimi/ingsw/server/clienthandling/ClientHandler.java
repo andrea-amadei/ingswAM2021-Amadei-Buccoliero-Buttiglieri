@@ -91,7 +91,10 @@ public class ClientHandler implements Runnable{
                     if(!((Action) clientNetworkObject).getSender().equals(username)){
                         sendPayload(new ErrorPayloadComponent("Sender doesn't match the username"));
                     }else {
-                        currentMatch.getActionQueue().addAction((Action) clientNetworkObject, ActionQueue.Priority.CLIENT_ACTION.ordinal());
+                        if(currentMatch != null && currentMatch.getCurrentState().equals(Match.MatchState.PLAYING))
+                            currentMatch.getActionQueue().addAction((Action) clientNetworkObject, ActionQueue.Priority.CLIENT_ACTION.ordinal());
+                        else
+                            sendPayload(new TextSetupPayloadComponent("Cannot send an action if the game is not started"));
                     }
                 }else if(clientNetworkObject instanceof Ping){
                     if(username != null) {
@@ -120,6 +123,10 @@ public class ClientHandler implements Runnable{
 
 
     public synchronized void setUsername(String username){
+        if(username == null){
+            sendPayload(new TextSetupPayloadComponent("Missing username"));
+            return;
+        }
         if(this.username != null){
             sendPayload(new TextSetupPayloadComponent("Already chose an username"));
             return;
@@ -151,6 +158,10 @@ public class ClientHandler implements Runnable{
             sendPayload(new TextSetupPayloadComponent("Set your username first"));
             return;
         }
+        if(this.currentMatch != null){
+            sendPayload(new TextSetupPayloadComponent("Already in a match"));
+            return;
+        }
         if(matchName == null){
             sendPayload(new TextSetupPayloadComponent("Match name not valid. Choose a valid one"));
             return;
@@ -163,6 +174,15 @@ public class ClientHandler implements Runnable{
             sendPayload(new TextSetupPayloadComponent("In single player mode there must be only 1 player"));
             return;
         }
+        if(!isSinglePlayer && playerCount < 2){
+            sendPayload(new TextSetupPayloadComponent("In multiplayer mode there must be at leas 2 players"));
+            return;
+        }
+        if(serverManager.alreadyExistentGameName(matchName)){
+            sendPayload(new TextSetupPayloadComponent("There is another match with name \"" + matchName + "\""));
+            return;
+        }
+
 
         Match match = new Match(matchName, new Pair<>(username, this), playerCount, isSinglePlayer, serverManager);
 
@@ -189,6 +209,10 @@ public class ClientHandler implements Runnable{
            sendPayload(new TextSetupPayloadComponent("Match name not inserted"));
            return;
        }
+       if(this.currentMatch != null){
+           sendPayload(new TextSetupPayloadComponent("You are already in a match"));
+           return;
+       }
        if(!serverManager.alreadyExistentGameName(matchName)){
            sendPayload(new TextSetupPayloadComponent("Match \"" + matchName + "\" does not exist in the server"));
            return;
@@ -203,6 +227,7 @@ public class ClientHandler implements Runnable{
             return;
         }
         this.currentMatch = match;
+        sendPayload(new TextSetupPayloadComponent("Joined the match! Waiting for other players..."));
         sendPayload(new SetGameNameSetupPayloadComponent(matchName));
     }
 
@@ -222,13 +247,19 @@ public class ClientHandler implements Runnable{
         }
 
         currentMatch.disconnectPlayer(username);
-        currentMatch.getActionQueue().addAction(new DisconnectPlayerAction(username), 0);
+        if(currentMatch.getCurrentState().equals(Match.MatchState.PLAYING)) {
+            currentMatch.getActionQueue().addAction(new DisconnectPlayerAction(username), 0);
+        }
         clientSocket.close();
     }
 
     public synchronized void reconnect(String username){
         if(username == null) {
             sendPayload(new TextSetupPayloadComponent("Null username, try again"));
+            return;
+        }
+        if(this.username != null){
+            sendPayload(new TextSetupPayloadComponent("You are already connected"));
             return;
         }
         if(!serverManager.alreadyExistentUsername(username)) {
@@ -265,7 +296,8 @@ public class ClientHandler implements Runnable{
         //it must be in the play state
 
         currentMatch.reconnectPlayer(username, this);
-        currentMatch.getActionQueue().addAction(new ReconnectPlayerAction(username), 0);
+        if(currentMatch.getCurrentState().equals(Match.MatchState.PLAYING))
+            currentMatch.getActionQueue().addAction(new ReconnectPlayerAction(username), 0);
 
     }
 

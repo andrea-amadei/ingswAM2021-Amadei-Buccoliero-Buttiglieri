@@ -37,8 +37,6 @@ public class Match {
 
     public Match(String gameName, Pair<String, ClientHandler> host, int matchSize, boolean isSinglePlayer, ServerManager serverManager){
 
-        //TODO: add checks for gameName etc...
-
         stateMachine = null;
         actionQueue = new ActionQueue();
 
@@ -88,8 +86,11 @@ public class Match {
      * @throws RuntimeException if the match is not in Lobby or Playing status
      */
     public synchronized void disconnectPlayer(String username){
-        if(currentState.equals(MatchState.LOBBY))
+        if(currentState.equals(MatchState.LOBBY)) {
             clientHub.hardDisconnectClient(username);
+            if(clientHub.getUsernames().size() == 0)
+                serverManager.removeMatch(this);
+        }
         else if(currentState.equals(MatchState.PLAYING) || currentState.equals(MatchState.ENDED))
             clientHub.disconnectClient(username);
         else

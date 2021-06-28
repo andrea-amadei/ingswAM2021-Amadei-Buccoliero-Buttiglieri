@@ -65,6 +65,8 @@ public class DisconnectionManager extends Thread{
                         //TODO: think how to handle this exception
                         Logger.log("The client \"" + connectedClients.get(i).getFirst() + "\" launched an IO exception when ended", Logger.Severity.WARNING,
                                 ForegroundColor.YELLOW);
+                    } catch(RuntimeException e1){
+                        Logger.log("The client \"" + connectedClients.get(i).getFirst() + "\" was otherwise disconnected from the server");
                     }
                 }
             }
@@ -76,6 +78,8 @@ public class DisconnectionManager extends Thread{
                     } catch (IOException e) {
                         //TODO: think how to handle this exception
                         Logger.log("The client \"" + connectedClients.get(i).getFirst() + "\" launched an IO exception when ended");
+                    }catch(RuntimeException e1){
+                        Logger.log("The client \"" + connectedClients.get(i).getFirst() + "\" was otherwise disconnected from the server");
                     }
                 }
             }
@@ -85,11 +89,13 @@ public class DisconnectionManager extends Thread{
 
     public synchronized void ack(String username){
         int index = connectedClients.stream().map(Pair::getFirst).collect(Collectors.toList()).indexOf(username);
-        ackList.set(index, true);
+        if(index >= 0)
+            ackList.set(index, true);
     }
 
     public synchronized void ackUnregistered(ClientHandler handler){
         int index = unregisteredHandlers.indexOf(handler);
-        unregisteredAckList.set(index, true);
+        if(index >= 0)
+            unregisteredAckList.set(index, true);
     }
 }
