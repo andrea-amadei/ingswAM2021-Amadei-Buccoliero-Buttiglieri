@@ -18,6 +18,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * Extends State and represents a concrete state of the state machine.
+ * In this state the player has already selected a crafting and that crafting has an undecided output.
+ * They can go back and deselect that crafting or chose the output.
+ */
 public class OutputSelectionState extends State {
     /**
      * A new State is created with the provided game context. The nextState and the interruptListener
