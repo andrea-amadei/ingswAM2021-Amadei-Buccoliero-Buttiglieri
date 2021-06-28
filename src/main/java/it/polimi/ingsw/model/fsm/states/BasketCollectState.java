@@ -20,6 +20,12 @@ import it.polimi.ingsw.utils.PayloadFactory;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Extends State and represents a concrete state of the state machine.
+ * In this state the player has already chosen what resources to buy from the market and said resources are in their
+ * market basket. The player can move said resources to the destination shelf they prefer, or confirm if they are done,
+ * moving to the Menu state.
+ */
 public class BasketCollectState extends State {
 
     private boolean alreadyVisited = false;
