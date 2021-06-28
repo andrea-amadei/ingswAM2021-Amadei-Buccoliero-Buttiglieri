@@ -15,6 +15,12 @@ import it.polimi.ingsw.model.fsm.State;
 
 import java.util.*;
 
+/**
+ * Extends State and represents a concrete state of the state machine.
+ * In this state the player has already chosen their move for the turn will be a crafting. They can go back
+ * and chose a different move (market or shop, but only if they have not already activated a crafting), select a
+ * crafting from their available ones, or confirm and start the production altogether.
+ */
 public class CraftingState extends State {
     /**
      * A new State is created with the provided game context. The nextState and the interruptListener
