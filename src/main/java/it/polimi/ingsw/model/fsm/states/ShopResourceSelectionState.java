@@ -31,6 +31,11 @@ import it.polimi.ingsw.utils.PayloadFactory;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Extends State and represents a concrete state of the state machine.
+ * In this state the player has already chosen what card to buy from the shop. They can now select the resources
+ * required to buy said card, confirm their selection or go back and deselect the card.
+ */
 public class ShopResourceSelectionState extends State {
 
     private boolean alreadyEntered = false;
