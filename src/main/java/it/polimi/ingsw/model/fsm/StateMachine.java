@@ -20,7 +20,6 @@ public class StateMachine implements InterruptListener{
         this.actionQueue = actionQueue;
         this.gameContext = gameContext;
 
-        //TODO: set to SetupState at first and connect the listener
         currentState = null;
     }
 

@@ -17,29 +17,41 @@ public class EndGameDialog extends CustomDialog{
         super(primaryStage);
         this.bean = bean;
 
-        Label title = new Label("Game Ended!");
-        title.setFont(new Font(20));
-        AnchorPane.setLeftAnchor(title, 240d);
-        AnchorPane.setTopAnchor(title, 50d);
+        if(!bean.isGameCrashed()) {
+            Label title = new Label("Game Ended!");
+            title.setFont(new Font(20));
+            AnchorPane.setLeftAnchor(title, 240d);
+            AnchorPane.setTopAnchor(title, 50d);
 
-        Label winnerLabel = new Label("The winner is: " + ( (bean.isHasLorenzoWon()) ? "Lorenzo" : (bean.getUsernames().get(0) + " ("  + bean.getPoints().get(0) + " points)") ));
-        winnerLabel.setFont(new Font(16));
-        AnchorPane.setLeftAnchor(winnerLabel, 100d);
-        AnchorPane.setTopAnchor(winnerLabel, 115d);
+            Label winnerLabel = new Label("The winner is: " + ((bean.isHasLorenzoWon()) ? "Lorenzo" : (bean.getUsernames().get(0) + " (" + bean.getPoints().get(0) + " points)")));
+            winnerLabel.setFont(new Font(16));
+            AnchorPane.setLeftAnchor(winnerLabel, 100d);
+            AnchorPane.setTopAnchor(winnerLabel, 115d);
 
-        List<Label> playerLabels = new ArrayList<>();
-        if(bean.isHasLorenzoWon()){
-            Label singlePlayerLostLabel = new Label("2) " + bean.getUsernames().get(0) + " (" + bean.getPoints().get(0) + " points)");
-            AnchorPane.setLeftAnchor(singlePlayerLostLabel, 100d);
-            AnchorPane.setTopAnchor(singlePlayerLostLabel, 155d);
-            playerLabels.add(singlePlayerLostLabel);
-        }else {
-            for(int i = 1; i < bean.getUsernames().size(); i++){
-                Label playerScoreLabel = new Label("" + (i+1) + ") " + bean.getUsernames().get(i) + " (" + bean.getPoints().get(i) + " points)");
-                AnchorPane.setLeftAnchor(playerScoreLabel, 100d);
-                AnchorPane.setTopAnchor(playerScoreLabel, 155d + (i-1) * 30d);
-                playerLabels.add(playerScoreLabel);
+            List<Label> playerLabels = new ArrayList<>();
+            if (bean.isHasLorenzoWon()) {
+                Label singlePlayerLostLabel = new Label("2) " + bean.getUsernames().get(0) + " (" + bean.getPoints().get(0) + " points)");
+                AnchorPane.setLeftAnchor(singlePlayerLostLabel, 100d);
+                AnchorPane.setTopAnchor(singlePlayerLostLabel, 155d);
+                playerLabels.add(singlePlayerLostLabel);
+            } else {
+                for (int i = 1; i < bean.getUsernames().size(); i++) {
+                    Label playerScoreLabel = new Label("" + (i + 1) + ") " + bean.getUsernames().get(i) + " (" + bean.getPoints().get(i) + " points)");
+                    AnchorPane.setLeftAnchor(playerScoreLabel, 100d);
+                    AnchorPane.setTopAnchor(playerScoreLabel, 155d + (i - 1) * 30d);
+                    playerLabels.add(playerScoreLabel);
+                }
             }
+            getRoot().getChildren().setAll(title, winnerLabel);
+            getRoot().getChildren().addAll(playerLabels);
+        }
+
+        else{
+            Label title = new Label("Game terminated");
+            title.setFont(new Font(20));
+            AnchorPane.setLeftAnchor(title, 240d);
+            AnchorPane.setTopAnchor(title, 50d);
+            getRoot().getChildren().add(title);
         }
 
         Button quitBtn = new Button("Quit");
@@ -52,7 +64,7 @@ public class EndGameDialog extends CustomDialog{
 
 
         getRoot().setPrefSize(600, 350);
-        getRoot().getChildren().setAll(title, winnerLabel, quitBtn);
-        getRoot().getChildren().addAll(playerLabels);
+        getRoot().getChildren().add(quitBtn);
+
     }
 }

@@ -10,6 +10,7 @@ public class ClientEndGameResults implements Observable<ClientEndGameResults> {
 
     private final List<Listener<ClientEndGameResults>> listeners;
     private boolean isGameEnded;
+    private boolean isGameCrashed;
 
     private boolean hasLorenzoWon;
     private List<String> usernames;
@@ -17,6 +18,7 @@ public class ClientEndGameResults implements Observable<ClientEndGameResults> {
 
     public ClientEndGameResults(){
         isGameEnded = false;
+        isGameCrashed = false;
         hasLorenzoWon = false;
         usernames = new ArrayList<>();
         points = new ArrayList<>();
@@ -31,6 +33,13 @@ public class ClientEndGameResults implements Observable<ClientEndGameResults> {
         this.points = points;
 
         update();
+    }
+
+    public synchronized void crashGame(){
+        if(!isGameEnded) {
+            isGameCrashed = true;
+            update();
+        }
     }
 
     @Override
@@ -58,5 +67,9 @@ public class ClientEndGameResults implements Observable<ClientEndGameResults> {
 
     public synchronized List<Integer> getPoints() {
         return points;
+    }
+
+    public synchronized boolean isGameCrashed(){
+        return isGameCrashed;
     }
 }

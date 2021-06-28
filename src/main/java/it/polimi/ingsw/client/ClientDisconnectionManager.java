@@ -29,6 +29,8 @@ public class ClientDisconnectionManager extends Thread{
                     serverHandler.disconnect();
                 } catch (IOException e) {
                     Logger.log("IOException in ClientDisconnectionManager while disconnecting the client");
+                }finally{
+                    serverHandler.getClient().getEndGameResults().crashGame();
                 }
 
                 break;

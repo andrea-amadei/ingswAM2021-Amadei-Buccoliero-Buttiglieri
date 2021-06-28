@@ -24,6 +24,11 @@ public class EndGameUpdater implements Listener<ClientEndGameResults> {
                 bean.setPoints(clientEndGameResults.getPoints());
 
                 marketBox.fireEvent(new EndGameEvent(bean));
+            }else if(clientEndGameResults.isGameCrashed()){
+                EndGameResultsBean bean = new EndGameResultsBean();
+                bean.setGameCrashed(true);
+
+                marketBox.fireEvent(new EndGameEvent(bean));
             }
         });
     }

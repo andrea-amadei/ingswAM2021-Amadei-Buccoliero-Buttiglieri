@@ -119,6 +119,10 @@ public class Controller extends Thread{
                 messages.addAll(consumeMove());
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } catch (RuntimeException e1){
+                Logger.log("A runtime exception happened in the game. Match is terminated and all clients disconnected", Logger.Severity.ERROR);
+                e1.printStackTrace();
+                break;
             }
 
             sendMessages(messages);
