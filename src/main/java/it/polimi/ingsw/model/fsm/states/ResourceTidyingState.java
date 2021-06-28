@@ -17,6 +17,12 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * Extends State and represents a concrete state of the state machine.
+ * In this state the player has already chosen what resources to buy from the market and has them in their
+ * market basket. They can now reorganize their storage to make room for the new resources, or confirm their
+ * choice.
+ */
 public class ResourceTidyingState extends State {
 
     private boolean alreadyVisited = false;
@@ -85,6 +91,11 @@ public class ResourceTidyingState extends State {
         return messages;
     }
 
+    /**
+     * This method will be executed every time this state is entered from a different state.
+     * It informs the current player of the possible actions to be performed
+     * @return the list of messages to be sent to the client
+     */
     @Override
     public List<Message> onEntry(){
         List<Message> messages = super.onEntry();
