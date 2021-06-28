@@ -24,6 +24,11 @@ public class RawFaithPathGroup implements UniqueRawObject<FaithPathGroup> {
         points = faithPathGroup.getPoints();
     }
 
+    public RawFaithPathGroup(int group, int points) {
+        this.group = group;
+        this.points = points;
+    }
+
     public int getGroup() {
         return group;
     }

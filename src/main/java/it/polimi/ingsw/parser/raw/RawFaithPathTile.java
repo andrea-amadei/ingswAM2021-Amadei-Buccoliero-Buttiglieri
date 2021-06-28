@@ -38,6 +38,15 @@ public class RawFaithPathTile implements UniqueRawObject<FaithPathTile> {
         popeCheck = faithPathTile.isPopeCheck();
     }
 
+    public RawFaithPathTile(int order, int x, int y, int victoryPoints, int popeGroup, boolean popeCheck) {
+        this.x = x;
+        this.y = y;
+        this.order = order;
+        this.victoryPoints = victoryPoints;
+        this.popeGroup = popeGroup;
+        this.popeCheck = popeCheck;
+    }
+
     public int getX() {
         return x;
     }
