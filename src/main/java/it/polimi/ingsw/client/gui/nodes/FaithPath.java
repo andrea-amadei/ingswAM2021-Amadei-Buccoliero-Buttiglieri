@@ -138,6 +138,20 @@ public class FaithPath extends GridPane {
         nRows = tiles.stream().max(Comparator.comparing(RawFaithPathTile::getY)).orElseThrow().getY();
         nCols = tiles.stream().max(Comparator.comparing(RawFaithPathTile::getX)).orElseThrow().getX();
 
+        player1PositionsProperty = new SimpleIntegerProperty(this, "player1PositionsProperty", 0);
+        player2PositionsProperty = new SimpleIntegerProperty(this, "player2PositionsProperty", -1);
+        player3PositionsProperty = new SimpleIntegerProperty(this, "player3PositionsProperty", -1);
+        player4PositionsProperty = new SimpleIntegerProperty(this, "player4PositionsProperty", -1);
+        lorenzoPositionProperty = new SimpleIntegerProperty(this, "lorenzoPositionProperty", -1);
+
+        player1CheckpointsStatusProperty = new SimpleListProperty<>(this, "player1CheckpointsStatusProperty", FXCollections.observableList(
+                Arrays.asList(FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED)));
+        player2CheckpointsStatusProperty = new SimpleListProperty<>(this, "player2CheckpointsStatusProperty", FXCollections.observableList(
+                Arrays.asList(FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED)));
+        player3CheckpointsStatusProperty = new SimpleListProperty<>(this, "player3CheckpointsStatusProperty", FXCollections.observableList(
+                Arrays.asList(FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED)));
+        player4CheckpointsStatusProperty = new SimpleListProperty<>(this, "player4CheckpointsStatusProperty", FXCollections.observableList(
+                Arrays.asList(FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED)));
         setup();
         update();
     }
@@ -252,7 +266,10 @@ public class FaithPath extends GridPane {
             if(rawTile.getPopeGroup() == 0)
                 tile.setStyle("-fx-background-color: " + BORDER_NEUTRAL_COLOR + ";");
             else
-                tile.setStyle("-fx-background-color: " + BORDER_POPE_COLORS.get(rawTile.getPopeGroup() - 1) + ";");
+                if(rawTile.getPopeGroup() > BORDER_POPE_COLORS.size())
+                    tile.setStyle("-fx-background-color: " + BORDER_POPE_COLORS.get(BORDER_POPE_COLORS.size() - 1) + ";");
+                else
+                    tile.setStyle("-fx-background-color: " + BORDER_POPE_COLORS.get(rawTile.getPopeGroup() - 1) + ";");
 
             content = new AnchorPane();
 
@@ -356,7 +373,11 @@ public class FaithPath extends GridPane {
             tile.setMaxWidth(Double.NEGATIVE_INFINITY);
             tile.setMinHeight(Double.NEGATIVE_INFINITY);
             tile.setMinWidth(Double.NEGATIVE_INFINITY);
-            tile.setStyle("-fx-background-color: " + BORDER_POPE_COLORS.get(coord.getThird() - 1) + ";");
+
+            if(coord.getThird() > BORDER_POPE_COLORS.size())
+                tile.setStyle("-fx-background-color: " + BORDER_POPE_COLORS.get(BORDER_POPE_COLORS.size() - 1) + ";");
+            else
+                tile.setStyle("-fx-background-color: " + BORDER_POPE_COLORS.get(coord.getThird() - 1) + ";");
 
             points = new PointsBox(groups.get(checks.indexOf(coord)).getPoints());
             points.setScaleX(1.2d);
