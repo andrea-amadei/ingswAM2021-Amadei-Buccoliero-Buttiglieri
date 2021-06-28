@@ -18,6 +18,11 @@ import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.*;
 
+/**
+ * Extends State and represents a concrete state of the state machine.
+ * In this state the game has just started and the player must discard the correct amount of leader cards
+ * and select the resources they want.
+ */
 public class PreliminaryPickState extends State {
     /**
      * A new State is created with the provided game context. The nextState and the interruptListener
