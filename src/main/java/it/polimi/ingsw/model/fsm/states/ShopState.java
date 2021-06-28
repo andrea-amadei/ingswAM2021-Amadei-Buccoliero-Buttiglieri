@@ -11,13 +11,17 @@ import it.polimi.ingsw.model.actions.BackAction;
 import it.polimi.ingsw.model.actions.SelectCardFromShopAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
-import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * Extends State and represents a concrete state of the state machine.
+ * In this state the player has already chosen their move for the turn will be a visit to the card shop.
+ * They can go back and chose another path, or select a card from the shop.
+ */
 public class ShopState extends State {
     /**
      * A new State is created with the provided game context. The nextState and the interruptListener
