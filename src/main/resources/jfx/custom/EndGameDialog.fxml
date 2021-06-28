@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="350.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label text="Game Ended!" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="50.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label text="The winner is: Endorfio (123 points)" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="115.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label text="2) Player1 (45 points)" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="155.0" />
+      <Label text="3) Player2 (30 points)" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="185.0" />
+      <Button mnemonicParsing="false" text="Quit" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="50.0" />
+   </children>
+</AnchorPane>

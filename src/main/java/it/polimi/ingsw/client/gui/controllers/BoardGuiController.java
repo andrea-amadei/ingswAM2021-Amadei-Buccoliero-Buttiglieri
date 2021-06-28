@@ -11,6 +11,7 @@ import it.polimi.ingsw.client.model.ClientShelf;
 import it.polimi.ingsw.common.payload_components.groups.PossibleActions;
 import it.polimi.ingsw.common.payload_components.groups.actions.*;
 import it.polimi.ingsw.parser.raw.RawStorage;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -59,6 +60,7 @@ public class BoardGuiController extends BaseController {
         board.addEventFilter(ResourceSelectionEvent.RESOURCE_SELECTION_EVENT, this::sendResourceSelectionPayload);
         board.addEventFilter(ResourceTransferEvent.RESOURCE_TRANSFER_EVENT, this::onStartResourceTransfer);
         board.addEventFilter(OutputSelectionEvent.OUTPUT_SELECTION_EVENT, this::onStartOutputSelection);
+        board.addEventFilter(EndGameEvent.END_GAME_EVENT, this::onEndGameEvent);
     }
 
     public void boardSetup() {
@@ -96,6 +98,7 @@ public class BoardGuiController extends BaseController {
 
         new ShopGuiUpdater(shop, getModel().getShop());
         new MarketGuiUpdater(market, getModel().getMarket());
+        new EndGameUpdater(market, getModel().getEndGameResults());
         new MenuGuiUpdater(buttons, getModel().getPersonalData());
         new TurnGuiUpdater(buttons, scoreboard, getModel());
         new PersonalDataGuiUpdater(messages, getSceneManager().getStage(), getModel().getPersonalData());
@@ -252,6 +255,15 @@ public class BoardGuiController extends BaseController {
     private void onSwitchedShownPlayer(SwitchPlayerEvent event){
         setActivePlayer(event.getUsername());
         changeGlobalNodesControlsStatus(!getModel().getCurrentPlayer().getUsername().equals(ownedUsername) || !event.getUsername().equals(ownedUsername));
+    }
+
+    private void onEndGameEvent(EndGameEvent evt){
+        CustomDialog dialog = new EndGameDialog(getSceneManager().getStage(), evt.getBean(), this::quitGui);
+        dialog.openDialog();
+    }
+
+    private void quitGui(){
+        Platform.exit();
     }
 
 
