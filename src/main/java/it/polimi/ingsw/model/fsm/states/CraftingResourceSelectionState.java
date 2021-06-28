@@ -29,9 +29,14 @@ import it.polimi.ingsw.utils.PayloadFactory;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Extends State and represents a concrete state of the state machine.
+ * In this state the player has already chosen what crafting to activate and needs now to select the wright resources
+ * for the crafting input. They can go back to later select a different crafting, select the resources or
+ * confirm their selection once they think they are done.
+ */
 public class CraftingResourceSelectionState extends State {
 
-    private boolean already_entered = false;
     /**
      * A new State is created with the provided game context. The nextState and the interruptListener
      * are both initially null
