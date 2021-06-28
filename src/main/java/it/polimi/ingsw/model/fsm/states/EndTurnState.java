@@ -17,6 +17,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Extends State and represents a concrete state of the state machine.
+ * In this state the player has already finished their turn and it is time for a new player to begin theirs, or
+ * for Lorenzo to move, if the game is single player.
+ */
 public class EndTurnState extends State {
 
     private boolean hasLorenzoPlayed;
