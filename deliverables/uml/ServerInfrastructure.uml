@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>it.polimi.ingsw.server.clienthandling.ClientHandler</OriginalElement>
+  <nodes>
+    <node x="0.0" y="578.0">it.polimi.ingsw.server.clienthandling.ClientHub</node>
+    <node x="0.0" y="192.0">it.polimi.ingsw.server.clienthandling.DisconnectionManager</node>
+    <node x="686.0" y="0.0">it.polimi.ingsw.server.clienthandling.Match</node>
+    <node x="344.0" y="104.0">it.polimi.ingsw.server.clienthandling.ClientHandler</node>
+    <node x="271.25" y="0.0">java.lang.Runnable</node>
+    <node x="375.0" y="578.0">it.polimi.ingsw.server.clienthandling.WelcomeHandler</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="it.polimi.ingsw.server.clienthandling.DisconnectionManager" target="java.lang.Runnable">
+      <point x="0.0" y="-126.5" />
+      <point x="162.0" y="79.0" />
+      <point x="299.25" y="79.0" />
+      <point x="-28.0" y="27.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.clienthandling.ClientHandler" target="java.lang.Runnable">
+      <point x="0.0" y="-214.5" />
+      <point x="492.5" y="79.0" />
+      <point x="355.25" y="79.0" />
+      <point x="28.0" y="27.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="483.5" y="437.5" />
+  <SelectedNodes>
+    <node>it.polimi.ingsw.server.clienthandling.ClientHandler</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

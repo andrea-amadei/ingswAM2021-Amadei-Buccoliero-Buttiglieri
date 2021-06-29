@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>it.polimi.ingsw.server.model.leader.Requirement</OriginalElement>
+  <nodes>
+    <node x="677.5" y="1738.0">it.polimi.ingsw.server.model.storage.Cupboard</node>
+    <node x="1436.0" y="438.5">it.polimi.ingsw.server.model.leader.SpecialAbility</node>
+    <node x="590.7047101449273" y="438.5">it.polimi.ingsw.server.model.leader.Requirement</node>
+    <node x="3323.75" y="1330.0">it.polimi.ingsw.server.model.production.CraftingCard</node>
+    <node x="336.5" y="906.0">it.polimi.ingsw.server.model.leader.ResourceRequirement</node>
+    <node x="124.5" y="961.0">it.polimi.ingsw.server.model.production.UpgradableCrafting</node>
+    <node x="561.5" y="906.0">it.polimi.ingsw.server.model.leader.FlagRequirement</node>
+    <node x="1875.5" y="906.0">it.polimi.ingsw.server.model.leader.DiscountAbility</node>
+    <node x="0.0" y="1738.0">it.polimi.ingsw.server.model.production.Production</node>
+    <node x="3030.75" y="1286.0">it.polimi.ingsw.server.model.leader.LeaderCard</node>
+    <node x="996.5" y="928.0">it.polimi.ingsw.server.model.leader.CraftingAbility</node>
+    <node x="2168.5" y="862.0">it.polimi.ingsw.server.model.storage.BaseStorage</node>
+    <node x="3191.5" y="972.5">it.polimi.ingsw.common.parser.UniqueSerializableObject</node>
+    <node x="2822.5" y="763.0">it.polimi.ingsw.server.model.storage.LimitedStorage</node>
+    <node x="1289.5" y="906.0">it.polimi.ingsw.server.model.leader.ConversionAbility</node>
+    <node x="2042.5625" y="0.0">it.polimi.ingsw.common.parser.RawObject</node>
+    <node x="768.5" y="906.0">it.polimi.ingsw.server.model.leader.LevelFlagRequirement</node>
+    <node x="922.0" y="1996.0">it.polimi.ingsw.server.model.storage.LeaderDecorator</node>
+    <node x="3274.75" y="449.5">it.polimi.ingsw.common.parser.UniqueRawObject</node>
+    <node x="2494.2391304347825" y="394.5">it.polimi.ingsw.server.model.storage.ResourceContainer</node>
+    <node x="1582.5" y="928.0">it.polimi.ingsw.server.model.leader.StorageAbility</node>
+    <node x="2495.5" y="796.0">it.polimi.ingsw.server.model.storage.Shelf</node>
+    <node x="0.0" y="240.0">it.polimi.ingsw.server.model.production.Crafting</node>
+    <node x="1958.5625" y="104.0">it.polimi.ingsw.common.parser.SerializableObject</node>
+    <node x="1436.0" y="1738.0">it.polimi.ingsw.server.model.storage.Storage</node>
+    <node x="433.0" y="1996.0">it.polimi.ingsw.server.model.storage.BaseCupboard</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="it.polimi.ingsw.server.model.leader.ConversionAbility" target="it.polimi.ingsw.server.model.leader.SpecialAbility">
+      <point x="0.0" y="-93.5" />
+      <point x="1426.0" y="743.0" />
+      <point x="1538.375" y="743.0" />
+      <point x="-34.125" y="38.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.leader.CraftingAbility" target="it.polimi.ingsw.server.model.leader.SpecialAbility">
+      <point x="0.0" y="-71.5" />
+      <point x="1133.0" y="733.0" />
+      <point x="1470.125" y="733.0" />
+      <point x="-102.375" y="38.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.storage.BaseStorage" target="it.polimi.ingsw.server.model.storage.ResourceContainer">
+      <point x="0.0" y="-137.5" />
+      <point x="2322.0" y="743.0" />
+      <point x="2549.572463768116" y="743.0" />
+      <point x="-110.66666666666652" y="82.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.leader.ResourceRequirement" target="it.polimi.ingsw.server.model.leader.Requirement">
+      <point x="0.0" y="-93.5" />
+      <point x="439.0" y="743.0" />
+      <point x="621.8713768115938" y="743.0" />
+      <point x="-62.33333333333337" y="38.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.leader.Requirement" target="it.polimi.ingsw.common.parser.SerializableObject">
+      <point x="0.0" y="-38.0" />
+      <point x="684.2047101449273" y="210.0" />
+      <point x="2006.5625" y="210.0" />
+      <point x="-48.0" y="38.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.storage.LeaderDecorator" target="it.polimi.ingsw.server.model.storage.Cupboard">
+      <point x="0.0" y="-137.5" />
+      <point x="1156.5" y="1971.0" />
+      <point x="1029.25" y="1971.0" />
+      <point x="117.25" y="104.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.storage.BaseCupboard" target="it.polimi.ingsw.server.model.storage.Cupboard">
+      <point x="0.0" y="-137.5" />
+      <point x="667.5" y="1971.0" />
+      <point x="794.75" y="1971.0" />
+      <point x="-117.25" y="104.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.production.UpgradableCrafting" target="it.polimi.ingsw.server.model.production.Crafting">
+      <point x="0.0" y="-38.5" />
+      <point x="0.0" y="236.5" />
+    </edge>
+    <edge source="it.polimi.ingsw.common.parser.UniqueRawObject" target="it.polimi.ingsw.common.parser.RawObject">
+      <point x="42.0" y="-27.0" />
+      <point x="3400.75" y="79.0" />
+      <point x="2142.5625" y="79.0" />
+      <point x="40.0" y="27.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.leader.LevelFlagRequirement" target="it.polimi.ingsw.server.model.leader.Requirement">
+      <point x="0.0" y="-93.5" />
+      <point x="872.5" y="743.0" />
+      <point x="746.5380434782608" y="743.0" />
+      <point x="62.33333333333337" y="38.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.storage.LimitedStorage" target="it.polimi.ingsw.server.model.storage.ResourceContainer">
+      <point x="0.0" y="-236.5" />
+      <point x="2997.0" y="743.0" />
+      <point x="2770.905797101449" y="743.0" />
+      <point x="110.66666666666652" y="82.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.common.parser.RawObject" target="it.polimi.ingsw.common.parser.SerializableObject">
+      <point x="0.0" y="27.0" />
+      <point x="48.0" y="-38.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.common.parser.UniqueSerializableObject" target="it.polimi.ingsw.common.parser.UniqueRawObject">
+      <point x="60.0" y="-27.0" />
+      <point x="3371.5" y="743.0" />
+      <point x="3358.75" y="743.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.storage.Shelf" target="it.polimi.ingsw.server.model.storage.ResourceContainer">
+      <point x="0.0" y="-203.5" />
+      <point x="2649.0" y="743.0" />
+      <point x="2660.2391304347825" y="743.0" />
+      <point x="0.0" y="82.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.leader.StorageAbility" target="it.polimi.ingsw.server.model.leader.SpecialAbility">
+      <point x="0.0" y="-71.5" />
+      <point x="1719.0" y="743.0" />
+      <point x="1606.625" y="743.0" />
+      <point x="34.125" y="38.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.common.parser.SerializableObject" target="it.polimi.ingsw.common.parser.RawObject">
+      <point x="-48.0" y="-38.0" />
+      <point x="2006.5625" y="79.0" />
+      <point x="2062.5625" y="79.0" />
+      <point x="-40.0" y="27.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.leader.LeaderCard" target="it.polimi.ingsw.common.parser.UniqueSerializableObject">
+      <point x="0.0" y="-203.5" />
+      <point x="3167.25" y="1261.0" />
+      <point x="3251.5" y="1261.0" />
+      <point x="-60.0" y="27.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.leader.SpecialAbility" target="it.polimi.ingsw.common.parser.SerializableObject">
+      <point x="0.0" y="-38.0" />
+      <point x="1572.5" y="220.0" />
+      <point x="2038.5625" y="220.0" />
+      <point x="-16.0" y="38.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.leader.FlagRequirement" target="it.polimi.ingsw.server.model.leader.Requirement">
+      <point x="0.0" y="-93.5" />
+      <point x="655.0" y="743.0" />
+      <point x="684.2047101449273" y="743.0" />
+      <point x="0.0" y="38.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.storage.ResourceContainer" target="it.polimi.ingsw.common.parser.SerializableObject">
+      <point x="0.0" y="-82.0" />
+      <point x="2660.2391304347825" y="220.0" />
+      <point x="2070.5625" y="220.0" />
+      <point x="16.0" y="38.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.production.CraftingCard" target="it.polimi.ingsw.common.parser.UniqueSerializableObject">
+      <point x="0.0" y="-159.5" />
+      <point x="3455.75" y="1261.0" />
+      <point x="3371.5" y="1261.0" />
+      <point x="60.0" y="27.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.common.parser.UniqueRawObject" target="it.polimi.ingsw.common.parser.SerializableObject">
+      <point x="-42.0" y="-27.0" />
+      <point x="3316.75" y="200.0" />
+      <point x="2134.5625" y="200.0" />
+      <point x="80.0" y="38.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.common.parser.UniqueSerializableObject" target="it.polimi.ingsw.common.parser.SerializableObject">
+      <point x="-60.0" y="-27.0" />
+      <point x="3251.5" y="743.0" />
+      <point x="3264.25" y="743.0" />
+      <point x="3264.25" y="210.0" />
+      <point x="2102.5625" y="210.0" />
+      <point x="48.0" y="38.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.leader.DiscountAbility" target="it.polimi.ingsw.server.model.leader.SpecialAbility">
+      <point x="0.0" y="-93.5" />
+      <point x="2012.0" y="733.0" />
+      <point x="1674.875" y="733.0" />
+      <point x="102.375" y="38.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.production.Crafting" target="it.polimi.ingsw.common.parser.SerializableObject">
+      <point x="0.0" y="-236.5" />
+      <point x="220.5" y="200.0" />
+      <point x="1974.5625" y="200.0" />
+      <point x="-80.0" y="38.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.3820612332902113" x="1794.0" y="1149.5" />
+  <SelectedNodes>
+    <node>it.polimi.ingsw.server.model.leader.Requirement</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
