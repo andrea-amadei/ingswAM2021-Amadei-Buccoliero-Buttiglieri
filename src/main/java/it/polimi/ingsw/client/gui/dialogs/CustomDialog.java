@@ -21,6 +21,8 @@ public abstract class CustomDialog extends Stage {
         this.initStyle(StageStyle.TRANSPARENT);
         this.initOwner(primaryStage);
         this.initModality(Modality.WINDOW_MODAL);
+        this.setX(primaryStage.getX() + 640);
+        this.setY(primaryStage.getY() + 360);
         this.setScene(new Scene(rootAnchorPane));
     }
 
