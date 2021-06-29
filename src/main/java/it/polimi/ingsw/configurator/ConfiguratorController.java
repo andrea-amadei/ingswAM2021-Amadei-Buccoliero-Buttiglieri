@@ -384,13 +384,13 @@ public class ConfiguratorController {
 
         try {
             groups = createGroupList();
-        } catch (IllegalArgumentException e) {
+        } catch (RuntimeException e) {
             return false;
         }
 
         try {
             tiles = createTileList();
-        } catch (IllegalArgumentException e) {
+        } catch (RuntimeException e) {
             return false;
         }
 
