@@ -2,7 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.server.clienthandling.ClientHandler;
 import it.polimi.ingsw.server.clienthandling.Match;
-import it.polimi.ingsw.utils.Pair;
+import it.polimi.ingsw.common.utils.Pair;
 
 import java.util.*;
 

@@ -2,10 +2,10 @@ package it.polimi.ingsw;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import it.polimi.ingsw.exceptions.NegativeCostException;
-import it.polimi.ingsw.gamematerials.*;
-import it.polimi.ingsw.model.production.CraftingCard;
-import it.polimi.ingsw.model.production.UpgradableCrafting;
+import it.polimi.ingsw.common.exceptions.NegativeCostException;
+import it.polimi.ingsw.server.model.basetypes.*;
+import it.polimi.ingsw.server.model.production.CraftingCard;
+import it.polimi.ingsw.server.model.production.UpgradableCrafting;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

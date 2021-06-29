@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common;
 
-import it.polimi.ingsw.model.actions.Action;
+import it.polimi.ingsw.server.model.actions.Action;
 
 import java.util.*;
 

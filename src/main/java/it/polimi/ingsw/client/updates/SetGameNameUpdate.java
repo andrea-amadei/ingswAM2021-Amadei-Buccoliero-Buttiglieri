@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.updates;
 
 import com.google.gson.annotations.SerializedName;
-import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
 
 public class SetGameNameUpdate implements Update{
 

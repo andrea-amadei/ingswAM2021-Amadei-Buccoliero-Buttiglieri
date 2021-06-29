@@ -1,17 +1,20 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.exceptions.InvalidFaithPathException;
-import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
-import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.actions.Action;
-import it.polimi.ingsw.model.actions.PopeCheckAction;
-import it.polimi.ingsw.model.fsm.InterruptListener;
-import it.polimi.ingsw.model.holder.FaithHolder;
-import it.polimi.ingsw.model.production.Production;
-import it.polimi.ingsw.model.storage.BaseStorage;
-import it.polimi.ingsw.model.storage.Shelf;
-import it.polimi.ingsw.model.storage.Storage;
-import it.polimi.ingsw.utils.Pair;
+import it.polimi.ingsw.common.exceptions.InvalidFaithPathException;
+import it.polimi.ingsw.server.model.basetypes.ResourceTypeSingleton;
+import it.polimi.ingsw.server.model.actions.Action;
+import it.polimi.ingsw.server.model.actions.PopeCheckAction;
+import it.polimi.ingsw.server.model.faithpath.FaithPath;
+import it.polimi.ingsw.server.model.faithpath.FaithPathGroup;
+import it.polimi.ingsw.server.model.faithpath.FaithPathTile;
+import it.polimi.ingsw.server.model.fsm.InterruptListener;
+import it.polimi.ingsw.server.model.global.Board;
+import it.polimi.ingsw.server.model.global.Player;
+import it.polimi.ingsw.server.model.holder.FaithHolder;
+import it.polimi.ingsw.server.model.production.Production;
+import it.polimi.ingsw.server.model.storage.BaseStorage;
+import it.polimi.ingsw.server.model.storage.Shelf;
+import it.polimi.ingsw.server.model.storage.Storage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

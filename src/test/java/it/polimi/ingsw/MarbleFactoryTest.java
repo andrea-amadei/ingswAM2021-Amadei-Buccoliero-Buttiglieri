@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.gamematerials.MarbleColor;
-import it.polimi.ingsw.model.market.MarbleFactory;
+import it.polimi.ingsw.server.model.basetypes.MarbleColor;
+import it.polimi.ingsw.server.model.market.MarbleFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

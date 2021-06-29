@@ -4,9 +4,9 @@ import it.polimi.ingsw.client.cli.framework.MutableResizableRectangularElement;
 import it.polimi.ingsw.client.cli.framework.OutputHandler;
 import it.polimi.ingsw.client.cli.framework.TextElement;
 import it.polimi.ingsw.client.cli.framework.VisibleElement;
-import it.polimi.ingsw.exceptions.UnableToDrawElementException;
-import it.polimi.ingsw.utils.BackgroundColor;
-import it.polimi.ingsw.utils.ForegroundColor;
+import it.polimi.ingsw.common.exceptions.UnableToDrawElementException;
+import it.polimi.ingsw.common.utils.BackgroundColor;
+import it.polimi.ingsw.common.utils.ForegroundColor;
 
 import java.util.List;
 

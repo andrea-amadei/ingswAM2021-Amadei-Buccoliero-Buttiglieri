@@ -1,14 +1,14 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
-import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.holder.FaithHolder;
-import it.polimi.ingsw.model.leader.StorageAbility;
-import it.polimi.ingsw.model.production.Production;
-import it.polimi.ingsw.model.storage.BaseStorage;
-import it.polimi.ingsw.model.storage.Shelf;
-import it.polimi.ingsw.model.storage.Storage;
+import it.polimi.ingsw.server.model.basetypes.ResourceTypeSingleton;
+import it.polimi.ingsw.server.model.global.Board;
+import it.polimi.ingsw.server.model.global.Player;
+import it.polimi.ingsw.server.model.holder.FaithHolder;
+import it.polimi.ingsw.server.model.leader.StorageAbility;
+import it.polimi.ingsw.server.model.production.Production;
+import it.polimi.ingsw.server.model.storage.BaseStorage;
+import it.polimi.ingsw.server.model.storage.Shelf;
+import it.polimi.ingsw.server.model.storage.Storage;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.clienthandling.setupactions;
 
 import com.google.gson.annotations.SerializedName;
-import it.polimi.ingsw.annotations.SerializedType;
+import it.polimi.ingsw.common.annotations.SerializedType;
 import it.polimi.ingsw.server.clienthandling.ClientHandler;
 
 @SerializedType("create_match")

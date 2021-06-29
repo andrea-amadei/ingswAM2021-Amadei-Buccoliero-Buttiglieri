@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.exceptions.UnableToDrawElementException;
+import it.polimi.ingsw.common.exceptions.UnableToDrawElementException;
 import it.polimi.ingsw.server.Logger;
 
 import java.io.IOException;

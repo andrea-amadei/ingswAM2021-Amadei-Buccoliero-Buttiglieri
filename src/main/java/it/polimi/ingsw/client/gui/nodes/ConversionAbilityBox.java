@@ -1,9 +1,9 @@
 package it.polimi.ingsw.client.gui.nodes;
 
-import it.polimi.ingsw.exceptions.IllegalRawConversionException;
-import it.polimi.ingsw.exceptions.ParserException;
-import it.polimi.ingsw.parser.JSONParser;
-import it.polimi.ingsw.parser.raw.RawSpecialAbility;
+import it.polimi.ingsw.common.exceptions.IllegalRawConversionException;
+import it.polimi.ingsw.common.exceptions.ParserException;
+import it.polimi.ingsw.common.parser.JSONParser;
+import it.polimi.ingsw.common.parser.raw.RawSpecialAbility;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -11,7 +11,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 import java.util.ArrayList;

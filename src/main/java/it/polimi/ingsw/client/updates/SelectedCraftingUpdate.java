@@ -1,9 +1,9 @@
 package it.polimi.ingsw.client.updates;
 
 import com.google.gson.annotations.SerializedName;
-import it.polimi.ingsw.client.model.ClientModel;
-import it.polimi.ingsw.client.model.ClientPlayer;
-import it.polimi.ingsw.model.production.Production;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
+import it.polimi.ingsw.client.clientmodel.ClientPlayer;
+import it.polimi.ingsw.server.model.production.Production;
 
 public class SelectedCraftingUpdate implements Update{
 

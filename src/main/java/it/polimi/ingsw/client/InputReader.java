@@ -2,16 +2,16 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.CliBuilder;
 import it.polimi.ingsw.client.cli.framework.CliFramework;
-import it.polimi.ingsw.client.model.ClientPlayer;
+import it.polimi.ingsw.client.clientmodel.ClientPlayer;
 import it.polimi.ingsw.common.payload_components.groups.actions.*;
 import it.polimi.ingsw.common.payload_components.groups.setup.CreateMatchSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.JoinMatchSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.ReconnectSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.SetUsernameSetupPayloadComponent;
-import it.polimi.ingsw.exceptions.UnableToDrawElementException;
-import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
-import it.polimi.ingsw.model.actions.SelectPlayAction;
-import it.polimi.ingsw.model.production.Production;
+import it.polimi.ingsw.common.exceptions.UnableToDrawElementException;
+import it.polimi.ingsw.server.model.basetypes.ResourceTypeSingleton;
+import it.polimi.ingsw.server.model.actions.SelectPlayAction;
+import it.polimi.ingsw.server.model.production.Production;
 
 import java.util.*;
 import java.util.stream.Collectors;

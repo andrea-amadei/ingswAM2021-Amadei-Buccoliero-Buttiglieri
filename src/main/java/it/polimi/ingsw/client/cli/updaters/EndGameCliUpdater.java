@@ -4,10 +4,10 @@ import it.polimi.ingsw.client.cli.framework.elements.Frame;
 import it.polimi.ingsw.client.cli.framework.elements.GroupBox;
 import it.polimi.ingsw.client.cli.framework.elements.LongTextBox;
 import it.polimi.ingsw.client.cli.framework.elements.TextBox;
-import it.polimi.ingsw.client.model.ClientEndGameResults;
+import it.polimi.ingsw.client.clientmodel.ClientEndGameResults;
 import it.polimi.ingsw.client.observables.Listener;
-import it.polimi.ingsw.utils.BackgroundColor;
-import it.polimi.ingsw.utils.ForegroundColor;
+import it.polimi.ingsw.common.utils.BackgroundColor;
+import it.polimi.ingsw.common.utils.ForegroundColor;
 
 public class EndGameCliUpdater implements Listener<ClientEndGameResults> {
     public static final int POPUP_STARTING_ROW = 15;

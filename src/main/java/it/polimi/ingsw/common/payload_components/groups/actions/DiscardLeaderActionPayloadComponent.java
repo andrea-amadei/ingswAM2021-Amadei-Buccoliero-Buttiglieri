@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common.payload_components.groups.actions;
 
-import it.polimi.ingsw.annotations.SerializedType;
+import it.polimi.ingsw.common.annotations.SerializedType;
 
 @SerializedType("discard_leader")
 public class DiscardLeaderActionPayloadComponent extends ActionPayloadComponent{

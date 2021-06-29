@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.gui.nodes;
 
-import it.polimi.ingsw.utils.ResourceLoader;
+import it.polimi.ingsw.common.utils.ResourceLoader;
 import javafx.beans.property.*;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Blend;

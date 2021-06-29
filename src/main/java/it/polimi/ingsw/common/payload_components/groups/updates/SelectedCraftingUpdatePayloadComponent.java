@@ -1,9 +1,9 @@
 package it.polimi.ingsw.common.payload_components.groups.updates;
 
 import com.google.gson.annotations.SerializedName;
-import it.polimi.ingsw.annotations.SerializedType;
+import it.polimi.ingsw.common.annotations.SerializedType;
 import it.polimi.ingsw.common.payload_components.groups.SpecificUpdatePayloadComponent;
-import it.polimi.ingsw.model.production.Production;
+import it.polimi.ingsw.server.model.production.Production;
 
 @SerializedType("selected_crafting")
 public class SelectedCraftingUpdatePayloadComponent extends SpecificUpdatePayloadComponent {

@@ -1,9 +1,9 @@
 package it.polimi.ingsw.client.gui.updaters;
 
 import it.polimi.ingsw.client.gui.nodes.ShopBox;
-import it.polimi.ingsw.client.model.ClientShop;
+import it.polimi.ingsw.client.clientmodel.ClientShop;
 import it.polimi.ingsw.client.observables.Listener;
-import it.polimi.ingsw.parser.raw.RawCraftingCard;
+import it.polimi.ingsw.common.parser.raw.RawCraftingCard;
 import javafx.application.Platform;
 
 import java.util.ArrayList;

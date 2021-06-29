@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.gui.beans;
 
-import it.polimi.ingsw.model.production.Production;
+import it.polimi.ingsw.server.model.production.Production;
 
 public class CraftingSelectionBean {
     private Production.CraftingType craftingType;

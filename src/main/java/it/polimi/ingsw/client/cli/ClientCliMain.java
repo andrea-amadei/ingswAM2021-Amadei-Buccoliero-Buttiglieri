@@ -4,12 +4,10 @@ import it.polimi.ingsw.client.ClientDisconnectionManager;
 import it.polimi.ingsw.client.InputReader;
 import it.polimi.ingsw.client.ServerHandler;
 import it.polimi.ingsw.client.cli.framework.CliFramework;
-import it.polimi.ingsw.client.model.ClientModel;
-import it.polimi.ingsw.exceptions.UnableToDrawElementException;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
+import it.polimi.ingsw.common.exceptions.UnableToDrawElementException;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Scanner;
 
 public class ClientCliMain {
 

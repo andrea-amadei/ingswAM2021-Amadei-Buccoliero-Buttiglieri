@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.gui.nodes;
 
-import it.polimi.ingsw.parser.raw.RawStorage;
+import it.polimi.ingsw.common.parser.raw.RawStorage;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.MapProperty;
 import javafx.beans.property.ObjectProperty;

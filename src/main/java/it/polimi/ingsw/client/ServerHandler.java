@@ -1,15 +1,15 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.framework.CliFramework;
-import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
 import it.polimi.ingsw.client.network.ServerNetworkObject;
 import it.polimi.ingsw.client.ping.Ping;
 import it.polimi.ingsw.client.updates.Update;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.PingPayloadComponent;
-import it.polimi.ingsw.exceptions.UnableToDrawElementException;
-import it.polimi.ingsw.parser.JSONParser;
-import it.polimi.ingsw.parser.JSONSerializer;
+import it.polimi.ingsw.common.exceptions.UnableToDrawElementException;
+import it.polimi.ingsw.common.parser.JSONParser;
+import it.polimi.ingsw.common.parser.JSONSerializer;
 import it.polimi.ingsw.server.Logger;
 
 import java.io.*;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.updates;
 
-import it.polimi.ingsw.client.model.ClientModel;
-import it.polimi.ingsw.parser.raw.RawMarket;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
+import it.polimi.ingsw.common.parser.raw.RawMarket;
 
 public class ChangeMarketUpdate implements Update{
 

@@ -1,25 +1,18 @@
 package it.polimi.ingsw.client.gui.nodes;
 
-import it.polimi.ingsw.client.gui.FXMLCachedLoaders;
 import it.polimi.ingsw.client.gui.beans.ResourceContainerBean;
 import it.polimi.ingsw.client.gui.beans.ResourceSelectionBean;
-import it.polimi.ingsw.exceptions.IllegalRawConversionException;
-import it.polimi.ingsw.exceptions.ParserException;
-import it.polimi.ingsw.parser.JSONParser;
-import it.polimi.ingsw.parser.JSONSerializer;
-import it.polimi.ingsw.parser.raw.RawStorage;
-import it.polimi.ingsw.utils.ResourceLoader;
+import it.polimi.ingsw.common.exceptions.IllegalRawConversionException;
+import it.polimi.ingsw.common.exceptions.ParserException;
+import it.polimi.ingsw.common.parser.JSONParser;
+import it.polimi.ingsw.common.parser.JSONSerializer;
+import it.polimi.ingsw.common.parser.raw.RawStorage;
 import javafx.beans.property.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.function.Consumer;
 

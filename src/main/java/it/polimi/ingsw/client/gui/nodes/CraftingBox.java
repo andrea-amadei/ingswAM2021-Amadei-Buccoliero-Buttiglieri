@@ -1,18 +1,12 @@
 package it.polimi.ingsw.client.gui.nodes;
 
-import it.polimi.ingsw.exceptions.IllegalRawConversionException;
-import it.polimi.ingsw.exceptions.ParserException;
-import it.polimi.ingsw.model.production.Crafting;
-import it.polimi.ingsw.parser.JSONParser;
-import it.polimi.ingsw.parser.JSONSerializer;
-import it.polimi.ingsw.parser.raw.RawCrafting;
-import it.polimi.ingsw.parser.raw.RawStorage;
-import it.polimi.ingsw.utils.ResourceLoader;
+import it.polimi.ingsw.common.exceptions.IllegalRawConversionException;
+import it.polimi.ingsw.common.exceptions.ParserException;
+import it.polimi.ingsw.common.parser.JSONParser;
+import it.polimi.ingsw.common.parser.JSONSerializer;
+import it.polimi.ingsw.common.parser.raw.RawCrafting;
+import it.polimi.ingsw.common.parser.raw.RawStorage;
 import javafx.beans.property.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -21,7 +15,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import org.controlsfx.glyphfont.Glyph;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 public class CraftingBox extends VBox {

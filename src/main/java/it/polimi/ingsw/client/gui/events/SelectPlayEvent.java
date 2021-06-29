@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.gui.events;
 
-import it.polimi.ingsw.model.actions.SelectPlayAction;
+import it.polimi.ingsw.server.model.actions.SelectPlayAction;
 import javafx.event.Event;
 import javafx.event.EventType;
 

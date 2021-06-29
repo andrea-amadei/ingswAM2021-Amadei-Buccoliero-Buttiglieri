@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.gui.updaters;
 
 import it.polimi.ingsw.client.gui.nodes.ProductionBox;
-import it.polimi.ingsw.client.model.ClientProduction;
+import it.polimi.ingsw.client.clientmodel.ClientProduction;
 import it.polimi.ingsw.client.observables.Listener;
 import javafx.application.Platform;
 

@@ -1,15 +1,12 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.ClientDisconnectionManager;
-import it.polimi.ingsw.client.InputReader;
 import it.polimi.ingsw.client.ServerHandler;
-import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.util.List;

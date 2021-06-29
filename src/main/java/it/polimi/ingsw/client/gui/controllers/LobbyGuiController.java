@@ -1,19 +1,13 @@
 package it.polimi.ingsw.client.gui.controllers;
 
-import it.polimi.ingsw.client.ClientGameBuilder;
 import it.polimi.ingsw.client.gui.GuiBuilder;
-import it.polimi.ingsw.client.model.ClientPlayer;
 import it.polimi.ingsw.common.payload_components.groups.setup.CreateMatchSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.JoinMatchSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.ReconnectSetupPayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.setup.SetUsernameSetupPayloadComponent;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class LobbyGuiController extends BaseController {
 

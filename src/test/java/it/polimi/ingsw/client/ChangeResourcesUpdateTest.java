@@ -1,9 +1,9 @@
 package it.polimi.ingsw.client;
-import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
 import it.polimi.ingsw.client.updates.ChangeResourcesUpdate;
-import it.polimi.ingsw.exceptions.ParserException;
-import it.polimi.ingsw.parser.raw.RawStorage;
-import it.polimi.ingsw.utils.ResourceLoader;
+import it.polimi.ingsw.common.exceptions.ParserException;
+import it.polimi.ingsw.common.parser.raw.RawStorage;
+import it.polimi.ingsw.common.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

@@ -7,30 +7,30 @@ import it.polimi.ingsw.client.cli.framework.CliFramework;
 import it.polimi.ingsw.client.cli.framework.OutputHandler;
 import it.polimi.ingsw.client.cli.framework.elements.*;
 import it.polimi.ingsw.client.cli.updaters.*;
-import it.polimi.ingsw.client.model.*;
+import it.polimi.ingsw.client.clientmodel.*;
 import it.polimi.ingsw.configurator.ConfiguratorMain;
-import it.polimi.ingsw.exceptions.ParserException;
-import it.polimi.ingsw.exceptions.UnableToDrawElementException;
-import it.polimi.ingsw.gamematerials.*;
-import it.polimi.ingsw.model.FaithPathGroup;
-import it.polimi.ingsw.model.FaithPathTile;
-import it.polimi.ingsw.model.holder.FaithHolder;
-import it.polimi.ingsw.model.leader.*;
-import it.polimi.ingsw.model.market.ConversionActuator;
-import it.polimi.ingsw.model.market.Marble;
-import it.polimi.ingsw.model.market.MarbleFactory;
-import it.polimi.ingsw.model.market.Market;
-import it.polimi.ingsw.model.production.Crafting;
-import it.polimi.ingsw.model.production.CraftingCard;
-import it.polimi.ingsw.model.production.UpgradableCrafting;
-import it.polimi.ingsw.model.storage.BaseStorage;
-import it.polimi.ingsw.model.storage.Shelf;
-import it.polimi.ingsw.parser.JSONParser;
-import it.polimi.ingsw.parser.raw.*;
+import it.polimi.ingsw.common.exceptions.ParserException;
+import it.polimi.ingsw.common.exceptions.UnableToDrawElementException;
+import it.polimi.ingsw.server.model.basetypes.*;
+import it.polimi.ingsw.server.model.faithpath.FaithPathGroup;
+import it.polimi.ingsw.server.model.faithpath.FaithPathTile;
+import it.polimi.ingsw.server.model.holder.FaithHolder;
+import it.polimi.ingsw.server.model.leader.*;
+import it.polimi.ingsw.server.model.market.ConversionActuator;
+import it.polimi.ingsw.server.model.market.Marble;
+import it.polimi.ingsw.server.model.market.MarbleFactory;
+import it.polimi.ingsw.server.model.market.Market;
+import it.polimi.ingsw.server.model.production.Crafting;
+import it.polimi.ingsw.server.model.production.CraftingCard;
+import it.polimi.ingsw.server.model.production.UpgradableCrafting;
+import it.polimi.ingsw.server.model.storage.BaseStorage;
+import it.polimi.ingsw.server.model.storage.Shelf;
+import it.polimi.ingsw.common.parser.JSONParser;
+import it.polimi.ingsw.common.parser.raw.*;
 import it.polimi.ingsw.server.Logger;
 import it.polimi.ingsw.server.ServerMain;
-import it.polimi.ingsw.utils.BackgroundColor;
-import it.polimi.ingsw.utils.ForegroundColor;
+import it.polimi.ingsw.common.utils.BackgroundColor;
+import it.polimi.ingsw.common.utils.ForegroundColor;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -133,7 +133,7 @@ public class App {
         ModelCliUpdater modelCliUpdater2 = new ModelCliUpdater(clientModel, global, null);
 
         // faith path
-        it.polimi.ingsw.model.FaithPath path = JSONParser.parseFaithPath("{\"tiles\":[{\"order\":0,\"x\":1,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":1,\"x\":2,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":2,\"x\":3,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":3,\"x\":3,\"y\":2,\"points\":1,\"pope_group\":0,\"pope_check\":false},{\"order\":4,\"x\":3,\"y\":3,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":5,\"x\":4,\"y\":3,\"points\":0,\"pope_group\":1,\"pope_check\":false},{\"order\":6,\"x\":5,\"y\":3,\"points\":1,\"pope_group\":1,\"pope_check\":false},{\"order\":7,\"x\":6,\"y\":3,\"points\":0,\"pope_group\":1,\"pope_check\":false},{\"order\":8,\"x\":7,\"y\":3,\"points\":0,\"pope_group\":1,\"pope_check\":true},{\"order\":9,\"x\":8,\"y\":3,\"points\":2,\"pope_group\":0,\"pope_check\":false},{\"order\":10,\"x\":8,\"y\":2,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":11,\"x\":8,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":12,\"x\":9,\"y\":1,\"points\":2,\"pope_group\":2,\"pope_check\":false},{\"order\":13,\"x\":10,\"y\":1,\"points\":0,\"pope_group\":2,\"pope_check\":false},{\"order\":14,\"x\":11,\"y\":1,\"points\":0,\"pope_group\":2,\"pope_check\":false},{\"order\":15,\"x\":12,\"y\":1,\"points\":3,\"pope_group\":2,\"pope_check\":false},{\"order\":16,\"x\":13,\"y\":1,\"points\":0,\"pope_group\":2,\"pope_check\":true},{\"order\":17,\"x\":13,\"y\":2,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":18,\"x\":13,\"y\":3,\"points\":3,\"pope_group\":0,\"pope_check\":false},{\"order\":19,\"x\":14,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":20,\"x\":15,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":21,\"x\":16,\"y\":3,\"points\":4,\"pope_group\":3,\"pope_check\":false},{\"order\":22,\"x\":17,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":23,\"x\":18,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":24,\"x\":19,\"y\":3,\"points\":4,\"pope_group\":3,\"pope_check\":true}],\"groups\":[{\"group\":1,\"points\":2},{\"group\":2,\"points\":3},{\"group\":3,\"points\":4}]}");
+        it.polimi.ingsw.server.model.faithpath.FaithPath path = JSONParser.parseFaithPath("{\"tiles\":[{\"order\":0,\"x\":1,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":1,\"x\":2,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":2,\"x\":3,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":3,\"x\":3,\"y\":2,\"points\":1,\"pope_group\":0,\"pope_check\":false},{\"order\":4,\"x\":3,\"y\":3,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":5,\"x\":4,\"y\":3,\"points\":0,\"pope_group\":1,\"pope_check\":false},{\"order\":6,\"x\":5,\"y\":3,\"points\":1,\"pope_group\":1,\"pope_check\":false},{\"order\":7,\"x\":6,\"y\":3,\"points\":0,\"pope_group\":1,\"pope_check\":false},{\"order\":8,\"x\":7,\"y\":3,\"points\":0,\"pope_group\":1,\"pope_check\":true},{\"order\":9,\"x\":8,\"y\":3,\"points\":2,\"pope_group\":0,\"pope_check\":false},{\"order\":10,\"x\":8,\"y\":2,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":11,\"x\":8,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":12,\"x\":9,\"y\":1,\"points\":2,\"pope_group\":2,\"pope_check\":false},{\"order\":13,\"x\":10,\"y\":1,\"points\":0,\"pope_group\":2,\"pope_check\":false},{\"order\":14,\"x\":11,\"y\":1,\"points\":0,\"pope_group\":2,\"pope_check\":false},{\"order\":15,\"x\":12,\"y\":1,\"points\":3,\"pope_group\":2,\"pope_check\":false},{\"order\":16,\"x\":13,\"y\":1,\"points\":0,\"pope_group\":2,\"pope_check\":true},{\"order\":17,\"x\":13,\"y\":2,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":18,\"x\":13,\"y\":3,\"points\":3,\"pope_group\":0,\"pope_check\":false},{\"order\":19,\"x\":14,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":20,\"x\":15,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":21,\"x\":16,\"y\":3,\"points\":4,\"pope_group\":3,\"pope_check\":false},{\"order\":22,\"x\":17,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":23,\"x\":18,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":24,\"x\":19,\"y\":3,\"points\":4,\"pope_group\":3,\"pope_check\":true}],\"groups\":[{\"group\":1,\"points\":2},{\"group\":2,\"points\":3},{\"group\":3,\"points\":4}]}");
         ClientFaithPath faithPath = new ClientFaithPath(
                 path.getTiles().stream().map(FaithPathTile::toRaw).collect(Collectors.toList()),
                 path.getFaithGroupList().stream().map(FaithPathGroup::toRaw).collect(Collectors.toList())
@@ -481,7 +481,7 @@ public class App {
     }
 
     public static void faithPathTest() throws UnableToDrawElementException, InterruptedException, ParserException, IOException {
-        it.polimi.ingsw.model.FaithPath path= JSONParser.parseFaithPath("{\"tiles\":[{\"order\":0,\"x\":1,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":1,\"x\":2,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":2,\"x\":3,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":3,\"x\":3,\"y\":2,\"points\":1,\"pope_group\":0,\"pope_check\":false},{\"order\":4,\"x\":3,\"y\":3,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":5,\"x\":4,\"y\":3,\"points\":0,\"pope_group\":1,\"pope_check\":false},{\"order\":6,\"x\":5,\"y\":3,\"points\":1,\"pope_group\":1,\"pope_check\":false},{\"order\":7,\"x\":6,\"y\":3,\"points\":0,\"pope_group\":1,\"pope_check\":false},{\"order\":8,\"x\":7,\"y\":3,\"points\":0,\"pope_group\":1,\"pope_check\":true},{\"order\":9,\"x\":8,\"y\":3,\"points\":2,\"pope_group\":0,\"pope_check\":false},{\"order\":10,\"x\":8,\"y\":2,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":11,\"x\":8,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":12,\"x\":9,\"y\":1,\"points\":2,\"pope_group\":2,\"pope_check\":false},{\"order\":13,\"x\":10,\"y\":1,\"points\":0,\"pope_group\":2,\"pope_check\":false},{\"order\":14,\"x\":11,\"y\":1,\"points\":0,\"pope_group\":2,\"pope_check\":false},{\"order\":15,\"x\":12,\"y\":1,\"points\":3,\"pope_group\":2,\"pope_check\":false},{\"order\":16,\"x\":13,\"y\":1,\"points\":0,\"pope_group\":2,\"pope_check\":true},{\"order\":17,\"x\":13,\"y\":2,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":18,\"x\":13,\"y\":3,\"points\":3,\"pope_group\":0,\"pope_check\":false},{\"order\":19,\"x\":14,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":20,\"x\":15,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":21,\"x\":16,\"y\":3,\"points\":4,\"pope_group\":3,\"pope_check\":false},{\"order\":22,\"x\":17,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":23,\"x\":18,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":24,\"x\":19,\"y\":3,\"points\":4,\"pope_group\":3,\"pope_check\":true}],\"groups\":[{\"group\":1,\"points\":2},{\"group\":2,\"points\":3},{\"group\":3,\"points\":4}]}");
+        it.polimi.ingsw.server.model.faithpath.FaithPath path= JSONParser.parseFaithPath("{\"tiles\":[{\"order\":0,\"x\":1,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":1,\"x\":2,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":2,\"x\":3,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":3,\"x\":3,\"y\":2,\"points\":1,\"pope_group\":0,\"pope_check\":false},{\"order\":4,\"x\":3,\"y\":3,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":5,\"x\":4,\"y\":3,\"points\":0,\"pope_group\":1,\"pope_check\":false},{\"order\":6,\"x\":5,\"y\":3,\"points\":1,\"pope_group\":1,\"pope_check\":false},{\"order\":7,\"x\":6,\"y\":3,\"points\":0,\"pope_group\":1,\"pope_check\":false},{\"order\":8,\"x\":7,\"y\":3,\"points\":0,\"pope_group\":1,\"pope_check\":true},{\"order\":9,\"x\":8,\"y\":3,\"points\":2,\"pope_group\":0,\"pope_check\":false},{\"order\":10,\"x\":8,\"y\":2,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":11,\"x\":8,\"y\":1,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":12,\"x\":9,\"y\":1,\"points\":2,\"pope_group\":2,\"pope_check\":false},{\"order\":13,\"x\":10,\"y\":1,\"points\":0,\"pope_group\":2,\"pope_check\":false},{\"order\":14,\"x\":11,\"y\":1,\"points\":0,\"pope_group\":2,\"pope_check\":false},{\"order\":15,\"x\":12,\"y\":1,\"points\":3,\"pope_group\":2,\"pope_check\":false},{\"order\":16,\"x\":13,\"y\":1,\"points\":0,\"pope_group\":2,\"pope_check\":true},{\"order\":17,\"x\":13,\"y\":2,\"points\":0,\"pope_group\":0,\"pope_check\":false},{\"order\":18,\"x\":13,\"y\":3,\"points\":3,\"pope_group\":0,\"pope_check\":false},{\"order\":19,\"x\":14,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":20,\"x\":15,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":21,\"x\":16,\"y\":3,\"points\":4,\"pope_group\":3,\"pope_check\":false},{\"order\":22,\"x\":17,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":23,\"x\":18,\"y\":3,\"points\":0,\"pope_group\":3,\"pope_check\":false},{\"order\":24,\"x\":19,\"y\":3,\"points\":4,\"pope_group\":3,\"pope_check\":true}],\"groups\":[{\"group\":1,\"points\":2},{\"group\":2,\"points\":3},{\"group\":3,\"points\":4}]}");
 
         FaithPath fp = new FaithPath("fp", 1, 30,
             path.getTiles().stream().map(FaithPathTile::toRaw).collect(Collectors.toList()),

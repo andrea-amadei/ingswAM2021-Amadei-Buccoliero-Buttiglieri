@@ -1,11 +1,11 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.model.ClientShop;
-import it.polimi.ingsw.exceptions.ParserException;
-import it.polimi.ingsw.model.production.CraftingCard;
-import it.polimi.ingsw.parser.JSONParser;
-import it.polimi.ingsw.parser.raw.RawCraftingCard;
-import it.polimi.ingsw.utils.ResourceLoader;
+import it.polimi.ingsw.client.clientmodel.ClientShop;
+import it.polimi.ingsw.common.exceptions.ParserException;
+import it.polimi.ingsw.server.model.production.CraftingCard;
+import it.polimi.ingsw.common.parser.JSONParser;
+import it.polimi.ingsw.common.parser.raw.RawCraftingCard;
+import it.polimi.ingsw.common.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

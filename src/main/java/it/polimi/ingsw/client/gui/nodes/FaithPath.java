@@ -1,17 +1,14 @@
 package it.polimi.ingsw.client.gui.nodes;
 
-import it.polimi.ingsw.exceptions.ParserException;
-import it.polimi.ingsw.model.FaithPathGroup;
-import it.polimi.ingsw.model.FaithPathTile;
-import it.polimi.ingsw.model.holder.FaithHolder;
-import it.polimi.ingsw.parser.JSONParser;
-import it.polimi.ingsw.parser.raw.RawFaithPathGroup;
-import it.polimi.ingsw.parser.raw.RawFaithPathTile;
-import it.polimi.ingsw.server.Logger;
-import it.polimi.ingsw.utils.Pair;
-import it.polimi.ingsw.utils.ResourceLoader;
-import it.polimi.ingsw.utils.Triplet;
-import javafx.beans.binding.Bindings;
+import it.polimi.ingsw.common.exceptions.ParserException;
+import it.polimi.ingsw.server.model.faithpath.FaithPathGroup;
+import it.polimi.ingsw.server.model.faithpath.FaithPathTile;
+import it.polimi.ingsw.server.model.holder.FaithHolder;
+import it.polimi.ingsw.common.parser.JSONParser;
+import it.polimi.ingsw.common.parser.raw.RawFaithPathGroup;
+import it.polimi.ingsw.common.parser.raw.RawFaithPathTile;
+import it.polimi.ingsw.common.utils.ResourceLoader;
+import it.polimi.ingsw.common.utils.Triplet;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,9 +24,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import org.controlsfx.control.spreadsheet.Grid;
 import org.controlsfx.glyphfont.Glyph;
 
 import java.io.IOException;
@@ -92,7 +87,7 @@ public class FaithPath extends GridPane {
         }
 
         try {
-            it.polimi.ingsw.model.FaithPath fp = JSONParser.parseFaithPath(ResourceLoader.loadFile("cfg/faith.json"));
+            it.polimi.ingsw.server.model.faithpath.FaithPath fp = JSONParser.parseFaithPath(ResourceLoader.loadFile("cfg/faith.json"));
             tiles = fp.getTiles().stream().map(FaithPathTile::toRaw).collect(Collectors.toList());
             groups = fp.getFaithGroupList().stream().map(FaithPathGroup::toRaw).collect(Collectors.toList());
         } catch (ParserException e) {

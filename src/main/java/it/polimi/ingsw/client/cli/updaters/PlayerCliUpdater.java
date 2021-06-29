@@ -1,18 +1,14 @@
 package it.polimi.ingsw.client.cli.updaters;
 
-import it.polimi.ingsw.client.cli.framework.VisibleElement;
 import it.polimi.ingsw.client.cli.framework.elements.*;
-import it.polimi.ingsw.client.model.ClientPlayer;
-import it.polimi.ingsw.client.model.ClientShelf;
+import it.polimi.ingsw.client.clientmodel.ClientPlayer;
 import it.polimi.ingsw.client.observables.Listener;
-import it.polimi.ingsw.utils.BackgroundColor;
-import it.polimi.ingsw.utils.ForegroundColor;
+import it.polimi.ingsw.common.utils.BackgroundColor;
+import it.polimi.ingsw.common.utils.ForegroundColor;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PlayerCliUpdater implements Listener<ClientPlayer> {
     public static final int CUPBOARD_STARTING_ROW = 12;

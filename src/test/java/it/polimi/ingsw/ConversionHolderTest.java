@@ -2,11 +2,11 @@ package it.polimi.ingsw;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import it.polimi.ingsw.gamematerials.MarbleColor;
-import it.polimi.ingsw.gamematerials.ResourceSingle;
-import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
-import it.polimi.ingsw.model.holder.ConversionHolder;
-import it.polimi.ingsw.model.market.ConversionActuator;
+import it.polimi.ingsw.server.model.basetypes.MarbleColor;
+import it.polimi.ingsw.server.model.basetypes.ResourceSingle;
+import it.polimi.ingsw.server.model.basetypes.ResourceTypeSingleton;
+import it.polimi.ingsw.server.model.holder.ConversionHolder;
+import it.polimi.ingsw.server.model.market.ConversionActuator;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

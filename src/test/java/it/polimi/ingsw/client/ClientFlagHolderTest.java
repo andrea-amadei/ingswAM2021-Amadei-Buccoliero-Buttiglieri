@@ -1,9 +1,9 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.model.ClientFlagHolder;
-import it.polimi.ingsw.gamematerials.FlagColor;
-import it.polimi.ingsw.gamematerials.LevelFlag;
-import it.polimi.ingsw.parser.raw.RawLevelFlag;
+import it.polimi.ingsw.client.clientmodel.ClientFlagHolder;
+import it.polimi.ingsw.server.model.basetypes.FlagColor;
+import it.polimi.ingsw.server.model.basetypes.LevelFlag;
+import it.polimi.ingsw.common.parser.raw.RawLevelFlag;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;

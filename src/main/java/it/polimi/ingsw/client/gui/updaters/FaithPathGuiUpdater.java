@@ -1,13 +1,10 @@
 package it.polimi.ingsw.client.gui.updaters;
 
 import it.polimi.ingsw.client.gui.nodes.FaithPath;
-import it.polimi.ingsw.client.model.ClientFaithPath;
+import it.polimi.ingsw.client.clientmodel.ClientFaithPath;
 import it.polimi.ingsw.client.observables.Listener;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-
-import java.util.List;
-import java.util.Map;
 
 public class FaithPathGuiUpdater implements Listener<ClientFaithPath> {
 

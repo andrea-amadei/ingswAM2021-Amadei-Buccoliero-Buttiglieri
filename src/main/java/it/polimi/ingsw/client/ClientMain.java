@@ -2,7 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.ClientCliMain;
 import it.polimi.ingsw.client.gui.ClientGuiMain;
-import it.polimi.ingsw.exceptions.UnableToDrawElementException;
+import it.polimi.ingsw.common.exceptions.UnableToDrawElementException;
 
 import java.util.Arrays;
 

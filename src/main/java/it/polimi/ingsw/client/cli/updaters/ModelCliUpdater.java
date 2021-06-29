@@ -2,16 +2,13 @@ package it.polimi.ingsw.client.cli.updaters;
 
 import it.polimi.ingsw.client.cli.framework.elements.Frame;
 import it.polimi.ingsw.client.cli.framework.elements.GroupBox;
-import it.polimi.ingsw.client.cli.framework.elements.MarbleBox;
 import it.polimi.ingsw.client.cli.framework.elements.TextBox;
-import it.polimi.ingsw.client.model.ClientMarket;
-import it.polimi.ingsw.client.model.ClientModel;
-import it.polimi.ingsw.client.model.ClientPlayer;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
+import it.polimi.ingsw.client.clientmodel.ClientPlayer;
 import it.polimi.ingsw.client.observables.Listener;
-import it.polimi.ingsw.utils.BackgroundColor;
-import it.polimi.ingsw.utils.ForegroundColor;
+import it.polimi.ingsw.common.utils.BackgroundColor;
+import it.polimi.ingsw.common.utils.ForegroundColor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

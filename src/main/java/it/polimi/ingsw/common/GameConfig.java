@@ -1,8 +1,8 @@
 package it.polimi.ingsw.common;
 
 import com.google.gson.annotations.SerializedName;
-import it.polimi.ingsw.gamematerials.MarbleColor;
-import it.polimi.ingsw.gamematerials.ResourceType;
+import it.polimi.ingsw.server.model.basetypes.MarbleColor;
+import it.polimi.ingsw.server.model.basetypes.ResourceType;
 
 import java.util.List;
 import java.util.Map;

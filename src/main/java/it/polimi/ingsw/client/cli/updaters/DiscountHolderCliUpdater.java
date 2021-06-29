@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client.cli.updaters;
 
 import it.polimi.ingsw.client.cli.framework.elements.*;
-import it.polimi.ingsw.client.model.ClientDiscountHolder;
+import it.polimi.ingsw.client.clientmodel.ClientDiscountHolder;
 import it.polimi.ingsw.client.observables.Listener;
-import it.polimi.ingsw.utils.BackgroundColor;
-import it.polimi.ingsw.utils.ForegroundColor;
+import it.polimi.ingsw.common.utils.BackgroundColor;
+import it.polimi.ingsw.common.utils.ForegroundColor;
 
 import java.util.Arrays;
 

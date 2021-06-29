@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client.updates;
 
 import com.google.gson.annotations.SerializedName;
-import it.polimi.ingsw.client.model.ClientBaseStorage;
-import it.polimi.ingsw.client.model.ClientModel;
-import it.polimi.ingsw.client.model.ClientPlayer;
-import it.polimi.ingsw.client.model.ClientShelf;
+import it.polimi.ingsw.client.clientmodel.ClientBaseStorage;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
+import it.polimi.ingsw.client.clientmodel.ClientPlayer;
+import it.polimi.ingsw.client.clientmodel.ClientShelf;
 
 import java.util.NoSuchElementException;
 

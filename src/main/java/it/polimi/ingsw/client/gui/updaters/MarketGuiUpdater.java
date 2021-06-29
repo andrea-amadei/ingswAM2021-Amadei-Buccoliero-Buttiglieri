@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.gui.updaters;
 
 import it.polimi.ingsw.client.gui.nodes.MarketBox;
-import it.polimi.ingsw.client.model.ClientMarket;
+import it.polimi.ingsw.client.clientmodel.ClientMarket;
 import it.polimi.ingsw.client.observables.Listener;
 import javafx.application.Platform;
 

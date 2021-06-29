@@ -2,21 +2,20 @@ package it.polimi.ingsw.payloads;
 import it.polimi.ingsw.client.network.ServerNetworkObject;
 import it.polimi.ingsw.client.updates.ChangeMarketUpdate;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
-import it.polimi.ingsw.gamematerials.MarbleColor;
-import it.polimi.ingsw.model.market.Marble;
-import it.polimi.ingsw.model.market.MarbleFactory;
-import it.polimi.ingsw.model.market.Market;
-import it.polimi.ingsw.parser.JSONParser;
-import it.polimi.ingsw.parser.JSONSerializer;
-import it.polimi.ingsw.parser.raw.RawMarket;
-import it.polimi.ingsw.utils.PayloadFactory;
+import it.polimi.ingsw.server.model.basetypes.MarbleColor;
+import it.polimi.ingsw.server.model.market.Marble;
+import it.polimi.ingsw.server.model.market.MarbleFactory;
+import it.polimi.ingsw.server.model.market.Market;
+import it.polimi.ingsw.common.parser.JSONParser;
+import it.polimi.ingsw.common.parser.JSONSerializer;
+import it.polimi.ingsw.common.parser.raw.RawMarket;
+import it.polimi.ingsw.common.utils.PayloadFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 

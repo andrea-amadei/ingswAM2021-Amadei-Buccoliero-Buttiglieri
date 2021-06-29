@@ -1,8 +1,8 @@
 package it.polimi.ingsw.client.updates;
 
-import it.polimi.ingsw.client.model.ClientModel;
-import it.polimi.ingsw.client.model.ClientPlayer;
-import it.polimi.ingsw.client.model.ClientShelf;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
+import it.polimi.ingsw.client.clientmodel.ClientPlayer;
+import it.polimi.ingsw.client.clientmodel.ClientShelf;
 
 public class AddShelfUpdate implements Update{
 

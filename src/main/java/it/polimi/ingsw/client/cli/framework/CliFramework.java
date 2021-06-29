@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.cli.framework;
 
 import it.polimi.ingsw.client.cli.framework.elements.Frame;
-import it.polimi.ingsw.exceptions.UnableToDrawElementException;
+import it.polimi.ingsw.common.exceptions.UnableToDrawElementException;
 
 import java.util.*;
 

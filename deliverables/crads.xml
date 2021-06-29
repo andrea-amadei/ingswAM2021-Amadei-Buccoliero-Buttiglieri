@@ -1,0 +1,28 @@
+<cards>
+	<card>
+		<id>1</id>
+		<name>Pippo</name>
+		<points>2</points>
+		
+		<requirements>
+			<requirement>
+				<type>FLAG</type>
+				<color>BLUE</color>
+				<amount>1</amount>
+			</requirement>
+			<requirement>
+				<type>FLAG</type>
+				<color>PURPLE</color>
+				<amount>1</amount>
+			</requirement>
+		</requirements>
+		
+		<special_abilities>
+			<ability>
+				<type>DISCOUNT</type>
+				<amount>1</amount>
+				<resource>SHIELD</resource>
+			</ability>
+		</special_abilities>
+	</card>
+</cards>

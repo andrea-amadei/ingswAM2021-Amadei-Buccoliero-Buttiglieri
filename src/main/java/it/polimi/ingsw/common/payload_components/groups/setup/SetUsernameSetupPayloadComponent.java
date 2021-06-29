@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common.payload_components.groups.setup;
 
-import it.polimi.ingsw.annotations.SerializedType;
+import it.polimi.ingsw.common.annotations.SerializedType;
 
 @SerializedType("set_username")
 public class SetUsernameSetupPayloadComponent extends SetupPayloadComponent{

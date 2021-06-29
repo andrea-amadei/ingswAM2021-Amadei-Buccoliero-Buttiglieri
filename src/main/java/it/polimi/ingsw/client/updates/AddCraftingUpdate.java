@@ -1,11 +1,11 @@
 package it.polimi.ingsw.client.updates;
 
 import com.google.gson.annotations.SerializedName;
-import it.polimi.ingsw.client.model.ClientModel;
-import it.polimi.ingsw.client.model.ClientPlayer;
-import it.polimi.ingsw.client.model.ClientProduction;
-import it.polimi.ingsw.model.production.Production;
-import it.polimi.ingsw.parser.raw.RawCrafting;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
+import it.polimi.ingsw.client.clientmodel.ClientPlayer;
+import it.polimi.ingsw.client.clientmodel.ClientProduction;
+import it.polimi.ingsw.server.model.production.Production;
+import it.polimi.ingsw.common.parser.raw.RawCrafting;
 
 public class AddCraftingUpdate implements Update{
 

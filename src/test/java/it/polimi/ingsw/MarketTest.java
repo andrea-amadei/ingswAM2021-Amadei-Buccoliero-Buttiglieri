@@ -1,9 +1,9 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.gamematerials.MarbleColor;
-import it.polimi.ingsw.model.market.Marble;
-import it.polimi.ingsw.model.market.MarbleFactory;
-import it.polimi.ingsw.model.market.Market;
+import it.polimi.ingsw.server.model.basetypes.MarbleColor;
+import it.polimi.ingsw.server.model.market.Marble;
+import it.polimi.ingsw.server.model.market.MarbleFactory;
+import it.polimi.ingsw.server.model.market.Market;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

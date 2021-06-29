@@ -1,12 +1,12 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
 import it.polimi.ingsw.client.updates.AddFlagUpdate;
-import it.polimi.ingsw.exceptions.ParserException;
-import it.polimi.ingsw.gamematerials.FlagColor;
-import it.polimi.ingsw.gamematerials.LevelFlag;
-import it.polimi.ingsw.parser.raw.RawLevelFlag;
-import it.polimi.ingsw.utils.ResourceLoader;
+import it.polimi.ingsw.common.exceptions.ParserException;
+import it.polimi.ingsw.server.model.basetypes.FlagColor;
+import it.polimi.ingsw.server.model.basetypes.LevelFlag;
+import it.polimi.ingsw.common.parser.raw.RawLevelFlag;
+import it.polimi.ingsw.common.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

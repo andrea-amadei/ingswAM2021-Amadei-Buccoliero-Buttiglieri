@@ -1,13 +1,13 @@
 package it.polimi.ingsw.server.clienthandling;
 
 import it.polimi.ingsw.common.ActionQueue;
-import it.polimi.ingsw.controller.Controller;
-import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.fsm.StateMachine;
+import it.polimi.ingsw.server.controller.Controller;
+import it.polimi.ingsw.common.exceptions.*;
+import it.polimi.ingsw.server.model.fsm.StateMachine;
 import it.polimi.ingsw.server.ServerBuilder;
 import it.polimi.ingsw.server.ServerManager;
-import it.polimi.ingsw.utils.Pair;
-import it.polimi.ingsw.utils.ResourceLoader;
+import it.polimi.ingsw.common.utils.Pair;
+import it.polimi.ingsw.common.utils.ResourceLoader;
 
 import java.util.List;
 import java.util.Random;

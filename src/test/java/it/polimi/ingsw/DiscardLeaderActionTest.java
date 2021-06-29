@@ -1,16 +1,16 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.exceptions.IllegalActionException;
-import it.polimi.ingsw.exceptions.ParserException;
-import it.polimi.ingsw.gamematerials.*;
-import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.model.actions.Action;
-import it.polimi.ingsw.model.actions.DiscardLeaderAction;
-import it.polimi.ingsw.model.fsm.GameContext;
-import it.polimi.ingsw.model.leader.*;
-import it.polimi.ingsw.model.market.ConversionActuator;
+import it.polimi.ingsw.common.exceptions.IllegalActionException;
+import it.polimi.ingsw.common.exceptions.ParserException;
+import it.polimi.ingsw.server.model.basetypes.*;
+import it.polimi.ingsw.server.model.global.GameModel;
+import it.polimi.ingsw.server.model.actions.Action;
+import it.polimi.ingsw.server.model.actions.DiscardLeaderAction;
+import it.polimi.ingsw.server.model.fsm.GameContext;
+import it.polimi.ingsw.server.model.leader.*;
+import it.polimi.ingsw.server.model.market.ConversionActuator;
 import it.polimi.ingsw.server.ServerBuilder;
-import it.polimi.ingsw.utils.ResourceLoader;
+import it.polimi.ingsw.common.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

@@ -1,9 +1,9 @@
 package it.polimi.ingsw.common.payload_components.groups.updates;
 
 import com.google.gson.annotations.SerializedName;
-import it.polimi.ingsw.annotations.SerializedType;
+import it.polimi.ingsw.common.annotations.SerializedType;
 import it.polimi.ingsw.common.payload_components.groups.SpecificUpdatePayloadComponent;
-import it.polimi.ingsw.model.holder.FaithHolder;
+import it.polimi.ingsw.server.model.holder.FaithHolder;
 
 @SerializedType("change_pope_card")
 public class ChangePopeCardUpdatePayloadComponent extends SpecificUpdatePayloadComponent {

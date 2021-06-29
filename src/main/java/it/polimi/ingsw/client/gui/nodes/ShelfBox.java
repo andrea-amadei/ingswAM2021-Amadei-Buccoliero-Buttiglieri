@@ -2,10 +2,7 @@ package it.polimi.ingsw.client.gui.nodes;
 
 import it.polimi.ingsw.client.gui.beans.ResourceContainerBean;
 import it.polimi.ingsw.client.gui.beans.ResourceSelectionBean;
-import it.polimi.ingsw.utils.ResourceLoader;
 import javafx.beans.property.*;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.ColumnConstraints;
@@ -13,7 +10,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

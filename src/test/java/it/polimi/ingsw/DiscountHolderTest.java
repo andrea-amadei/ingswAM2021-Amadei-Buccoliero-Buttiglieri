@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
-import it.polimi.ingsw.model.holder.DiscountHolder;
+import it.polimi.ingsw.server.model.basetypes.ResourceTypeSingleton;
+import it.polimi.ingsw.server.model.holder.DiscountHolder;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

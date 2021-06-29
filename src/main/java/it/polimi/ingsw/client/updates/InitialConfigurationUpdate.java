@@ -2,8 +2,8 @@ package it.polimi.ingsw.client.updates;
 
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.client.ClientGameBuilder;
-import it.polimi.ingsw.client.model.ClientModel;
-import it.polimi.ingsw.exceptions.ParserException;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
+import it.polimi.ingsw.common.exceptions.ParserException;
 
 import java.util.List;
 

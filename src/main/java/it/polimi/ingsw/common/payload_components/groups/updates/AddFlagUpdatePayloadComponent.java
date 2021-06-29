@@ -1,9 +1,9 @@
 package it.polimi.ingsw.common.payload_components.groups.updates;
 
 import com.google.gson.annotations.SerializedName;
-import it.polimi.ingsw.annotations.SerializedType;
+import it.polimi.ingsw.common.annotations.SerializedType;
 import it.polimi.ingsw.common.payload_components.groups.SpecificUpdatePayloadComponent;
-import it.polimi.ingsw.parser.raw.RawLevelFlag;
+import it.polimi.ingsw.common.parser.raw.RawLevelFlag;
 
 @SerializedType("add_flag")
 public class AddFlagUpdatePayloadComponent extends SpecificUpdatePayloadComponent {

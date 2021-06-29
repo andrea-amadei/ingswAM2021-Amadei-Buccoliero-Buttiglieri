@@ -2,10 +2,10 @@ package it.polimi.ingsw;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
-import it.polimi.ingsw.gamematerials.ResourceSingle;
-import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
-import it.polimi.ingsw.model.storage.BaseStorage;
+import it.polimi.ingsw.common.exceptions.IllegalResourceTransferException;
+import it.polimi.ingsw.server.model.basetypes.ResourceSingle;
+import it.polimi.ingsw.server.model.basetypes.ResourceTypeSingleton;
+import it.polimi.ingsw.server.model.storage.BaseStorage;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

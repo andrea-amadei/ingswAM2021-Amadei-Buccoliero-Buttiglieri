@@ -1,8 +1,8 @@
 package it.polimi.ingsw.client.updates;
 
-import it.polimi.ingsw.client.model.ClientModel;
-import it.polimi.ingsw.client.model.ClientPlayer;
-import it.polimi.ingsw.model.holder.FaithHolder;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
+import it.polimi.ingsw.client.clientmodel.ClientPlayer;
+import it.polimi.ingsw.server.model.holder.FaithHolder;
 
 public class ChangePopeCardUpdate implements Update{
 

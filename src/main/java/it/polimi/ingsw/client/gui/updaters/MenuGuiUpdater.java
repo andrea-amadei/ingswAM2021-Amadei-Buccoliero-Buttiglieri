@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.gui.updaters;
 
 import it.polimi.ingsw.client.gui.nodes.MenuBox;
-import it.polimi.ingsw.client.model.PersonalData;
+import it.polimi.ingsw.client.clientmodel.PersonalData;
 import it.polimi.ingsw.client.observables.Listener;
 import javafx.application.Platform;
 

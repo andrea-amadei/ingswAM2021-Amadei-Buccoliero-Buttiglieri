@@ -1,14 +1,14 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.model.ClientFaithPath;
-import it.polimi.ingsw.exceptions.ParserException;
-import it.polimi.ingsw.model.FaithPathGroup;
-import it.polimi.ingsw.model.FaithPathTile;
-import it.polimi.ingsw.model.holder.FaithHolder;
-import it.polimi.ingsw.parser.JSONParser;
-import it.polimi.ingsw.parser.raw.RawFaithPathGroup;
-import it.polimi.ingsw.parser.raw.RawFaithPathTile;
-import it.polimi.ingsw.utils.ResourceLoader;
+import it.polimi.ingsw.client.clientmodel.ClientFaithPath;
+import it.polimi.ingsw.common.exceptions.ParserException;
+import it.polimi.ingsw.server.model.faithpath.FaithPathGroup;
+import it.polimi.ingsw.server.model.faithpath.FaithPathTile;
+import it.polimi.ingsw.server.model.holder.FaithHolder;
+import it.polimi.ingsw.common.parser.JSONParser;
+import it.polimi.ingsw.common.parser.raw.RawFaithPathGroup;
+import it.polimi.ingsw.common.parser.raw.RawFaithPathTile;
+import it.polimi.ingsw.common.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

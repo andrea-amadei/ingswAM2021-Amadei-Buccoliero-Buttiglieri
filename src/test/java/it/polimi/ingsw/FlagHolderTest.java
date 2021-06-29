@@ -1,8 +1,8 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.gamematerials.FlagColor;
-import it.polimi.ingsw.gamematerials.LevelFlag;
-import it.polimi.ingsw.model.holder.FlagHolder;
+import it.polimi.ingsw.server.model.basetypes.FlagColor;
+import it.polimi.ingsw.server.model.basetypes.LevelFlag;
+import it.polimi.ingsw.server.model.holder.FlagHolder;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

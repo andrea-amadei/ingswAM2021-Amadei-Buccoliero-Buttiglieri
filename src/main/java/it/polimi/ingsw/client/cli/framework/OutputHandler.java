@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.cli.framework;
 
-import it.polimi.ingsw.utils.BackgroundColor;
-import it.polimi.ingsw.utils.ForegroundColor;
+import it.polimi.ingsw.common.utils.BackgroundColor;
+import it.polimi.ingsw.common.utils.ForegroundColor;
 
 public class OutputHandler {
     private static final int DEFAULT_WIDTH = 180;

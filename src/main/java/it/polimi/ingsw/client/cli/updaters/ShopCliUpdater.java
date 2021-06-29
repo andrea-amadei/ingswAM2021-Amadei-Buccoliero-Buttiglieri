@@ -2,12 +2,10 @@ package it.polimi.ingsw.client.cli.updaters;
 
 import it.polimi.ingsw.client.cli.framework.VisibleElement;
 import it.polimi.ingsw.client.cli.framework.elements.*;
-import it.polimi.ingsw.client.model.ClientProduction;
-import it.polimi.ingsw.client.model.ClientShop;
+import it.polimi.ingsw.client.clientmodel.ClientShop;
 import it.polimi.ingsw.client.observables.Listener;
-import it.polimi.ingsw.model.production.Crafting;
-import it.polimi.ingsw.utils.BackgroundColor;
-import it.polimi.ingsw.utils.ForegroundColor;
+import it.polimi.ingsw.common.utils.BackgroundColor;
+import it.polimi.ingsw.common.utils.ForegroundColor;
 
 import java.util.Map;
 

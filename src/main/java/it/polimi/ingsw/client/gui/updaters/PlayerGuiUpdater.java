@@ -2,12 +2,9 @@ package it.polimi.ingsw.client.gui.updaters;
 
 import it.polimi.ingsw.client.gui.nodes.CupboardBox;
 import it.polimi.ingsw.client.gui.nodes.ScoreboardBox;
-import it.polimi.ingsw.client.model.ClientFlagHolder;
-import it.polimi.ingsw.client.model.ClientPlayer;
+import it.polimi.ingsw.client.clientmodel.ClientPlayer;
 import it.polimi.ingsw.client.observables.Listener;
 import javafx.application.Platform;
-
-import java.util.List;
 
 public class PlayerGuiUpdater implements Listener<ClientPlayer> {
 

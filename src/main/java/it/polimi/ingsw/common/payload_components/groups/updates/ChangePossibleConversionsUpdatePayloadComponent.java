@@ -1,11 +1,10 @@
 package it.polimi.ingsw.common.payload_components.groups.updates;
 
 import com.google.gson.annotations.SerializedName;
-import it.polimi.ingsw.annotations.SerializedType;
+import it.polimi.ingsw.common.annotations.SerializedType;
 import it.polimi.ingsw.common.payload_components.groups.SpecificUpdatePayloadComponent;
-import it.polimi.ingsw.gamematerials.MarbleColor;
-import it.polimi.ingsw.model.market.ConversionActuator;
-import it.polimi.ingsw.model.market.Marble;
+import it.polimi.ingsw.server.model.market.ConversionActuator;
+import it.polimi.ingsw.server.model.market.Marble;
 
 import java.util.List;
 

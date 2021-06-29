@@ -2,13 +2,8 @@ package it.polimi.ingsw.client.gui.nodes;
 
 import it.polimi.ingsw.client.gui.beans.LeaderInteractionBean;
 import it.polimi.ingsw.client.gui.events.LeaderInteractionEvent;
-import it.polimi.ingsw.client.model.ClientLeaderCards;
-import it.polimi.ingsw.gamematerials.*;
-import it.polimi.ingsw.model.leader.*;
-import it.polimi.ingsw.model.market.ConversionActuator;
-import it.polimi.ingsw.model.production.Crafting;
-import it.polimi.ingsw.model.storage.Shelf;
-import it.polimi.ingsw.parser.raw.RawLeaderCard;
+import it.polimi.ingsw.client.clientmodel.ClientLeaderCards;
+import it.polimi.ingsw.common.parser.raw.RawLeaderCard;
 import javafx.beans.property.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -16,8 +11,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.transform.Scale;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class LeaderCardSlotsBox extends HBox {

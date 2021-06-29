@@ -4,10 +4,9 @@ import it.polimi.ingsw.client.ServerHandler;
 import it.polimi.ingsw.client.gui.controllers.BoardGuiController;
 import it.polimi.ingsw.client.gui.controllers.LobbyGuiController;
 import it.polimi.ingsw.client.gui.updaters.LobbyPersonalDataGuiUpdater;
-import it.polimi.ingsw.client.gui.updaters.ShopGuiUpdater;
-import it.polimi.ingsw.client.model.ClientModel;
-import it.polimi.ingsw.utils.Pair;
-import it.polimi.ingsw.utils.ResourceLoader;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
+import it.polimi.ingsw.common.utils.Pair;
+import it.polimi.ingsw.common.utils.ResourceLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 

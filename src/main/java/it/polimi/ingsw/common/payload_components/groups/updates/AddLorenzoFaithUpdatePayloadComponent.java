@@ -1,7 +1,7 @@
 package it.polimi.ingsw.common.payload_components.groups.updates;
 
-import it.polimi.ingsw.annotations.SerializedGroup;
-import it.polimi.ingsw.annotations.SerializedType;
+import it.polimi.ingsw.common.annotations.SerializedGroup;
+import it.polimi.ingsw.common.annotations.SerializedType;
 import it.polimi.ingsw.common.payload_components.groups.UpdatePayloadComponent;
 
 @SerializedGroup("update")

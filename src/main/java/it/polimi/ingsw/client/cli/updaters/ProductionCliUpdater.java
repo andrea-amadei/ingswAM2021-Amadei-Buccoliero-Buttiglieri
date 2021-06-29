@@ -1,22 +1,15 @@
 package it.polimi.ingsw.client.cli.updaters;
 
-import it.polimi.ingsw.client.cli.framework.CliElement;
 import it.polimi.ingsw.client.cli.framework.VisibleElement;
 import it.polimi.ingsw.client.cli.framework.elements.*;
-import it.polimi.ingsw.client.model.ClientDiscountHolder;
-import it.polimi.ingsw.client.model.ClientProduction;
+import it.polimi.ingsw.client.clientmodel.ClientProduction;
 import it.polimi.ingsw.client.observables.Listener;
-import it.polimi.ingsw.model.production.Production;
-import it.polimi.ingsw.parser.raw.RawCrafting;
-import it.polimi.ingsw.utils.BackgroundColor;
-import it.polimi.ingsw.utils.ForegroundColor;
-import it.polimi.ingsw.utils.Pair;
-import it.polimi.ingsw.utils.Triplet;
+import it.polimi.ingsw.server.model.production.Production;
+import it.polimi.ingsw.common.parser.raw.RawCrafting;
+import it.polimi.ingsw.common.utils.BackgroundColor;
+import it.polimi.ingsw.common.utils.ForegroundColor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ProductionCliUpdater implements Listener<ClientProduction> {
     public static final int STARTING_ROW = 26;

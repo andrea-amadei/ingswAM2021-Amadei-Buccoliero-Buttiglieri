@@ -1,15 +1,9 @@
 package it.polimi.ingsw.client.gui;
 
-import it.polimi.ingsw.client.cli.framework.elements.Frame;
-import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
-import it.polimi.ingsw.utils.ResourceLoader;
-import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class GuiSceneManager {
     private final LinkedHashMap<String, Scene> scenes;

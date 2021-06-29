@@ -3,7 +3,7 @@ package it.polimi.ingsw.client.gui.updaters;
 import it.polimi.ingsw.client.gui.events.ChangedCurrentPlayerEvent;
 import it.polimi.ingsw.client.gui.nodes.MenuBox;
 import it.polimi.ingsw.client.gui.nodes.ScoreboardBox;
-import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
 import it.polimi.ingsw.client.observables.Listener;
 import javafx.application.Platform;
 

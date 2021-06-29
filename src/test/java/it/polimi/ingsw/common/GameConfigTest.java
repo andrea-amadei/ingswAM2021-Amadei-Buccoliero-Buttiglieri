@@ -1,7 +1,7 @@
 package it.polimi.ingsw.common;
 
-import it.polimi.ingsw.parser.JSONParser;
-import it.polimi.ingsw.utils.ResourceLoader;
+import it.polimi.ingsw.common.parser.JSONParser;
+import it.polimi.ingsw.common.utils.ResourceLoader;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

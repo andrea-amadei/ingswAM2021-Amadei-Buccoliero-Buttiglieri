@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.model.ClientProduction;
-import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
-import it.polimi.ingsw.model.production.Crafting;
-import it.polimi.ingsw.model.production.Production;
-import it.polimi.ingsw.parser.raw.RawCrafting;
+import it.polimi.ingsw.client.clientmodel.ClientProduction;
+import it.polimi.ingsw.server.model.basetypes.ResourceTypeSingleton;
+import it.polimi.ingsw.server.model.production.Crafting;
+import it.polimi.ingsw.server.model.production.Production;
+import it.polimi.ingsw.common.parser.raw.RawCrafting;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

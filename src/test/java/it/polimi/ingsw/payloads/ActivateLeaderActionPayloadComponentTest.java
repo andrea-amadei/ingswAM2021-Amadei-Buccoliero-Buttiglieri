@@ -2,9 +2,9 @@ package it.polimi.ingsw.payloads;
 
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.actions.ActivateLeaderActionPayloadComponent;
-import it.polimi.ingsw.model.actions.ActivateLeaderAction;
-import it.polimi.ingsw.parser.JSONParser;
-import it.polimi.ingsw.parser.JSONSerializer;
+import it.polimi.ingsw.server.model.actions.ActivateLeaderAction;
+import it.polimi.ingsw.common.parser.JSONParser;
+import it.polimi.ingsw.common.parser.JSONSerializer;
 import it.polimi.ingsw.server.clienthandling.ClientNetworkObject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

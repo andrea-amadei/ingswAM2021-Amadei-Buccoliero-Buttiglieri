@@ -3,7 +3,7 @@ package it.polimi.ingsw.client.gui.updaters;
 import it.polimi.ingsw.client.gui.beans.EndGameResultsBean;
 import it.polimi.ingsw.client.gui.events.EndGameEvent;
 import it.polimi.ingsw.client.gui.nodes.MarketBox;
-import it.polimi.ingsw.client.model.ClientEndGameResults;
+import it.polimi.ingsw.client.clientmodel.ClientEndGameResults;
 import it.polimi.ingsw.client.observables.Listener;
 import javafx.application.Platform;
 

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.common.payload_components.groups.setup;
 
 import com.google.gson.annotations.SerializedName;
-import it.polimi.ingsw.annotations.SerializedType;
+import it.polimi.ingsw.common.annotations.SerializedType;
 
 @SerializedType("create_match")
 public class CreateMatchSetupPayloadComponent extends SetupPayloadComponent{

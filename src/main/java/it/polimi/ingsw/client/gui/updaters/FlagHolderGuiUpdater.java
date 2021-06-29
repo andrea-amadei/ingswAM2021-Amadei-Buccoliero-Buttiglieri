@@ -1,12 +1,9 @@
 package it.polimi.ingsw.client.gui.updaters;
 
-import it.polimi.ingsw.client.gui.nodes.FaithPath;
 import it.polimi.ingsw.client.gui.nodes.ScoreboardBox;
-import it.polimi.ingsw.client.model.ClientFaithPath;
-import it.polimi.ingsw.client.model.ClientFlagHolder;
+import it.polimi.ingsw.client.clientmodel.ClientFlagHolder;
 import it.polimi.ingsw.client.observables.Listener;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 
 import java.util.List;
 

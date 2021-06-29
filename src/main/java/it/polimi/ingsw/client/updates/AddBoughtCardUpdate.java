@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.updates;
 
-import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
 
 public class AddBoughtCardUpdate implements Update{
 

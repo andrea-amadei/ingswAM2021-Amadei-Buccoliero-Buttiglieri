@@ -1,8 +1,7 @@
 package it.polimi.ingsw.client.updates;
 
-import it.polimi.ingsw.client.model.ClientModel;
-import it.polimi.ingsw.client.model.ClientPlayer;
-import it.polimi.ingsw.parser.raw.RawCraftingCard;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
+import it.polimi.ingsw.common.parser.raw.RawCraftingCard;
 
 public class ChangeShopUpdate implements Update{
 

@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client.updates;
 
-import it.polimi.ingsw.client.model.ClientBaseStorage;
-import it.polimi.ingsw.client.model.ClientModel;
-import it.polimi.ingsw.client.model.ClientPlayer;
-import it.polimi.ingsw.client.model.ClientShelf;
-import it.polimi.ingsw.parser.raw.RawStorage;
+import it.polimi.ingsw.client.clientmodel.ClientBaseStorage;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
+import it.polimi.ingsw.client.clientmodel.ClientPlayer;
+import it.polimi.ingsw.client.clientmodel.ClientShelf;
+import it.polimi.ingsw.common.parser.raw.RawStorage;
 
 import java.util.NoSuchElementException;
 

@@ -1,12 +1,10 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.exceptions.IllegalResourceTransferException;
-import it.polimi.ingsw.gamematerials.ResourceGroup;
-import it.polimi.ingsw.gamematerials.ResourceSingle;
-import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
-import it.polimi.ingsw.model.storage.BaseStorage;
-import it.polimi.ingsw.model.storage.LimitedStorage;
-import org.junit.jupiter.api.BeforeAll;
+import it.polimi.ingsw.common.exceptions.IllegalResourceTransferException;
+import it.polimi.ingsw.server.model.basetypes.ResourceGroup;
+import it.polimi.ingsw.server.model.basetypes.ResourceSingle;
+import it.polimi.ingsw.server.model.basetypes.ResourceTypeSingleton;
+import it.polimi.ingsw.server.model.storage.LimitedStorage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

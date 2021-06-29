@@ -2,16 +2,11 @@ package it.polimi.ingsw.client.gui.updaters;
 
 import it.polimi.ingsw.client.gui.dialogs.CustomDialog;
 import it.polimi.ingsw.client.gui.dialogs.ErrorDialog;
-import it.polimi.ingsw.client.gui.nodes.ScoreboardBox;
-import it.polimi.ingsw.client.model.PersonalData;
+import it.polimi.ingsw.client.clientmodel.PersonalData;
 import it.polimi.ingsw.client.observables.Listener;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PersonalDataGuiUpdater implements Listener<PersonalData> {
 

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.gui.nodes;
 
 import it.polimi.ingsw.client.gui.FXMLCachedLoaders;
-import it.polimi.ingsw.utils.ResourceLoader;
+import it.polimi.ingsw.common.utils.ResourceLoader;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

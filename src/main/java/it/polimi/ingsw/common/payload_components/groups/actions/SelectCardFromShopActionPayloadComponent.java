@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common.payload_components.groups.actions;
 
-import it.polimi.ingsw.annotations.SerializedType;
+import it.polimi.ingsw.common.annotations.SerializedType;
 
 @SerializedType("select_card_from_shop")
 public class SelectCardFromShopActionPayloadComponent extends ActionPayloadComponent{

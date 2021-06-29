@@ -1,7 +1,7 @@
 package it.polimi.ingsw.common.payload_components.groups.actions;
 
-import it.polimi.ingsw.annotations.SerializedType;
-import it.polimi.ingsw.model.production.Production;
+import it.polimi.ingsw.common.annotations.SerializedType;
+import it.polimi.ingsw.server.model.production.Production;
 
 @SerializedType("select_crafting")
 public class SelectCraftingActionPayloadComponent extends ActionPayloadComponent{

@@ -1,13 +1,13 @@
 package it.polimi.ingsw.client;
-import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
 import it.polimi.ingsw.client.updates.ChangeMarketUpdate;
-import it.polimi.ingsw.exceptions.ParserException;
-import it.polimi.ingsw.gamematerials.MarbleColor;
-import it.polimi.ingsw.model.market.Marble;
-import it.polimi.ingsw.model.market.MarbleFactory;
-import it.polimi.ingsw.model.market.Market;
-import it.polimi.ingsw.parser.raw.RawMarket;
-import it.polimi.ingsw.utils.ResourceLoader;
+import it.polimi.ingsw.common.exceptions.ParserException;
+import it.polimi.ingsw.server.model.basetypes.MarbleColor;
+import it.polimi.ingsw.server.model.market.Marble;
+import it.polimi.ingsw.server.model.market.MarbleFactory;
+import it.polimi.ingsw.server.model.market.Market;
+import it.polimi.ingsw.common.parser.raw.RawMarket;
+import it.polimi.ingsw.common.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -17,7 +17,6 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,13 +1,12 @@
 package it.polimi.ingsw.client.updates;
 
 import com.google.gson.annotations.SerializedName;
-import it.polimi.ingsw.client.model.ClientModel;
-import it.polimi.ingsw.client.model.ConversionOption;
-import it.polimi.ingsw.gamematerials.MarbleColor;
-import it.polimi.ingsw.gamematerials.ResourceSingle;
-import it.polimi.ingsw.gamematerials.ResourceType;
-import it.polimi.ingsw.model.market.ConversionActuator;
-import it.polimi.ingsw.model.market.Marble;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
+import it.polimi.ingsw.client.clientmodel.ConversionOption;
+import it.polimi.ingsw.server.model.basetypes.MarbleColor;
+import it.polimi.ingsw.server.model.basetypes.ResourceSingle;
+import it.polimi.ingsw.server.model.market.ConversionActuator;
+import it.polimi.ingsw.server.model.market.Marble;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +32,8 @@ public class ChangePossibleConversionsUpdate implements Update{
     public void apply(ClientModel client) {
         List<MarbleColor> selectedMarbleColors = selectedMarbles.stream().map(Marble::getColor).collect(Collectors.toList());
 
+
+        // GOODBYE OLD MOUNTAIN, YOU WILL BE MISSED
 
         // List<List<ConversionOption>> conversionOptions =
         //        possibleConversions.stream()

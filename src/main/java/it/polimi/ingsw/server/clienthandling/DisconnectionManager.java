@@ -3,8 +3,8 @@ package it.polimi.ingsw.server.clienthandling;
 import it.polimi.ingsw.common.payload_components.groups.PingPayloadComponent;
 import it.polimi.ingsw.server.Logger;
 import it.polimi.ingsw.server.ServerManager;
-import it.polimi.ingsw.utils.ForegroundColor;
-import it.polimi.ingsw.utils.Pair;
+import it.polimi.ingsw.common.utils.ForegroundColor;
+import it.polimi.ingsw.common.utils.Pair;
 
 import java.io.IOException;
 import java.util.ArrayList;

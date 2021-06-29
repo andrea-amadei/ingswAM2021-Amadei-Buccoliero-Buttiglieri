@@ -3,8 +3,8 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.cli.framework.CliFramework;
 import it.polimi.ingsw.client.cli.framework.elements.Frame;
 import it.polimi.ingsw.client.cli.updaters.*;
-import it.polimi.ingsw.client.model.ClientModel;
-import it.polimi.ingsw.client.model.ClientPlayer;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
+import it.polimi.ingsw.client.clientmodel.ClientPlayer;
 
 public final class CliBuilder {
     public static void createStartFrame(CliFramework framework, ClientModel model) {

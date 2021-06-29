@@ -1,15 +1,13 @@
 package it.polimi.ingsw.client.cli.updaters;
 
 import it.polimi.ingsw.client.cli.framework.elements.*;
-import it.polimi.ingsw.client.model.ClientDiscountHolder;
-import it.polimi.ingsw.client.model.ClientFaithPath;
+import it.polimi.ingsw.client.clientmodel.ClientFaithPath;
 import it.polimi.ingsw.client.observables.Listener;
-import it.polimi.ingsw.model.holder.FaithHolder;
-import it.polimi.ingsw.utils.BackgroundColor;
-import it.polimi.ingsw.utils.ForegroundColor;
+import it.polimi.ingsw.server.model.holder.FaithHolder;
+import it.polimi.ingsw.common.utils.BackgroundColor;
+import it.polimi.ingsw.common.utils.ForegroundColor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class FaithPathCliUpdater implements Listener<ClientFaithPath> {

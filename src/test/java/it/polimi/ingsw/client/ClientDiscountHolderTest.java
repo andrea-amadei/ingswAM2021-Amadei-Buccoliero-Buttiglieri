@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.model.ClientDiscountHolder;
+import it.polimi.ingsw.client.clientmodel.ClientDiscountHolder;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

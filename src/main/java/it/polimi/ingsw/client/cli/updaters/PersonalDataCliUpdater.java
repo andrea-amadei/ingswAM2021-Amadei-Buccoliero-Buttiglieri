@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client.cli.updaters;
 
 import it.polimi.ingsw.client.cli.framework.elements.*;
-import it.polimi.ingsw.client.model.PersonalData;
+import it.polimi.ingsw.client.clientmodel.PersonalData;
 import it.polimi.ingsw.client.observables.Listener;
-import it.polimi.ingsw.utils.BackgroundColor;
-import it.polimi.ingsw.utils.ForegroundColor;
+import it.polimi.ingsw.common.utils.BackgroundColor;
+import it.polimi.ingsw.common.utils.ForegroundColor;
 
 public class PersonalDataCliUpdater implements Listener<PersonalData> {
     public static final int POPUP_STARTING_ROW = 15;

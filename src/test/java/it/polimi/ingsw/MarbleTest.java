@@ -1,11 +1,11 @@
 package it.polimi.ingsw;
 
 
-import it.polimi.ingsw.gamematerials.MarbleColor;
-import it.polimi.ingsw.gamematerials.ResourceSingle;
-import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
-import it.polimi.ingsw.model.market.ConversionActuator;
-import it.polimi.ingsw.model.market.Marble;
+import it.polimi.ingsw.server.model.basetypes.MarbleColor;
+import it.polimi.ingsw.server.model.basetypes.ResourceSingle;
+import it.polimi.ingsw.server.model.basetypes.ResourceTypeSingleton;
+import it.polimi.ingsw.server.model.market.ConversionActuator;
+import it.polimi.ingsw.server.model.market.Marble;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;

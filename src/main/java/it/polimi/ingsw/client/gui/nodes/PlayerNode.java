@@ -5,25 +5,16 @@ import it.polimi.ingsw.client.gui.beans.ResourceContainerBean;
 import it.polimi.ingsw.client.gui.beans.ResourceSelectionBean;
 import it.polimi.ingsw.client.gui.events.ResourceSelectionEvent;
 import it.polimi.ingsw.client.gui.events.ResourceTransferEvent;
-import it.polimi.ingsw.client.model.ClientLeaderCards;
-import it.polimi.ingsw.gamematerials.*;
-import it.polimi.ingsw.model.leader.*;
-import it.polimi.ingsw.model.market.ConversionActuator;
-import it.polimi.ingsw.model.production.Crafting;
-import it.polimi.ingsw.model.storage.Shelf;
-import it.polimi.ingsw.parser.raw.RawLeaderCard;
-import it.polimi.ingsw.utils.Pair;
-import it.polimi.ingsw.utils.ResourceLoader;
+import it.polimi.ingsw.common.utils.Pair;
+import it.polimi.ingsw.common.utils.ResourceLoader;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.*;
-import java.util.List;
 
 public class PlayerNode extends AnchorPane {
 

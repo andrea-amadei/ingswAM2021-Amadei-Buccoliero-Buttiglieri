@@ -1,8 +1,8 @@
 package it.polimi.ingsw.client.gui.nodes;
 
 import it.polimi.ingsw.client.gui.events.SwitchPlayerEvent;
-import it.polimi.ingsw.parser.raw.RawLevelFlag;
-import it.polimi.ingsw.utils.ResourceLoader;
+import it.polimi.ingsw.common.parser.raw.RawLevelFlag;
+import it.polimi.ingsw.common.utils.ResourceLoader;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleIntegerProperty;

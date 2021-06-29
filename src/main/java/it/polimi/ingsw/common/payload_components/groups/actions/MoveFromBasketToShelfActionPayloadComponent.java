@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common.payload_components.groups.actions;
 
-import it.polimi.ingsw.annotations.SerializedType;
+import it.polimi.ingsw.common.annotations.SerializedType;
 
 @SerializedType("move_from_basket_to_shelf")
 public class MoveFromBasketToShelfActionPayloadComponent extends ActionPayloadComponent {

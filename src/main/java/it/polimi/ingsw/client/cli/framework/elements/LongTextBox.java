@@ -3,9 +3,9 @@ package it.polimi.ingsw.client.cli.framework.elements;
 import it.polimi.ingsw.client.cli.framework.MutablePositionedElement;
 import it.polimi.ingsw.client.cli.framework.OutputHandler;
 import it.polimi.ingsw.client.cli.framework.TextElement;
-import it.polimi.ingsw.exceptions.UnableToDrawElementException;
-import it.polimi.ingsw.utils.BackgroundColor;
-import it.polimi.ingsw.utils.ForegroundColor;
+import it.polimi.ingsw.common.exceptions.UnableToDrawElementException;
+import it.polimi.ingsw.common.utils.BackgroundColor;
+import it.polimi.ingsw.common.utils.ForegroundColor;
 
 import java.util.ArrayList;
 import java.util.Arrays;

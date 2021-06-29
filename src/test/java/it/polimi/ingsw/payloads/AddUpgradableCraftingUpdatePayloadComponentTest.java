@@ -2,9 +2,9 @@ package it.polimi.ingsw.payloads;
 import it.polimi.ingsw.client.network.ServerNetworkObject;
 import it.polimi.ingsw.client.updates.AddUpgradableCraftingUpdate;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
-import it.polimi.ingsw.parser.JSONParser;
-import it.polimi.ingsw.parser.JSONSerializer;
-import it.polimi.ingsw.utils.PayloadFactory;
+import it.polimi.ingsw.common.parser.JSONParser;
+import it.polimi.ingsw.common.parser.JSONSerializer;
+import it.polimi.ingsw.common.utils.PayloadFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 

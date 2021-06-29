@@ -2,11 +2,11 @@ package it.polimi.ingsw.client.gui.nodes;
 
 import it.polimi.ingsw.client.gui.beans.ResourceContainerBean;
 import it.polimi.ingsw.client.gui.beans.ResourceSelectionBean;
-import it.polimi.ingsw.exceptions.IllegalRawConversionException;
-import it.polimi.ingsw.exceptions.ParserException;
-import it.polimi.ingsw.parser.JSONParser;
-import it.polimi.ingsw.parser.JSONSerializer;
-import it.polimi.ingsw.parser.raw.RawStorage;
+import it.polimi.ingsw.common.exceptions.IllegalRawConversionException;
+import it.polimi.ingsw.common.exceptions.ParserException;
+import it.polimi.ingsw.common.parser.JSONParser;
+import it.polimi.ingsw.common.parser.JSONSerializer;
+import it.polimi.ingsw.common.parser.raw.RawStorage;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;

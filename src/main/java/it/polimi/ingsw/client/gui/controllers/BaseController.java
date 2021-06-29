@@ -2,7 +2,7 @@ package it.polimi.ingsw.client.gui.controllers;
 
 import it.polimi.ingsw.client.ServerHandler;
 import it.polimi.ingsw.client.gui.GuiSceneManager;
-import it.polimi.ingsw.client.model.ClientModel;
+import it.polimi.ingsw.client.clientmodel.ClientModel;
 
 public abstract class BaseController {
 

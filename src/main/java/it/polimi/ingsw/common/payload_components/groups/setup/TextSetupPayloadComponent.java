@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common.payload_components.groups.setup;
 
-import it.polimi.ingsw.annotations.SerializedType;
+import it.polimi.ingsw.common.annotations.SerializedType;
 
 @SerializedType("text")
 public class TextSetupPayloadComponent extends SetupPayloadComponent{

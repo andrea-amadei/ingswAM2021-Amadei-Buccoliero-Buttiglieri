@@ -2,15 +2,13 @@ package it.polimi.ingsw.client.cli.updaters;
 
 import it.polimi.ingsw.client.cli.framework.VisibleElement;
 import it.polimi.ingsw.client.cli.framework.elements.*;
-import it.polimi.ingsw.client.model.ClientLeaderCards;
-import it.polimi.ingsw.client.model.ClientShelf;
+import it.polimi.ingsw.client.clientmodel.ClientLeaderCards;
 import it.polimi.ingsw.client.observables.Listener;
-import it.polimi.ingsw.parser.raw.RawRequirement;
-import it.polimi.ingsw.parser.raw.RawSpecialAbility;
-import it.polimi.ingsw.utils.BackgroundColor;
-import it.polimi.ingsw.utils.ForegroundColor;
+import it.polimi.ingsw.common.parser.raw.RawRequirement;
+import it.polimi.ingsw.common.parser.raw.RawSpecialAbility;
+import it.polimi.ingsw.common.utils.BackgroundColor;
+import it.polimi.ingsw.common.utils.ForegroundColor;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;

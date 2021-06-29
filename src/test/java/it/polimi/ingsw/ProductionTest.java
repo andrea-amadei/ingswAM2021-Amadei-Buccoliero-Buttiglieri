@@ -2,12 +2,12 @@ package it.polimi.ingsw;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import it.polimi.ingsw.gamematerials.ResourceSingle;
-import it.polimi.ingsw.gamematerials.ResourceType;
-import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
-import it.polimi.ingsw.model.production.Crafting;
-import it.polimi.ingsw.model.production.Production;
-import it.polimi.ingsw.model.production.UpgradableCrafting;
+import it.polimi.ingsw.server.model.basetypes.ResourceSingle;
+import it.polimi.ingsw.server.model.basetypes.ResourceType;
+import it.polimi.ingsw.server.model.basetypes.ResourceTypeSingleton;
+import it.polimi.ingsw.server.model.production.Crafting;
+import it.polimi.ingsw.server.model.production.Production;
+import it.polimi.ingsw.server.model.production.UpgradableCrafting;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

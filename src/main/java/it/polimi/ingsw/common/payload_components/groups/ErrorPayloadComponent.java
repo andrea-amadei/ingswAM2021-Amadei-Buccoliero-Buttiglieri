@@ -1,8 +1,8 @@
 package it.polimi.ingsw.common.payload_components.groups;
 
 import com.google.gson.annotations.SerializedName;
-import it.polimi.ingsw.annotations.SerializedGroup;
-import it.polimi.ingsw.annotations.SerializedType;
+import it.polimi.ingsw.common.annotations.SerializedGroup;
+import it.polimi.ingsw.common.annotations.SerializedType;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 
 @SerializedGroup("update")

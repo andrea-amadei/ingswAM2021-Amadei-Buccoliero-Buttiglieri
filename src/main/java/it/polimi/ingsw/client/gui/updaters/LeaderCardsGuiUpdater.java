@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.gui.updaters;
 
 import it.polimi.ingsw.client.gui.nodes.LeaderCardSlotsBox;
-import it.polimi.ingsw.client.model.ClientLeaderCards;
+import it.polimi.ingsw.client.clientmodel.ClientLeaderCards;
 import it.polimi.ingsw.client.observables.Listener;
 import javafx.application.Platform;
 

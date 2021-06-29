@@ -2,10 +2,10 @@ package it.polimi.ingsw.client.gui.nodes;
 
 import it.polimi.ingsw.client.gui.beans.ShopSelectionBean;
 import it.polimi.ingsw.client.gui.events.ShopCardSelectionEvent;
-import it.polimi.ingsw.exceptions.IllegalRawConversionException;
-import it.polimi.ingsw.exceptions.ParserException;
-import it.polimi.ingsw.parser.JSONParser;
-import it.polimi.ingsw.parser.raw.RawCraftingCard;
+import it.polimi.ingsw.common.exceptions.IllegalRawConversionException;
+import it.polimi.ingsw.common.exceptions.ParserException;
+import it.polimi.ingsw.common.parser.JSONParser;
+import it.polimi.ingsw.common.parser.raw.RawCraftingCard;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

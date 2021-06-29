@@ -1,8 +1,8 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.common.ActionQueue;
-import it.polimi.ingsw.model.actions.Action;
-import it.polimi.ingsw.model.actions.BackAction;
+import it.polimi.ingsw.server.model.actions.Action;
+import it.polimi.ingsw.server.model.actions.BackAction;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

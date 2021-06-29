@@ -2,9 +2,8 @@ package it.polimi.ingsw;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import it.polimi.ingsw.exceptions.AlreadyReachedPopeCardException;
-import it.polimi.ingsw.exceptions.UsedUnreachedPopeCardException;
-import it.polimi.ingsw.model.holder.FaithHolder;
+import it.polimi.ingsw.common.exceptions.UsedUnreachedPopeCardException;
+import it.polimi.ingsw.server.model.holder.FaithHolder;
 import org.junit.jupiter.api.Test;
 
 public class FaithHolderTest {

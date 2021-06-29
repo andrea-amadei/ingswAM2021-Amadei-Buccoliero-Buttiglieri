@@ -2,13 +2,13 @@ package it.polimi.ingsw;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.ingsw.gamematerials.ResourceGroup;
-import it.polimi.ingsw.gamematerials.ResourceSingle;
-import it.polimi.ingsw.gamematerials.ResourceType;
-import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
-import it.polimi.ingsw.parser.adapters.ResourceGroupAdapter;
-import it.polimi.ingsw.parser.adapters.ResourceSingleAdapter;
-import it.polimi.ingsw.parser.adapters.ResourceTypeDeserializer;
+import it.polimi.ingsw.server.model.basetypes.ResourceGroup;
+import it.polimi.ingsw.server.model.basetypes.ResourceSingle;
+import it.polimi.ingsw.server.model.basetypes.ResourceType;
+import it.polimi.ingsw.server.model.basetypes.ResourceTypeSingleton;
+import it.polimi.ingsw.common.parser.adapters.ResourceGroupAdapter;
+import it.polimi.ingsw.common.parser.adapters.ResourceSingleAdapter;
+import it.polimi.ingsw.common.parser.adapters.ResourceTypeDeserializer;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

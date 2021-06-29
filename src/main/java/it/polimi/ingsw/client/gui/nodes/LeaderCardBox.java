@@ -1,11 +1,10 @@
 package it.polimi.ingsw.client.gui.nodes;
 
-import it.polimi.ingsw.parser.raw.RawLeaderCard;
-import it.polimi.ingsw.parser.raw.RawRequirement;
-import it.polimi.ingsw.parser.raw.RawSpecialAbility;
-import it.polimi.ingsw.parser.raw.RawStorage;
+import it.polimi.ingsw.common.parser.raw.RawLeaderCard;
+import it.polimi.ingsw.common.parser.raw.RawRequirement;
+import it.polimi.ingsw.common.parser.raw.RawSpecialAbility;
+import it.polimi.ingsw.common.parser.raw.RawStorage;
 import it.polimi.ingsw.server.Logger;
-import it.polimi.ingsw.utils.Pair;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;

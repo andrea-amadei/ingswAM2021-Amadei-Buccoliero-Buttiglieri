@@ -1,17 +1,16 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.model.ClientMarket;
-import it.polimi.ingsw.gamematerials.MarbleColor;
-import it.polimi.ingsw.model.market.Marble;
-import it.polimi.ingsw.model.market.MarbleFactory;
-import it.polimi.ingsw.model.market.Market;
-import it.polimi.ingsw.parser.raw.RawMarket;
+import it.polimi.ingsw.client.clientmodel.ClientMarket;
+import it.polimi.ingsw.server.model.basetypes.MarbleColor;
+import it.polimi.ingsw.server.model.market.Marble;
+import it.polimi.ingsw.server.model.market.MarbleFactory;
+import it.polimi.ingsw.server.model.market.Market;
+import it.polimi.ingsw.common.parser.raw.RawMarket;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 

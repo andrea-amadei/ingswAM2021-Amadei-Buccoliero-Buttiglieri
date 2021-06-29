@@ -4,7 +4,7 @@ import it.polimi.ingsw.client.cli.framework.CliRenderer;
 import it.polimi.ingsw.client.cli.framework.MutableElementGroup;
 import it.polimi.ingsw.client.cli.framework.OutputHandler;
 import it.polimi.ingsw.client.cli.framework.VisibleElement;
-import it.polimi.ingsw.exceptions.UnableToDrawElementException;
+import it.polimi.ingsw.common.exceptions.UnableToDrawElementException;
 
 import java.util.Comparator;
 import java.util.LinkedHashMap;

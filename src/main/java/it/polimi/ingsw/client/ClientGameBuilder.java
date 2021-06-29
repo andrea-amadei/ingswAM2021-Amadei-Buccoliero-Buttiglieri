@@ -1,16 +1,16 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.model.*;
+import it.polimi.ingsw.client.clientmodel.*;
 import it.polimi.ingsw.common.GameConfig;
-import it.polimi.ingsw.exceptions.ParserException;
-import it.polimi.ingsw.gamematerials.FlagColor;
-import it.polimi.ingsw.model.FaithPath;
-import it.polimi.ingsw.model.FaithPathGroup;
-import it.polimi.ingsw.model.FaithPathTile;
-import it.polimi.ingsw.model.leader.LeaderCard;
-import it.polimi.ingsw.model.production.CraftingCard;
-import it.polimi.ingsw.parser.JSONParser;
-import it.polimi.ingsw.parser.raw.*;
+import it.polimi.ingsw.common.exceptions.ParserException;
+import it.polimi.ingsw.server.model.basetypes.FlagColor;
+import it.polimi.ingsw.server.model.faithpath.FaithPath;
+import it.polimi.ingsw.server.model.faithpath.FaithPathGroup;
+import it.polimi.ingsw.server.model.faithpath.FaithPathTile;
+import it.polimi.ingsw.server.model.leader.LeaderCard;
+import it.polimi.ingsw.server.model.production.CraftingCard;
+import it.polimi.ingsw.common.parser.JSONParser;
+import it.polimi.ingsw.common.parser.raw.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

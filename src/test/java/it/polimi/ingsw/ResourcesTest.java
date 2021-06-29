@@ -2,10 +2,10 @@ package it.polimi.ingsw;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import it.polimi.ingsw.gamematerials.ResourceGroup;
-import it.polimi.ingsw.gamematerials.ResourceSingle;
-import it.polimi.ingsw.gamematerials.ResourceType;
-import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
+import it.polimi.ingsw.server.model.basetypes.ResourceGroup;
+import it.polimi.ingsw.server.model.basetypes.ResourceSingle;
+import it.polimi.ingsw.server.model.basetypes.ResourceType;
+import it.polimi.ingsw.server.model.basetypes.ResourceTypeSingleton;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

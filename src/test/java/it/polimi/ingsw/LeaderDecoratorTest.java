@@ -1,10 +1,10 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.exceptions.DuplicatedShelfException;
-import it.polimi.ingsw.exceptions.IllegalCupboardException;
-import it.polimi.ingsw.gamematerials.ResourceSingle;
-import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
-import it.polimi.ingsw.model.storage.*;
+import it.polimi.ingsw.common.exceptions.DuplicatedShelfException;
+import it.polimi.ingsw.common.exceptions.IllegalCupboardException;
+import it.polimi.ingsw.server.model.basetypes.ResourceSingle;
+import it.polimi.ingsw.server.model.basetypes.ResourceTypeSingleton;
+import it.polimi.ingsw.server.model.storage.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

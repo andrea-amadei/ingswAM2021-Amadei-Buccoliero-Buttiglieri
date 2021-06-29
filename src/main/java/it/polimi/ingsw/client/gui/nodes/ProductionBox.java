@@ -1,32 +1,26 @@
 package it.polimi.ingsw.client.gui.nodes;
 
-import it.polimi.ingsw.client.gui.FXMLCachedLoaders;
 import it.polimi.ingsw.client.gui.beans.CraftingSelectionBean;
 import it.polimi.ingsw.client.gui.beans.OutputSelectionBean;
 import it.polimi.ingsw.client.gui.events.CraftingSelectionEvent;
 import it.polimi.ingsw.client.gui.events.OutputSelectionEvent;
-import it.polimi.ingsw.client.model.ClientProduction;
-import it.polimi.ingsw.model.production.Production;
-import it.polimi.ingsw.parser.raw.RawCrafting;
-import it.polimi.ingsw.utils.Pair;
-import it.polimi.ingsw.utils.ResourceLoader;
+import it.polimi.ingsw.client.clientmodel.ClientProduction;
+import it.polimi.ingsw.server.model.production.Production;
+import it.polimi.ingsw.common.parser.raw.RawCrafting;
+import it.polimi.ingsw.common.utils.Pair;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Stack;
 
 public class ProductionBox extends GridPane {
 

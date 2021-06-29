@@ -1,9 +1,9 @@
 package it.polimi.ingsw.common.payload_components.groups.updates;
 
 import com.google.gson.annotations.SerializedName;
-import it.polimi.ingsw.annotations.SerializedType;
+import it.polimi.ingsw.common.annotations.SerializedType;
 import it.polimi.ingsw.common.payload_components.groups.SpecificUpdatePayloadComponent;
-import it.polimi.ingsw.parser.raw.RawStorage;
+import it.polimi.ingsw.common.parser.raw.RawStorage;
 
 @SerializedType("change_resources")
 public class ChangeResourcesUpdatePayloadComponent extends SpecificUpdatePayloadComponent {

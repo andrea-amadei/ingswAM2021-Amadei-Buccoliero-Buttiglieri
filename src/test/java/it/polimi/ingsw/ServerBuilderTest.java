@@ -1,9 +1,9 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.exceptions.ParserException;
-import it.polimi.ingsw.model.GameModel;
+import it.polimi.ingsw.common.exceptions.ParserException;
+import it.polimi.ingsw.server.model.global.GameModel;
 import it.polimi.ingsw.server.ServerBuilder;
-import it.polimi.ingsw.utils.ResourceLoader;
+import it.polimi.ingsw.common.utils.ResourceLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

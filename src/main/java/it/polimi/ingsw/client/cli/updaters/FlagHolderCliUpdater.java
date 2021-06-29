@@ -1,15 +1,13 @@
 package it.polimi.ingsw.client.cli.updaters;
 
 import it.polimi.ingsw.client.cli.framework.elements.*;
-import it.polimi.ingsw.client.model.ClientDiscountHolder;
-import it.polimi.ingsw.client.model.ClientFlagHolder;
+import it.polimi.ingsw.client.clientmodel.ClientFlagHolder;
 import it.polimi.ingsw.client.observables.Listener;
-import it.polimi.ingsw.gamematerials.FlagColor;
-import it.polimi.ingsw.parser.raw.RawLevelFlag;
-import it.polimi.ingsw.utils.BackgroundColor;
-import it.polimi.ingsw.utils.ForegroundColor;
+import it.polimi.ingsw.server.model.basetypes.FlagColor;
+import it.polimi.ingsw.common.parser.raw.RawLevelFlag;
+import it.polimi.ingsw.common.utils.BackgroundColor;
+import it.polimi.ingsw.common.utils.ForegroundColor;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 

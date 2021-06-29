@@ -1,19 +1,19 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
-import it.polimi.ingsw.exceptions.ParserException;
-import it.polimi.ingsw.gamematerials.ResourceSingle;
-import it.polimi.ingsw.gamematerials.ResourceTypeSingleton;
-import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.actions.*;
-import it.polimi.ingsw.model.fsm.GameContext;
-import it.polimi.ingsw.model.fsm.State;
-import it.polimi.ingsw.model.fsm.states.MenuState;
-import it.polimi.ingsw.model.fsm.states.PreliminaryPickState;
-import it.polimi.ingsw.model.fsm.states.PreliminaryTidyState;
+import it.polimi.ingsw.common.exceptions.FSMTransitionFailedException;
+import it.polimi.ingsw.common.exceptions.ParserException;
+import it.polimi.ingsw.server.model.basetypes.ResourceSingle;
+import it.polimi.ingsw.server.model.basetypes.ResourceTypeSingleton;
+import it.polimi.ingsw.server.model.global.GameModel;
+import it.polimi.ingsw.server.model.global.Player;
+import it.polimi.ingsw.server.model.actions.*;
+import it.polimi.ingsw.server.model.fsm.GameContext;
+import it.polimi.ingsw.server.model.fsm.State;
+import it.polimi.ingsw.server.model.fsm.states.MenuState;
+import it.polimi.ingsw.server.model.fsm.states.PreliminaryPickState;
+import it.polimi.ingsw.server.model.fsm.states.PreliminaryTidyState;
 import it.polimi.ingsw.server.ServerBuilder;
-import it.polimi.ingsw.utils.ResourceLoader;
+import it.polimi.ingsw.common.utils.ResourceLoader;
 import org.junit.jupiter.api.*;
 
 import java.util.Arrays;
