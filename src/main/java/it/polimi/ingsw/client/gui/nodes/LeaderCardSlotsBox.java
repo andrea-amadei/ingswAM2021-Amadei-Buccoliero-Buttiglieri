@@ -30,7 +30,6 @@ public class LeaderCardSlotsBox extends HBox {
 
     private List<LeaderCardBox> leaderBoxes;
 
-    //TODO: remove dumb stuff
     public LeaderCardSlotsBox(){
         rawLeaderCards = new SimpleObjectProperty<>(this, "rawLeaderCards", new ArrayList<>());
         coveredCards = new SimpleIntegerProperty(this, "coveredCard", 0);

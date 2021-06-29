@@ -78,7 +78,6 @@ public class CraftingResourceSelectionState extends State {
 
         List<PayloadComponent> payload = new ArrayList<>();
 
-        //TODO: add the reset undecided outputs
 
         //reset crafting selection
         payload.add(PayloadFactory.unselect(getGameContext().getCurrentPlayer().getUsername(), "production"));

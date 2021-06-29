@@ -35,7 +35,6 @@ public class InitialConfigurationUpdate implements Update{
     @Override
     public void apply(ClientModel client) {
 
-        //TODO: is it ok to throw an exception here?
         try {
             ClientGameBuilder.buildGame(client, usernames, configJson, craftingJson, faithJson, leadersJson);
         } catch (ParserException e) {

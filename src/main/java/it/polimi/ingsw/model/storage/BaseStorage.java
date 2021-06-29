@@ -152,43 +152,4 @@ public class BaseStorage extends ResourceContainer {
         Logger.log(toString());
     }
 
-    //TODO: make equals work
-    /*
-    @Override
-    public boolean equals(Object o) {
-        // if they are the same return true
-        if (this == o)
-            return true;
-
-        // if one is null or they are different objects return false
-        if (o == null || getClass() != o.getClass())
-            return false;
-
-        BaseStorage that = (BaseStorage) o;
-
-        // if the size is different returns false
-        if(this.getAllResources().size() != that.getAllResources().size())
-            return false;
-
-        for(ResourceSingle i : this.resources.keySet()) {
-            // if the key exists but the amount is different returns false
-            if (that.resources.containsKey(i)) {
-                if (this.resources.get(i).intValue() != that.resources.get(i).intValue())
-                    return false;
-
-            // if the key doesn't exists return false
-            } else {
-                return false;
-            }
-        }
-
-        // finally returns true
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(resources);
-    }
-*/
 }

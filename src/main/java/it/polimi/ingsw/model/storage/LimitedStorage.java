@@ -47,7 +47,6 @@ public class LimitedStorage extends ResourceContainer {
         if(groupResourceLimit == null)
             groupResourceLimit = new HashMap<>();
 
-        //TODO: to be removed in future
         if(groupResourceLimit.size() > 1)
             throw new UnsupportedOperationException("Only one group limit is currently allowed");
 
@@ -95,7 +94,6 @@ public class LimitedStorage extends ResourceContainer {
         if(groupResourceLimit == null)
             groupResourceLimit = new HashMap<>();
 
-        //TODO: to be removed in future
         if(groupResourceLimit.size() > 1)
             throw new UnsupportedOperationException("Only one group limit is currently expected");
 

@@ -221,8 +221,6 @@ public class FaithPath implements InterruptLauncher {
             lorenzoFaith += amount;
             payloadComponents.add(new AddLorenzoFaithUpdatePayloadComponent(amount));
 
-            //TODO: remove this, debug only
-            payloadComponents.add(new InfoPayloadComponent("DEBUG: Added " + amount + " faith to Lorenzo"));
 
             if(newPopeCheckOrders.size() > 0)
                 launchInterrupt(new PopeCheckAction(newPopeCheckOrders), ActionQueue.Priority.SERVER_ACTION.ordinal());

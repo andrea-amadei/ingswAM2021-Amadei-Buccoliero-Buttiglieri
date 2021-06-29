@@ -87,7 +87,6 @@ public class SelectCraftingOutputAction implements Action {
             Logger.log("Logic failed at SelectCraftingOutputAction: after selecting conversion, there are still undecided outputs!",
                     Logger.Severity.ERROR, ForegroundColor.RED);
 
-        //TODO: we may need to create a payload to communicate the selected output to the player.
         return new ArrayList<>();
     }
 

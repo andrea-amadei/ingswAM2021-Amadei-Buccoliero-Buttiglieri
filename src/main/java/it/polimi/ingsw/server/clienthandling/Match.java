@@ -31,9 +31,6 @@ public class Match {
 
     private MatchState currentState;
 
-    //TODO: add json files sent by the host client
-
-
 
     public Match(String gameName, Pair<String, ClientHandler> host, int matchSize, boolean isSinglePlayer, ServerManager serverManager){
 
@@ -77,7 +74,6 @@ public class Match {
         }
     }
 
-    //TODO: check the eventuality in which the player disconnects when the match is ended
 
     /**
      * If the match is in Lobby state, then the pair (username, clientHandler) is removed from the clientHub.
@@ -109,7 +105,6 @@ public class Match {
 
         currentState = MatchState.PLAYING;
 
-        //TODO: we will change how these files are passed (also exceptions)
         String config;
         String crafting;
         String faith;

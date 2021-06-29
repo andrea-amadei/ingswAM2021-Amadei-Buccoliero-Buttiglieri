@@ -210,12 +210,6 @@ public class CraftingStateTest {
         assertThrows(FSMTransitionFailedException.class, ()-> currentState.handleAction(new ConfirmAction("Ernestino")));
     }
 
-    //TODO: test after testing activate production
-    @Test
-    public void activateProductionTriggersPopeCheck(){
-
-    }
-
     //method "handleAction" successfully activates production if all requirements are met
     @Test
     public void successfulActivateProduction(){

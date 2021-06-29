@@ -62,7 +62,6 @@ public class DisconnectionManager extends Thread{
                     try {
                         connectedClients.get(i).getSecond().disconnect();
                     } catch (IOException e) {
-                        //TODO: think how to handle this exception
                         Logger.log("The client \"" + connectedClients.get(i).getFirst() + "\" launched an IO exception when ended", Logger.Severity.WARNING,
                                 ForegroundColor.YELLOW);
                     } catch(RuntimeException e1){
@@ -76,7 +75,6 @@ public class DisconnectionManager extends Thread{
                     try{
                         unregisteredHandlers.get(i).disconnect();
                     } catch (IOException e) {
-                        //TODO: think how to handle this exception
                         Logger.log("The client \"" + connectedClients.get(i).getFirst() + "\" launched an IO exception when ended");
                     }catch(RuntimeException e1){
                         Logger.log("The client \"" + connectedClients.get(i).getFirst() + "\" was otherwise disconnected from the server");

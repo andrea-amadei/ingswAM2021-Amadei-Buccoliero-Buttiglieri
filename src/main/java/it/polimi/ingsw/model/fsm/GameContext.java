@@ -49,7 +49,6 @@ public class GameContext {
         hasLorenzoWon = false;
         alreadyPickedPlayers = new HashSet<>();
 
-        //TODO: probably we will change these paths and is it ok to throw an exception here?
         configJson = ResourceLoader.loadFile("cfg/config.json");
         craftingJson = ResourceLoader.loadFile("cfg/crafting.json");
         faithJson = ResourceLoader.loadFile("cfg/faith.json");
