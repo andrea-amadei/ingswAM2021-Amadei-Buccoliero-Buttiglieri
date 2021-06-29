@@ -11,16 +11,30 @@ import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.io.IOException;
+import java.util.List;
+
 public class ClientGuiMain extends Application {
 
     public static void main(String[] args) {
-        launch();
+        /*try {
+            if (args.length == 2){
+                Integer.parseInt(args[1]);
+            }else if(args.length != 0){
+                System.out.println("Wrong parameters format");
+                return;
+            }
+        }catch(RuntimeException e){
+            System.out.println("Wrong parameters format");
+            return;
+        }*/
+
+        launch(args);
     }
 
     public void start(Stage stage) throws Exception {
         stage.setFullScreen(true);
         stage.setFullScreenExitHint("");
-        // TODO: KeyCombination.NO_MATCH
         stage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
 
         stage.setOnCloseRequest(ignored -> {
@@ -30,11 +44,37 @@ public class ClientGuiMain extends Application {
 
         GuiSceneManager sceneManager = new GuiSceneManager(stage);
 
-        // TODO: options to connect with ip and port
+        String host;
+        int port;
+        List<String> arguments = getParameters().getRaw();
+        try {
+            if (arguments.size() == 0) {
+                host = "localhost";
+                port = 6789;
+            } else if (arguments.size() == 2){
+                host = arguments.get(0);
+                port = Integer.parseInt(arguments.get(1));
+            }else{
+                System.out.println("Wrong parameters format");
+                Platform.exit();
+                return;
+            }
+        }catch(RuntimeException e){
+            System.out.println("Wrong parameters format");
+            Platform.exit();
+            return;
+        }
 
         ClientModel model = new ClientModel();
 
-        ServerHandler serverHandler = new ServerHandler("localhost", 6789, model, null);
+        ServerHandler serverHandler;
+        try{
+            serverHandler = new ServerHandler(host, port, model, null);
+        }catch(IOException e){
+            System.out.println("Cannot connect to the server");
+            Platform.exit();
+            return;
+        }
         serverHandler.start();
 
         GuiBuilder.createStartScene(sceneManager, model, serverHandler);

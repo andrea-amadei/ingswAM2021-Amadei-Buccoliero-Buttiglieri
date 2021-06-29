@@ -28,23 +28,23 @@ public class ServerHandler extends Thread{
     private boolean connected;
     private boolean pingReceived;
 
-    public ServerHandler(String host, int port, ClientModel client, CliFramework framework){
+    public ServerHandler(String host, int port, ClientModel client, CliFramework framework) throws IOException {
         try {
             serverSocket = new Socket(host, port);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IOException("Cannot connect to the server");
         }
 
         try {
             out = new PrintWriter(serverSocket.getOutputStream(), true);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IOException("Cannot create the output stream");
         }
 
         try {
             in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IOException("Cannot create the input stream");
         }
 
         this.connected = true;

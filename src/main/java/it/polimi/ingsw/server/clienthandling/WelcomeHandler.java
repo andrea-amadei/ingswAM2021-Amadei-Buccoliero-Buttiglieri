@@ -12,11 +12,11 @@ public class WelcomeHandler {
     private final ServerManager serverManager;
     private DisconnectionManager disconnectionManager;
 
-    public WelcomeHandler(int port){
+    public WelcomeHandler(int port) throws IOException {
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IOException("The server cannot start. Check if there is another server bound to the same port");
         }
 
         serverManager = new ServerManager();

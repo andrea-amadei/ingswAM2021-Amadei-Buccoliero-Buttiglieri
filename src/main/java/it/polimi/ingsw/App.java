@@ -41,6 +41,8 @@ import java.util.stream.Collectors;
 public class App {
 
     public static void main(String[] args) throws UnableToDrawElementException {
+
+
         if(args.length == 0)
             ClientMain.main(args);
         else if(args[0].equalsIgnoreCase("server"))
@@ -50,9 +52,11 @@ public class App {
         else if(args[0].equalsIgnoreCase("configurator"))
             ConfiguratorMain.main(Arrays.copyOfRange(args, 1, args.length));
         else
-            System.out.println("Unexpected argument " + args[0] + ". Please use 'client' or 'server'");
+            System.out.println("Unexpected argument " + args[0] + ". Please use 'client', 'server' or 'configurator'");
+
     }
 
+    //TODO: delete all these tests
     public static void gameTest() throws ParserException, UnableToDrawElementException {
         ClientModel model = new ClientModel();
         CliFramework framework = new CliFramework(true);
