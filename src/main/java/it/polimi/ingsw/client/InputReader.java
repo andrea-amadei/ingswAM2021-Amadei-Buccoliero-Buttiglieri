@@ -111,7 +111,9 @@ public class InputReader extends Thread{
                     parseOkayCommand(logicalInput);
                     break;
                 case "exit":
-                    end = true;
+                    if(serverHandler.getClient().getEndGameResults().isGameCrashed() || serverHandler.getClient().getEndGameResults().isGameEnded()) {
+                        end = true;
+                    }
                     break;
                 default:
                     break;
@@ -367,16 +369,18 @@ public class InputReader extends Thread{
     }
 
     public void parseStartCommand(List<String> logicalInput) {
-        try {
-            CliBuilder.createGameFrames(framework, serverHandler.getClient());
+        if(serverHandler.getClient().getPersonalData().isGameStarted()) {
+            try {
+                CliBuilder.createGameFrames(framework, serverHandler.getClient());
 
-            List<String> players = serverHandler.getClient().getPlayers().stream().map(ClientPlayer::getUsername).collect(Collectors.toList());
-            int clientIndex = players.indexOf(serverHandler.getUsername());
-            framework.setActiveFrame("player_" + (clientIndex + 1));
-            framework.renderActiveFrame();
-        }catch(RuntimeException | UnableToDrawElementException e){
-            System.out.println("Command not valid ");
-            e.printStackTrace();
+                List<String> players = serverHandler.getClient().getPlayers().stream().map(ClientPlayer::getUsername).collect(Collectors.toList());
+                int clientIndex = players.indexOf(serverHandler.getUsername());
+                framework.setActiveFrame("player_" + (clientIndex + 1));
+                framework.renderActiveFrame();
+            } catch (RuntimeException | UnableToDrawElementException e) {
+                System.out.println("Command not valid ");
+                e.printStackTrace();
+            }
         }
     }
 
