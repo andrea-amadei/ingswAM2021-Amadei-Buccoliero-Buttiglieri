@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<TabPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.configurator.ConfiguratorController">
+    <Tab closable="false" text="Faith Path">
+        <AnchorPane fx:id="faithPathPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="300.0" prefWidth="450.0">
+                <VBox fx:id="groupsVBox" prefWidth="450.0" spacing="30">
+                    <padding>
+                        <Insets top="10.0" />
+                    </padding>
+                </VBox>
+            </ScrollPane>
+            <ScrollPane hbarPolicy="NEVER" layoutY="370.0" prefHeight="322.0" prefWidth="1280.0">
+                <VBox fx:id="tilesVBox" prefHeight="90.0" prefWidth="1280.0" spacing="30">
+                    <padding>
+                        <Insets top="10.0" />
+                    </padding>
+                </VBox>
+            </ScrollPane>
+        <Button layoutX="1200.0" layoutY="320.0" onAction="#generate" text="Generate" />
+        <Button layoutX="1155.0" layoutY="320.0" onAction="#test" text="Test" />
+        </AnchorPane>
+    </Tab>
+</TabPane>
