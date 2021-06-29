@@ -20,8 +20,8 @@ public class OutputSelectionDialog extends CustomDialog{
 
         //OutputSelector
         OutputSelectorBox outputBox = new OutputSelectorBox(bean.getAmount());
-        AnchorPane.setLeftAnchor(outputBox, 97d);
-        AnchorPane.setTopAnchor(outputBox, 194d);
+        AnchorPane.setLeftAnchor(outputBox, 194d);
+        AnchorPane.setTopAnchor(outputBox, 97d);
 
         //confirm button
         Button confirmBtn = new Button("Confirm");

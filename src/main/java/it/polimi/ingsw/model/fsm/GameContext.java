@@ -143,10 +143,18 @@ public class GameContext {
         return isHardEndTriggered;
     }
 
+    /**
+     * Adds a player p to the set of players who already picked.
+     * @param p the player to add to the set of players who already picked.
+     */
     public void addPlayerWhoPicked(Player p){
         alreadyPickedPlayers.add(p);
     }
 
+    /**
+     * Returns the set of players who already picked.
+     * @return the set of players who already picked.
+     */
     public Set<Player> getAlreadyPickedPlayers() {
         return alreadyPickedPlayers;
     }
@@ -158,38 +166,73 @@ public class GameContext {
         isHardEndTriggered = true;
     }
 
+    /**
+     * Sets gameEnded to true
+     */
     public void setGameEnded(){
         gameEnded = true;
     }
 
+    /**
+     * Returns true if the game is ended, false otherwise
+     * @return true if the game is ended, false otherwise
+     */
     public boolean isGameEnded(){
         return gameEnded;
     }
 
+    /**
+     * Sets parameter hasLorenzoWon to true if Lorenzo has won the match, false otherwise
+     * @param hasLorenzoWon the parameter to set
+     */
     public void setLorenzoWon(boolean hasLorenzoWon){
         this.hasLorenzoWon = hasLorenzoWon;
     }
 
+    /**
+     * Returns true if Lorenzo has won, false otherwise
+     * @return true if Lorenzo has won, false otherwise
+     */
     public boolean hasLorenzoWon(){
         return hasLorenzoWon;
     }
 
+    /**
+     * Returns the JSON file of the game configuration
+     * @return the JSON file of the game configuration
+     */
     public String getConfigJson() {
         return configJson;
     }
 
+    /**
+     * Returns the JSON file of the crafting cards
+     * @return the JSON file of the crafting cards
+     */
     public String getCraftingJson() {
         return craftingJson;
     }
 
+    /**
+     * Returns the JSON file of the faith path
+     * @return the JSON file of the faith path
+     */
     public String getFaithJson() {
         return faithJson;
     }
 
+    /**
+     * Returns the JSON file of the leader cards
+     * @return the JSON file of the leader cards
+     */
     public String getLeadersJson() {
         return leadersJson;
     }
 
+    /**
+     * Returns the game configuration
+     * @return the game configuration
+     */
     public GameConfig getGameConfig() {
         return gameConfig;
     }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.exceptions.UnableToDrawElementException;
 import it.polimi.ingsw.server.Logger;
 
 import java.io.IOException;
@@ -29,6 +30,15 @@ public class ClientDisconnectionManager extends Thread{
                     serverHandler.disconnect();
                 } catch (IOException e) {
                     Logger.log("IOException in ClientDisconnectionManager while disconnecting the client");
+                }finally{
+                    serverHandler.getClient().getEndGameResults().crashGame();
+                    if(serverHandler.getFramework() != null) {
+                        try {
+                            serverHandler.getFramework().renderActiveFrame();
+                        } catch (UnableToDrawElementException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
 
                 break;

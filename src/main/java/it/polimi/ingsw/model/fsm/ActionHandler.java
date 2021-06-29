@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.actions.*;
 
 import java.util.List;
 
+/**
+ * This interface defines all the overloads of the handleAction method for each specific action.
+ */
 public interface ActionHandler {
     /**
      * It handles the specific action required. By default it throws an FSMTransitionFailedException.

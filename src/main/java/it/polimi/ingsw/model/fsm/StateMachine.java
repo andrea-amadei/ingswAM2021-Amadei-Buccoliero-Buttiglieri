@@ -2,28 +2,42 @@ package it.polimi.ingsw.model.fsm;
 
 import it.polimi.ingsw.common.ActionQueue;
 import it.polimi.ingsw.common.Message;
-import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.ErrorPayloadComponent;
-import it.polimi.ingsw.common.payload_components.groups.InfoPayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
 import it.polimi.ingsw.model.actions.Action;
 
 import java.util.*;
 
+/**
+ * It is a state machine. It manages the flow of the game, preventing the player from making moves that would not be
+ * valid within the context of the game.
+ * It implements interface InterruptListener, hence managing the received interrupts.
+ * It handles the entire process of executing actions and sending messages to the clients.
+ */
 public class StateMachine implements InterruptListener{
 
     private final ActionQueue actionQueue;
     private final GameContext gameContext;
     private State currentState;
 
+    /**
+     * Creates a state machine, setting the current state to null.
+     * @param actionQueue the action que.
+     * @param gameContext the context of the game.
+     */
     public StateMachine(ActionQueue actionQueue, GameContext gameContext){
         this.actionQueue = actionQueue;
         this.gameContext = gameContext;
 
-        //TODO: set to SetupState at first and connect the listener
         currentState = null;
     }
 
+    /**
+     * Creates a state machine.
+     * @param actionQueue the action que.
+     * @param gameContext the context of the game.
+     * @param initialState the initial state.
+     */
     public StateMachine(ActionQueue actionQueue, GameContext gameContext, State initialState){
         this(actionQueue, gameContext);
         this.currentState = initialState;
@@ -90,6 +104,10 @@ public class StateMachine implements InterruptListener{
         actionQueue.addAction(interrupt, priority);
     }
 
+    /**
+     * Returns the context og the game
+     * @return the context og the game
+     */
     public GameContext getGameContext() {
         return gameContext;
     }

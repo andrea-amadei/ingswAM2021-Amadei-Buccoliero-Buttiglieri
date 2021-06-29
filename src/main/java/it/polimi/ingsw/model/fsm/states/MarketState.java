@@ -17,6 +17,12 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * Extends State and represents a concrete state of the state machine.
+ * In this state the player has already chosen their move for the turn will be a visit to the market.
+ * They can go back to the Menu and chose another path, or select from the market grid the row or column
+ * they intend to buy.
+ */
 public class MarketState extends State {
     /**
      * A new State is created with the provided game context. The nextState and the interruptListener

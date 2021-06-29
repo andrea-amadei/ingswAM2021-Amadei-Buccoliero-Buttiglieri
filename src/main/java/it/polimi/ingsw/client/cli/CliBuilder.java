@@ -42,6 +42,8 @@ public final class CliBuilder {
 
             new PersonalDataCliUpdater(model.getPersonalData(), frame, 12, 126);
 
+            new EndGameCliUpdater(model.getEndGameResults(), frame);
+
             framework.addFrame(frame);
         }
 
@@ -53,6 +55,7 @@ public final class CliBuilder {
         new ShopCliUpdater(model.getShop(), frame);
         new ModelCliUpdater(model, frame, null);
         new PersonalDataCliUpdater(model.getPersonalData(), frame, 10, 2);
+        new EndGameCliUpdater(model.getEndGameResults(), frame);
         framework.addFrame(frame);
     }
 }
