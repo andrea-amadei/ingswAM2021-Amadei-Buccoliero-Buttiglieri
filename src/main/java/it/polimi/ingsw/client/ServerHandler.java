@@ -103,6 +103,7 @@ public class ServerHandler extends Thread{
     public synchronized void setConnected(boolean connected){
         this.connected = connected;
     }
+    public synchronized CliFramework getFramework(){return this.framework;}
 
     public synchronized void setPingReceived(boolean pingReceived){
         this.pingReceived = pingReceived;
