@@ -45,57 +45,6 @@ public class LeaderCardSlotsBox extends HBox {
 
         scale.setX(0.75);
         scale.setY(0.75);
-
-        /*ClientLeaderCards clientLeaderCards = new ClientLeaderCards();
-        clientLeaderCards.changeCoveredCardsNumber(2);
-        clientLeaderCards.addLeaderCard(
-                new RawLeaderCard(
-                        new LeaderCard(1, "Lorenzo", 12,
-                                new ArrayList<>() {{
-                                    add(new ConversionAbility(MarbleColor.WHITE, new ConversionActuator(Arrays.asList(
-                                            ResourceTypeSingleton.getInstance().getServantResource(),
-                                            ResourceTypeSingleton.getInstance().getShieldResource()), 1)));
-                                    add(new DiscountAbility(2, ResourceTypeSingleton.getInstance().getGoldResource()));
-                                    add(new StorageAbility(new Shelf("leader", ResourceTypeSingleton.getInstance().getStoneResource(), 2)));
-                                }},
-                                new ArrayList<>() {{
-                                    add(new FlagRequirement(new BaseFlag(FlagColor.BLUE), 1));
-                                    add(new FlagRequirement(new BaseFlag(FlagColor.GREEN), 1));
-                                    add(new LevelFlagRequirement(new LevelFlag(FlagColor.YELLOW, 1), 1));
-                                    add(new ResourceRequirement(ResourceTypeSingleton.getInstance().getServantResource(), 2));
-                                }})
-                )
-        );
-        clientLeaderCards.addLeaderCard(
-                new RawLeaderCard(
-                        new LeaderCard(2, "Paolo", 9,
-                                new ArrayList<>() {{
-                                    add(new CraftingAbility(new Crafting(
-                                            new HashMap<>() {{
-                                                put(ResourceTypeSingleton.getInstance().getServantResource(), 2);
-                                                put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
-                                                put(ResourceTypeSingleton.getInstance().getShieldResource(), 2);
-                                                put(ResourceTypeSingleton.getInstance().getStoneResource(), 2);
-                                            }},
-                                            new HashMap<>() {{
-                                                put(ResourceTypeSingleton.getInstance().getServantResource(), 2);
-                                                put(ResourceTypeSingleton.getInstance().getGoldResource(), 2);
-                                                put(ResourceTypeSingleton.getInstance().getShieldResource(), 2);
-                                                put(ResourceTypeSingleton.getInstance().getStoneResource(), 2);
-                                            }},
-                                            2
-                                    )));
-                                    add(new DiscountAbility(2, ResourceTypeSingleton.getInstance().getGoldResource()));
-                                }},
-                                new ArrayList<>() {{
-                                    add(new FlagRequirement(new BaseFlag(FlagColor.BLUE), 1));
-                                    add(new FlagRequirement(new BaseFlag(FlagColor.GREEN), 1));
-                                }})
-                )
-        );
-
-        updateLeaderSlots(clientLeaderCards);*/
-
     }
 
     private void update(){
