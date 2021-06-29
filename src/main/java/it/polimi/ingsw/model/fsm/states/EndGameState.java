@@ -3,6 +3,10 @@ package it.polimi.ingsw.model.fsm.states;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
 
+/**
+ * Extends State and represents a concrete state of the state machine.
+ * In this state the game is ended.
+ */
 public class EndGameState extends State {
     /**
      * A new State is created with the provided game context. The nextState and the interruptListener

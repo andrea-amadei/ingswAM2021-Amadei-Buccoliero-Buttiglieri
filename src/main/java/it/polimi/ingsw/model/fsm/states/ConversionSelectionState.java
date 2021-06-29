@@ -10,13 +10,17 @@ import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.actions.SelectConversionsAction;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
-import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * Extends State and represents a concrete state of the state machine.
+ * In this state the player has already chosen what marbles to buy from the market and needs now to select which conversions
+ * to apply. The only available move is to select the conversions.
+ */
 public class ConversionSelectionState extends State {
     /**
      * A new State is created with the provided game context. The nextState and the interruptListener

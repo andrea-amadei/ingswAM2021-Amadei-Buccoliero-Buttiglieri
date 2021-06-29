@@ -94,7 +94,7 @@ public abstract class State implements InterruptLauncher, ActionHandler{
      * Disconnects a player.
      * @param disconnectPlayerAction the action to be executed
      * @return the list of messages that need to be sent to the clients
-     * @throws FSMTransitionFailedException if the action cannot be executed
+     * @throws FSMTransitionFailedException iff the action cannot be executed
      */
     @Override
     public List<Message> handleAction(DisconnectPlayerAction disconnectPlayerAction) throws FSMTransitionFailedException {
@@ -114,6 +114,12 @@ public abstract class State implements InterruptLauncher, ActionHandler{
         return messages;
     }
 
+    /**
+     * Reconnects a player
+     * @param reconnectPlayerAction the action to be executed
+     * @return the list of messages that need to be sent to the clients
+     * @throws FSMTransitionFailedException iff the action cannot be executed
+     */
     @Override
     public List<Message> handleAction(ReconnectPlayerAction reconnectPlayerAction) throws FSMTransitionFailedException {
         try {

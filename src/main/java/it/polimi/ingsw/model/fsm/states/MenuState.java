@@ -9,11 +9,17 @@ import it.polimi.ingsw.exceptions.IllegalActionException;
 import it.polimi.ingsw.model.actions.*;
 import it.polimi.ingsw.model.fsm.GameContext;
 import it.polimi.ingsw.model.fsm.State;
-import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.*;
 
+/**
+ * Extends State and represents a concrete state of the state machine.
+ * In this state, if the player has not yet chosen what path they will be following for their turn (shop, market or crafting),
+ * they can chose one. Otherwise, they can confirm and and their turn.
+ * In both cases they can reorganize resources between their storages (this step is mandatory if they just entered the
+ * state and somehow still have resources in their hand), discard or activate leader cards.
+ */
 public class MenuState extends State {
 
     /**
@@ -227,6 +233,11 @@ public class MenuState extends State {
     }
 
 
+    /**
+     * return true if the player has resources in their hand, false otherwise.
+     *
+     * @return true if the player has resources in their hand, false otherwise.
+     */
     private boolean isHandNotEmpty(){
         return getGameContext().getCurrentPlayer().getBoard().getStorage().getHand().totalAmountOfResources() != 0;
     }

@@ -22,6 +22,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * Extends State and represents a concrete state of the state machine.
+ * In this state the game has just started and the player has already made their preliminary pick. They can
+ * move to their preferred shelf the resources they have chosen, if they have any, or confirm their choice.
+ */
 public class PreliminaryTidyState extends State {
 
     private boolean alreadyEntered = false;
