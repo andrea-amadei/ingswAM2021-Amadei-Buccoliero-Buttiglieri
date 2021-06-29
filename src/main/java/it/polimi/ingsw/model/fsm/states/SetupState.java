@@ -5,6 +5,7 @@ import it.polimi.ingsw.common.Message;
 import it.polimi.ingsw.common.payload_components.PayloadComponent;
 import it.polimi.ingsw.common.payload_components.groups.updates.SetInitialConfigurationUpdatePayloadComponent;
 import it.polimi.ingsw.exceptions.FSMTransitionFailedException;
+import it.polimi.ingsw.exceptions.ParserException;
 import it.polimi.ingsw.gamematerials.FlagColor;
 import it.polimi.ingsw.gamematerials.LevelFlag;
 import it.polimi.ingsw.gamematerials.ResourceSingle;
@@ -17,7 +18,9 @@ import it.polimi.ingsw.model.fsm.State;
 import it.polimi.ingsw.model.leader.LeaderCard;
 import it.polimi.ingsw.model.production.Crafting;
 import it.polimi.ingsw.model.production.Production;
+import it.polimi.ingsw.parser.JSONParser;
 import it.polimi.ingsw.parser.raw.RawStorage;
+import it.polimi.ingsw.server.Logger;
 import it.polimi.ingsw.utils.PayloadFactory;
 
 import java.util.*;
@@ -112,20 +115,17 @@ public class SetupState extends State {
             globalPayload.add(PayloadFactory.addFlag(username, blue.toRaw()));
         }
 
-        //TODO: read from json the correct base crafting
         for(String username : getGameContext().getGameModel().getPlayerNames()){
-            Crafting baseCrafting = new Crafting(
-                    new HashMap<>(){{
-                        put(ResourceTypeSingleton.getInstance().getAnyResource(), 2);
-                    }},
-                    new HashMap<>() {{
-                        put(ResourceTypeSingleton.getInstance().getAnyResource(), 1);
-                    }},
-                    5
-            );
-            getGameContext().getGameModel().getPlayerById(username).getBoard().getProduction().addBaseCrafting(baseCrafting);
-            globalPayload.add(PayloadFactory.addCrafting(username, baseCrafting.toRaw(), Production.CraftingType.BASE,
-                    getGameContext().getGameModel().getPlayerById(username).getBoard().getProduction().getAllBaseCrafting().size() - 1));
+            Crafting baseCrafting;
+            try {
+                baseCrafting = JSONParser.parseBaseCrafting(getGameContext().getCraftingJson()).get(0);
+                getGameContext().getGameModel().getPlayerById(username).getBoard().getProduction().addBaseCrafting(baseCrafting);
+                globalPayload.add(PayloadFactory.addCrafting(username, baseCrafting.toRaw(), Production.CraftingType.BASE,
+                        getGameContext().getGameModel().getPlayerById(username).getBoard().getProduction().getAllBaseCrafting().size() - 1));
+            } catch (ParserException e) {
+                Logger.log("Failed to load the base crafting. Trying to play nevertheless");
+            }
+
         }
 
         //send the global message
