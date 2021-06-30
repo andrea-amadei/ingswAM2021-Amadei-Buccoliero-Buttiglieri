@@ -111,6 +111,31 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
             throw new IllegalArgumentException("Unsupported special ability!");
     }
 
+    public RawSpecialAbility(String resource, int amount) {
+        this.type = "discount";
+        this.resource = resource;
+        this.amount = amount;
+    }
+
+    public RawSpecialAbility(String storageName, String acceptedTypes, int amount) {
+        this.type = "discount";
+        this.storageName = storageName;
+        this.acceptedTypes = acceptedTypes;
+        this.amount = amount;
+    }
+
+    public RawSpecialAbility(String from, List<String> to, int faithOutput) {
+        this.type = "conversion";
+        this.from = MarbleColor.valueOf(from.toUpperCase());
+        this.to = to;
+        this.faithOutput = faithOutput;
+    }
+
+    public RawSpecialAbility(RawCrafting crafting) {
+        this.type = "crafting";
+        this.crafting = crafting;
+    }
+
     public String getType() {
         return type;
     }
