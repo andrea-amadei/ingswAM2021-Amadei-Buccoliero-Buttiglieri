@@ -82,6 +82,25 @@ public class RawRequirement implements RawObject<Requirement> {
             throw new IllegalArgumentException("Unsupported requirement!");
     }
 
+    public RawRequirement(FlagColor flag, int amount) {
+        this.type = "flag";
+        this.flag = flag;
+        this.amount = amount;
+    }
+
+    public RawRequirement(FlagColor flag, int level, int amount) {
+        this.type = "level_flag";
+        this.flag = flag;
+        this.level = level;
+        this.amount = amount;
+    }
+
+    public RawRequirement(String resource, Integer amount) {
+        this.type = "resource";
+        this.resource = resource;
+        this.amount = amount;
+    }
+
     public String getType() {
         return type;
     }
