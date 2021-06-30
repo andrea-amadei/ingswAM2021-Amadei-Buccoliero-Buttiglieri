@@ -22,7 +22,7 @@ public class DiscountAbilitySelector extends VBox implements AbilitySelector{
 
     public DiscountAbilitySelector(){
         resourceComboBox = new ComboBox<>();
-        resourceComboBox.getItems().addAll("Gold", "Servant", "Shield", "Stone");
+        resourceComboBox.getItems().addAll("gold", "servant", "shield", "stone");
         resourceComboBox.getSelectionModel().selectFirst();
         resourceComboBox.setPrefWidth(100);
 
@@ -61,8 +61,7 @@ public class DiscountAbilitySelector extends VBox implements AbilitySelector{
 
     public void setResourceType(String resource){
         if(possibleResourceTypes.contains(resource)){
-            String prettyResourceType = resource.substring(0, 1).toUpperCase() + resource.substring(1);
-            resourceComboBox.getSelectionModel().select(prettyResourceType);
+            resourceComboBox.getSelectionModel().select(resource);
         }else{
             Logger.log("Wrong resource set in the StorageAbilitySelector");
         }

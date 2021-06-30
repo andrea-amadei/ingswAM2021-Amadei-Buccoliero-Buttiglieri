@@ -23,7 +23,7 @@ public class StorageAbilitySelector extends VBox implements AbilitySelector {
         resourceComboBox = new ComboBox<>();
         amountComboBox = new ComboBox<>();
 
-        resourceComboBox.getItems().addAll("Gold", "Servant", "Shield", "Stone");
+        resourceComboBox.getItems().addAll("gold", "servant", "shield", "stone");
         amountComboBox.getItems().addAll(1, 2, 3);
 
         resourceComboBox.getSelectionModel().selectFirst();
@@ -64,8 +64,7 @@ public class StorageAbilitySelector extends VBox implements AbilitySelector {
 
     public void setResourceType(String resource){
         if(possibleResourceTypes.contains(resource)){
-            String prettyResourceType = resource.substring(0, 1).toUpperCase() + resource.substring(1);
-            resourceComboBox.getSelectionModel().select(prettyResourceType);
+            resourceComboBox.getSelectionModel().select(resource);
         }else{
             Logger.log("Wrong resource set in the StorageAbilitySelector");
         }
