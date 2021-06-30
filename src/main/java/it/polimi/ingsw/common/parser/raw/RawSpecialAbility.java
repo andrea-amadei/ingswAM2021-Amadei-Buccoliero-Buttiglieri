@@ -118,7 +118,7 @@ public class RawSpecialAbility implements RawObject<SpecialAbility> {
     }
 
     public RawSpecialAbility(String storageName, String acceptedTypes, int amount) {
-        this.type = "discount";
+        this.type = "storage";
         this.storageName = storageName;
         this.acceptedTypes = acceptedTypes;
         this.amount = amount;
