@@ -1,6 +1,7 @@
 package it.polimi.ingsw.common.parser.raw;
 
 import com.google.gson.annotations.SerializedName;
+import it.polimi.ingsw.client.gui.nodes.FlagBox;
 import it.polimi.ingsw.common.exceptions.IllegalRawConversionException;
 import it.polimi.ingsw.server.model.basetypes.*;
 import it.polimi.ingsw.server.model.production.Crafting;
@@ -51,6 +52,15 @@ public class RawCraftingCard implements UniqueRawObject<CraftingCard> {
         crafting = new RawCrafting(craftingCard.getCrafting());
 
         points = craftingCard.getPoints();
+    }
+
+    public RawCraftingCard(int id, FlagColor flag, int level, Map<String, Integer> cost, RawCrafting crafting, int points) {
+        this.id = id;
+        this.flag = flag;
+        this.level = level;
+        this.cost = cost;
+        this.crafting = crafting;
+        this.points = points;
     }
 
     @Override

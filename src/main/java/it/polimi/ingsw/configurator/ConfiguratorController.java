@@ -1,7 +1,12 @@
 package it.polimi.ingsw.configurator;
 
+import it.polimi.ingsw.client.gui.nodes.CraftingCardBox;
 import it.polimi.ingsw.client.gui.nodes.FaithPath;
 import it.polimi.ingsw.common.exceptions.ParserException;
+import it.polimi.ingsw.common.parser.raw.RawCraftingCard;
+import it.polimi.ingsw.configurator.nodes.CraftingSelector;
+import it.polimi.ingsw.configurator.nodes.ResourceSelector;
+import it.polimi.ingsw.server.model.basetypes.FlagColor;
 import it.polimi.ingsw.server.model.faithpath.FaithPathGroup;
 import it.polimi.ingsw.server.model.faithpath.FaithPathTile;
 import it.polimi.ingsw.common.parser.JSONParser;
@@ -9,6 +14,8 @@ import it.polimi.ingsw.common.parser.JSONSerializer;
 import it.polimi.ingsw.common.parser.raw.RawFaithPathGroup;
 import it.polimi.ingsw.common.parser.raw.RawFaithPathTile;
 import it.polimi.ingsw.common.utils.ResourceLoader;
+import it.polimi.ingsw.server.model.production.CraftingCard;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -26,20 +33,95 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ConfiguratorController {
+    // COMMON
     @FXML
     public TabPane root;
 
+    private int getIntFromTextField(TextField textField) {
+        int n;
+        try { n = Integer.parseInt(textField.getText()); } catch (NumberFormatException e) { n = 0; }
+
+        return n;
+    }
+
+    public void initialize() {
+        int i;
+
+        groupAddButton = new Button("+");
+        groupAddButton.setOnAction(actionEvent -> createFaithGroup());
+
+        groupRemoveButton = new Button("X");
+        groupRemoveButton.setOnAction(actionEvent -> removeFaithGroup());
+
+        tileAddButton = new Button("+");
+        tileAddButton.setOnAction(actionEvent -> createFaithTile());
+
+        tileRemoveButton = new Button("X");
+        tileRemoveButton.setOnAction(actionEvent -> removeFaithTile());
+
+        List<RawFaithPathTile> defaultTiles;
+        List<RawFaithPathGroup> defaultGroups;
+        List<RawCraftingCard> defaultCrafting;
+
+        try {
+            it.polimi.ingsw.server.model.faithpath.FaithPath fp = JSONParser.parseFaithPath(ResourceLoader.loadFile("cfg/faith.json"));
+            defaultTiles = fp.getTiles().stream().map(FaithPathTile::toRaw).collect(Collectors.toList());
+            defaultGroups = fp.getFaithGroupList().stream().map(FaithPathGroup::toRaw).collect(Collectors.toList());
+        } catch (ParserException e) {
+            throw new IllegalArgumentException("Loading of standard faith path failed unexpectedly!");
+        }
+
+        try {
+            defaultCrafting = JSONParser.parseCraftingCards(ResourceLoader.loadFile("cfg/crafting.json")).stream().map(CraftingCard::toRaw).collect(Collectors.toList());
+        } catch (ParserException e) {
+            throw new IllegalArgumentException("Loading of standard crafting failed unexpectedly!");
+        }
+
+        for(i = 0; i < defaultGroups.size(); i++) {
+            createFaithGroup();
+            groupPoints.get(i).setText(String.valueOf(defaultGroups.get(i).getPoints()));
+        }
+
+        for(i = 0; i < defaultTiles.size(); i++) {
+            createFaithTile();
+            xs.get(i).setText(String.valueOf(defaultTiles.get(i).getX()));
+            ys.get(i).setText(String.valueOf(defaultTiles.get(i).getY()));
+            tilePoints.get(i).setText(String.valueOf(defaultTiles.get(i).getVictoryPoints()));
+            tileGroups.get(i).setText(String.valueOf(defaultTiles.get(i).getPopeGroup()));
+            tileChecks.get(i).setSelected(defaultTiles.get(i).isPopeCheck());
+        }
+
+        testFaithPath();
+
+        for(i = 0; i < defaultCrafting.size(); i++) {
+            createShopCard();
+
+            shopCardColor.get(i).getSelectionModel().select(defaultCrafting.get(i).getFlag().name().toLowerCase());
+            shopCardLevel.get(i).getSelectionModel().select(defaultCrafting.get(i).getLevel() - 1);
+            shopCardPoints.get(i).setText(String.valueOf(defaultCrafting.get(i).getPoints()));
+
+            shopCardCosts.get(i).setResourceMap(defaultCrafting.get(i).getCost());
+
+            shopCardCrafting.get(i).setInputMap(defaultCrafting.get(i).getCrafting().getInput());
+            shopCardCrafting.get(i).setOutputMap(defaultCrafting.get(i).getCrafting().getOutput());
+            shopCardCrafting.get(i).setFaithOutput(defaultCrafting.get(i).getCrafting().getFaithOutput());
+        }
+
+        testShop();
+    }
+
+    // FAITH PATH
     @FXML
     public AnchorPane faithPathPane;
 
     @FXML
-    public VBox groupsVBox;
+    public VBox faithGroupsVBox;
     private final List<HBox> groups = new ArrayList<>();
     private final List<TextField> groupPoints = new ArrayList<>();
     private Button groupAddButton, groupRemoveButton;
 
     @FXML
-    public VBox tilesVBox;
+    public VBox faithTilesVBox;
     private final List<HBox> tiles = new ArrayList<>();
     private final List<TextField> xs = new ArrayList<>();
     private final List<TextField> ys = new ArrayList<>();
@@ -51,14 +133,7 @@ public class ConfiguratorController {
 
     private FaithPath faithPath;
 
-    private int getIntFromTextField(TextField textField) {
-        int n;
-        try { n = Integer.parseInt(textField.getText()); } catch (NumberFormatException e) { n = 0; }
-
-        return n;
-    }
-
-    private void createGroup() {
+    private void createFaithGroup() {
         TextField textField;
 
         HBox hBox = new HBox();
@@ -100,15 +175,15 @@ public class ConfiguratorController {
 
         groupRemoveButton.setDisable(false);
 
-        groupsVBox.getChildren().add(hBox);
+        faithGroupsVBox.getChildren().add(hBox);
         groups.add(hBox);
     }
 
-    private void removeGroup() {
+    private void removeFaithGroup() {
         if(groups.size() == 1)
             return;
 
-        groupsVBox.getChildren().remove(groups.get(groups.size() - 1));
+        faithGroupsVBox.getChildren().remove(groups.get(groups.size() - 1));
 
         groups.remove(groups.size() - 1);
         groupPoints.remove(groupPoints.size() - 1);
@@ -120,7 +195,7 @@ public class ConfiguratorController {
             groupRemoveButton.setDisable(true);
     }
 
-    private void createTile() {
+    private void createFaithTile() {
         Label label;
         TextField textField;
         CheckBox checkBox;
@@ -224,15 +299,15 @@ public class ConfiguratorController {
 
         tileRemoveButton.setDisable(false);
 
-        tilesVBox.getChildren().add(hBox);
+        faithTilesVBox.getChildren().add(hBox);
         tiles.add(hBox);
     }
 
-    private void removeTile() {
+    private void removeFaithTile() {
         if(tiles.size() == 1)
             return;
 
-        tilesVBox.getChildren().remove(tiles.get(tiles.size() - 1));
+        faithTilesVBox.getChildren().remove(tiles.get(tiles.size() - 1));
 
         tiles.remove(tiles.size() - 1);
         xs.remove(xs.size() - 1);
@@ -249,7 +324,7 @@ public class ConfiguratorController {
             tileRemoveButton.setDisable(true);
     }
 
-    private List<RawFaithPathGroup> createGroupList() {
+    private List<RawFaithPathGroup> createFaithGroupList() {
         List<RawFaithPathGroup> list = new ArrayList<>();
 
         for(int i = 0; i < groupPoints.size(); i++) {
@@ -259,7 +334,7 @@ public class ConfiguratorController {
         return list;
     }
 
-    private List<RawFaithPathTile> createTileList() {
+    private List<RawFaithPathTile> createFaithTileList() {
         List<RawFaithPathTile> list = new ArrayList<>();
         Map<Integer, Set<Integer>> coordinates = new HashMap<>();
         List<Boolean> checksPerGroup;
@@ -334,62 +409,21 @@ public class ConfiguratorController {
         return list;
     }
 
-    public void initialize() {
-        int i;
-
-        groupAddButton = new Button("+");
-        groupAddButton.setOnAction(actionEvent -> createGroup());
-
-        groupRemoveButton = new Button("X");
-        groupRemoveButton.setOnAction(actionEvent -> removeGroup());
-
-        tileAddButton = new Button("+");
-        tileAddButton.setOnAction(actionEvent -> createTile());
-
-        tileRemoveButton = new Button("X");
-        tileRemoveButton.setOnAction(actionEvent -> removeTile());
-
-        List<RawFaithPathTile> defaultTiles;
-        List<RawFaithPathGroup> defaultGroups;
-
-        try {
-            it.polimi.ingsw.server.model.faithpath.FaithPath fp = JSONParser.parseFaithPath(ResourceLoader.loadFile("cfg/faith.json"));
-            defaultTiles = fp.getTiles().stream().map(FaithPathTile::toRaw).collect(Collectors.toList());
-            defaultGroups = fp.getFaithGroupList().stream().map(FaithPathGroup::toRaw).collect(Collectors.toList());
-        } catch (ParserException e) {
-            throw new IllegalArgumentException("Loading of standard faith path failed unexpectedly!");
-        }
-
-        for(i = 0; i < defaultGroups.size(); i++) {
-            createGroup();
-            groupPoints.get(i).setText(String.valueOf(defaultGroups.get(i).getPoints()));
-        }
-
-        for(i = 0; i < defaultTiles.size(); i++) {
-            createTile();
-            xs.get(i).setText(String.valueOf(defaultTiles.get(i).getX()));
-            ys.get(i).setText(String.valueOf(defaultTiles.get(i).getY()));
-            tilePoints.get(i).setText(String.valueOf(defaultTiles.get(i).getVictoryPoints()));
-            tileGroups.get(i).setText(String.valueOf(defaultTiles.get(i).getPopeGroup()));
-            tileChecks.get(i).setSelected(defaultTiles.get(i).isPopeCheck());
-        }
-    }
-
     @FXML
-    public boolean test() {
+    public boolean testFaithPath() {
         faithPathPane.getChildren().remove(faithPath);
 
         List<RawFaithPathGroup> groups;
         List<RawFaithPathTile> tiles;
 
         try {
-            groups = createGroupList();
+            groups = createFaithGroupList();
         } catch (RuntimeException e) {
             return false;
         }
 
         try {
-            tiles = createTileList();
+            tiles = createFaithTileList();
         } catch (RuntimeException e) {
             return false;
         }
@@ -405,15 +439,181 @@ public class ConfiguratorController {
     }
 
     @FXML
-    public void generate() {
-        if(!test())
+    public void generateFaithPath() {
+        if(!testFaithPath())
             return;
 
-        String str = "{\"tiles\":" + JSONSerializer.toJson(createTileList()) + ",\"groups\":" + JSONSerializer.toJson(createGroupList()) + "}";
+        String str = "{\"tiles\":" + JSONSerializer.toJson(createFaithTileList()) + ",\"groups\":" + JSONSerializer.toJson(createFaithGroupList()) + "}";
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save faith.json");
         fileChooser.setInitialFileName("faith.json");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json"));
+        File file = fileChooser.showSaveDialog(root.getScene().getWindow());
+
+        if(file != null) {
+            try {
+                PrintWriter writer;
+                writer = new PrintWriter(file);
+                writer.println(str);
+                writer.close();
+            } catch (IOException ex) {
+                System.out.println("Unable to save file");
+            }
+        }
+    }
+
+    // SHOP
+    @FXML
+    public AnchorPane shopPane;
+
+    @FXML
+    public VBox shopVBox;
+    public List<HBox> shopCards = new ArrayList<>();
+
+    public List<ComboBox<String>> shopCardColor = new ArrayList<>();
+    public List<ComboBox<Integer>> shopCardLevel = new ArrayList<>();
+    public List<TextField> shopCardPoints = new ArrayList<>();
+    public List<ResourceSelector> shopCardCosts = new ArrayList<>();
+    public List<CraftingSelector> shopCardCrafting = new ArrayList<>();
+
+    public List<CraftingCardBox> craftingCardBoxes = new ArrayList<>();
+
+    public void createShopCard() {
+        HBox hBox;
+        HBox hBox1, hBox2, hBox3, hBox4;
+        Label label;
+
+        hBox = new HBox();
+        hBox.setSpacing(80d);
+        VBox.setMargin(hBox, new Insets(0, 0, 0, 20d));
+
+        VBox vBox;
+        vBox = new VBox();
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setSpacing(20d);
+
+        ComboBox<String> comboBox1;
+        ComboBox<Integer> comboBox2;
+        TextField textField1;
+        TextField textField2;
+
+        textField1 = new TextField(String.valueOf(shopCards.size() + 1));
+        textField1.setEditable(false);
+        textField1.setDisable(true);
+        textField1.setPrefWidth(80d);
+
+        comboBox1 = new ComboBox<>();
+        comboBox1.setPrefWidth(80d);
+        comboBox1.setItems(FXCollections.observableArrayList("blue", "green", "purple", "yellow"));
+        comboBox1.getSelectionModel().selectFirst();
+
+        comboBox2 = new ComboBox<>();
+        comboBox2.setPrefWidth(80d);
+        comboBox2.setItems(FXCollections.observableArrayList(1, 2, 3));
+        comboBox2.getSelectionModel().selectFirst();
+
+        textField2 = new TextField("1");
+        textField2.setPrefWidth(80d);
+        textField2.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue.matches("\\d*"))
+                textField2.setText(newValue.replaceAll("[^\\d]", ""));
+        });
+
+        shopCardColor.add(comboBox1);
+        shopCardLevel.add(comboBox2);
+        shopCardPoints.add(textField2);
+
+        hBox1 = new HBox();
+        hBox1.setSpacing(20d);
+        label = new Label("Id:");
+        label.setPrefWidth(80d);
+        hBox1.getChildren().addAll(label, textField1);
+
+        hBox2 = new HBox();
+        hBox2.setSpacing(20d);
+        label = new Label("Flag color:");
+        label.setPrefWidth(80d);
+        hBox2.getChildren().addAll(label, comboBox1);
+
+        hBox3 = new HBox();
+        hBox3.setSpacing(20d);
+        label = new Label("Flag level:");
+        label.setPrefWidth(80d);
+        hBox3.getChildren().addAll(label, comboBox2);
+
+        hBox4 = new HBox();
+        hBox4.setSpacing(20d);
+        label = new Label("Points:");
+        label.setPrefWidth(80d);
+        hBox4.getChildren().addAll(label, textField2);
+
+        vBox.getChildren().addAll(hBox1, hBox2, hBox3, hBox4);
+
+        ResourceSelector resourceSelector = new ResourceSelector("Cost:", false);
+        resourceSelector.setAlignment(Pos.CENTER);
+
+        CraftingSelector craftingSelector = new CraftingSelector();
+        craftingSelector.setAlignment(Pos.CENTER);
+
+        shopCardCosts.add(resourceSelector);
+        shopCardCrafting.add(craftingSelector);
+
+        hBox.getChildren().addAll(vBox, resourceSelector, craftingSelector);
+
+        shopVBox.getChildren().add(hBox);
+        shopCards.add(hBox);
+    }
+
+    private List<RawCraftingCard> createCraftingCardList() {
+        List<RawCraftingCard> list = new ArrayList<>();
+
+        for(int i = 0; i < shopCards.size(); i++) {
+            list.add(new RawCraftingCard(
+                    i + 1,
+                    FlagColor.valueOf(shopCardColor.get(i).getSelectionModel().getSelectedItem().toUpperCase()),
+                    shopCardLevel.get(i).getSelectionModel().getSelectedItem(),
+                    shopCardCosts.get(i).getResourceMap(),
+                    shopCardCrafting.get(i).getRawCrafting(),
+                    Integer.parseInt(shopCardPoints.get(i).getText())
+            ));
+        }
+
+        return list;
+    }
+
+    @FXML
+    public void testShop() {
+        CraftingCardBox craftingCardBox;
+
+        for(int i = 0; i < shopCards.size(); i++) {
+            craftingCardBox = new CraftingCardBox(new RawCraftingCard(
+                    i + 1,
+                    FlagColor.valueOf(shopCardColor.get(i).getSelectionModel().getSelectedItem().toUpperCase()),
+                    shopCardLevel.get(i).getSelectionModel().getSelectedItem(),
+                    shopCardCosts.get(i).getResourceMap(),
+                    shopCardCrafting.get(i).getRawCrafting(),
+                    Integer.parseInt(shopCardPoints.get(i).getText())
+            ));
+
+            craftingCardBox.getTransforms().add(new Scale(0.7d, 0.7d));
+            craftingCardBox.setTranslateY(70d);
+
+            if(shopCards.get(i).getChildren().size() == 4)
+                shopCards.get(i).getChildren().remove(shopCards.get(i).getChildren().size() - 1);
+            shopCards.get(i).getChildren().add(craftingCardBox);
+        }
+    }
+
+    @FXML
+    public void generateShop() {
+        testShop();
+
+        String str = "{\"shop\":" + JSONSerializer.toJson(createCraftingCardList()) + "}";
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save crafting.json");
+        fileChooser.setInitialFileName("crafting.json");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json"));
         File file = fileChooser.showSaveDialog(root.getScene().getWindow());
 

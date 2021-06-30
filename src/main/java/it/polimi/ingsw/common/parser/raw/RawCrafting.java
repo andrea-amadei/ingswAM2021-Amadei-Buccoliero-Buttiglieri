@@ -43,6 +43,12 @@ public class RawCrafting implements RawObject<Crafting> {
         faithOutput = crafting.getFaithOutput();
     }
 
+    public RawCrafting(Map<String, Integer> input, Map<String, Integer> output, int faithOutput) {
+        this.input = input;
+        this.output = output;
+        this.faithOutput = faithOutput;
+    }
+
     public Map<String, Integer> getInput() {
         return input;
     }
