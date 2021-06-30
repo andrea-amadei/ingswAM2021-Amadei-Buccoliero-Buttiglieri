@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 
 import java.util.Map;
 
-public class CraftingSelector extends VBox {
+public class CraftingSelector extends VBox implements AbilitySelector {
     private final ResourceSelector input;
     private final ResourceSelector output;
     private final Label faithLabel;

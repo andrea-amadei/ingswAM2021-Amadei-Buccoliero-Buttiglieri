@@ -9,8 +9,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
-public class FlagRequirementSelector extends HBox implements RequirementSelector {
+public class FlagRequirementSelector extends VBox implements RequirementSelector {
     private ComboBox<String> color;
     private TextField amount;
 
@@ -18,12 +19,12 @@ public class FlagRequirementSelector extends HBox implements RequirementSelector
         Label label1, label2;
 
         color = new ComboBox<>();
-        color.setPrefWidth(80d);
+        color.setPrefWidth(70d);
         color.setItems(FXCollections.observableArrayList("blue", "green", "purple", "yellow"));
         color.getSelectionModel().selectFirst();
 
         amount = new TextField("1");
-        amount.setPrefWidth(80d);
+        amount.setPrefWidth(30d);
         amount.textProperty().addListener((observable, oldValue, newValue) -> {
             if(!newValue.matches("\\d*")) {
                 amount.setText(newValue.replaceAll("[^\\d]", ""));
@@ -35,16 +36,15 @@ public class FlagRequirementSelector extends HBox implements RequirementSelector
         });
 
         label1 = new Label("Flag:");
-        label1.setPrefWidth(50d);
         label1.setPrefHeight(25d);
         label1.setAlignment(Pos.CENTER_LEFT);
 
         label2 = new Label("Amount:");
-        label2.setPrefWidth(50d);
         label2.setPrefHeight(25d);
         label2.setAlignment(Pos.CENTER_LEFT);
 
-        this.setSpacing(20d);
+        this.setSpacing(5d);
+        this.setPrefHeight(175d);
         this.getChildren().addAll(label1, color, label2, amount);
     }
 
