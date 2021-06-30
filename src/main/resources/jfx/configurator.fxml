@@ -37,4 +37,14 @@
         </AnchorPane>
     </Tab>
 
+    <Tab closable="false" text="Leader Cards">
+        <AnchorPane fx:id="leaderPane">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="660.0" prefWidth="1280.0">
+                <VBox fx:id="leaderVBox" prefWidth="1280.0" spacing="30" />
+            </ScrollPane>
+            <Button layoutX="1200.0" layoutY="663.0" text="Generate" />
+            <Button layoutX="1155.0" layoutY="663.0" text="Test" />
+        </AnchorPane>
+    </Tab>
+
 </TabPane>
