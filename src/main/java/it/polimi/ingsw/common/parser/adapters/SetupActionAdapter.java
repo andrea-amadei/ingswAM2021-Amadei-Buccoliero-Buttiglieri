@@ -19,6 +19,8 @@ public class SetupActionAdapter implements JsonDeserializer<SetupAction> {
                 return jsonDeserializationContext.deserialize(jsonElement, SetUsernameSetupAction.class);
             case "create_match":
                 return jsonDeserializationContext.deserialize(jsonElement, CreateMatchSetupAction.class);
+            case "create_custom_match":
+                return jsonDeserializationContext.deserialize(jsonElement, CreateCustomMatchSetupAction.class);
             case "join_match":
                 return jsonDeserializationContext.deserialize(jsonElement, JoinMatchSetupAction.class);
             case "reconnect":

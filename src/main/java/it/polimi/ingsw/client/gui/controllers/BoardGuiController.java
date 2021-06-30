@@ -28,7 +28,7 @@ public class BoardGuiController extends BaseController {
     public ShopBox shop;
     @FXML
     public MarketBox market;
-    @FXML
+
     public FaithPath faithPath;
     @FXML
     public MenuBox buttons;
@@ -95,7 +95,17 @@ public class BoardGuiController extends BaseController {
         ownedUsername = getServerHandler().getUsername();
         setActivePlayer(getServerHandler().getUsername());
 
+        //System.out.println("Faith path index: " + board.getChildren().indexOf(faithPath));
+        faithPath = new FaithPath(getModel().getPlayers().get(0).getFaithPath().getTiles(), getModel().getPlayers().get(0).getFaithPath().getFaithGroups());
+        //layoutX="560.0" layoutY="1.0" scaleX="0.7" scaleY="0.7" AnchorPane.leftAnchor="560.0" AnchorPane.topAnchor="1.0"
+        faithPath.setLayoutX(560);
+        faithPath.setLayoutY(1);
+        faithPath.setScaleX(0.7);
+        faithPath.setScaleY(0.7);
+        AnchorPane.setLeftAnchor(faithPath, 560d);
+        AnchorPane.setTopAnchor(faithPath, 1d);
 
+        board.getChildren().add(3, faithPath);
         new ShopGuiUpdater(shop, getModel().getShop());
         new MarketGuiUpdater(market, getModel().getMarket());
         new EndGameUpdater(market, getModel().getEndGameResults());

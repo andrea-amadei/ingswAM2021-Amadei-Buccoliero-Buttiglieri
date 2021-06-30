@@ -110,6 +110,11 @@
                                           <Insets left="100.0" />
                                        </HBox.margin>
                                     </Button>
+                                    <CheckBox fx:id="customCheck" mnemonicParsing="false" text="Custom">
+                                       <HBox.margin>
+                                          <Insets left="20.0" />
+                                       </HBox.margin>
+                                    </CheckBox>
                                  </children>
                               </HBox>
                               <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="2">

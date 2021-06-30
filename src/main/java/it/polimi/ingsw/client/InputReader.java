@@ -4,15 +4,17 @@ import it.polimi.ingsw.client.cli.CliBuilder;
 import it.polimi.ingsw.client.cli.framework.CliFramework;
 import it.polimi.ingsw.client.clientmodel.ClientPlayer;
 import it.polimi.ingsw.common.payload_components.groups.actions.*;
-import it.polimi.ingsw.common.payload_components.groups.setup.CreateMatchSetupPayloadComponent;
-import it.polimi.ingsw.common.payload_components.groups.setup.JoinMatchSetupPayloadComponent;
-import it.polimi.ingsw.common.payload_components.groups.setup.ReconnectSetupPayloadComponent;
-import it.polimi.ingsw.common.payload_components.groups.setup.SetUsernameSetupPayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.setup.*;
 import it.polimi.ingsw.common.exceptions.UnableToDrawElementException;
 import it.polimi.ingsw.server.model.basetypes.ResourceTypeSingleton;
 import it.polimi.ingsw.server.model.actions.SelectPlayAction;
 import it.polimi.ingsw.server.model.production.Production;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -63,6 +65,9 @@ public class InputReader extends Thread{
                     break;
                 case "create_match":
                     parseCreateMatchCommand(logicalInput);
+                    break;
+                case "create_custom_match":
+                    parseCreateCustomMatchCommand(logicalInput);
                     break;
                 case "discard_leader":
                     parseDiscardLeaderCommand(logicalInput);
@@ -355,6 +360,29 @@ public class InputReader extends Thread{
             serverHandler.sendPayload(new CreateMatchSetupPayloadComponent(gameName, playerCount, isSinglePlayer));
         }catch(RuntimeException e){
             System.out.println("Command not valid");
+        }
+    }
+
+    public void parseCreateCustomMatchCommand(List<String> logicalInput){
+        try {
+            String gameName = logicalInput.get(1);
+            Integer playerCount = Integer.parseInt(logicalInput.get(2));
+            Boolean isSinglePlayer = Boolean.parseBoolean(logicalInput.get(3));
+
+            //reading files from disk
+            List<String> fileNames = Arrays.asList("config.json", "crafting.json", "faith.json", "leaders.json");
+            List<String> fileContents = new ArrayList<>();
+            System.out.println(this.getClass().getProtectionDomain().getCodeSource().getLocation());
+            for(String fileName : fileNames){
+                File parentDirectory = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile();
+                Path jsonFilePath = new File(parentDirectory, fileName).toPath();
+                String json = Files.readString(jsonFilePath);
+                fileContents.add(json);
+            }
+            serverHandler.sendPayload(new CreateCustomMatchSetupPayloadComponent(gameName, playerCount, isSinglePlayer,
+                    fileContents.get(0), fileContents.get(1), fileContents.get(2), fileContents.get(3)));
+        }catch(RuntimeException | URISyntaxException | IOException e){
+            System.out.println("Command not valid, check format and/or the config file names");
         }
     }
 

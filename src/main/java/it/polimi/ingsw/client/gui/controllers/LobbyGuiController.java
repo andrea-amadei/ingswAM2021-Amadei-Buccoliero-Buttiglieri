@@ -1,13 +1,20 @@
 package it.polimi.ingsw.client.gui.controllers;
 
 import it.polimi.ingsw.client.gui.GuiBuilder;
-import it.polimi.ingsw.common.payload_components.groups.setup.CreateMatchSetupPayloadComponent;
-import it.polimi.ingsw.common.payload_components.groups.setup.JoinMatchSetupPayloadComponent;
-import it.polimi.ingsw.common.payload_components.groups.setup.ReconnectSetupPayloadComponent;
-import it.polimi.ingsw.common.payload_components.groups.setup.SetUsernameSetupPayloadComponent;
+import it.polimi.ingsw.common.payload_components.groups.setup.*;
+import it.polimi.ingsw.server.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class LobbyGuiController extends BaseController {
 
@@ -16,6 +23,8 @@ public class LobbyGuiController extends BaseController {
 
     @FXML
     public Button reconnectBtn;
+
+    public CheckBox customCheck;
 
     @FXML
     private Button set_username;
@@ -67,7 +76,7 @@ public class LobbyGuiController extends BaseController {
     }
 
     @FXML
-    private void createMatchButtonAction() {
+    private void createMatchButtonAction(){
         boolean single;
         int n;
 
@@ -80,8 +89,26 @@ public class LobbyGuiController extends BaseController {
             single = false;
         }
 
-
-        getServerHandler().sendPayload(new CreateMatchSetupPayloadComponent(match.getText(), n, single));
+        if(customCheck.isSelected()){
+            try {
+                //reading files from disk
+                List<String> fileNames = Arrays.asList("config.json", "crafting.json", "faith.json", "leaders.json");
+                List<String> fileContents = new ArrayList<>();
+                System.out.println(this.getClass().getProtectionDomain().getCodeSource().getLocation());
+                for (String fileName : fileNames) {
+                    File parentDirectory = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile();
+                    Path jsonFilePath = new File(parentDirectory, fileName).toPath();
+                    String json = Files.readString(jsonFilePath);
+                    fileContents.add(json);
+                }
+                getServerHandler().sendPayload(new CreateCustomMatchSetupPayloadComponent(match.getText(), n, single,
+                        fileContents.get(0), fileContents.get(1), fileContents.get(2), fileContents.get(3)));
+            } catch (URISyntaxException | IOException e) {
+                Logger.log("Can't read the files");
+            }
+        }else {
+            getServerHandler().sendPayload(new CreateMatchSetupPayloadComponent(match.getText(), n, single));
+        }
     }
 
     @FXML

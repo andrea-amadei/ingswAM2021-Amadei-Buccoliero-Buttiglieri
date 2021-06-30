@@ -66,6 +66,28 @@ public class GameContext {
         this.isSinglePlayer = isSinglePlayer;
     }
 
+    public GameContext(GameModel gameModel, boolean isSinglePlayer, String configJson, String craftingJson, String faithJson, String leadersJson){
+        if(gameModel == null)
+            throw new NullPointerException();
+
+        this.gameModel = gameModel;
+        currentPlayer = null;
+        playerMoved = false;
+        countdownStarted = false;
+        this.isSinglePlayer = isSinglePlayer;
+        isHardEndTriggered = false;
+        gameEnded = false;
+        hasLorenzoWon = false;
+        alreadyPickedPlayers = new HashSet<>();
+
+        this.configJson = configJson;
+        this.craftingJson = craftingJson;
+        this.faithJson = faithJson;
+        this.leadersJson = leadersJson;
+
+        this.gameConfig = JSONParser.getGameConfig(configJson);
+    }
+
     /**
      * Returns the model of the game
      * @return the model of the game

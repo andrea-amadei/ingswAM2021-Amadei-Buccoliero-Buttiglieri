@@ -154,34 +154,10 @@ public class ClientHandler implements Runnable{
     }
 
     public synchronized void createMatch(String matchName, int playerCount, boolean isSinglePlayer){
-        if(username == null){
-            sendPayload(new TextSetupPayloadComponent("Set your username first"));
+
+        boolean rightConfirmed = checkMatchCreationRights(matchName, playerCount, isSinglePlayer);
+        if(!rightConfirmed)
             return;
-        }
-        if(this.currentMatch != null){
-            sendPayload(new TextSetupPayloadComponent("Already in a match"));
-            return;
-        }
-        if(matchName == null){
-            sendPayload(new TextSetupPayloadComponent("Match name not valid. Choose a valid one"));
-            return;
-        }
-        if(playerCount <= 0 || playerCount > 4){
-            sendPayload(new TextSetupPayloadComponent("Number of players must be between 1 and 4"));
-            return;
-        }
-        if(isSinglePlayer && playerCount > 1){
-            sendPayload(new TextSetupPayloadComponent("In single player mode there must be only 1 player"));
-            return;
-        }
-        if(!isSinglePlayer && playerCount < 2){
-            sendPayload(new TextSetupPayloadComponent("In multiplayer mode there must be at leas 2 players"));
-            return;
-        }
-        if(serverManager.alreadyExistentGameName(matchName)){
-            sendPayload(new TextSetupPayloadComponent("There is another match with name \"" + matchName + "\""));
-            return;
-        }
 
 
         Match match = new Match(matchName, new Pair<>(username, this), playerCount, isSinglePlayer, serverManager);
@@ -198,6 +174,75 @@ public class ClientHandler implements Runnable{
         if(playerCount > 1) {
             sendPayload(new TextSetupPayloadComponent("You created the game! Waiting for other players..."));
         }
+    }
+
+    public synchronized void createCustomMatch(String matchName, int playerCount, boolean isSinglePlayer,
+                                               String userConfig, String userCrafting, String userFaith, String userLeader){
+
+        boolean rightConfirmed = checkMatchCreationRights(matchName, playerCount, isSinglePlayer);
+        if(!rightConfirmed)
+            return;
+
+        if(userConfig == null || userCrafting == null || userFaith == null || userLeader == null){
+            sendPayload(new TextSetupPayloadComponent("Custom config files were not sent. Try again"));
+            return;
+        }
+
+        Match match;
+        try {
+           match = new Match(matchName, new Pair<>(username, this), playerCount, isSinglePlayer, serverManager, userConfig,
+                    userCrafting, userFaith, userLeader);
+        }catch(RuntimeException e){
+            Logger.log("The game cannot be created because config files where not valid");
+            sendPayload(new TextSetupPayloadComponent("Cannot create the match because config files were not valid"));
+            return;
+        }
+
+        try {
+            serverManager.addMatch(match);
+        }catch(IllegalArgumentException e){
+            sendPayload(new TextSetupPayloadComponent(e.getMessage()));
+            return;
+        }
+
+        this.currentMatch = match;
+        sendPayload(new SetGameNameSetupPayloadComponent(matchName));
+        if(playerCount > 1) {
+            sendPayload(new TextSetupPayloadComponent("You created the game! Waiting for other players..."));
+        }
+
+    }
+
+    private boolean checkMatchCreationRights(String matchName, int playerCount, boolean isSinglePlayer) {
+        if(username == null){
+            sendPayload(new TextSetupPayloadComponent("Set your username first"));
+            return false;
+        }
+        if(this.currentMatch != null){
+            sendPayload(new TextSetupPayloadComponent("Already in a match"));
+            return false;
+        }
+        if(matchName == null){
+            sendPayload(new TextSetupPayloadComponent("Match name not valid. Choose a valid one"));
+            return false;
+        }
+        if(playerCount <= 0 || playerCount > 4){
+            sendPayload(new TextSetupPayloadComponent("Number of players must be between 1 and 4"));
+            return false;
+        }
+        if(isSinglePlayer && playerCount > 1){
+            sendPayload(new TextSetupPayloadComponent("In single player mode there must be only 1 player"));
+            return false;
+        }
+        if(!isSinglePlayer && playerCount < 2){
+            sendPayload(new TextSetupPayloadComponent("In multiplayer mode there must be at leas 2 players"));
+            return false;
+        }
+        if(serverManager.alreadyExistentGameName(matchName)){
+            sendPayload(new TextSetupPayloadComponent("There is another match with name \"" + matchName + "\""));
+            return false;
+        }
+        return true;
     }
 
     public synchronized void joinMatch(String matchName){

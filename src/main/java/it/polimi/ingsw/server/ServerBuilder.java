@@ -196,4 +196,16 @@ public class ServerBuilder {
 
         return stateMachine;
     }
+
+    public static StateMachine buildCustomStateMachine(String config, String crafting, String faith, String leaders, List<String> usernames, Random seededRandom, boolean isSinglePlayer, ActionQueue actionQueue) throws ParserException{
+        GameModel model = buildModel(config, crafting, faith, leaders, usernames, isSinglePlayer, seededRandom);
+        GameContext gameContext = new GameContext(model, isSinglePlayer, config, crafting, faith, leaders);
+
+        StateMachine stateMachine = new StateMachine(actionQueue, gameContext, new SetupState(gameContext));
+        model.getFaithPath().setListener(stateMachine);
+        for(Token t : model.getLorenzoTokens())
+            t.setListener(stateMachine);
+
+        return stateMachine;
+    }
 }

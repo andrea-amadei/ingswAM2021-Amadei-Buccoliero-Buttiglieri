@@ -9,6 +9,7 @@ import it.polimi.ingsw.server.ServerManager;
 import it.polimi.ingsw.common.utils.Pair;
 import it.polimi.ingsw.common.utils.ResourceLoader;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -31,8 +32,18 @@ public class Match {
 
     private MatchState currentState;
 
+    private String userConfig;
+    private String userCrafting;
+    private String userFaith;
+    private String userLeader;
+
 
     public Match(String gameName, Pair<String, ClientHandler> host, int matchSize, boolean isSinglePlayer, ServerManager serverManager){
+        this(gameName, host, matchSize, isSinglePlayer, serverManager, null, null, null, null);
+    }
+
+    public Match(String gameName, Pair<String, ClientHandler> host, int matchSize, boolean isSinglePlayer, ServerManager serverManager,
+                 String userConfig, String userCrafting, String userFaith, String userLeader){
 
         stateMachine = null;
         actionQueue = new ActionQueue();
@@ -46,12 +57,23 @@ public class Match {
         this.isSinglePlayer = isSinglePlayer;
 
         this.currentState = MatchState.LOBBY;
+
+        if(userConfig != null && userCrafting != null && userFaith != null && userLeader != null){
+            try{
+                ServerBuilder.buildCustomStateMachine(userConfig, userCrafting, userFaith, userLeader, Arrays.asList("player1", "player2", "player3", "player4"), new Random(2), isSinglePlayer, new ActionQueue());
+                this.userConfig = userConfig;
+                this.userCrafting = userCrafting;
+                this.userLeader = userLeader;
+                this.userFaith = userFaith;
+            } catch (ParserException | RuntimeException e) {
+                throw new IllegalArgumentException("The config files were not valid");
+            }
+        }
         try {
             addPlayer(host);
         } catch (DuplicateUsernameException | GameNotInLobbyException e) {
             e.printStackTrace();
         }
-
     }
 
     public synchronized void addPlayer(Pair<String, ClientHandler> client) throws DuplicateUsernameException, GameNotInLobbyException {
@@ -110,13 +132,22 @@ public class Match {
         String faith;
         String leaders;
 
-        config = ResourceLoader.loadFile("cfg/config.json");
-        crafting = ResourceLoader.loadFile("cfg/crafting.json");
-        faith = ResourceLoader.loadFile("cfg/faith.json");
-        leaders = ResourceLoader.loadFile("cfg/leaders.json");
-
+        if(this.userFaith != null && this.userCrafting != null && this.userConfig != null && this.userLeader != null){
+            config = this.userConfig;
+            crafting = this.userCrafting;
+            faith = this.userFaith;
+            leaders = this.userLeader;
+        }else {
+            config = ResourceLoader.loadFile("cfg/config.json");
+            crafting = ResourceLoader.loadFile("cfg/crafting.json");
+            faith = ResourceLoader.loadFile("cfg/faith.json");
+            leaders = ResourceLoader.loadFile("cfg/leaders.json");
+        }
         try {
-            this.stateMachine = ServerBuilder.buildStateMachine(config, crafting, faith, leaders, clientHub.getUsernames(), new Random(3), isSinglePlayer, actionQueue);
+            if(this.userFaith != null && this.userCrafting != null && this.userConfig != null && this.userLeader != null)
+                this.stateMachine = ServerBuilder.buildCustomStateMachine(config, crafting, faith, leaders, clientHub.getUsernames(), new Random(3), isSinglePlayer, actionQueue);
+            else
+                this.stateMachine = ServerBuilder.buildStateMachine(config, crafting, faith, leaders, clientHub.getUsernames(), new Random(3), isSinglePlayer, actionQueue);
         } catch (ParserException e) {
             e.printStackTrace();
             throw new RuntimeException("Could not parse the json files");

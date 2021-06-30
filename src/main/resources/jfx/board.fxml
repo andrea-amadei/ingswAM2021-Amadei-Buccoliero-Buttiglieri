@@ -7,7 +7,7 @@
 <AnchorPane fx:id="board" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllers.BoardGuiController">
     <ShopBox fx:id="shop" scaleX="0.6" scaleY="0.6" AnchorPane.leftAnchor="1100" AnchorPane.topAnchor="-50" />
     <MarketBox fx:id="market" prefHeight="465" prefWidth="678" scaleX="0.8" scaleY="0.8" AnchorPane.leftAnchor="680" AnchorPane.topAnchor="175" />
-    <FaithPath fx:id="faithPath" layoutX="560.0" layoutY="1.0" scaleX="0.7" scaleY="0.7" AnchorPane.leftAnchor="560.0" AnchorPane.topAnchor="1.0" />
+    <!-- <FaithPath fx:id="faithPath" layoutX="560.0" layoutY="1.0" scaleX="0.7" scaleY="0.7" AnchorPane.leftAnchor="560.0" AnchorPane.topAnchor="1.0" /> -->
     <MenuBox fx:id="buttons" AnchorPane.leftAnchor="431.0" AnchorPane.topAnchor="220.0" />
     <TextArea fx:id="messages" editable="false" layoutX="24.0" layoutY="200.0" prefHeight="140.0" prefWidth="381.0" />
 </AnchorPane>
