@@ -17,6 +17,9 @@ public class CraftingSelector extends VBox {
     private final TextField faithField;
 
     public CraftingSelector() {
+        this.setPrefWidth(250d);
+        this.setMaxWidth(Double.NEGATIVE_INFINITY);
+
         HBox hBox;
 
         input = new ResourceSelector("Input:", true);
