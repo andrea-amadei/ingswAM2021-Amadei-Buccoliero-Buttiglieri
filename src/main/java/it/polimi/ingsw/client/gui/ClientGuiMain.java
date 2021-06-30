@@ -14,18 +14,6 @@ import java.util.List;
 public class ClientGuiMain extends Application {
 
     public static void main(String[] args) {
-        /*try {
-            if (args.length == 2){
-                Integer.parseInt(args[1]);
-            }else if(args.length != 0){
-                System.out.println("Wrong parameters format");
-                return;
-            }
-        }catch(RuntimeException e){
-            System.out.println("Wrong parameters format");
-            return;
-        }*/
-
         launch(args);
     }
 
