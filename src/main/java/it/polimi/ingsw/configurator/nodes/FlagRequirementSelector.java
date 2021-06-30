@@ -1,5 +1,8 @@
 package it.polimi.ingsw.configurator.nodes;
 
+import it.polimi.ingsw.common.parser.raw.RawRequirement;
+import it.polimi.ingsw.common.parser.raw.RawSpecialAbility;
+import it.polimi.ingsw.server.model.basetypes.FlagColor;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
@@ -45,5 +48,18 @@ public class FlagRequirementSelector extends HBox implements RequirementSelector
         this.getChildren().addAll(label1, color, label2, amount);
     }
 
+    public RawRequirement getRawRequirement() {
+        return new RawRequirement(
+                FlagColor.valueOf(color.getSelectionModel().getSelectedItem().toUpperCase()),
+                Integer.parseInt(amount.getText()
+        ));
+    }
 
+    public void setRawRequirement(RawRequirement rawRequirement) {
+        if(!rawRequirement.getType().equals("flag"))
+            return;
+
+        color.getSelectionModel().select(rawRequirement.getFlag().name().toLowerCase());
+        amount.setText(String.valueOf(rawRequirement.getAmount()));
+    }
 }
