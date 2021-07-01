@@ -1,6 +1,7 @@
 package it.polimi.ingsw.configurator.nodes;
 
 import it.polimi.ingsw.common.parser.raw.RawCrafting;
+import it.polimi.ingsw.common.parser.raw.RawSpecialAbility;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -77,5 +78,20 @@ public class CraftingSelector extends VBox implements AbilitySelector {
 
     public RawCrafting getRawCrafting() {
         return new RawCrafting(getInput(), getOutput(), getFaithOutput());
+    }
+
+    @Override
+    public RawSpecialAbility getRawSpecialAbility() {
+        return new RawSpecialAbility(getRawCrafting());
+    }
+
+    @Override
+    public void setRawSpecialAbility(RawSpecialAbility rawSpecialAbility) {
+        if(!rawSpecialAbility.getType().equals("crafting"))
+            return;
+
+        setInputMap(rawSpecialAbility.getCrafting().getInput());
+        setOutputMap(rawSpecialAbility.getCrafting().getOutput());
+        setFaithOutput(rawSpecialAbility.getCrafting().getFaithOutput());
     }
 }

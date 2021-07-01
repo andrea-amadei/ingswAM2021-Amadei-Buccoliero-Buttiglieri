@@ -134,5 +134,9 @@ public class ConversionAbilitySelector extends VBox implements AbilitySelector {
 
         for(String res : rawSpecialAbility.getTo())
             checkBoxes.get(res).setSelected(true);
+
+        for(String res : checkBoxes.keySet())
+            if(!rawSpecialAbility.getTo().contains(res))
+                checkBoxes.get(res).setSelected(false);
     }
 }

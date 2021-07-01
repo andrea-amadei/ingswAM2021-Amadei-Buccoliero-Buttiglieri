@@ -64,11 +64,11 @@ public class ConversionAbilityBox extends HBox {
 
         faith = new ResourceBox("faith", conversionAbility.get().getFaithOutput(), true, false, true);
 
-        if(conversionAbility.get().getFaithOutput() > 0)
-            this.getChildren().add(faith);
-
         this.getChildren().addAll(marble, label);
         this.getChildren().addAll(resources);
+
+        if(conversionAbility.get().getFaithOutput() > 0)
+            this.getChildren().add(faith);
     }
 
     private void update(){
