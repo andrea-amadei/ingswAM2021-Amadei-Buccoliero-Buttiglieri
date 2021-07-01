@@ -1,11 +1,12 @@
-#Polimi IngSFW final project 2021
+# Polimi IngSFW final project 2021
 
-##Group members
+## Group members
 - ### Andrea Amadei
 - ### Caterina Buccoliero
 - ### Giorgio Buttiglieri
 
-##Implemented functionalities
+## Implemented functionalities
+
 - Complete rules
 - GUI
 - CLI
@@ -20,7 +21,9 @@ If there are no parameters specified, the GUI starts at host localhost on port 6
 If there are parameters, the first one must be “client” or “server”.
 -	If the first parameter is “client”, there can either be no more parameters (default is GUI, localhost 6789) or the next parameter must be one between “cli” and “gui”. For both last cases the default option is localhost 6789, or if more parameters are specified they must be exactly two: host and port.
 -	If the first parameter is “server”,  a single numeric parameter can follow (the port) or no parameters at all (default 6789).
-###All examples
+
+### All examples
+
 | command | What starts |
 |:-----------------------|:------------------------------------:|
 | java -jar AM51-1.0-SNAPSHOT-shaded.jar | Starts client GUI, localhost 6789 |
@@ -34,7 +37,7 @@ If there are parameters, the first one must be “client” or “server”.
 
 
 
-##All CLI commands
+## All CLI commands
 
 | CLI command | What it does |
 |:-----------------------|:------------------------------------:|
@@ -66,7 +69,7 @@ If there are parameters, the first one must be “client” or “server”.
 | “k” | Okay |
 | “exit” | Closes the game |
 
-##Tools
+## Tools
 - IntelliJ
 - JavaFX
 - Maven
