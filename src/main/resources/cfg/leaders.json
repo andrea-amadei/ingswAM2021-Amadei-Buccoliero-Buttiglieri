@@ -2,7 +2,7 @@
   "cards": [
     {
       "id": 1,
-      "name": "aaa",
+      "name": "Gutenberg",
       "points": 2,
       "requirements": [
         {
@@ -26,7 +26,7 @@
     },
     {
       "id": 2,
-      "name": "aaa",
+      "name": "Galilei",
       "points": 2,
       "requirements": [
         {
@@ -50,7 +50,7 @@
     },
     {
       "id": 3,
-      "name": "aaa",
+      "name": "Aristotle",
       "points": 2,
       "requirements": [
         {
@@ -74,7 +74,7 @@
     },
     {
       "id": 4,
-      "name": "aaa",
+      "name": "Smith",
       "points": 2,
       "requirements": [
         {
@@ -98,7 +98,7 @@
     },
     {
       "id": 5,
-      "name": "bbb",
+      "name": "Faraday",
       "points": 3,
       "requirements": [
         {
@@ -118,7 +118,7 @@
     },
     {
       "id": 6,
-      "name": "bbb",
+      "name": "Maxwell",
       "points": 3,
       "requirements": [
         {
@@ -138,7 +138,7 @@
     },
     {
       "id": 7,
-      "name": "bbb",
+      "name": "Watt",
       "points": 3,
       "requirements": [
         {
@@ -158,7 +158,7 @@
     },
     {
       "id": 8,
-      "name": "bbb",
+      "name": "Edison",
       "points": 3,
       "requirements": [
         {
@@ -178,7 +178,7 @@
     },
     {
       "id": 9,
-      "name": "ccc",
+      "name": "Darwin",
       "points": 5,
       "requirements": [
         {
@@ -203,7 +203,7 @@
     },
     {
       "id": 10,
-      "name": "ccc",
+      "name": "Lavoisier",
       "points": 5,
       "requirements": [
         {
@@ -228,7 +228,7 @@
     },
     {
       "id": 11,
-      "name": "ccc",
+      "name": "Euclid",
       "points": 5,
       "requirements": [
         {
@@ -253,7 +253,7 @@
     },
     {
       "id": 12,
-      "name": "ccc",
+      "name": "Newton",
       "points": 5,
       "requirements": [
         {
@@ -278,7 +278,7 @@
     },
     {
       "id": 13,
-      "name": "ddd",
+      "name": "Einstein",
       "points": 4,
       "requirements": [
         {
@@ -305,7 +305,7 @@
     },
     {
       "id": 14,
-      "name": "ddd",
+      "name": "Pasteur",
       "points": 4,
       "requirements": [
         {
@@ -332,7 +332,7 @@
     },
     {
       "id": 15,
-      "name": "ddd",
+      "name": "Marconi",
       "points": 4,
       "requirements": [
         {
@@ -359,7 +359,7 @@
     },
     {
       "id": 16,
-      "name": "ddd",
+      "name": "Copernicus",
       "points": 4,
       "requirements": [
         {
