@@ -63,6 +63,7 @@ public class LobbyGuiController extends BaseController {
         n_players.setDisable(false);
 
         create_match_button.setVisible(true);
+        customCheck.setVisible(true);
     }
 
     @FXML
@@ -73,6 +74,7 @@ public class LobbyGuiController extends BaseController {
     @FXML
     private void selectedItemAction() {
         create_match_button.setDisable(false);
+        customCheck.setDisable(false);
     }
 
     @FXML
