@@ -44,6 +44,14 @@ public class RawLeaderCard implements UniqueRawObject<LeaderCard> {
                                                     .collect(Collectors.toList());
     }
 
+    public RawLeaderCard(int id, String name, int points, List<RawSpecialAbility> abilities, List<RawRequirement> requirements) {
+        this.id = id;
+        this.name = name;
+        this.points = points;
+        this.abilities = abilities;
+        this.requirements = requirements;
+    }
+
     @Override
     public String getStringId() {
         return String.format("%03d", id);
