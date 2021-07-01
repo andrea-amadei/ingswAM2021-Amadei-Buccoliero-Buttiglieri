@@ -48,7 +48,6 @@ public class LeaderCardBox extends VBox {
     private void update(){
         if(!isCovered.get() && rawLeaderCard.get() != null){
             this.getChildren().clear();
-            System.out.println("Update!");
             RawLeaderCard currentCard = rawLeaderCard.get();
             Map<String, Integer> resourceRequirements = new HashMap<>();
             List<RawRequirement> levelFlagRequirements = new ArrayList<>();
