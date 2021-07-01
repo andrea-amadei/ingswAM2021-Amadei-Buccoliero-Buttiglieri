@@ -1,8 +1,9 @@
 package it.polimi.ingsw.configurator.nodes;
 
-import it.polimi.ingsw.server.model.leader.SpecialAbility;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import it.polimi.ingsw.client.gui.nodes.LeaderCardBox;
+import it.polimi.ingsw.common.parser.raw.RawLeaderCard;
+import it.polimi.ingsw.common.parser.raw.RawRequirement;
+import it.polimi.ingsw.common.parser.raw.RawSpecialAbility;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -25,12 +26,15 @@ public class LeaderCardSelector extends HBox {
 
     private final ComboBox<String> abilityComboBox;
     private AbilitySelector ability;
+    private VBox abilityBox;
 
     private final Button addFlagButton, removeFlagButton;
     private final Button addLevelFlagButton, removeLevelFlagButton;
     private final Button addResourceButton, removeResourceButton;
 
     private final VBox flagBox, levelFlagBox, resourceBox;
+
+    private LeaderCardBox leaderCardBox;
 
     private void addFlag() {
         FlagRequirementSelector flagRequirement = new FlagRequirementSelector();
@@ -177,8 +181,8 @@ public class LeaderCardSelector extends HBox {
         vBox1.setSpacing(20d);
         vBox1.getChildren().addAll(hBox1, hBox2, hBox3);
 
-        vBox2 = new VBox();
-        vBox2.setSpacing(30d);
+        abilityBox = new VBox();
+        abilityBox.setSpacing(30d);
 
         abilityComboBox = new ComboBox<>();
         abilityComboBox.setPrefWidth(250d);
@@ -203,13 +207,116 @@ public class LeaderCardSelector extends HBox {
                     break;
             }
 
-            vBox2.getChildren().set(1, (VBox) ability);
+            abilityBox.getChildren().set(1, (VBox) ability);
         });
 
         ability = new ConversionAbilitySelector();
-        vBox2.getChildren().addAll(abilityComboBox, (VBox) ability);
+        abilityBox.getChildren().addAll(abilityComboBox, (VBox) ability);
+
+        leaderCardBox = new LeaderCardBox();
 
         this.setSpacing(20d);
-        this.getChildren().addAll(vBox1, flagBox, levelFlagBox, resourceBox, vBox2);
+        this.getChildren().addAll(vBox1, flagBox, levelFlagBox, resourceBox, abilityBox, leaderCardBox);
+    }
+
+    public RawLeaderCard getRawLeaderCard() {
+        List<RawSpecialAbility> abilities = new ArrayList<>();
+        List<RawRequirement > requirements = new ArrayList<>();
+
+        for(FlagRequirementSelector req : flagRequirements)
+            requirements.add(req.getRawRequirement());
+
+        for(LevelFlagRequirementSelector req : levelFlagRequirements)
+            requirements.add(req.getRawRequirement());
+
+        for(ResourceRequirementSelector req : resourceRequirements)
+            requirements.add(req.getRawRequirement());
+
+        abilities.add(ability.getRawSpecialAbility());
+
+        return new RawLeaderCard(
+                Integer.parseInt(id.getText()),
+                name.getText(),
+                Integer.parseInt(points.getText()),
+                abilities,
+                requirements
+        );
+    }
+
+    public void setRawLeaderCard(RawLeaderCard rawLeaderCard) {
+        id.setText(String.valueOf(rawLeaderCard.getId()));
+        name.setText(rawLeaderCard.getName());
+        points.setText(String.valueOf(rawLeaderCard.getPoints()));
+
+        for(FlagRequirementSelector req : flagRequirements)
+            removeFlag();
+
+        for(LevelFlagRequirementSelector req : levelFlagRequirements)
+            removeLevelFlag();
+
+        for(ResourceRequirementSelector req : resourceRequirements)
+            removeResource();
+
+        for(RawRequirement req : rawLeaderCard.getRequirements())
+            switch(req.getType()) {
+                case "flag":
+                    addFlag();
+                    flagRequirements.get(flagRequirements.size() - 1).setRawRequirement(req);
+                    break;
+
+                case "level_flag":
+                    addLevelFlag();
+                    levelFlagRequirements.get(levelFlagRequirements.size() - 1).setRawRequirement(req);
+                    break;
+
+                case "resource":
+                    addResource();
+                    resourceRequirements.get(resourceRequirements.size() - 1).setRawRequirement(req);
+                    break;
+            }
+
+        RawSpecialAbility rawAbility = rawLeaderCard.getAbilities().get(0);
+
+        switch(rawAbility.getType()) {
+            case "conversion":
+                abilityComboBox.getSelectionModel().select("conversion");
+                ability = new ConversionAbilitySelector();
+                ability.setRawSpecialAbility(rawAbility);
+                abilityBox.getChildren().set(1, (VBox) ability);
+                break;
+
+            case "crafting":
+                abilityComboBox.getSelectionModel().select("crafting");
+                ability = new CraftingSelector();
+                ability.setRawSpecialAbility(rawAbility);
+                abilityBox.getChildren().set(1, (VBox) ability);
+                break;
+
+            case "discount":
+                abilityComboBox.getSelectionModel().select("discount");
+                ability = new DiscountAbilitySelector();
+                ability.setRawSpecialAbility(rawAbility);
+                abilityBox.getChildren().set(1, (VBox) ability);
+                break;
+
+            case "storage":
+                abilityComboBox.getSelectionModel().select("storage");
+                ability = new StorageAbilitySelector();
+                ability.setRawSpecialAbility(rawAbility);
+                abilityBox.getChildren().set(1, (VBox) ability);
+                break;
+        }
+    }
+
+    public void updatePreview() {
+        leaderCardBox = new LeaderCardBox();
+        leaderCardBox.setIsCovered(false);
+        leaderCardBox.setRawLeaderCard(getRawLeaderCard());
+
+        this.getChildren().set(this.getChildren().size() - 1, leaderCardBox);
+    }
+
+    public void setId(int id) {
+        this.id.setText(String.valueOf(id));
     }
 }
