@@ -80,8 +80,6 @@ public class EndGameCliUpdater implements Listener<ClientEndGameResults> {
 
             popup.setVisible(true);
             popupMessage.setText(sb.toString());
-
-            System.out.println(sb.toString());
         }
     }
 }

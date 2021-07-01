@@ -96,7 +96,6 @@ public class LobbyGuiController extends BaseController {
                 //reading files from disk
                 List<String> fileNames = Arrays.asList("config.json", "crafting.json", "faith.json", "leaders.json");
                 List<String> fileContents = new ArrayList<>();
-                System.out.println(this.getClass().getProtectionDomain().getCodeSource().getLocation());
                 for (String fileName : fileNames) {
                     File parentDirectory = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile();
                     Path jsonFilePath = new File(parentDirectory, fileName).toPath();

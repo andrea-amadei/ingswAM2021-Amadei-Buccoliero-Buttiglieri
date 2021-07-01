@@ -132,7 +132,6 @@ public class CraftingCardBox extends VBox {
     }
 
     private void update(){
-        System.out.println("Update in craftingCardBox");
         RawStorage rawStorage = new RawStorage("cost", rawCraftingCard.get().getCost());
         String flagColor = rawCraftingCard.get().getFlag().name().toLowerCase();
         int flagLevel = rawCraftingCard.get().getLevel();

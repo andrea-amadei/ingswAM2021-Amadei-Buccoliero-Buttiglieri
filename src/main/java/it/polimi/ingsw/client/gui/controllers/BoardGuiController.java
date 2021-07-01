@@ -95,9 +95,7 @@ public class BoardGuiController extends BaseController {
         ownedUsername = getServerHandler().getUsername();
         setActivePlayer(getServerHandler().getUsername());
 
-        //System.out.println("Faith path index: " + board.getChildren().indexOf(faithPath));
         faithPath = new FaithPath(getModel().getPlayers().get(0).getFaithPath().getTiles(), getModel().getPlayers().get(0).getFaithPath().getFaithGroups());
-        //layoutX="560.0" layoutY="1.0" scaleX="0.7" scaleY="0.7" AnchorPane.leftAnchor="560.0" AnchorPane.topAnchor="1.0"
         faithPath.setLayoutX(560);
         faithPath.setLayoutY(1);
         faithPath.setScaleX(0.7);
@@ -283,28 +281,24 @@ public class BoardGuiController extends BaseController {
         if(getServerHandler() != null){
             getServerHandler().sendPayload(new SelectCardFromShopActionPayloadComponent(ownedUsername, bean.getRow(), bean.getCol(), bean.getUpgradableIndex() -1));
         }
-        System.out.println("Selected card (" + bean.getRow() + ", " + bean.getCol() + ") and upgradable crafting " + bean.getUpgradableIndex());
     }
 
     private void sendConversionOptionPayload(ConversionSelectionEvent event){
         if(getServerHandler() != null){
             getServerHandler().sendPayload(new SelectConversionsActionPayloadComponent(ownedUsername, event.getBean().getSelectedConversions()));
         }
-        System.out.println("Selected options: " + event.getBean().getSelectedConversions());
     }
 
     private void sendMarketPickPayload(MarketPickEvent event){
         if(getServerHandler() != null){
             getServerHandler().sendPayload(new BuyFromMarketActionPayloadComponent(ownedUsername, event.getBean().isRow(), event.getBean().getIndex()));
         }
-        System.out.println("Market Pick: " + event.getBean().isRow() + " " + event.getBean().getIndex());
     }
 
     private void sendCraftingSelectionPayload(CraftingSelectionEvent event){
         if(getServerHandler() != null){
             getServerHandler().sendPayload(new SelectCraftingActionPayloadComponent(ownedUsername, event.getBean().getCraftingType(), event.getBean().getIndex()));
         }
-        System.out.println("Crafting Selected: " + event.getBean().getCraftingType() + " " + event.getBean().getIndex());
     }
 
     private void sendResourceSelectionPayload(ResourceSelectionEvent selectionEvent){
@@ -315,7 +309,6 @@ public class BoardGuiController extends BaseController {
             if(getServerHandler() != null){
                 getServerHandler().sendPayload(new SelectResourcesActionPayloadComponent(ownedUsername, id, resource, amount));
             }
-            System.out.println("Select resources " + id + " " + resource + " " + amount);
         }
     }
 
@@ -323,21 +316,18 @@ public class BoardGuiController extends BaseController {
         if(getServerHandler() != null){
             getServerHandler().sendPayload(new ResourcesMoveActionPayloadComponent(ownedUsername, bean.getSourceId(), bean.getTargetDestination(), bean.getChoseResource(), bean.getAmountToTransfer()));
         }
-        System.out.println("Resources move" + bean);
     }
 
     private void sendCollectFromBasket(ResourceTransferBean bean){
         if(getServerHandler() != null){
             getServerHandler().sendPayload(new MoveFromBasketToShelfActionPayloadComponent(ownedUsername,  bean.getChoseResource(), bean.getAmountToTransfer(), bean.getTargetDestination()));
         }
-        System.out.println("Collect from basket: " + bean);
     }
 
     private void sendOutputSelectionPayload(OutputSelectionBean bean){
         if(getServerHandler() != null){
             getServerHandler().sendPayload(new SelectCraftingOutputActionPayloadComponent(ownedUsername, bean.getSelection()));
         }
-        System.out.println("Output selection: " + bean.getSelection());
     }
 
     private void sendLeaderInteractionPayload(LeaderInteractionEvent event){
@@ -355,13 +345,11 @@ public class BoardGuiController extends BaseController {
             if(getServerHandler() != null){
                 getServerHandler().sendPayload(new ActivateLeaderActionPayloadComponent(ownedUsername, id));
             }
-            System.out.println("Activate Leader with id " + id + " (index: " + index + ")");
         }
         else {
             if(getServerHandler() != null){
                 getServerHandler().sendPayload(new DiscardLeaderActionPayloadComponent(ownedUsername, id));
             }
-            System.out.println("Discarded Leader with id " + id + " (index: " + index + ")");
         }
     }
 
@@ -371,31 +359,26 @@ public class BoardGuiController extends BaseController {
             if(getServerHandler() != null){
                 getServerHandler().sendPayload(new ConfirmActionPayloadComponent(ownedUsername));
             }
-            System.out.println("Confirmed");
         }else if(possibleActions.contains(PossibleActions.CONFIRM_TIDY)){
             if(getServerHandler() != null){
                 getServerHandler().sendPayload(new ConfirmTidyActionPayloadComponent(ownedUsername));
             }
-            System.out.println("ConfirmedTidy");
         }
     }
 
     private void sendPreliminaryPickPayload(PreliminaryPickBean bean){
         if(getServerHandler() != null)
             getServerHandler().sendPayload(new PreliminaryPickActionPayloadComponent(ownedUsername, bean.getLeaderIndexes(), bean.getSelectedResources()));
-        System.out.println("PreliminaryPick: " + bean.getLeaderIndexes() + " " + bean.getSelectedResources());
     }
 
     private void sendSelectPlayPayload(SelectPlayEvent event){
         if(getServerHandler() != null)
             getServerHandler().sendPayload(new SelectPlayActionPayloadComponent(ownedUsername, event.getPlay()));
-        System.out.println("Selected play: " + event.getPlay());
     }
 
     private void sendBackPayload(BackEvent event){
         if(getServerHandler() != null)
             getServerHandler().sendPayload(new BackActionPayloadComponent(ownedUsername));
-        System.out.println("Back");
     }
 
 }

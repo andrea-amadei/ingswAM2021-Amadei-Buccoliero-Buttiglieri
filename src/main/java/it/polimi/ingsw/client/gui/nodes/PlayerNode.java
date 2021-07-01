@@ -127,7 +127,6 @@ public class PlayerNode extends AnchorPane {
             bean.setIndex(containerInfo.getSecond());
 
             fireEvent(new ResourceSelectionEvent(bean));
-            //System.out.println("Fired resource selection: " + containerInfo.getFirst() + " " + containerInfo.getSecond());
         }
     }
 
@@ -139,7 +138,6 @@ public class PlayerNode extends AnchorPane {
             bean.setIndex(containerInfo.getSecond());
 
             fireEvent(new ResourceTransferEvent(bean));
-            //System.out.println("Fired start resource transfer: " + containerInfo.getFirst() + " " + containerInfo.getSecond());
         }
     }
 

@@ -74,9 +74,6 @@ public class ProductionBox extends GridPane {
                 this.add(stackPane, j, i);
             }
         }
-
-        System.out.println(slotBoxes.get(0).backgroundProperty());
-
     }
 
     private void update(){
