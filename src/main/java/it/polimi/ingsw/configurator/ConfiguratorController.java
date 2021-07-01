@@ -574,25 +574,25 @@ public class ConfiguratorController {
         hBox1 = new HBox();
         hBox1.setSpacing(20d);
         label = new Label("Id:");
-        label.setPrefWidth(80d);
+        label.setPrefWidth(120d);
         hBox1.getChildren().addAll(label, textField1);
 
         hBox2 = new HBox();
         hBox2.setSpacing(20d);
         label = new Label("Flag color:");
-        label.setPrefWidth(80d);
+        label.setPrefWidth(120d);
         hBox2.getChildren().addAll(label, comboBox1);
 
         hBox3 = new HBox();
         hBox3.setSpacing(20d);
         label = new Label("Flag level:");
-        label.setPrefWidth(80d);
+        label.setPrefWidth(120d);
         hBox3.getChildren().addAll(label, comboBox2);
 
         hBox4 = new HBox();
         hBox4.setSpacing(20d);
         label = new Label("Points:");
-        label.setPrefWidth(80d);
+        label.setPrefWidth(120d);
         hBox4.getChildren().addAll(label, textField2);
 
         vBox.getChildren().addAll(hBox1, hBox2, hBox3, hBox4);

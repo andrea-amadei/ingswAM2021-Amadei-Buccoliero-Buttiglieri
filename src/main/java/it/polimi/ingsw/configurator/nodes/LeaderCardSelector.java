@@ -123,7 +123,7 @@ public class LeaderCardSelector extends HBox {
         flagBox.setSpacing(20d);
         label = new Label("Flag:");
         hBox = new HBox();
-        hBox.setSpacing(20d);
+        hBox.setSpacing(52d);
         hBox.getChildren().addAll(addFlagButton, removeFlagButton);
         flagBox.getChildren().addAll(label, hBox);
 
@@ -131,7 +131,7 @@ public class LeaderCardSelector extends HBox {
         levelFlagBox.setSpacing(20d);
         label = new Label("Level Flag:");
         hBox = new HBox();
-        hBox.setSpacing(20d);
+        hBox.setSpacing(52d);
         hBox.getChildren().addAll(addLevelFlagButton, removeLevelFlagButton);
         levelFlagBox.getChildren().addAll(label, hBox);
 
@@ -139,7 +139,7 @@ public class LeaderCardSelector extends HBox {
         resourceBox.setSpacing(20d);
         label = new Label("Resource:");
         hBox = new HBox();
-        hBox.setSpacing(20d);
+        hBox.setSpacing(52d);
         hBox.getChildren().addAll(addResourceButton, removeResourceButton);
         resourceBox.getChildren().addAll(label, hBox);
 

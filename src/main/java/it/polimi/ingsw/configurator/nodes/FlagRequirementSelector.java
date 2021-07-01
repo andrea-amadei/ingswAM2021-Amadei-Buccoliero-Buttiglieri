@@ -19,7 +19,7 @@ public class FlagRequirementSelector extends VBox implements RequirementSelector
         Label label1, label2;
 
         color = new ComboBox<>();
-        color.setPrefWidth(70d);
+        color.setPrefWidth(100d);
         color.setItems(FXCollections.observableArrayList("blue", "green", "purple", "yellow"));
         color.getSelectionModel().selectFirst();
 

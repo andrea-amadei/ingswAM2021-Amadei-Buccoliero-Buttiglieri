@@ -19,12 +19,12 @@ public class LevelFlagRequirementSelector extends VBox implements RequirementSel
         Label label1, label2, label3;
 
         color = new ComboBox<>();
-        color.setPrefWidth(70d);
+        color.setPrefWidth(100d);
         color.setItems(FXCollections.observableArrayList("blue", "green", "purple", "yellow"));
         color.getSelectionModel().selectFirst();
 
         level = new ComboBox<>();
-        level.setPrefWidth(70d);
+        level.setPrefWidth(100d);
         level.setItems(FXCollections.observableArrayList(1, 2, 3));
         level.getSelectionModel().selectFirst();
 

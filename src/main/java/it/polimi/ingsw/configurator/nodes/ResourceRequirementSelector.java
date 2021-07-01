@@ -18,7 +18,7 @@ public class ResourceRequirementSelector extends VBox implements RequirementSele
         Label label1, label2;
 
         resourceComboBox = new ComboBox<>();
-        resourceComboBox.setPrefWidth(70d);
+        resourceComboBox.setPrefWidth(100d);
         resourceComboBox.setItems(FXCollections.observableArrayList("gold", "servant", "shield", "stone"));
         resourceComboBox.getSelectionModel().selectFirst();
 
