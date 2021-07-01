@@ -139,14 +139,15 @@ public class FaithPath extends GridPane {
         player4PositionsProperty = new SimpleIntegerProperty(this, "player4PositionsProperty", -1);
         lorenzoPositionProperty = new SimpleIntegerProperty(this, "lorenzoPositionProperty", -1);
 
-        player1CheckpointsStatusProperty = new SimpleListProperty<>(this, "player1CheckpointsStatusProperty", FXCollections.observableList(
-                Arrays.asList(FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED)));
-        player2CheckpointsStatusProperty = new SimpleListProperty<>(this, "player2CheckpointsStatusProperty", FXCollections.observableList(
-                Arrays.asList(FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED)));
-        player3CheckpointsStatusProperty = new SimpleListProperty<>(this, "player3CheckpointsStatusProperty", FXCollections.observableList(
-                Arrays.asList(FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED)));
-        player4CheckpointsStatusProperty = new SimpleListProperty<>(this, "player4CheckpointsStatusProperty", FXCollections.observableList(
-                Arrays.asList(FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED, FaithHolder.CheckpointStatus.UNREACHED)));
+        player1CheckpointsStatusProperty = new SimpleListProperty<>(this, "player1CheckpointsStatusProperty",
+                FXCollections.observableList(Collections.nCopies(groups.size(), FaithHolder.CheckpointStatus.UNREACHED)));
+        player2CheckpointsStatusProperty = new SimpleListProperty<>(this, "player2CheckpointsStatusProperty",
+                FXCollections.observableList(Collections.nCopies(groups.size(), FaithHolder.CheckpointStatus.UNREACHED)));
+        player3CheckpointsStatusProperty = new SimpleListProperty<>(this, "player3CheckpointsStatusProperty",
+                FXCollections.observableList(Collections.nCopies(groups.size(), FaithHolder.CheckpointStatus.UNREACHED)));
+        player4CheckpointsStatusProperty = new SimpleListProperty<>(this, "player4CheckpointsStatusProperty",
+                FXCollections.observableList(Collections.nCopies(groups.size(), FaithHolder.CheckpointStatus.UNREACHED)));
+
         setup();
         update();
     }
