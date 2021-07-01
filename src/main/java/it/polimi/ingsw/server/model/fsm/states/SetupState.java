@@ -63,7 +63,6 @@ public class SetupState extends State {
                 getGameContext().getGameModel().getPlayerNames())
         );
 
-        //TODO: shuffle players first
         //Setting up the current player
         getGameContext().setCurrentPlayer(getGameContext().getGameModel().getPlayers().get(0));
         globalPayload.add(PayloadFactory.changeCurrentPlayer(getGameContext().getCurrentPlayer().getUsername()));
@@ -79,42 +78,7 @@ public class SetupState extends State {
             }
         }
 
-
-        //TODO: remove this hack (debug only)
-
-        for(String username : getGameContext().getGameModel().getPlayerNames()){
-            Map<ResourceSingle, Integer> debugResources = new HashMap<>();
-            debugResources.put(ResourceTypeSingleton.getInstance().getGoldResource(), 10);
-            debugResources.put(ResourceTypeSingleton.getInstance().getServantResource(), 10);
-            debugResources.put(ResourceTypeSingleton.getInstance().getShieldResource(), 10);
-            debugResources.put(ResourceTypeSingleton.getInstance().getStoneResource(), 10);
-
-            for(Map.Entry<ResourceSingle, Integer> entry : debugResources.entrySet()){
-                getGameContext().getGameModel().getPlayerById(username).getBoard().getStorage().getChest().addResources(entry.getKey(), entry.getValue());
-            }
-            globalPayload.add(
-                    PayloadFactory.changeResources(username,
-                            new RawStorage(getGameContext().getGameModel().getPlayerById(username).getBoard().getStorage().getChest().getId(),
-                                    debugResources.entrySet().stream()
-                                            .collect(Collectors.toMap(e -> e.getKey().getId(), Map.Entry::getValue))))
-            );
-        }
-
-        //TODO: remove this hack (debug only)
-
-        LevelFlag green = new LevelFlag(FlagColor.GREEN, 2);
-        LevelFlag yellow = new LevelFlag(FlagColor.YELLOW, 2);
-        LevelFlag blue = new LevelFlag(FlagColor.BLUE, 2);
-        for(String username : getGameContext().getGameModel().getPlayerNames()){
-            Player p = getGameContext().getGameModel().getPlayerById(username);
-            p.getBoard().getFlagHolder().addFlag(green);
-            p.getBoard().getFlagHolder().addFlag(yellow);
-            p.getBoard().getFlagHolder().addFlag(blue);
-            globalPayload.add(PayloadFactory.addFlag(username, green.toRaw()));
-            globalPayload.add(PayloadFactory.addFlag(username, yellow.toRaw()));
-            globalPayload.add(PayloadFactory.addFlag(username, blue.toRaw()));
-        }
-
+        // add base crafting
         for(String username : getGameContext().getGameModel().getPlayerNames()){
             Crafting baseCrafting;
             try {
