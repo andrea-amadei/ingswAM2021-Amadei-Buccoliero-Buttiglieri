@@ -34,7 +34,7 @@ If there are parameters, the first one must be “client” or “server”.
 
 
 
-##all CLI commands
+##All CLI commands
 
 | CLI command | What it does |
 |:-----------------------|:------------------------------------:|
