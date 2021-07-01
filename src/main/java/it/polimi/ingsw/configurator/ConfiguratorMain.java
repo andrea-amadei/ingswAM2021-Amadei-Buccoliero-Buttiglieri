@@ -1,5 +1,6 @@
 package it.polimi.ingsw.configurator;
 
+import it.polimi.ingsw.common.parser.JSONParser;
 import it.polimi.ingsw.common.utils.Pair;
 import it.polimi.ingsw.common.utils.ResourceLoader;
 import javafx.application.Application;
@@ -18,6 +19,8 @@ public class ConfiguratorMain extends Application {
             Platform.exit();
             System.exit(0);
         });
+
+        JSONParser.setShowLogs(false);
 
         Pair<Parent, ?> sceneAndController = ResourceLoader.loadFXML("jfx/configurator.fxml");
         Scene scene = new Scene(sceneAndController.getFirst());

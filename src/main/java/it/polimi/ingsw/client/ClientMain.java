@@ -3,12 +3,16 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.cli.ClientCliMain;
 import it.polimi.ingsw.client.gui.ClientGuiMain;
 import it.polimi.ingsw.common.exceptions.UnableToDrawElementException;
+import it.polimi.ingsw.common.parser.JSONParser;
 
 import java.util.Arrays;
 
 public class ClientMain {
 
     public static void main(String[] args) throws UnableToDrawElementException {
+
+        JSONParser.setShowLogs(false);
+
         if(args.length == 0)
             ClientGuiMain.main(args);
         else if(args[0].equalsIgnoreCase("gui"))
