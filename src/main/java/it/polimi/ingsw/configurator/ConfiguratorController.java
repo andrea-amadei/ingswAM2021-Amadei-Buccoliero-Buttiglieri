@@ -1,19 +1,20 @@
 package it.polimi.ingsw.configurator;
 
+import it.polimi.ingsw.client.gui.nodes.CraftingBox;
 import it.polimi.ingsw.client.gui.nodes.CraftingCardBox;
 import it.polimi.ingsw.client.gui.nodes.FaithPath;
 import it.polimi.ingsw.common.exceptions.ParserException;
-import it.polimi.ingsw.common.parser.raw.RawCraftingCard;
+import it.polimi.ingsw.common.parser.raw.*;
 import it.polimi.ingsw.configurator.nodes.CraftingSelector;
+import it.polimi.ingsw.configurator.nodes.LeaderCardSelector;
 import it.polimi.ingsw.configurator.nodes.ResourceSelector;
 import it.polimi.ingsw.server.model.basetypes.FlagColor;
 import it.polimi.ingsw.server.model.faithpath.FaithPathGroup;
 import it.polimi.ingsw.server.model.faithpath.FaithPathTile;
 import it.polimi.ingsw.common.parser.JSONParser;
 import it.polimi.ingsw.common.parser.JSONSerializer;
-import it.polimi.ingsw.common.parser.raw.RawFaithPathGroup;
-import it.polimi.ingsw.common.parser.raw.RawFaithPathTile;
 import it.polimi.ingsw.common.utils.ResourceLoader;
+import it.polimi.ingsw.server.model.leader.LeaderCard;
 import it.polimi.ingsw.server.model.production.CraftingCard;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -61,7 +62,9 @@ public class ConfiguratorController {
 
         List<RawFaithPathTile> defaultTiles;
         List<RawFaithPathGroup> defaultGroups;
+        RawCrafting defaultBaseCrafting;
         List<RawCraftingCard> defaultCrafting;
+        List<RawLeaderCard> defaultLeaders;
 
         try {
             it.polimi.ingsw.server.model.faithpath.FaithPath fp = JSONParser.parseFaithPath(ResourceLoader.loadFile("cfg/faith.json"));
@@ -73,6 +76,13 @@ public class ConfiguratorController {
 
         try {
             defaultCrafting = JSONParser.parseCraftingCards(ResourceLoader.loadFile("cfg/crafting.json")).stream().map(CraftingCard::toRaw).collect(Collectors.toList());
+            defaultBaseCrafting = JSONParser.parseBaseCrafting(ResourceLoader.loadFile("cfg/crafting.json")).get(0).toRaw();
+        } catch (ParserException e) {
+            throw new IllegalArgumentException("Loading of standard crafting failed unexpectedly!");
+        }
+
+        try {
+            defaultLeaders = JSONParser.parseLeaders(ResourceLoader.loadFile("cfg/leaders.json")).stream().map(LeaderCard::toRaw).collect(Collectors.toList());
         } catch (ParserException e) {
             throw new IllegalArgumentException("Loading of standard crafting failed unexpectedly!");
         }
@@ -93,6 +103,10 @@ public class ConfiguratorController {
 
         testFaithPath();
 
+        baseCraftingSelector.setInputMap(defaultBaseCrafting.getInput());
+        baseCraftingSelector.setOutputMap(defaultBaseCrafting.getOutput());
+        baseCraftingSelector.setFaithOutput(defaultBaseCrafting.getFaithOutput());
+
         for(i = 0; i < defaultCrafting.size(); i++) {
             createShopCard();
 
@@ -108,6 +122,14 @@ public class ConfiguratorController {
         }
 
         testShop();
+
+        for(i = 0; i < defaultLeaders.size(); i++) {
+            createLeaderCard();
+            leaders.get(i).setRawLeaderCard(defaultLeaders.get(i));
+        }
+
+        removeLeaderButton.setDisable(true);
+        testLeaders();
     }
 
     // FAITH PATH
@@ -461,11 +483,36 @@ public class ConfiguratorController {
                 System.out.println("Unable to save file");
             }
         }
+
+        str = "{\"max_username_length\":30,\"min_username_length\":2,\"max_card_level\":3,\"min_card_level\":1,\"amount_of_leaders_per_player\":4,\"amount_of_leaders_to_discard\":2,\"first_player_amount_of_faith_points_on_start\":0,\"second_player_amount_of_faith_points_on_start\":0,\"third_player_amount_of_faith_points_on_start\":1,\"fourth_player_amount_of_faith_points_on_start\":1,\"first_player_amount_of_resources_on_start\":0,\"second_player_amount_of_resources_on_start\":1,\"third_player_amount_of_resources_on_start\":1,\"fourth_player_amount_of_resources_on_start\":2,\"base_cupboard_shelf_names\":[\"TopShelf\",\"MiddleShelf\",\"BottomShelf\"],\"base_cupboard_shelf_types\":[\"any\",\"any\",\"any\"],\"base_cupboard_shelf_sizes\":[1,2,3],\"hand_id\":\"Hand\",\"basket_id\":\"MarketBasket\",\"chest_id\":\"Chest\",\"market_rows\":3,\"market_columns\":4,\"marble_per_color\":{\"BLUE\":2,\"WHITE\":4,\"GREY\":2,\"RED\":1,\"PURPLE\":2,\"YELLOW\":2},\"upgradable_crafting_number\":3,\"faith_checkpoint_number\":" +
+                groups.size() + "}";
+
+        fileChooser = new FileChooser();
+        fileChooser.setTitle("Save config.json");
+        fileChooser.setInitialFileName("config.json");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json"));
+        file = fileChooser.showSaveDialog(root.getScene().getWindow());
+
+        if(file != null) {
+            try {
+                PrintWriter writer;
+                writer = new PrintWriter(file);
+                writer.println(str);
+                writer.close();
+            } catch (IOException ex) {
+                System.out.println("Unable to save file");
+            }
+        }
     }
 
     // SHOP
     @FXML
     public AnchorPane shopPane;
+
+    @FXML
+    public CraftingSelector baseCraftingSelector;
+    @FXML
+    public CraftingBox baseCraftingBox;
 
     @FXML
     public VBox shopVBox;
@@ -586,6 +633,8 @@ public class ConfiguratorController {
     public void testShop() {
         CraftingCardBox craftingCardBox;
 
+        baseCraftingBox.setRawCrafting(baseCraftingSelector.getRawCrafting());
+
         for(int i = 0; i < shopCards.size(); i++) {
             craftingCardBox = new CraftingCardBox(new RawCraftingCard(
                     i + 1,
@@ -609,11 +658,84 @@ public class ConfiguratorController {
     public void generateShop() {
         testShop();
 
-        String str = "{\"shop\":" + JSONSerializer.toJson(createCraftingCardList()) + "}";
+        String str = "{\"shop\":" + JSONSerializer.toJson(createCraftingCardList()) + ", \"base\":[" + baseCraftingSelector.getRawCrafting() + "]}";
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save crafting.json");
         fileChooser.setInitialFileName("crafting.json");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json"));
+        File file = fileChooser.showSaveDialog(root.getScene().getWindow());
+
+        if(file != null) {
+            try {
+                PrintWriter writer;
+                writer = new PrintWriter(file);
+                writer.println(str);
+                writer.close();
+            } catch (IOException ex) {
+                System.out.println("Unable to save file");
+            }
+        }
+    }
+
+    // LEADERS
+    @FXML
+    public AnchorPane leaderPane;
+    @FXML
+    public VBox leaderVBox;
+    @FXML
+    public LeaderCardSelector test;
+    @FXML
+    public Button addLeaderButton;
+    @FXML
+    public Button removeLeaderButton;
+
+    private List<LeaderCardSelector> leaders = new ArrayList<>();
+
+    public void createLeaderCard() {
+        LeaderCardSelector leaderCardSelector = new LeaderCardSelector();
+        leaderCardSelector.setId(leaders.size() + 1);
+        leaders.add(leaderCardSelector);
+        leaderVBox.getChildren().add(leaderCardSelector);
+
+        removeLeaderButton.setDisable(false);
+    }
+
+    public void removeLeaderCard() {
+        if(leaders.size() <= 16)
+            return;
+
+        leaderVBox.getChildren().remove(leaderVBox.getChildren().size() - 1);
+        leaders.remove(leaders.size() - 1);
+
+        if(leaders.size() == 16)
+            removeLeaderButton.setDisable(true);
+    }
+
+    public List<RawLeaderCard> createLeaderCardsList() {
+        List<RawLeaderCard> list = new ArrayList<>();
+
+        for(LeaderCardSelector leader : leaders) {
+            list.add(leader.getRawLeaderCard());
+        }
+
+        return list;
+    }
+
+    public void testLeaders() {
+        for(LeaderCardSelector leader : leaders) {
+            leader.updatePreview();
+        }
+    }
+
+    public void generateLeaders() {
+        testLeaders();
+
+        String str = "{\"cards\":" + JSONSerializer.toJson(createLeaderCardsList()) + "}";
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save leaders.json");
+        fileChooser.setInitialFileName("leaders.json");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json"));
         File file = fileChooser.showSaveDialog(root.getScene().getWindow());
 

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import it.polimi.ingsw.configurator.nodes.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import it.polimi.ingsw.client.gui.nodes.CraftingBox?>
 <TabPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.configurator.ConfiguratorController">
 
     <Tab closable="false" text="Faith Path">
@@ -30,7 +32,12 @@
     <Tab closable="false" text="Shop Cards">
         <AnchorPane fx:id="shopPane">
             <ScrollPane hbarPolicy="NEVER" prefHeight="660.0" prefWidth="1280.0">
-                <VBox fx:id="shopVBox" prefWidth="1280.0" spacing="30" />
+                <VBox fx:id="shopVBox" prefWidth="1280.0" spacing="30">
+                    <HBox spacing="80">
+                        <CraftingSelector fx:id="baseCraftingSelector"/>
+                        <CraftingBox fx:id="baseCraftingBox" />
+                    </HBox>
+                </VBox>
             </ScrollPane>
             <Button layoutX="1200.0" layoutY="663.0" onAction="#generateShop" text="Generate" />
             <Button layoutX="1155.0" layoutY="663.0" onAction="#testShop" text="Test" />
@@ -40,10 +47,12 @@
     <Tab closable="false" text="Leader Cards">
         <AnchorPane fx:id="leaderPane">
             <ScrollPane hbarPolicy="NEVER" prefHeight="660.0" prefWidth="1280.0">
-                <VBox fx:id="leaderVBox" prefWidth="1280.0" spacing="30" />
+                <VBox fx:id="leaderVBox" prefWidth="1280.0" spacing="70" />
             </ScrollPane>
-            <Button layoutX="1200.0" layoutY="663.0" text="Generate" />
-            <Button layoutX="1155.0" layoutY="663.0" text="Test" />
+            <Button layoutX="1200.0" layoutY="663.0" onAction="#generateLeaders" text="Generate" />
+            <Button layoutX="1155.0" layoutY="663.0" onAction="#testLeaders" text="Test" />
+            <Button fx:id="removeLeaderButton" layoutX="1087.0" layoutY="663.0" onAction="#removeLeaderCard" text="X" />
+            <Button fx:id="addLeaderButton" layoutX="1050.0" layoutY="663.0" onAction="#createLeaderCard" text="+" />
         </AnchorPane>
     </Tab>
 
