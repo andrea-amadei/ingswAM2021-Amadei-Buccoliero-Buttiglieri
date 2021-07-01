@@ -204,6 +204,7 @@ public class LeaderCardSelector extends HBox {
 
                 case "storage":
                     ability = new StorageAbilitySelector();
+                    ((StorageAbilitySelector) ability).setName("leader_" + id.getText());
                     break;
             }
 

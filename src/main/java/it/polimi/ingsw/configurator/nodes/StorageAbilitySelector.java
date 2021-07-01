@@ -105,5 +105,6 @@ public class StorageAbilitySelector extends VBox implements AbilitySelector {
         }
         setAmount(rawSpecialAbility.getAmount());
         setResourceType(rawSpecialAbility.getAcceptedTypes());
+        setName(rawSpecialAbility.getStorageName());
     }
 }
