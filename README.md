@@ -3,7 +3,7 @@
 ## Group members
 - ### Andrea Amadei
 - ### Caterina Buccoliero
-- ### Giorgio Buttiglieri
+- ### Giorgio Natale Buttiglieri
 
 ## Implemented functionalities
 
@@ -18,7 +18,18 @@
 - Disconnection resilience
 - Parameters editor
 
-## Starting the application
+## Running the application
+
+### Requirements
+
+Before running the game, make sure you satisfy the following requirements:
+-   JDK 15 or higher installed
+-   Full HD screen (1920 x 1080) or above
+-   100% font size or below if your screen is Full HD
+<br><br>CLI only:
+-   Terminal with ANSI color support (Windows PowerShell, Windows 10 Terminal, macOS Terminal, xTerm, ...)
+
+### Command line arguments
 
 If there are no parameters specified, the GUI starts at host localhost on port 6789.
 If there are parameters, the first one must be “client”, “server” or “configurator”.
@@ -29,7 +40,7 @@ If there are parameters, the first one must be “client”, “server” or “
 ### All examples
 
 | command | What starts |
-|:-----------------------|:------------------------------------:|
+|:---------------------------------------|:------------------------------------|
 | java -jar MastersOfRenaissance_1.0.jar | Starts client GUI, localhost 6789 |
 | java -jar MastersOfRenaissance_1.0.jar client | Starts client GUI, localhost 6789 |
 | java -jar MastersOfRenaissance_1.0.jar client gui | Starts client GUI, localhost 6789 |
@@ -43,7 +54,7 @@ If there are parameters, the first one must be “client”, “server” or “
 ## All CLI commands
 
 | CLI command | What it does |
-|:-----------------------|:------------------------------------:|
+|:-----------------------|:------------------------------------|
 | “set_username” + String | Sets String as the username of the player |
 | “activate_leader” + int | Activates the leader card with ID int |
 | “back” | The game goes back to its previous state |
@@ -86,11 +97,12 @@ The executable MastersOfRenaissance_1.0.jar file will be located in the target f
 
 ### Pre-compiled .jar
 Inside the <i>deliverables</i> folder, it is possible to download pre-compiled all-in-one .jar files.
--   For <b>Windows</b> users: download the MastersOfRenaissance_1.0.jar file inside the <i>windows</i> folder
--   For <b>macOS</b> users: download the MastersOfRenaissance_1.0_MAC.jar file inside the <i>macos</i> folder
+-   For <b>ALL PLATFORMS (Windows, macOS, linux)</b> use: download the MastersOfRenaissance_1.0.jar file inside the <i>multiplatform</i> folder
+    
+If any problems should occur while running the multiplatform version, please download the following files: 
 
-#### Warning!
-Although both jar files are similar and should work on both OS, some macOS users may encounter problems while running the GUI application or the configurator. This might occur due to an incompatibility with some JavaFX runtimes on newer versions of macOS. If something goes wrong, please build the .jar yourself as described above.
+-   For <b>Windows</b> only use: download the MastersOfRenaissance_1.0.jar file inside the <i>windows</i> folder
+-   For <b>macOS</b> only use: download the MastersOfRenaissance_1.0_MAC.jar file inside the <i>macos</i> folder
 
 ## Tools used
 - IntelliJ
@@ -102,4 +114,4 @@ Although both jar files are similar and should work on both OS, some macOS users
 - GSON
 - JavaFX
 - ControlFX (a JavaFX plugin)
-- Shaded (a Maven plugin)
+- Shade (a Maven plugin)
