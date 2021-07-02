@@ -1,0 +1,50 @@
+  |--------------|						  				  |--------|
+  | Client Paolo | 			<<# SEQUENCE DIAGRAM #>>	  | Server |
+  |--------------|						  				  |--------|
+
+	HELLO("Paolo")   						----->
+											<-----			OK
+					 
+	GET-GAMES		 						----->				
+											<-----			GAMES-INFO([])
+					 
+	JOIN-GAME("Gioco Inesistente")			----->				
+											<-----			ERROR("no_game", "No game available to join")
+											
+	CREATE-GAME("Gioco di Paolo")			----->				
+											<-----			OK
+	
+					#### GENOVEFFA SI IDENTIFICA E ENTRA NELLA PARTITA ####
+					
+											<-----			PLAYER-STATUS("join", "Joined the lobby", "Genoveffa")
+					
+						#### SCATTA IL TIMEOUT DEL KEEP ALIVE ####
+					
+											<-----				KEEP-ALIVE
+	IM-ALIVE								----->
+	
+	START-GAME("config.json")				----->
+											<-----				OK
+											<-----				LOBBY-STATUS("game_starting")
+											
+
+
+  |------------------|					   				  |--------|
+  | Client Genoveffa | 			<<# SEQUENCE DIAGRAM #>>  | Server |
+  |------------------|						  			  |--------|
+	
+	HELLO("Genoveffa")						----->				
+											<-----			OK
+											
+	GET-GAMES		 						----->				
+											<-----			GAMES-INFO(["Gioco di Paolo"])
+	JOIN-GAME("Gioco di Paolo")				----->			
+											<-----			OK
+											<-----			PLAYER-STATUS("join", "Joined the lobby", "Genoveffa")
+											
+						#### SCATTA IL TIMEOUT DEL KEEP ALIVE ####
+					
+											<-----				KEEP-ALIVE
+	IM-ALIVE								----->
+	
+											<-----				LOBBY-STATUS("game_starting")

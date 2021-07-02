@@ -1,0 +1,67 @@
+  |--------------|						  				  |--------|
+  | Client Paolo | 			<<# SEQUENCE DIAGRAM #>>	  | Server |
+  |--------------|						  				  |--------|
+										<-----				LOBBY-STATUS("game_starting")
+										
+					#### IL BUILDER HA CREATO UNA NUOVA PARTITA. ####
+						#### FASE PRELIMINARE DELLA PARTITA ####
+						
+										<-----				{UPDATE(["add_leader_card", "add_leader_card", ...]), ACTIONS(["preliminary_pick"])}				
+	{MOVE("preliminary_pick")}			----->
+	
+										<-----				{UPDATE(["change_hand"]), ACTIONS(["resources_move"])}
+	{MOVE("resources_move")}			----->
+										<-----				{UPDATE(["change_hand", "change_shelf"]), ACTIONS(["end_turn"])}
+														
+	{MOVE("end_turn")}					----->				
+	
+			#### QUANDO TUTTI FANNO LE PROPRIE SCELTE, LA PARTITA INIZIA ####												
+								#### PAOLO È IL PRIMO ####
+								
+										<-----				{UPDATE(["change_market", ..., "next_turn"]), ACTIONS(["buy_from_market", "buy_from_shop", "activate_leader", "end_turn"])}				
+										
+	{MOVE("buy_from_market")}			----->				
+										<-----				{UPDATE(["change_market"]), ACTIONS(["select_conversion"])}
+														
+	{MOVE("select_conversion")}			----->
+										<-----				{UPDATE(["change_market", "change_resources"]), ACTIONS(["resources_move", "confirm"])}
+														
+	{MOVE("resources_move")}			----->
+										<-----				{UPDATE(["change_resources", "change_resources"]), ACTIONS(["resources_move", "confirm"])}
+														
+	{MOVE("confirm")}					----->				
+										<-----				{ERROR("cannot_tidy", "Unable to tidy beacuse ...")}
+														
+										
+	{MOVE("resources_move")}			----->				
+										<-----				{UPDATE(["change_resources", "change_resources"]), ACTIONS(["resources_move", "confirm"])}
+														
+	{MOVE("confirm")}					----->
+										<-----				{UPDATE([]), ACTIONS(["resources_move", "confirm"])}
+														
+	{MOVE("resources_move")}			----->				
+										<-----				{UPDATE(["change_resources", "change_resources"]), ACTIONS(["resources_move", "confirm"])}
+														
+	{MOVE("confirm")}					----->
+	
+	#### POICHÈ ALCUNE RISORSE SONO STATE SCARTATE, GLI ALTRI GIOCATORI GUADAGNANO FEDE ####
+	
+										<-----				{UPDATE(["add_faith"]), ACTIONS(["activate_leader", "end_turn"])}
+														
+										<-----				{UPDATE(["pope_check"]), ACTIONS(["activate_leader", "end_turn"])}
+	
+	{MOVE("end_turn")}					----->				
+	
+							#### È IL TURNO DI GENOVEFFA ####
+							
+										<-----				{UPDATE(["new_turn"]), ACTIONS([])}
+														
+										
+										<-----				{UPDATE(["change_shop", ...]), ACTIONS([])}
+										
+										<-----				{KEEP-ALIVE}
+	{IM-ALIVE}							----->
+	
+						  #### FINISCE IL GIOCO, PAOLO VINCE ####
+						  
+										<-----				{UPDATE(["end_game"])}

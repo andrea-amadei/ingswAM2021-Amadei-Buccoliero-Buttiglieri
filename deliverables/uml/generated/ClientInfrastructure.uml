@@ -3,14 +3,14 @@
   <ID>JAVA</ID>
   <OriginalElement>it.polimi.ingsw.client.cli.updaters.MarketCliUpdater</OriginalElement>
   <nodes>
-    <node x="373.16388888888895" y="250.0">it.polimi.ingsw.client.clientmodel.ClientMarket</node>
     <node x="55.74999999999994" y="1030.0">it.polimi.ingsw.client.updates.Update</node>
+    <node x="373.16388888888895" y="250.0">it.polimi.ingsw.client.clientmodel.ClientMarket</node>
     <node x="641.3067460317461" y="717.0">it.polimi.ingsw.client.cli.updaters.MarketCliUpdater</node>
     <node x="558.3904761904762" y="0.0">it.polimi.ingsw.client.observables.Listener</node>
     <node x="212.76547619047614" y="1156.0">it.polimi.ingsw.client.updates.ChangeMarketUpdate</node>
     <node x="0.0" y="740.0">it.polimi.ingsw.client.network.ServerNetworkObject</node>
-    <node x="219.99999999999994" y="530.0">it.polimi.ingsw.client.clientmodel.ClientModel</node>
     <node x="849.3067460317461" y="728.0">it.polimi.ingsw.client.gui.updaters.MarketGuiUpdater</node>
+    <node x="219.99999999999994" y="530.0">it.polimi.ingsw.client.clientmodel.ClientModel</node>
     <node x="310.91388888888895" y="124.0">it.polimi.ingsw.client.observables.Observable</node>
   </nodes>
   <notes />
@@ -52,7 +52,7 @@
       <point x="39.375" y="27.0" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.631083202511774" x="519.0" y="627.0" />
+  <settings layout="Hierarchic Group" zoom="0.695447409733124" x="519.0" y="627.0" />
   <SelectedNodes>
     <node>it.polimi.ingsw.client.cli.updaters.MarketCliUpdater</node>
   </SelectedNodes>

@@ -5,8 +5,8 @@
   <nodes>
     <node x="427.0" y="0.0">it.polimi.ingsw.server.model.global.Board</node>
     <node x="0.0" y="0.0">it.polimi.ingsw.server.model.faithpath.FaithPath</node>
-    <node x="773.0" y="0.0">it.polimi.ingsw.server.model.global.GameModel</node>
     <node x="0.0" y="584.0">it.polimi.ingsw.server.model.market.Market</node>
+    <node x="773.0" y="0.0">it.polimi.ingsw.server.model.global.GameModel</node>
     <node x="279.0" y="584.0">it.polimi.ingsw.server.model.global.Shop</node>
     <node x="588.0" y="584.0">it.polimi.ingsw.server.model.global.Player</node>
   </nodes>

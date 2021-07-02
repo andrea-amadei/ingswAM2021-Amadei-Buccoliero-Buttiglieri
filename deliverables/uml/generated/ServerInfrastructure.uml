@@ -4,8 +4,8 @@
   <OriginalElement>it.polimi.ingsw.server.clienthandling.ClientHandler</OriginalElement>
   <nodes>
     <node x="0.0" y="578.0">it.polimi.ingsw.server.clienthandling.ClientHub</node>
-    <node x="0.0" y="192.0">it.polimi.ingsw.server.clienthandling.DisconnectionManager</node>
     <node x="686.0" y="0.0">it.polimi.ingsw.server.clienthandling.Match</node>
+    <node x="0.0" y="192.0">it.polimi.ingsw.server.clienthandling.DisconnectionManager</node>
     <node x="344.0" y="104.0">it.polimi.ingsw.server.clienthandling.ClientHandler</node>
     <node x="271.25" y="0.0">java.lang.Runnable</node>
     <node x="375.0" y="578.0">it.polimi.ingsw.server.clienthandling.WelcomeHandler</node>

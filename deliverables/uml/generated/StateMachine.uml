@@ -31,6 +31,12 @@
   </nodes>
   <notes />
   <edges>
+    <edge source="it.polimi.ingsw.server.model.fsm.states.MenuState" target="it.polimi.ingsw.server.model.fsm.State">
+      <point x="0.0" y="-93.0" />
+      <point x="2486.5" y="1035.0" />
+      <point x="1785.0" y="1035.0" />
+      <point x="84.25" y="214.5" />
+    </edge>
     <edge source="it.polimi.ingsw.server.model.fsm.states.MarketState" target="it.polimi.ingsw.server.model.fsm.State">
       <point x="0.0" y="-60.0" />
       <point x="165.5" y="1015.0" />
@@ -42,12 +48,6 @@
       <point x="1822.0" y="1055.0" />
       <point x="1717.6" y="1055.0" />
       <point x="16.84999999999991" y="214.5" />
-    </edge>
-    <edge source="it.polimi.ingsw.server.model.fsm.states.MenuState" target="it.polimi.ingsw.server.model.fsm.State">
-      <point x="0.0" y="-93.0" />
-      <point x="2486.5" y="1035.0" />
-      <point x="1785.0" y="1035.0" />
-      <point x="84.25" y="214.5" />
     </edge>
     <edge source="it.polimi.ingsw.server.model.fsm.states.PreliminaryTidyState" target="it.polimi.ingsw.server.model.fsm.State">
       <point x="0.0" y="-104.5" />
